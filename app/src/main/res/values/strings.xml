@@ -3,4 +3,12 @@
     <string name="login">Login</string>
     <string name="get_token">Get Token</string>
     <string name="share">Share</string>
+
+    <!--Content Description-->
+    <string name="subreddit_image">Subreddit Image</string>
+    <string name="up_vote">Up vote</string>
+    <string name="down_vote">Down vote</string>
+    <string name="sort_order">Sort Order</string>
+
+
 </resources>
