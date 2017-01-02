@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Reddit Star</string>
+    <string name="login">Login</string>
+    <string name="get_token">Get Token</string>
+</resources>
