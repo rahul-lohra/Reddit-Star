@@ -9,6 +9,20 @@
     <string name="up_vote">Up vote</string>
     <string name="down_vote">Down vote</string>
     <string name="sort_order">Sort Order</string>
+    <string name="billymcd">billymcd</string>
+    <string name="sample_time">59m</string>
+    <string name="dashboard">Dashboard</string>
+    <string name="detail_reddit">Detail Reddit</string>
+    <string name="comments_counts">472</string>
+    <string name="upvote_counts">7586</string>
+    <string name="sample_text">It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</string>
+    <string name="sample_reddit_title">Space - 5h</string>
+    <string name="sample_comment">publishing software like Aldus PageMaker including versions of Lorem Ipsum.  Why do we use it? It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using \'Content here, content here\', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for \'lorem ipsum\' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).</string>
+    <string name="sample_username">u/Auggernaut88</string>
+    <string name="sample_category">r/funny - 3hr - imgur</string>
+    <string name="comments_title">It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</string>
+    <string name="reply">Reply</string>
+    <string name="home">Home</string>
 
 
 </resources>
