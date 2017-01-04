@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group
+        android:id="@+id/grp_1"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_home"
+            android:title="@string/home" />
+        <item
+            android:id="@+id/nav_inbox"
+            android:icon="@drawable/ic_email"
+            android:title="@string/inbox" />
+        <item
+            android:id="@+id/nav_friends"
+            android:icon="@drawable/ic_people"
+            android:title="@string/friends" />
+        <item
+            android:id="@+id/nav_subreddits"
+            android:icon="@drawable/ic_list"
+            android:title="@string/subreddits" />
+        <item
+            android:id="@+id/nav_moderating"
+            android:icon="@drawable/moderator_male_24"
+            android:title="@string/moderating" />
+
+        <item
+            android:id="@+id/nav_settings"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="@string/action_settings" />
+    </group>
+
+    <group
+        android:id="@+id/grp_2"
+        android:checkableBehavior="single">
+        <item android:title="@string/extras">
+            <menu>
+                <item
+                    android:id="@+id/nav_about"
+                    android:icon="@drawable/ic_info"
+                    android:title="@string/about" />
+            </menu>
+        </item>
+
+    </group>
+
+</menu>

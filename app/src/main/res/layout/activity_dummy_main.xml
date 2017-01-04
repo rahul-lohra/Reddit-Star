@@ -3,15 +3,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-<android.support.v7.widget.AppCompatButton
-    android:text="@string/dashboard"
-    android:id="@+id/btn_dashboard"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content" />
+
     <android.support.v7.widget.AppCompatButton
-        android:text="@string/detail_reddit"
+        android:id="@+id/btn_dashboard"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/dashboard" />
+
+    <android.support.v7.widget.AppCompatButton
         android:id="@+id/btn_detail_reddit"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:text="@string/detail_reddit" />
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/btn_nav_activity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/title_activity_nav" />
 
 </LinearLayout>

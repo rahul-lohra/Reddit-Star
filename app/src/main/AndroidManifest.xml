@@ -12,8 +12,8 @@
         android:theme="@style/AppTheme">
         <activity android:name=".Activity.Dummy.DummyMainActivity">
             <intent-filter>
-
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -33,11 +33,16 @@
         </activity>
         <activity android:name=".Activity.Activity.LoginActivity" />
         <activity android:name=".Activity.Activity.DetailActivity" />
-
-        <activity android:name=".Activity.Dummy.DummyDashboardActivity"
-            android:label="@string/home"/>
-        <activity android:name=".Activity.Dummy.DummyDetailActivity"
-            android:label="@string/detail_reddit"></activity>
+        <activity
+            android:name=".Activity.Dummy.DummyDashboardActivity"
+            android:label="@string/home" />
+        <activity
+            android:name=".Activity.Dummy.DummyDetailActivity"
+            android:label="@string/detail_reddit" />
+        <activity
+            android:name=".Activity.Dummy.NavActivity"
+            android:label="@string/title_activity_nav"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

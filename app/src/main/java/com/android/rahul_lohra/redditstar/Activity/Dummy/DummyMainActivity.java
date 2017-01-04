@@ -21,6 +21,11 @@ public class DummyMainActivity extends AppCompatActivity {
         startActivity(new Intent(this,DummyDetailActivity.class));
     }
 
+    @OnClick(R.id.btn_nav_activity)
+    void onClickNavActivity(){
+        startActivity(new Intent(this,NavActivity.class));
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -23,6 +23,19 @@
     <string name="comments_title">It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</string>
     <string name="reply">Reply</string>
     <string name="home">Home</string>
+    <string name="title_activity_nav">NavActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="inbox">Inbox</string>
+    <string name="friends">Friends</string>
+    <string name="about">About</string>
+    <string name="extras">Extras</string>
+    <string name="faq">FAQ</string>
+    <string name="subreddits">Subreddits</string>
+    <string name="moderating">Moderating</string>
 
 
 </resources>
