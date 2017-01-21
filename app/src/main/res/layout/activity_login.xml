@@ -8,7 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.android.rahul_lohra.redditstar.Activity.Activity.LoginActivity">
+    tools:context=".LoginActivity">
 
     <WebView
         android:id="@+id/webView"

@@ -5,7 +5,7 @@
 
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.android.rahul_lohra.redditstar.Activity.Activity.DetailActivity">
+    tools:context=".DetailActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
