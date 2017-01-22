@@ -36,6 +36,8 @@
     <string name="faq">FAQ</string>
     <string name="subreddits">Subreddits</string>
     <string name="moderating">Moderating</string>
+    <string name="enter_community_name">Enter Community Name</string>
+    <string name="title_activity_dashboard">Dashboard</string>
 
 
 </resources>

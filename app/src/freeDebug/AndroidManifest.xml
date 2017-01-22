@@ -1,0 +1,9 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+<application>
+    <activity
+        android:name="com.android.rahul_lohra.redditstar.activity.DashboardActivity"
+        android:label="@string/title_activity_dashboard"
+        android:theme="@style/AppTheme.NoActionBar"></activity>
+</application>
+</manifest>
