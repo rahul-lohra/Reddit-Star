@@ -6,6 +6,7 @@ import com.android.rahul_lohra.redditstar.utility.MyUrl;
 
 import java.io.IOException;
 
+import javax.inject.Named;
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -29,7 +30,8 @@ public class NetModule {
     }
     @Provides
     @Singleton
-    Retrofit provideRetrofit() {
+    @Named("fun")
+    Retrofit provideRetrofitForFun() {
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
         httpClient.addInterceptor(new Interceptor() {
             @Override
@@ -59,6 +61,38 @@ public class NetModule {
             }
         });
 //                httpClient.cache(new Cache(context.getCacheDir(), 10 * 1024 * 1024)); //10 mb
+        OkHttpClient client = httpClient.build();
+
+
+        Retrofit retrofit = null;
+        retrofit = new Retrofit.Builder()
+                .baseUrl(MyUrl.LOGIN_AUTHORITY)
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(client)
+                .build();
+
+        return retrofit;
+
+    }
+
+    @Provides
+    @Singleton
+    @Named("token")
+    Retrofit provideRetrofitForToken() {
+        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+        httpClient.addInterceptor(new Interceptor() {
+            @Override
+            public Response intercept(Interceptor.Chain chain) throws IOException {
+                Request original = chain.request();
+                Request request = original.newBuilder()
+                        .header("Content-Type", "application/json")
+                        .method(original.method(), original.body())
+                        .build();
+
+                return chain.proceed(request);
+            }
+        });
+
         OkHttpClient client = httpClient.build();
 
 

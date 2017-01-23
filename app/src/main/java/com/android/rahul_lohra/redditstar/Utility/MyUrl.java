@@ -21,6 +21,11 @@ public class MyUrl {
                     "duration=permanent&scope=%s";
     public static final String STATE = "AnyState";
 
+    private static String BASE_URL = "https://oauth.reddit.com";
+
+
+
+
     public static String getProperScope(String array[]){
         String scope = "";
         for(int i=0;i<array.length;++i){

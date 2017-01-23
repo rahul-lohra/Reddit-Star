@@ -2,7 +2,7 @@ package com.android.rahul_lohra.redditstar.dagger.Component;
 
 import com.android.rahul_lohra.redditstar.dagger.Module.AppModule;
 import com.android.rahul_lohra.redditstar.dagger.Module.NetModule;
-import com.android.rahul_lohra.redditstar.MainActivity;
+import com.android.rahul_lohra.redditstar.activity.MainActivity;
 import com.android.rahul_lohra.redditstar.presenter.DashboardPresenter;
 
 import javax.inject.Singleton;

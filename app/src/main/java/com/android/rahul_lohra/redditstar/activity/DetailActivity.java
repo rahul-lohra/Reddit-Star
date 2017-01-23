@@ -1,4 +1,4 @@
-package com.android.rahul_lohra.redditstar;
+package com.android.rahul_lohra.redditstar.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

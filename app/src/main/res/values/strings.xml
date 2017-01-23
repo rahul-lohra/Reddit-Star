@@ -38,9 +38,12 @@
     <string name="moderating">Moderating</string>
     <string name="enter_community_name">Enter Community Name</string>
     <string name="title_activity_dashboard">Dashboard</string>
+    <string name="attempting_login">Attempting Login</string>
+    <string name="login_success">Login Success</string>
+    <string name="login_failed">Login Failed</string>
 
     <array name="scope">
-        <item>credits</item>
+        <item>creddits</item>
         <item>modcontributors</item>
         <item>modmail</item>
         <item>modconfig</item>
@@ -76,7 +79,7 @@
     </array>
 
     <array name="scope_3">
-        <item>credits</item>
+        <item>creddits</item>
         <item>edit</item>
         <item>flair</item>
         <item>history</item>
