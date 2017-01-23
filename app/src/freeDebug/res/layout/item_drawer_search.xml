@@ -5,6 +5,7 @@
     android:orientation="vertical">
 
     <EditText
+        android:padding="@dimen/drawer_item_padding"
         android:drawableEnd="@drawable/ic_chevron_right"
         android:id="@+id/et"
         android:layout_width="match_parent"

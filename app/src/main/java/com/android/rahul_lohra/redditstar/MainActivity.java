@@ -8,6 +8,9 @@ import android.support.v7.widget.AppCompatButton;
 import android.util.Base64;
 import android.util.Log;
 
+import com.android.rahul_lohra.redditstar.activity.WebViewActivity;
+import com.android.rahul_lohra.redditstar.utility.MyUrl;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -58,35 +61,38 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
     }
 
-    void signIn()
-    {
-        String url = String.format(AUTH_URL, CLIENT_ID, STATE, REDIRECT_URI);
+    void signIn() {
+        String scopeArray[] = getResources().getStringArray(R.array.scope_3);
+        String scope = MyUrl.getProperScope(scopeArray);
+        String url = String.format(AUTH_URL, CLIENT_ID, STATE, REDIRECT_URI, scope);
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+//        Intent intent = new Intent(this, WebViewActivity.class);
+//        intent.setData(Uri.parse(url));
         startActivity(intent);
     }
-    void makeRequest()
-    {
+
+    void makeRequest() {
         OkHttpClient okHttpClient = new OkHttpClient();
         RequestBody formBody = new FormBody.Builder()
                 .add("grant_type", "authorization_code")
-                .add("code","C_fkVWSj1YmOLvW093oKcB2s_-k")
+                .add("code", "C_fkVWSj1YmOLvW093oKcB2s_-k")
                 .add("redirect_uri", REDIRECT_URI)
                 .build();
         Request request = new Request.Builder()
                 .url(ACCESS_TOKEN_URL)
-                .method("POST",formBody)
+                .method("POST", formBody)
                 .removeHeader("User-Agent")
-                .addHeader("User-Agent",getApplication().getPackageName())
+                .addHeader("User-Agent", getApplication().getPackageName())
                 .build();
         okHttpClient.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                Log.d(TAG,"Fail");
+                Log.d(TAG, "Fail");
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                Log.d(TAG,"success");
+                Log.d(TAG, "success");
             }
         });
     }
@@ -94,14 +100,14 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if(getIntent()!=null && getIntent().getAction().equals(Intent.ACTION_VIEW)) {
+        if (getIntent() != null && getIntent().getAction().equals(Intent.ACTION_VIEW)) {
             Uri uri = getIntent().getData();
-            if(uri.getQueryParameter("error") != null) {
+            if (uri.getQueryParameter("error") != null) {
                 String error = uri.getQueryParameter("error");
                 Log.e(TAG, "An error has occurred : " + error);
             } else {
                 String state = uri.getQueryParameter("state");
-                if(state.equals(STATE)) {
+                if (state.equals(STATE)) {
                     String code = uri.getQueryParameter("code");
                     getAccessToken(code);
                 }
@@ -109,8 +115,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void getAccessToken(String code)
-    {
+    private void getAccessToken(String code) {
         OkHttpClient client = new OkHttpClient();
 
         String authString = CLIENT_ID + ":";

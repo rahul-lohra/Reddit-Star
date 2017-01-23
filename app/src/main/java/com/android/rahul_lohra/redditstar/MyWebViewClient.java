@@ -13,7 +13,11 @@ public class MyWebViewClient extends WebViewClient {
 
     String TAG = MyWebViewClient.class.getSimpleName();
     String url;
-    public MyWebViewClient(String url){this.url = url;}
+
+    public MyWebViewClient(String url) {
+        this.url = url;
+    }
+
     @Override
     public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
 //        return super.shouldOverrideUrlLoading(view, request);
@@ -24,7 +28,7 @@ public class MyWebViewClient extends WebViewClient {
     @Override
     public void onPageFinished(WebView view, String url) {
         super.onPageFinished(view, url);
-        Log.d(TAG,"Page Finished");
+        Log.d(TAG, "Page Finished");
         AsyncGetToken.PARSING_URL = url;
 
     }

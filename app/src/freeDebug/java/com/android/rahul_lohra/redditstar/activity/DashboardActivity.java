@@ -1,9 +1,11 @@
 package com.android.rahul_lohra.redditstar.activity;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -16,6 +18,9 @@ import android.view.MenuItem;
 
 import com.android.rahul_lohra.redditstar.R;
 import com.android.rahul_lohra.redditstar.adapter.DrawerAdapter;
+import com.android.rahul_lohra.redditstar.contract.IDashboard;
+import com.android.rahul_lohra.redditstar.modal.DrawerItemModal;
+import com.android.rahul_lohra.redditstar.presenter.DashboardPresenter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,8 +29,11 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class DashboardActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class DashboardActivity extends AppCompatActivity implements
+        NavigationView.OnNavigationItemSelectedListener,
+        IDashboard
+
+{
 
     @Bind(R.id.toolbar)
     Toolbar toolbar;
@@ -39,8 +47,8 @@ public class DashboardActivity extends AppCompatActivity
     FloatingActionButton fab;
 
     DrawerAdapter drawerAdapter;
-    List<String> drawerList;
-
+    List<DrawerItemModal> drawerList;
+    DashboardPresenter dashboardPresenter;
     @OnClick(R.id.fab)
     public void onClick() {
         Snackbar.make(fab, "Replace with your own action", Snackbar.LENGTH_LONG)
@@ -53,19 +61,31 @@ public class DashboardActivity extends AppCompatActivity
         setContentView(R.layout.activity_dashboard);
         ButterKnife.bind(this);
         init();
+        setupDrawer();
+        setupPresenter();
+
+
+    }
+
+    void setupDrawer(){
         drawerList = new ArrayList<>();
-        drawerList.add("Search");
-        drawerList.add("Home");
-        drawerList.add("My Subreddits");
-        drawerList.add("My Favourites");
-        drawerList.add("Settings");
+        drawerList.add(new DrawerItemModal("Search",ContextCompat.getDrawable(this,R.drawable.ic_home)));
+        drawerList.add(new DrawerItemModal("Home",ContextCompat.getDrawable(this,R.drawable.ic_home)));
+        drawerList.add(new DrawerItemModal("My Subreddits",ContextCompat.getDrawable(this,R.drawable.ic_list)));
+        drawerList.add(new DrawerItemModal("My Favourites",ContextCompat.getDrawable(this,R.drawable.ic_star)));
+        drawerList.add(new DrawerItemModal("Settings",ContextCompat.getDrawable(this,R.drawable.ic_settings)));
         drawerAdapter = new DrawerAdapter(this,drawerList);
         rv.setLayoutManager(new LinearLayoutManager(this));
         rv.setHasFixedSize(true);
         rv.setAdapter(drawerAdapter);
-
-
     }
+
+    void setupPresenter(){
+        if (dashboardPresenter!=null){
+            dashboardPresenter = new DashboardPresenter(this);
+        }
+    }
+
 
     void init(){
         setSupportActionBar(toolbar);
@@ -134,4 +154,8 @@ public class DashboardActivity extends AppCompatActivity
     }
 
 
+    @Override
+    public void loadMySubreddits() {
+
+    }
 }

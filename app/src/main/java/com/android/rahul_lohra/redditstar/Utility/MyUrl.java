@@ -18,7 +18,20 @@ public class MyUrl {
     public static final String AUTH_URL =
             "https://www.reddit.com/api/v1/authorize.compact?client_id=%s" +
                     "&response_type=code&state=%s&redirect_uri=%s&" +
-                    "duration=permanent&scope="+SCOPE;
+                    "duration=permanent&scope=%s";
     public static final String STATE = "AnyState";
+
+    public static String getProperScope(String array[]){
+        String scope = "";
+        for(int i=0;i<array.length;++i){
+            if(i==array.length-1){
+                scope = scope+array[i];
+            }else {
+                scope = scope+array[i]+",";
+            }
+
+        }
+        return scope;
+    }
 
 }

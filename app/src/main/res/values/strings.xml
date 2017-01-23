@@ -39,5 +39,50 @@
     <string name="enter_community_name">Enter Community Name</string>
     <string name="title_activity_dashboard">Dashboard</string>
 
+    <array name="scope">
+        <item>credits</item>
+        <item>modcontributors</item>
+        <item>modmail</item>
+        <item>modconfig</item>
+        <item>subscribe</item>
+        <item>wikiread</item>
+        <item>wikiedit</item>
+        <item>vote</item>
+        <item>mysubreddits</item>
+        <item>submit</item>
+        <item>modlog</item>
+        <item>modposts</item>
+        <item>modflair</item>
+        <item>save</item>
+        <item>modothers</item>
+        <item>read</item>
+        <item>privatemessages</item>
+        <item>report</item>
+        <item>identity</item>
+        <item>livemanage</item>
+        <item>account</item>
+        <item>modtraffic</item>
+        <item>edit</item>
+        <item>modwiki</item>
+        <item>modself</item>
+        <item>history</item>
+        <item>flair</item>
+    </array>
+
+    <array name="scope_2">
+        <item>flair</item>
+        <item>edit</item>
+        <item>identity</item>
+    </array>
+
+    <array name="scope_3">
+        <item>credits</item>
+        <item>edit</item>
+        <item>flair</item>
+        <item>history</item>
+        <item>identity</item>
+        <item>vote</item>
+        <item>submit</item>
+    </array>
 
 </resources>

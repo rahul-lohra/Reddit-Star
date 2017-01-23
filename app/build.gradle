@@ -90,4 +90,6 @@ dependencies {
     testCompile 'junit:junit:4.12'
     apt 'com.google.dagger:dagger-compiler:2.2'
     provided 'javax.annotation:jsr250-api:1.0'
+    compile "org.projectlombok:lombok:1.16.10"
+    compile 'net.simonvt.schematic:schematic:0.7.0'
 }

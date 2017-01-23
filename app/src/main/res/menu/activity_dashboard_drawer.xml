@@ -2,20 +2,21 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <group android:checkableBehavior="single">
+
         <item
-            app:actionLayout="@layout/item_drawer_edit_text"
+            android:actionViewClass="android.widget.SearchView"
+            app:actionLayout="@layout/item_drawer_search"
             android:id="@+id/nav_camera"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="Import" />
+            android:title="Search" />
+    <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_gallery"
             android:icon="@drawable/ic_menu_gallery"
             android:title="Gallery" />
         <item
+            app:actionLayout="@layout/item_drawer_drop_down"
             android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="Slideshow" />
+            android:title="Subreddits" />
         <item
             android:id="@+id/nav_manage"
             android:icon="@drawable/ic_menu_manage"

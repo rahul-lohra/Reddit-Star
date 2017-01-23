@@ -2,7 +2,11 @@ package com.android.rahul_lohra.redditstar.viewHolder;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.EditText;
 
+import com.android.rahul_lohra.redditstar.R;
+
+import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
@@ -10,9 +14,11 @@ import butterknife.ButterKnife;
  */
 
 public class DrawerSearchItem extends RecyclerView.ViewHolder {
+    @Bind(R.id.et)
+    public EditText et;
 
     public DrawerSearchItem(View itemView) {
         super(itemView);
-        ButterKnife.bind(itemView);
+        ButterKnife.bind(this, itemView);
     }
 }

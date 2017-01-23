@@ -5,6 +5,6 @@ package com.android.rahul_lohra.redditstar.contract;
  */
 
 public interface IDashboard {
-    void showNetworkError();
-    void showResult();
+    void loadMySubreddits();
+//    void showResult();
 }
