@@ -2,7 +2,8 @@ package com.android.rahul_lohra.redditstar.storage;
 
 import android.net.Uri;
 
-import com.android.rahul_lohra.redditstar.storage.column.MySubreddit;
+import com.android.rahul_lohra.redditstar.storage.column.MySubredditColumn;
+import com.android.rahul_lohra.redditstar.storage.column.UserCredentialsColumn;
 
 import net.simonvt.schematic.annotation.ContentProvider;
 import net.simonvt.schematic.annotation.ContentUri;
@@ -18,7 +19,7 @@ public class MyProvider {
     public static final String AUTHORITY = "com.android.rahul_lohra.redditstar.storage.MyProvider";
 
     @TableEndpoint(table = MyDatabase.MY_SUBREDDIT_TABLE)
-    public static class MessageLists {
+    public static class SubredditLists {
 
         @ContentUri(
                 path = "my_subreddit",
@@ -31,10 +32,30 @@ public class MyProvider {
                 path = "my_subreddit/*",
                 name = "MY_SUBREDDIT_ID",
                 type = "vnd.android.cursor.item/my_subreddit_item",
-                whereColumn = MySubreddit._ID,
+                whereColumn = MySubredditColumn._ID,
                 pathSegment = 1)
         public static Uri withId(long id) {
             return Uri.parse("content://" + AUTHORITY + "/my_subreddit/" + id);
+        }
+    }
+
+    @TableEndpoint(table = MyDatabase.USER_CREDENTIAL_TABLE)
+    public static class UserCredentialsLists {
+
+        @ContentUri(
+                path = "user_credentials",
+                type = "vnd.android.cursor.dir/user_credentials_item"
+        )
+        public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/user_credentials");
+
+        @InexactContentUri(
+                path = "user_credentials/*",
+                name = "USER_CREDENTIALS_ID",
+                type = "vnd.android.cursor.item/user_credentials_item",
+                whereColumn = UserCredentialsColumn._ID,
+                pathSegment = 1)
+        public static Uri withId(long id) {
+            return Uri.parse("content://" + AUTHORITY + "/user_credentials/" + id);
         }
     }
 

@@ -1,5 +1,6 @@
 package com.android.rahul_lohra.redditstar.retrofit;
 
+import com.android.rahul_lohra.redditstar.modal.AboutMe;
 import com.android.rahul_lohra.redditstar.modal.SubredditResponse;
 import com.android.rahul_lohra.redditstar.utility.Constants;
 
@@ -20,4 +21,8 @@ public interface ApiInterface {
     @GET("/subreddits/mine/subscriber")
     Call<SubredditResponse> getMySubscribedSubreddits(@Header(Constants.AUTHORIZATION) String authorization,
                                      @QueryMap Map<String, String> options);
+
+    @GET("/api/v1/me")
+    Call<AboutMe> getAboutMe(@Header(Constants.AUTHORIZATION) String authorization);
+
 }

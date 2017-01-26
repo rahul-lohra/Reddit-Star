@@ -66,7 +66,7 @@ public class NetModule {
 
         Retrofit retrofit = null;
         retrofit = new Retrofit.Builder()
-                .baseUrl(MyUrl.LOGIN_AUTHORITY)
+                .baseUrl(MyUrl.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(client)
                 .build();

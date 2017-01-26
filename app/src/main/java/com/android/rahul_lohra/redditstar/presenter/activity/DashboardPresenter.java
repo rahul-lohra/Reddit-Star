@@ -1,4 +1,4 @@
-package com.android.rahul_lohra.redditstar.presenter;
+package com.android.rahul_lohra.redditstar.presenter.activity;
 
 import android.app.Application;
 import android.os.Bundle;

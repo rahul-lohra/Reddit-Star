@@ -21,7 +21,7 @@ public class MyUrl {
                     "duration=permanent&scope=%s";
     public static final String STATE = "AnyState";
 
-    private static String BASE_URL = "https://oauth.reddit.com";
+    public static final String BASE_URL = "https://oauth.reddit.com";
 
 
 

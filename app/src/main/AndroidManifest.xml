@@ -12,12 +12,6 @@
         android:theme="@style/AppTheme">
         <activity android:name=".dummy.DummyMainActivity">
 
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN" /> -->
-
-
-            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-            <!-- </intent-filter> -->
         </activity>
         <activity android:name=".activity.MainActivity">
             <intent-filter>
@@ -49,11 +43,35 @@
             android:name=".dummy.NavActivity"
             android:label="@string/title_activity_nav"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".activity.WebViewActivity" />
+        <activity
+            android:name=".activity.WebViewActivity"
+            android:label="@string/reddit_login"
+            android:theme="@style/AppTheme.NoToolBar"></activity>
 
         <service
-            android:name=".service.GetNewToken"
+            android:name=".service.GetNewTokenService"
+            android:exported="false" />
+        <service
+            android:name=".service.GetUserCredentialsService"
             android:exported="false"></service>
+
+        <!--Generated Provider-->
+        <provider
+            android:syncable="true"
+            android:name="storage.generated.MyProvider"
+            android:authorities="com.android.rahul_lohra.redditstar.storage.MyProvider"
+            android:exported="false" />
+
+        <!--Authenticator-->
+        <service
+            android:name=".sync.AuthenticatorService">
+            <intent-filter>
+                <action android:name="android.accounts.AccountAuthenticator"/>
+            </intent-filter>
+            <meta-data
+                android:name="android.accounts.AccountAuthenticator"
+                android:resource="@xml/authenticator" />
+        </service>
     </application>
 
 </manifest>

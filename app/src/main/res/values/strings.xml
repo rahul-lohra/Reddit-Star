@@ -41,6 +41,10 @@
     <string name="attempting_login">Attempting Login</string>
     <string name="login_success">Login Success</string>
     <string name="login_failed">Login Failed</string>
+    <string name="add_new_account">Add new account</string>
+    <string name="yes">Yes</string>
+    <string name="cancel">Cancel</string>
+    <string name="reddit_login">Reddit Login</string>
 
     <array name="scope">
         <item>creddits</item>

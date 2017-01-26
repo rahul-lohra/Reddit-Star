@@ -4,16 +4,14 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.AppCompatButton;
 import android.util.Log;
 
 import com.android.rahul_lohra.redditstar.R;
-import com.android.rahul_lohra.redditstar.service.GetNewToken;
+import com.android.rahul_lohra.redditstar.service.GetNewTokenService;
 import com.android.rahul_lohra.redditstar.utility.MyUrl;
 
 import java.io.IOException;
 
-import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import okhttp3.Call;
@@ -106,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void getAccessToken(String code) {
-        Intent intent = new Intent(this, GetNewToken.class);
+        Intent intent = new Intent(this, GetNewTokenService.class);
         intent.putExtra("code",code);
         startService(intent);
     }

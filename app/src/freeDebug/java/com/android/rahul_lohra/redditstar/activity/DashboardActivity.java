@@ -1,11 +1,13 @@
 package com.android.rahul_lohra.redditstar.activity;
 
+import android.database.Cursor;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.LoaderManager;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.Loader;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -19,8 +21,9 @@ import android.view.MenuItem;
 import com.android.rahul_lohra.redditstar.R;
 import com.android.rahul_lohra.redditstar.adapter.DrawerAdapter;
 import com.android.rahul_lohra.redditstar.contract.IDashboard;
+import com.android.rahul_lohra.redditstar.dialog.AddAccountDialog;
 import com.android.rahul_lohra.redditstar.modal.DrawerItemModal;
-import com.android.rahul_lohra.redditstar.presenter.DashboardPresenter;
+import com.android.rahul_lohra.redditstar.presenter.activity.DashboardPresenter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +34,8 @@ import butterknife.OnClick;
 
 public class DashboardActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
-        IDashboard
+        IDashboard,
+        LoaderManager.LoaderCallbacks<Cursor>
 
 {
 
@@ -49,11 +53,18 @@ public class DashboardActivity extends AppCompatActivity implements
     DrawerAdapter drawerAdapter;
     List<DrawerItemModal> drawerList;
     DashboardPresenter dashboardPresenter;
+    AddAccountDialog addAccountDialog;
     @OnClick(R.id.fab)
     public void onClick() {
         Snackbar.make(fab, "Replace with your own action", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show();
     }
+
+    @OnClick(R.id.image_view_add)
+    public void onClickAddAccount(){
+         addAccountDialog.show(getFragmentManager(),AddAccountDialog.class.getSimpleName());
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,8 +74,6 @@ public class DashboardActivity extends AppCompatActivity implements
         init();
         setupDrawer();
         setupPresenter();
-
-
     }
 
     void setupDrawer(){
@@ -86,7 +95,6 @@ public class DashboardActivity extends AppCompatActivity implements
         }
     }
 
-
     void init(){
         setSupportActionBar(toolbar);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -94,6 +102,7 @@ public class DashboardActivity extends AppCompatActivity implements
         drawer.setDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
+        addAccountDialog  = new AddAccountDialog();
     }
 
     @Override
@@ -115,19 +124,12 @@ public class DashboardActivity extends AppCompatActivity implements
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
-
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -156,6 +158,21 @@ public class DashboardActivity extends AppCompatActivity implements
 
     @Override
     public void loadMySubreddits() {
+
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        return null;
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
 
     }
 }

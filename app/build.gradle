@@ -4,6 +4,7 @@ apply plugin: 'com.neenbedankt.android-apt'
 def googleSupportVersion = '25.0.1'
 def playServiceVersion = '7.5.0'
 def jrawVersion = '0.9.0'
+def schematicVersion = '0.7.0'
 
 def keystorePropertiesFile = rootProject.file("keystore.properties")
 def keystoreProperties = new Properties()
@@ -91,5 +92,7 @@ dependencies {
     apt 'com.google.dagger:dagger-compiler:2.2'
     provided 'javax.annotation:jsr250-api:1.0'
     compile "org.projectlombok:lombok:1.16.10"
-    compile 'net.simonvt.schematic:schematic:0.7.0'
+    apt "net.simonvt.schematic:schematic-compiler:$schematicVersion"
+    compile "net.simonvt.schematic:schematic:$schematicVersion"
+    compile 'com.facebook.stetho:stetho:1.4.2'
 }
