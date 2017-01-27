@@ -6,7 +6,8 @@ package com.android.rahul_lohra.redditstar.contracts.service;
 
 public interface GetNewTokenContract {
     boolean getToken(String code);
-    void saveInDatabase(String accessToken, String refreshToken);
+    void saveInDatabase(String accessToken, String refreshToken,int activeState);
+    void disableActiveState(String accessToken,int activeState);
     void showLoginSuccess();
     void showLoginFailure();
     void fetchUsersCredentials(String accessToken);

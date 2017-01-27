@@ -90,7 +90,7 @@ public class GetNewTokenPresenter implements GetNewTokenContract {
                     if (!accessToken.isEmpty()) {
                         //Important Check
                         val = true;
-                        saveInDatabase(accessToken,refreshToken);
+                        saveInDatabase(accessToken,refreshToken,1);
                     }
 
                     Log.d(TAG, "Access Token = " + accessToken);
@@ -105,13 +105,26 @@ public class GetNewTokenPresenter implements GetNewTokenContract {
     }
 
     @Override
-    public void saveInDatabase(String accessToken, String refreshToken) {
+    public synchronized void  saveInDatabase(String accessToken, String refreshToken,int activeState) {
         ContentValues cv = new ContentValues();
         cv.put(UserCredentialsColumn.ACCESS_TOKEN,accessToken);
         cv.put(UserCredentialsColumn.REFRESH_TOKEN,refreshToken);
+        cv.put(UserCredentialsColumn.ACTIVE_STATE,activeState);
         Uri mUri = MyProvider.UserCredentialsLists.CONTENT_URI;
         context.getContentResolver().insert(mUri,cv);
+        disableActiveState(accessToken,0);
         fetchUsersCredentials(accessToken);
+    }
+
+    @Override
+    public synchronized void disableActiveState(String accessToken,int activeState) {
+        ContentValues cv = new ContentValues();
+        cv.put(UserCredentialsColumn.ACTIVE_STATE,activeState);
+        Uri mUri = MyProvider.UserCredentialsLists.CONTENT_URI;
+        String mWhere = UserCredentialsColumn.ACCESS_TOKEN +"!=?";
+        String mSelectionArgs[]={accessToken};
+        int rowsUpdated = context.getContentResolver().update(mUri,cv,mWhere,mSelectionArgs);
+        Log.d(TAG,"disableActiveState() ->rowsUpdated:"+rowsUpdated);
     }
 
     @Override
@@ -146,6 +159,7 @@ public class GetNewTokenPresenter implements GetNewTokenContract {
 
         }
     };
+
 }
 
 

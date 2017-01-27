@@ -1,6 +1,7 @@
 package com.android.rahul_lohra.redditstar.storage.column;
 
 import net.simonvt.schematic.annotation.DataType;
+import net.simonvt.schematic.annotation.DefaultValue;
 import net.simonvt.schematic.annotation.NotNull;
 import net.simonvt.schematic.annotation.PrimaryKey;
 import net.simonvt.schematic.annotation.Unique;
@@ -27,4 +28,8 @@ public interface UserCredentialsColumn {
 
     @DataType(TEXT) @NotNull
     String REFRESH_TOKEN = "refresh_token";
+
+    @DataType(INTEGER) @NotNull @DefaultValue("-1")
+    String ACTIVE_STATE = "is_active";
+
 }

@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
+        android:name=".application.Initializer"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -58,7 +59,7 @@
         <!--Generated Provider-->
         <provider
             android:syncable="true"
-            android:name="storage.generated.MyProvider"
+            android:name="com.android.rahul_lohra.redditstar.storage.generated.MyProvider"
             android:authorities="com.android.rahul_lohra.redditstar.storage.MyProvider"
             android:exported="false" />
 
