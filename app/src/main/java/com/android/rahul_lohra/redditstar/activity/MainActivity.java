@@ -37,10 +37,6 @@ public class MainActivity extends AppCompatActivity {
         signIn();
     }
 
-    @OnClick(R.id.btn_getToken)
-    public void onClickGetToken() {
-        makeRequest();
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,37 +49,12 @@ public class MainActivity extends AppCompatActivity {
         String scopeArray[] = getResources().getStringArray(R.array.scope);
         String scope = MyUrl.getProperScope(scopeArray);
         String url = String.format(AUTH_URL, CLIENT_ID, STATE, REDIRECT_URI, scope);
-//        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
         Intent intent = new Intent(this, WebViewActivity.class);
         intent.setData(Uri.parse(url));
         startActivity(intent);
     }
 
-    void makeRequest() {
-        OkHttpClient okHttpClient = new OkHttpClient();
-        RequestBody formBody = new FormBody.Builder()
-                .add("grant_type", "authorization_code")
-                .add("code", "C_fkVWSj1YmOLvW093oKcB2s_-k")
-                .add("redirect_uri", REDIRECT_URI)
-                .build();
-        Request request = new Request.Builder()
-                .url(ACCESS_TOKEN_URL)
-                .method("POST", formBody)
-                .removeHeader("User-Agent")
-                .addHeader("User-Agent", getApplication().getPackageName())
-                .build();
-        okHttpClient.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                Log.d(TAG, "Fail");
-            }
 
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                Log.d(TAG, "success");
-            }
-        });
-    }
 
     @Override
     protected void onResume() {
