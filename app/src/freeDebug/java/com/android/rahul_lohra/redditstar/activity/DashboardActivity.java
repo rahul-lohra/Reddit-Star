@@ -74,6 +74,7 @@ public class DashboardActivity extends AppCompatActivity implements
         init();
         setupDrawer();
         setupPresenter();
+        dashboardPresenter.getMySubreddits();
     }
 
     void setupDrawer(){
@@ -91,7 +92,7 @@ public class DashboardActivity extends AppCompatActivity implements
 
     void setupPresenter(){
         if (dashboardPresenter!=null){
-            dashboardPresenter = new DashboardPresenter(this);
+            dashboardPresenter = new DashboardPresenter(getApplicationContext(),this);
         }
     }
 

@@ -15,7 +15,7 @@ import net.simonvt.schematic.annotation.Table;
  */
 @Database(version = MyDatabase.VERSION)
 public class MyDatabase {
-    public static final int VERSION = 3;
+    public static final int VERSION = 4;
     @Table(MySubredditColumn.class) public static final String MY_SUBREDDIT_TABLE = "my_subreddit_table";
 
     @Table(UserCredentialsColumn.class) public static final String USER_CREDENTIAL_TABLE = "user_credential_table";
@@ -25,8 +25,8 @@ public class MyDatabase {
         Log.d("onUpgrade","oldVersion:"+oldVersion+",newVersion:"+newVersion);
         if(oldVersion!=newVersion){
             switch (newVersion){
-                case 3:
-                    String migration = "ALTER TABLE "+MY_SUBREDDIT_TABLE
+                case 4:
+                    String migration = "ALTER TABLE "+USER_CREDENTIAL_TABLE
                             +" ADD  "
                             + UserCredentialsColumn.ACTIVE_STATE +" INTEGER NOT NULL DEFAULT -1" +
                             "";
@@ -42,7 +42,7 @@ public class MyDatabase {
                     }
 
             }
-            db.close();
+//            db.close();
 
         }
     }
