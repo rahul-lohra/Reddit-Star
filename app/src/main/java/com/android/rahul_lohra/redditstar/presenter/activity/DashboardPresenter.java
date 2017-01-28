@@ -2,6 +2,7 @@ package com.android.rahul_lohra.redditstar.presenter.activity;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import com.android.rahul_lohra.redditstar.contract.IDashboard;
 import com.android.rahul_lohra.redditstar.modal.SubredditResponse;
 import com.android.rahul_lohra.redditstar.retrofit.ApiInterface;
 import com.android.rahul_lohra.redditstar.retrofit.CustomCallback;
+import com.android.rahul_lohra.redditstar.service.GetSubscribedSubredditsService;
 import com.android.rahul_lohra.redditstar.storage.MyProvider;
 import com.android.rahul_lohra.redditstar.storage.column.UserCredentialsColumn;
 
@@ -46,80 +48,18 @@ public class DashboardPresenter implements LoaderManager.LoaderCallbacks{
 
     final static String TAG = DashboardPresenter.class.getSimpleName();
 
-
     public DashboardPresenter(Context context,IDashboard view) {
         this.view = view;
         this.context = context;
-//        Application.
         ((Initializer)context).getNetComponent().inject(this);
         apiInterface = retrofit.create(ApiInterface.class);
     }
 
-    public void getMySubreddits(){
-        /*
-        1.make an Api Request
-        2.store in content provider
-        3.use loader callback
-         */
-        Uri mUri = MyProvider.UserCredentialsLists.CONTENT_URI;
-        String mProjection[]={UserCredentialsColumn.ACCESS_TOKEN,UserCredentialsColumn.REFRESH_TOKEN};
-        String mWhere = UserCredentialsColumn.ACTIVE_STATE +"=?";
-        String mSelectionArgs[]={"1"};
-        Cursor cursor = context.getContentResolver().query(mUri,mProjection,mWhere,mSelectionArgs,null);
-        String accessToken = "";
-        String refreshToken = "";
-        if(cursor.moveToFirst()){
-            do{
-                accessToken = cursor.getString(cursor.getColumnIndex(UserCredentialsColumn.ACCESS_TOKEN));
-                refreshToken = cursor.getString(cursor.getColumnIndex(UserCredentialsColumn.REFRESH_TOKEN));
-            }while (cursor.moveToNext());
-        }
-        cursor.close();
-
-        if(accessToken.isEmpty())
-        {
-            Log.d(TAG,"No one is Active");
-            return;
-        }
-        String token = "bearer "+accessToken;
-        Map<String,String> map = new HashMap<>();
-        apiInterface.getMySubscribedSubreddits(token,map)
-                .enqueue(new Callback<SubredditResponse>() {
-                    @Override
-                    public void onResponse(Call<SubredditResponse> call, Response<SubredditResponse> response) {
-                        if(response.code()==200){
-
-                            SubredditResponse subredditResponse = response.body();
-//                            subredditResponse.getData().
-
-                        }
-                        Log.d(TAG,"onResponse");
-                    }
-
-                    @Override
-                    public void onFailure(Call<SubredditResponse> call, Throwable t) {
-                        Log.d(TAG,"onFailure");
-                    }
-                });
-
-//        CustomCallback customCallback = new CustomCallback(){
-//            @Override
-//            public void onResponse(Call call, Response response) {
-//                super.onResponse(call, response);
-//                call.enqueue(this);
-//            }
-//
-//            @Override
-//            public void onFailure(Call call, Throwable t) {
-//                super.onFailure(call, t);
-//            }
-//        };
-//
-//        Call<SubredditResponse> call = apiInterface.getMySubscribedSubreddits(token,map);
-//        call.enqueue(customCallback);
-
-
-
+    public void getMySubredditsAndDeletePreviousOnes(){
+        Uri mUri = MyProvider.SubredditLists.CONTENT_URI;
+        context.getContentResolver().delete(mUri,null,null);
+        Intent intent = new Intent(context, GetSubscribedSubredditsService.class);
+        context.startService(intent);
     }
 
 

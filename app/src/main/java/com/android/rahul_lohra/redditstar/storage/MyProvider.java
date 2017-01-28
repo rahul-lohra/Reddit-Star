@@ -32,7 +32,7 @@ public class MyProvider {
                 path = "my_subreddit/*",
                 name = "MY_SUBREDDIT_ID",
                 type = "vnd.android.cursor.item/my_subreddit_item",
-                whereColumn = MySubredditColumn._ID,
+                whereColumn = MySubredditColumn.KEY_ID,
                 pathSegment = 1)
         public static Uri withId(long id) {
             return Uri.parse("content://" + AUTHORITY + "/my_subreddit/" + id);

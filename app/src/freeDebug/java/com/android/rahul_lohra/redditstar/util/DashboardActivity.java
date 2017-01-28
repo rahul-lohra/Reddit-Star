@@ -1,12 +1,14 @@
 package com.android.rahul_lohra.redditstar.util;
 
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -24,6 +26,8 @@ import com.android.rahul_lohra.redditstar.contract.IDashboard;
 import com.android.rahul_lohra.redditstar.dialog.AddAccountDialog;
 import com.android.rahul_lohra.redditstar.modal.DrawerItemModal;
 import com.android.rahul_lohra.redditstar.presenter.activity.DashboardPresenter;
+import com.android.rahul_lohra.redditstar.storage.MyProvider;
+import com.android.rahul_lohra.redditstar.storage.column.MySubredditColumn;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,16 +53,17 @@ public class DashboardActivity extends AppCompatActivity implements
     DrawerLayout drawer;
     @Bind(R.id.fab)
     FloatingActionButton fab;
-
     DrawerAdapter drawerAdapter;
     List<DrawerItemModal> drawerList;
     DashboardPresenter dashboardPresenter;
     AddAccountDialog addAccountDialog;
+
+    private final int  LOADER_ID = 1;
     @OnClick(R.id.fab)
     public void onClick() {
         Snackbar.make(fab, "Replace with your own action", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show();
-        dashboardPresenter.getMySubreddits();
+        dashboardPresenter.getMySubredditsAndDeletePreviousOnes();
     }
 
     @OnClick(R.id.image_view_add)
@@ -75,7 +80,7 @@ public class DashboardActivity extends AppCompatActivity implements
         init();
         setupDrawer();
         setupPresenter();
-//        dashboardPresenter.getMySubreddits();
+//        dashboardPresenter.getMySubredditsAndDeletePreviousOnes();
     }
 
     void setupDrawer(){
@@ -105,6 +110,9 @@ public class DashboardActivity extends AppCompatActivity implements
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
         addAccountDialog  = new AddAccountDialog();
+
+        getSupportLoaderManager().initLoader(0, null, this);
+
     }
 
     @Override
@@ -165,12 +173,32 @@ public class DashboardActivity extends AppCompatActivity implements
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+
+        switch (id){
+            case LOADER_ID:
+
+                Uri uri = MyProvider.SubredditLists.CONTENT_URI;
+                String mProjection[] = {
+                        MySubredditColumn.KEY_NAME,
+                        MySubredditColumn.KEY_DISPLAY_NAME,
+                        MySubredditColumn.KEY_ID,
+                        MySubredditColumn.KEY_TITLE,
+                        MySubredditColumn.KEY_URL
+                };
+                return new CursorLoader(this,uri,mProjection,null,null,null);
+        }
         return null;
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-
+        switch (loader.getId())
+        {
+            case LOADER_ID:
+//                this.mCursorAdapter.swapCursor(data);
+//                recyclerView.scrollToPosition(data.getCount()-1);
+                break;
+        }
     }
 
     @Override
