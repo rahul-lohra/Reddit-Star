@@ -21,7 +21,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.android.rahul_lohra.redditstar.R;
-import com.android.rahul_lohra.redditstar.adapter.DrawerAdapter;
+import com.android.rahul_lohra.redditstar.adapter.cursor.SubredditDrawerAdapter;
+import com.android.rahul_lohra.redditstar.adapter.normal.DrawerAdapter;
 import com.android.rahul_lohra.redditstar.contract.IDashboard;
 import com.android.rahul_lohra.redditstar.dialog.AddAccountDialog;
 import com.android.rahul_lohra.redditstar.modal.DrawerItemModal;
@@ -53,7 +54,10 @@ public class DashboardActivity extends AppCompatActivity implements
     DrawerLayout drawer;
     @Bind(R.id.fab)
     FloatingActionButton fab;
+
+    //Adapters
     DrawerAdapter drawerAdapter;
+    SubredditDrawerAdapter subredditDrawerAdapter;
     List<DrawerItemModal> drawerList;
     DashboardPresenter dashboardPresenter;
     AddAccountDialog addAccountDialog;
@@ -92,7 +96,6 @@ public class DashboardActivity extends AppCompatActivity implements
         drawerList.add(new DrawerItemModal("Settings",ContextCompat.getDrawable(this,R.drawable.ic_settings)));
         drawerAdapter = new DrawerAdapter(this,drawerList);
         rv.setLayoutManager(new LinearLayoutManager(this));
-        rv.setHasFixedSize(true);
         rv.setAdapter(drawerAdapter);
     }
 

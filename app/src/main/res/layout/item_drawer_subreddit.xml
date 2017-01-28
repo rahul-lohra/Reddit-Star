@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:paddingTop="@dimen/drawer_item_padding"
+        android:paddingBottom="@dimen/drawer_item_padding"
+        android:paddingStart="@dimen/drawer_inner_item_padding"
+        android:paddingEnd="@dimen/drawer_item_padding"
+        android:drawableStart="@drawable/ic_home"
+        android:id="@+id/tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawablePadding="24dp"
+        android:gravity="center_vertical"
+        android:textSize="18sp"
+        tools:text="@string/home"
+        android:fontFamily="sans-serif-medium" />
+
+</LinearLayout>
+

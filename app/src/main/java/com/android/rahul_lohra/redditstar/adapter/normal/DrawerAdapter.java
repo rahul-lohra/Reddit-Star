@@ -1,4 +1,4 @@
-package com.android.rahul_lohra.redditstar.adapter;
+package com.android.rahul_lohra.redditstar.adapter.normal;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
