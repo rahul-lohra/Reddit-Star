@@ -13,6 +13,7 @@ import com.android.rahul_lohra.redditstar.application.Initializer;
 import com.android.rahul_lohra.redditstar.contract.IDashboard;
 import com.android.rahul_lohra.redditstar.modal.SubredditResponse;
 import com.android.rahul_lohra.redditstar.retrofit.ApiInterface;
+import com.android.rahul_lohra.redditstar.retrofit.CustomCallback;
 import com.android.rahul_lohra.redditstar.storage.MyProvider;
 import com.android.rahul_lohra.redditstar.storage.column.UserCredentialsColumn;
 
@@ -51,6 +52,7 @@ public class DashboardPresenter implements LoaderManager.LoaderCallbacks{
         this.context = context;
 //        Application.
         ((Initializer)context).getNetComponent().inject(this);
+        apiInterface = retrofit.create(ApiInterface.class);
     }
 
     public void getMySubreddits(){
@@ -85,19 +87,41 @@ public class DashboardPresenter implements LoaderManager.LoaderCallbacks{
                 .enqueue(new Callback<SubredditResponse>() {
                     @Override
                     public void onResponse(Call<SubredditResponse> call, Response<SubredditResponse> response) {
-                        if(response.code()==401){
-                            /*
-                            TODO: Request for new token !!!!
-                             */
+                        if(response.code()==200){
+
+                            SubredditResponse subredditResponse = response.body();
+//                            subredditResponse.getData().
+
                         }
+                        Log.d(TAG,"onResponse");
                     }
 
                     @Override
                     public void onFailure(Call<SubredditResponse> call, Throwable t) {
-
+                        Log.d(TAG,"onFailure");
                     }
                 });
+
+//        CustomCallback customCallback = new CustomCallback(){
+//            @Override
+//            public void onResponse(Call call, Response response) {
+//                super.onResponse(call, response);
+//                call.enqueue(this);
+//            }
+//
+//            @Override
+//            public void onFailure(Call call, Throwable t) {
+//                super.onFailure(call, t);
+//            }
+//        };
+//
+//        Call<SubredditResponse> call = apiInterface.getMySubscribedSubreddits(token,map);
+//        call.enqueue(customCallback);
+
+
+
     }
+
 
     @Override
     public Loader onCreateLoader(int id, Bundle args) {

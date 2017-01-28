@@ -1,4 +1,4 @@
-package com.android.rahul_lohra.redditstar.activity;
+package com.android.rahul_lohra.redditstar.util;
 
 import android.database.Cursor;
 import android.os.Bundle;
@@ -58,6 +58,7 @@ public class DashboardActivity extends AppCompatActivity implements
     public void onClick() {
         Snackbar.make(fab, "Replace with your own action", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show();
+        dashboardPresenter.getMySubreddits();
     }
 
     @OnClick(R.id.image_view_add)
@@ -74,7 +75,7 @@ public class DashboardActivity extends AppCompatActivity implements
         init();
         setupDrawer();
         setupPresenter();
-        dashboardPresenter.getMySubreddits();
+//        dashboardPresenter.getMySubreddits();
     }
 
     void setupDrawer(){
@@ -91,7 +92,7 @@ public class DashboardActivity extends AppCompatActivity implements
     }
 
     void setupPresenter(){
-        if (dashboardPresenter!=null){
+        if (null==dashboardPresenter){
             dashboardPresenter = new DashboardPresenter(getApplicationContext(),this);
         }
     }

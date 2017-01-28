@@ -12,26 +12,34 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".dummy.DummyMainActivity">
-
+            <activity
+                android:name="com.android.rahul_lohra.redditstar.util.DashboardActivity"
+                android:label="@string/title_activity_dashboard"
+                android:theme="@style/AppTheme.NoActionBar">
+                <intent-filter>
+                    <action android:name="android.intent.action.MAIN" />
+                    <category android:name="android.intent.category.LAUNCHER" />
+                </intent-filter>
+            </activity>
         </activity>
-        <activity android:name=".activity.MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+        <!--<activity android:name=".activity.MainActivity">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
 
-                <action android:name="android.intent.action.VIEW" />
+                <!--<action android:name="android.intent.action.VIEW" />-->
 
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <category android:name="android.intent.category.LAUNCHER" />
+                <!--<category android:name="android.intent.category.DEFAULT" />-->
+                <!--<category android:name="android.intent.category.BROWSABLE" />-->
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
 
-                <data
-                    android:host="www.example.co.in"
-                    android:path="/my_redirect"
-                    android:scheme="http" />
-            </intent-filter>
-        </activity>
+                <!--<data-->
+                    <!--android:host="www.example.co.in"-->
+                    <!--android:path="/my_redirect"-->
+                    <!--android:scheme="http" />-->
+            <!--</intent-filter>-->
+        <!--</activity>-->
         <activity android:name=".activity.LoginActivity" />
         <activity android:name=".activity.DetailActivity" />
         <activity
@@ -73,6 +81,7 @@
                 android:name="android.accounts.AccountAuthenticator"
                 android:resource="@xml/authenticator" />
         </service>
+        <service android:name=".service.GetSubscribedSubredditsService" />
     </application>
 
 </manifest>

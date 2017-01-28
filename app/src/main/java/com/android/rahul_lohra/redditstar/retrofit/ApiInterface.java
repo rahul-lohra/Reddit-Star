@@ -1,6 +1,7 @@
 package com.android.rahul_lohra.redditstar.retrofit;
 
 import com.android.rahul_lohra.redditstar.modal.AboutMe;
+import com.android.rahul_lohra.redditstar.modal.RefreshTokenResponse;
 import com.android.rahul_lohra.redditstar.modal.SubredditResponse;
 import com.android.rahul_lohra.redditstar.utility.Constants;
 
@@ -24,5 +25,10 @@ public interface ApiInterface {
 
     @GET("/api/v1/me")
     Call<AboutMe> getAboutMe(@Header(Constants.AUTHORIZATION) String authorization);
+
+    @GET("/api/v1/access_token")
+    Call<RefreshTokenResponse> refreshToken(@Header(Constants.AUTHORIZATION) String authorization,
+                                            @QueryMap Map<String,String> options);
+
 
 }

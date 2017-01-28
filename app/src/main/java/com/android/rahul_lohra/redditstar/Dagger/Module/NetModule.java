@@ -1,20 +1,38 @@
 package com.android.rahul_lohra.redditstar.dagger.Module;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
+import android.util.Log;
 
+import com.android.rahul_lohra.redditstar.modal.AboutMe;
+import com.android.rahul_lohra.redditstar.modal.RefreshTokenResponse;
+import com.android.rahul_lohra.redditstar.retrofit.ApiInterface;
+import com.android.rahul_lohra.redditstar.storage.MyProvider;
+import com.android.rahul_lohra.redditstar.storage.column.UserCredentialsColumn;
+import com.android.rahul_lohra.redditstar.utility.Constants;
 import com.android.rahul_lohra.redditstar.utility.MyUrl;
+import com.facebook.stetho.okhttp3.StethoInterceptor;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import okhttp3.Authenticator;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import okhttp3.Route;
+import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -24,10 +42,14 @@ import retrofit2.converter.gson.GsonConverterFactory;
 @Module
 public class NetModule {
 
+    static int count = 0;
     Context context;
+    private static final String TAG = NetModule.class.getSimpleName();
+
     public NetModule(Context context) {
         this.context = context;
     }
+
     @Provides
     @Singleton
     @Named("fun")
@@ -37,21 +59,7 @@ public class NetModule {
             @Override
             public Response intercept(Interceptor.Chain chain) throws IOException {
                 Request original = chain.request();
-
-//                                          if (CheckNetwork.isNetWork(context)) {
-//                                              original = original.newBuilder()
-////                                                      .header("Cache-Control", "public, max-age=" + 60)
-//                                                      .header("Content-Type", "application/json")
-//                                                      .method(original.method(), original.body())
-//                                                      .build();
-//                                          } else {
-//                                              original = original.newBuilder()
-//                                                      .header("Cache-Control", "public, only-if-cached, max-stale=" + 60 * 60 * 24 * 7)
-//                                                      .header("Content-Type", "application/json")
-//                                                      .method(original.method(), original.body())
-//                                                      .build();
-//                                          }
-
+                Log.d(TAG, "intercept");
                 Request request = original.newBuilder()
                         .header("Content-Type", "application/json")
                         .method(original.method(), original.body())
@@ -60,8 +68,9 @@ public class NetModule {
                 return chain.proceed(request);
             }
         });
-//                httpClient.cache(new Cache(context.getCacheDir(), 10 * 1024 * 1024)); //10 mb
-        OkHttpClient client = httpClient.build();
+        OkHttpClient client = httpClient.authenticator(new TokenAuthenticator())
+                .addNetworkInterceptor(new StethoInterceptor())
+                .build();
 
 
         Retrofit retrofit = null;
@@ -93,7 +102,8 @@ public class NetModule {
             }
         });
 
-        OkHttpClient client = httpClient.build();
+        OkHttpClient client = httpClient.authenticator(new TokenAuthenticator())
+                .build();
 
 
         Retrofit retrofit = null;
@@ -105,5 +115,50 @@ public class NetModule {
 
         return retrofit;
 
+    }
+
+    public class TokenAuthenticator implements Authenticator {
+
+
+        @Override
+        public Request authenticate(Route route, Response response) throws IOException {
+            Log.d(TAG, "TokenAuthenticator: authenticate");
+
+            if (response.code() == 401) {
+
+                ++count;
+                if(count==2){
+                    count = 0;
+                    return null;
+                }
+            /*
+            get accessToken and refreshToken of Active User
+             */
+                String arrayOfToken[] = Constants.getAccessTokenAndRefreshTokenOfActiveUser(context);
+                String accessToken = arrayOfToken[0];
+                String refreshToken = arrayOfToken[1];
+
+            /*
+            Make Synchronous Api Call to refresh Token
+             */
+                ApiInterface apiInterface = provideRetrofitForToken().create(ApiInterface.class);
+                String token = "Basic " + accessToken;
+                Map<String, String> map = new HashMap<>();
+                map.put("grant_type", "refresh_token");
+                map.put("refresh_token", refreshToken);
+
+                retrofit2.Response<RefreshTokenResponse> res = apiInterface.refreshToken(token, map).execute();
+                String newValidToken = "bearer ";
+                if (res.code() == 200) {
+                    newValidToken = newValidToken + res.body().getAccessToken();
+                    //update in db
+                    Constants.updateAccessToken(context, res.body().getAccessToken(), refreshToken);
+                    return response.request().newBuilder()
+                            .header(Constants.AUTHORIZATION, newValidToken)
+                            .build();
+                }
+            }
+            return null;
+        }
     }
 }
