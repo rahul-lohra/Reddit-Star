@@ -40,7 +40,8 @@ import butterknife.OnClick;
 public class DashboardActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
         IDashboard,
-        LoaderManager.LoaderCallbacks<Cursor>
+        LoaderManager.LoaderCallbacks<Cursor>,
+        DrawerAdapter.ISubreddit
 
 {
 
@@ -82,6 +83,7 @@ public class DashboardActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_dashboard);
         ButterKnife.bind(this);
         init();
+        setAdapter();
         setupDrawer();
         setupPresenter();
 //        dashboardPresenter.getMySubredditsAndDeletePreviousOnes();
@@ -94,7 +96,7 @@ public class DashboardActivity extends AppCompatActivity implements
         drawerList.add(new DrawerItemModal("My Subreddits",ContextCompat.getDrawable(this,R.drawable.ic_list)));
         drawerList.add(new DrawerItemModal("My Favourites",ContextCompat.getDrawable(this,R.drawable.ic_star)));
         drawerList.add(new DrawerItemModal("Settings",ContextCompat.getDrawable(this,R.drawable.ic_settings)));
-        drawerAdapter = new DrawerAdapter(this,drawerList);
+        drawerAdapter = new DrawerAdapter(this,drawerList,this);
         rv.setLayoutManager(new LinearLayoutManager(this));
         rv.setAdapter(drawerAdapter);
     }
@@ -103,6 +105,10 @@ public class DashboardActivity extends AppCompatActivity implements
         if (null==dashboardPresenter){
             dashboardPresenter = new DashboardPresenter(getApplicationContext(),this);
         }
+    }
+
+    public void showSubreddits(){
+
     }
 
     void init(){
@@ -114,8 +120,17 @@ public class DashboardActivity extends AppCompatActivity implements
         navigationView.setNavigationItemSelectedListener(this);
         addAccountDialog  = new AddAccountDialog();
 
-        getSupportLoaderManager().initLoader(0, null, this);
+        subredditDrawerAdapter = new SubredditDrawerAdapter(this,null);
+        getSupportLoaderManager().initLoader(LOADER_ID, null, this);
+    }
 
+    void setAdapter(){
+//        rv.setLayoutManager(new LinearLayoutManager(this));
+//        rv.setAdapter(subredditDrawerAdapter);
+//        LinearLayoutManager layoutManager = new LinearLayoutManager(ChatActivity.this,LinearLayoutManager.VERTICAL,false);
+//        layoutManager.setStackFromEnd(true);
+//        recyclerView.setLayoutManager(layoutManager);
+//        recyclerView.setAdapter(mCursorAdapter);
     }
 
     @Override
@@ -179,9 +194,9 @@ public class DashboardActivity extends AppCompatActivity implements
 
         switch (id){
             case LOADER_ID:
-
                 Uri uri = MyProvider.SubredditLists.CONTENT_URI;
                 String mProjection[] = {
+                        MySubredditColumn.KEY_SQL_ID,
                         MySubredditColumn.KEY_NAME,
                         MySubredditColumn.KEY_DISPLAY_NAME,
                         MySubredditColumn.KEY_ID,
@@ -198,14 +213,25 @@ public class DashboardActivity extends AppCompatActivity implements
         switch (loader.getId())
         {
             case LOADER_ID:
-//                this.mCursorAdapter.swapCursor(data);
-//                recyclerView.scrollToPosition(data.getCount()-1);
+                this.subredditDrawerAdapter.swapCursor(data);
                 break;
         }
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
+        switch (loader.getId()){
+            case LOADER_ID :
+                subredditDrawerAdapter.swapCursor(null);
+                break;
+        }
+    }
 
+
+    @Override
+    public void getSubredditRecyclerView(RecyclerView recyclerView) {
+        if(recyclerView!=null){
+            recyclerView.setAdapter(subredditDrawerAdapter);
+        }
     }
 }

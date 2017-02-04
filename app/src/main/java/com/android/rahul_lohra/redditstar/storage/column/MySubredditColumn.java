@@ -20,7 +20,7 @@ import static net.simonvt.schematic.annotation.DataType.Type.TEXT;
 public interface MySubredditColumn {
     @DataType(INTEGER)
     @PrimaryKey
-    String KEY_SQL_ID = "Sql_id";
+    String KEY_SQL_ID = "_id";
 
     @DataType(REAL)
     @NotNull

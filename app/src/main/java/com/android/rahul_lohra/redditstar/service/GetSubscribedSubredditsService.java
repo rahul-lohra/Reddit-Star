@@ -117,7 +117,7 @@ public class GetSubscribedSubredditsService extends IntentService {
         ContentValues contentValues[] = new ContentValues[list.size()];
 
         for (int i= 0;i<contentValues.length;++i){
-
+            contentValues[i] = new ContentValues();
             contentValues[i].put(MySubredditColumn.KEY_ID,list.get(i).getData().getId());
             contentValues[i].put(MySubredditColumn.KEY_DISPLAY_NAME,list.get(i).getData().getDisplayName());
             contentValues[i].put(MySubredditColumn.KEY_HEADER_IMAGE,list.get(i).getData().getHeaderImg());

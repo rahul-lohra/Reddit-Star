@@ -25,10 +25,15 @@ public class DrawerAdapter extends RecyclerView.Adapter {
     private static final int EXPANDABLE_TYPE = 3;
 
     private List<DrawerItemModal> list;
+    private ISubreddit iSubreddit;
+    public interface ISubreddit{
+        void getSubredditRecyclerView(RecyclerView recyclerView) ;
+    }
 
-    public DrawerAdapter(Context context,List<DrawerItemModal> list) {
+    public DrawerAdapter(Context context,List<DrawerItemModal> list,ISubreddit iSubreddit) {
         this.context = context;
         this.list = list;
+        this.iSubreddit = iSubreddit;
     }
 
     @Override
@@ -51,6 +56,8 @@ public class DrawerAdapter extends RecyclerView.Adapter {
         return v;
     }
 
+
+
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         String text = list.get(position).getName();
@@ -68,6 +75,7 @@ public class DrawerAdapter extends RecyclerView.Adapter {
             case EXPANDABLE_TYPE:
                 DrawerDropDown drawerDropDown = (DrawerDropDown)holder;
                 drawerDropDown.tv.setText(text);
+                iSubreddit.getSubredditRecyclerView(drawerDropDown.rvSub);
                 break;
         }
     }
@@ -88,6 +96,16 @@ public class DrawerAdapter extends RecyclerView.Adapter {
             default: val = NORMAL_TYPE;
         }
         return val;
+    }
+
+    @Override
+    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+    }
+
+    @Override
+    public void onDetachedFromRecyclerView(RecyclerView recyclerView) {
+        super.onDetachedFromRecyclerView(recyclerView);
     }
 
 }

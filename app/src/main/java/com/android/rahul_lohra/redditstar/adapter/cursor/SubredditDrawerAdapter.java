@@ -18,12 +18,11 @@ import com.android.rahul_lohra.redditstar.viewHolder.DrawerSubreddit;
 
 public class SubredditDrawerAdapter extends CursorRecyclerViewAdapter<RecyclerView.ViewHolder> {
 
-    Context context;
-    Cursor cursor;
+    private Context context;
+
     public SubredditDrawerAdapter(Context context, Cursor cursor) {
         super(context, cursor);
         this.context = context;
-        this.cursor  = cursor;
     }
 
     @Override
