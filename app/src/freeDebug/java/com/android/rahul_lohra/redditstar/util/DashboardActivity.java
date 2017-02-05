@@ -25,6 +25,7 @@ import com.android.rahul_lohra.redditstar.adapter.cursor.SubredditDrawerAdapter;
 import com.android.rahul_lohra.redditstar.adapter.normal.DrawerAdapter;
 import com.android.rahul_lohra.redditstar.contract.IDashboard;
 import com.android.rahul_lohra.redditstar.dialog.AddAccountDialog;
+import com.android.rahul_lohra.redditstar.fragments.HomeFragment;
 import com.android.rahul_lohra.redditstar.modal.DrawerItemModal;
 import com.android.rahul_lohra.redditstar.presenter.activity.DashboardPresenter;
 import com.android.rahul_lohra.redditstar.storage.MyProvider;
@@ -87,7 +88,17 @@ public class DashboardActivity extends AppCompatActivity implements
         setupDrawer();
         setupPresenter();
 //        dashboardPresenter.getMySubredditsAndDeletePreviousOnes();
+        if(null==savedInstanceState)
+            showHomeFragment();
     }
+
+    void showHomeFragment(){
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.content_dashboard, HomeFragment.newInstance("a", "a"), HomeFragment.class.getSimpleName())
+                .addToBackStack("c")
+                .commit();
+    }
+
 
     void setupDrawer(){
         drawerList = new ArrayList<>();

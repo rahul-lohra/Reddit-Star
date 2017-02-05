@@ -3,10 +3,12 @@ package com.android.rahul_lohra.redditstar.retrofit;
 import com.android.rahul_lohra.redditstar.modal.AboutMe;
 import com.android.rahul_lohra.redditstar.modal.RefreshTokenResponse;
 import com.android.rahul_lohra.redditstar.modal.SubredditResponse;
+import com.android.rahul_lohra.redditstar.modal.frontPage.FrontPageResponse;
 import com.android.rahul_lohra.redditstar.utility.Constants;
 
 import java.util.Map;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
@@ -29,6 +31,8 @@ public interface ApiInterface {
     @GET("/api/v1/access_token")
     Call<RefreshTokenResponse> refreshToken(@Header(Constants.AUTHORIZATION) String authorization,
                                             @QueryMap Map<String,String> options);
+    @GET("/.json")
+    Call<FrontPageResponse> getFrontPage(@QueryMap Map<String,String> options);
 
 
 }

@@ -103,6 +103,7 @@ public class NetModule {
         });
 
         OkHttpClient client = httpClient.authenticator(new TokenAuthenticator())
+                .addNetworkInterceptor(new StethoInterceptor())
                 .build();
 
 

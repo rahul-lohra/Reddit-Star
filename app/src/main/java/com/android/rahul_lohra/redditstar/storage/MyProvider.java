@@ -59,4 +59,24 @@ public class MyProvider {
         }
     }
 
+    @TableEndpoint(table = MyDatabase.USER_CREDENTIAL_TABLE)
+    public static class FavoritesLists {
+
+        @ContentUri(
+                path = "user_favorites",
+                type = "vnd.android.cursor.dir/user_favorites_item"
+        )
+        public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/user_favorites");
+
+        @InexactContentUri(
+                path = "user_favorites/*",
+                name = "USER_FAVORITES_ID",
+                type = "vnd.android.cursor.item/user_favorites_item",
+                whereColumn = UserCredentialsColumn._ID,
+                pathSegment = 1)
+        public static Uri withId(long id) {
+            return Uri.parse("content://" + AUTHORITY + "/user_favorites/" + id);
+        }
+    }
+
 }

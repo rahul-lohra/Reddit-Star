@@ -13,11 +13,12 @@
         android:theme="@style/AppTheme">
         <activity android:name=".dummy.DummyMainActivity">
             <activity
-                android:name="com.android.rahul_lohra.redditstar.util.DashboardActivity"
+                android:name=".util.DashboardActivity"
                 android:label="@string/title_activity_dashboard"
                 android:theme="@style/AppTheme.NoActionBar">
                 <intent-filter>
                     <action android:name="android.intent.action.MAIN" />
+
                     <category android:name="android.intent.category.LAUNCHER" />
                 </intent-filter>
             </activity>
@@ -37,33 +38,39 @@
         <activity
             android:name=".activity.WebViewActivity"
             android:label="@string/reddit_login"
-            android:theme="@style/AppTheme.NoToolBar"></activity>
+            android:theme="@style/AppTheme.NoToolBar" />
 
         <service
             android:name=".service.GetNewTokenService"
             android:exported="false" />
         <service
             android:name=".service.GetUserCredentialsService"
-            android:exported="false"></service>
-
-        <!--Generated Provider-->
-        <provider
-            android:syncable="true"
-            android:name="com.android.rahul_lohra.redditstar.storage.generated.MyProvider"
-            android:authorities="com.android.rahul_lohra.redditstar.storage.MyProvider"
             android:exported="false" />
 
-        <!--Authenticator-->
-        <service
-            android:name=".sync.AuthenticatorService">
+        <!-- Generated Provider -->
+        <provider
+            android:name=".storage.generated.MyProvider"
+            android:authorities="com.android.rahul_lohra.redditstar.storage.MyProvider"
+            android:exported="false"
+            android:syncable="true" />
+
+        <!-- Authenticator -->
+        <service android:name=".sync.AuthenticatorService">
             <intent-filter>
-                <action android:name="android.accounts.AccountAuthenticator"/>
+                <action android:name="android.accounts.AccountAuthenticator" />
             </intent-filter>
+
             <meta-data
                 android:name="android.accounts.AccountAuthenticator"
                 android:resource="@xml/authenticator" />
         </service>
         <service android:name=".service.GetSubscribedSubredditsService" />
+        <service
+            android:name=".service.GetDashboardSubredditsService"
+            android:exported="false"></service>
+        <service
+            android:name=".service.GetFrontPageService"
+            android:exported="false"></service>
     </application>
 
 </manifest>

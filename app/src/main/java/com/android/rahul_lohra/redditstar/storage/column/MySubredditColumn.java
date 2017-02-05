@@ -24,7 +24,7 @@ public interface MySubredditColumn {
 
     @DataType(REAL)
     @NotNull
-    String KEY_ID = "id";
+    String KEY_ID = "subreddit_id";
 
     @DataType(TEXT)
     @NotNull

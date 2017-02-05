@@ -5,6 +5,8 @@ import com.android.rahul_lohra.redditstar.dagger.Module.NetModule;
 import com.android.rahul_lohra.redditstar.activity.MainActivity;
 import com.android.rahul_lohra.redditstar.dagger.extras.TokenAuthenticator;
 import com.android.rahul_lohra.redditstar.presenter.activity.DashboardPresenter;
+import com.android.rahul_lohra.redditstar.service.GetDashboardSubredditsService;
+import com.android.rahul_lohra.redditstar.service.GetFrontPageService;
 import com.android.rahul_lohra.redditstar.service.GetSubscribedSubredditsService;
 import com.android.rahul_lohra.redditstar.service.GetUserCredentialsService;
 
@@ -22,5 +24,8 @@ public interface NetComponent {
     void inject(DashboardPresenter presenter);
     void inject(GetUserCredentialsService service);
     void inject(GetSubscribedSubredditsService service);
+    void inject(GetDashboardSubredditsService service);
+    void inject(GetFrontPageService service);
+
 
 }
