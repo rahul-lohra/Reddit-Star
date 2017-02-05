@@ -67,9 +67,6 @@ public class FrontPageChildData {
     @SerializedName("subreddit_id")
     @Expose
     private String subredditId;
-    @SerializedName("edited")
-    @Expose
-    private Boolean edited;
     @SerializedName("downs")
     @Expose
     private Integer downs;

@@ -4,20 +4,14 @@ import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.android.rahul_lohra.redditstar.R;
 import com.android.rahul_lohra.redditstar.modal.frontPage.FrontPageChild;
-import com.android.rahul_lohra.redditstar.modal.frontPage.FrontPageChildData;
-import com.android.rahul_lohra.redditstar.viewHolder.DrawerSearchItem;
 import com.android.rahul_lohra.redditstar.viewHolder.PostView;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
-
-import butterknife.Bind;
 
 /**
  * Created by rkrde on 22-01-2017.
