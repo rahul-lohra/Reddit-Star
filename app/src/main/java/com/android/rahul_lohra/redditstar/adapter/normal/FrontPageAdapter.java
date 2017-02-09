@@ -1,11 +1,14 @@
 package com.android.rahul_lohra.redditstar.adapter.normal;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import com.android.rahul_lohra.redditstar.R;
+import com.android.rahul_lohra.redditstar.activity.DetailActivity;
 import com.android.rahul_lohra.redditstar.modal.frontPage.FrontPageChild;
 import com.android.rahul_lohra.redditstar.viewHolder.PostView;
 
@@ -47,6 +50,12 @@ public class FrontPageAdapter extends RecyclerView.Adapter {
         {
             EventBus.getDefault().post("getNextData");
         }
+        postView.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                context.startActivity(new Intent(context, DetailActivity.class));
+            }
+        });
     }
 
     @Override

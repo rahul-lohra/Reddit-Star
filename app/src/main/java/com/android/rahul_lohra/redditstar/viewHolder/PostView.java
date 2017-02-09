@@ -1,5 +1,6 @@
 package com.android.rahul_lohra.redditstar.viewHolder;
 
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.EditText;
@@ -32,6 +33,8 @@ public class PostView extends RecyclerView.ViewHolder {
     public ImageView imageUpVote;
     @Bind(R.id.image_down_vote)
     public ImageView imageDownVote;
+    @Bind(R.id.card_view)
+    public CardView cardView;
 
     public PostView(View itemView) {
         super(itemView);

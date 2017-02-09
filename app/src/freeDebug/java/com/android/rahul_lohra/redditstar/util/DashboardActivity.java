@@ -17,20 +17,28 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.android.rahul_lohra.redditstar.R;
+import com.android.rahul_lohra.redditstar.activity.DetailActivity;
 import com.android.rahul_lohra.redditstar.adapter.cursor.SubredditDrawerAdapter;
 import com.android.rahul_lohra.redditstar.adapter.normal.DrawerAdapter;
 import com.android.rahul_lohra.redditstar.contract.IDashboard;
 import com.android.rahul_lohra.redditstar.dialog.AddAccountDialog;
 import com.android.rahul_lohra.redditstar.fragments.HomeFragment;
 import com.android.rahul_lohra.redditstar.modal.DrawerItemModal;
+import com.android.rahul_lohra.redditstar.modal.comments.DummyAdapter;
+import com.android.rahul_lohra.redditstar.modal.comments.Example;
 import com.android.rahul_lohra.redditstar.presenter.activity.DashboardPresenter;
 import com.android.rahul_lohra.redditstar.storage.MyProvider;
 import com.android.rahul_lohra.redditstar.storage.column.MySubredditColumn;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -90,6 +98,17 @@ public class DashboardActivity extends AppCompatActivity implements
 //        dashboardPresenter.getMySubredditsAndDeletePreviousOnes();
         if(null==savedInstanceState)
             showHomeFragment();
+
+        checkGson();
+    }
+
+    void checkGson(){
+        GsonBuilder builder = new GsonBuilder();
+        builder.registerTypeAdapter(Example.class, new DummyAdapter().nullSafe());
+        Gson gson = builder.create();
+        Type listType = new TypeToken<List<Example>>() {}.getType();
+        ArrayList<Example> list = gson.fromJson(DetailActivity.string, new TypeToken<ArrayList<Example>>() {}.getType());
+        Log.d("1","1");
     }
 
     void showHomeFragment(){

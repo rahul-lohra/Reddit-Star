@@ -1,114 +1,121 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView
+    android:id="@+id/card_view"
+    android:clickable="true"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
-
-    <ImageView
-        app:srcCompat="@mipmap/ic_launcher"
-        android:id="@+id/imageView"
-        android:layout_marginTop="16dp"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginEnd="16dp"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_width="100dp"
-        android:layout_height="86dp"
-        android:scaleType="centerCrop" />
-
-    <TextView
-        android:layout_width="0dp"
+    android:layout_height="wrap_content">
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/tv_title"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintRight_toLeftOf="@+id/imageView"
-        android:layout_marginEnd="8dp"
-        android:text="@string/sample_reddit_title"
-        app:layout_constraintHorizontal_bias="0.62" />
+        android:orientation="vertical">
 
-    <TextView
-        android:layout_width="0dp"
-        android:layout_height="53dp"
-        android:id="@+id/tv_detail"
-        android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@+id/tv_title"
-        android:text="@string/sample_text"
-        app:layout_constraintRight_toLeftOf="@+id/imageView"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="16dp"
-        app:layout_constraintLeft_toLeftOf="parent" />
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="100dp"
+            android:layout_height="86dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="16dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@mipmap/ic_launcher" />
 
-    <TextView
-        android:text="@string/share"
-        android:layout_width="84dp"
-        android:layout_height="24dp"
-        android:id="@+id/tv_share"
-        app:layout_constraintBaseline_toBaselineOf="@+id/tv_comments"
-        android:layout_marginEnd="16dp"
-        app:layout_constraintRight_toRightOf="parent"
-        android:drawableEnd="@drawable/ic_share_black"
-        android:drawablePadding="2dp"
-        android:contentDescription="@string/share"/>
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/sample_reddit_title"
+            app:layout_constraintHorizontal_bias="0.62"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/imageView"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:layout_width="58dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/tv_comments"
-        android:layout_marginTop="32dp"
-        app:layout_constraintTop_toBottomOf="@+id/imageView"
-        android:layout_marginEnd="16dp"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginStart="16dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:text="@string/comments_counts"
-        android:drawableEnd="@drawable/ic_chat_bubble"
-        android:drawablePadding="1dp"/>
+        <TextView
+            android:id="@+id/tv_detail"
+            android:layout_width="0dp"
+            android:layout_height="53dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/sample_text"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/imageView"
+            app:layout_constraintTop_toBottomOf="@+id/tv_title" />
 
-    <TextView
-        android:layout_width="32dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/tv_vote"
-        app:layout_constraintTop_toTopOf="@+id/tv_comments"
-        android:text="@string/upvote_counts"
-        android:layout_marginStart="8dp"
-        app:layout_constraintLeft_toRightOf="@+id/image_up_vote" />
+        <TextView
+            android:id="@+id/tv_share"
+            android:layout_width="84dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="16dp"
+            android:contentDescription="@string/share"
+            android:drawableEnd="@drawable/ic_share_black"
+            android:drawablePadding="2dp"
+            android:text="@string/share"
+            app:layout_constraintBaseline_toBaselineOf="@+id/tv_comments"
+            app:layout_constraintRight_toRightOf="parent" />
 
-    <ImageView
-        app:srcCompat="@drawable/ic_arrow_upward"
-        android:id="@+id/image_up_vote"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_vote"
-        app:layout_constraintTop_toTopOf="@+id/tv_vote"
-        app:layout_constraintVertical_bias="0.0"
-        android:layout_marginStart="16dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_width="18dp"
-        android:layout_height="18dp"
-        android:contentDescription="@string/up_vote"/>
+        <TextView
+            android:id="@+id/tv_comments"
+            android:layout_width="58dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="32dp"
+            android:drawableEnd="@drawable/ic_chat_bubble"
+            android:drawablePadding="1dp"
+            android:text="@string/comments_counts"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
-    <ImageView
-        app:srcCompat="@drawable/ic_arrow_downward"
-        android:id="@+id/image_down_vote"
-        android:layout_width="18dp"
-        android:layout_height="18dp"
-        android:layout_marginStart="8dp"
-        app:layout_constraintLeft_toRightOf="@+id/tv_vote"
-        app:layout_constraintTop_toTopOf="@+id/tv_vote"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_vote"
-        app:layout_constraintVertical_bias="0.0"
-        android:contentDescription="@string/down_vote"/>
+        <TextView
+            android:id="@+id/tv_vote"
+            android:layout_width="32dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/upvote_counts"
+            app:layout_constraintLeft_toRightOf="@+id/image_up_vote"
+            app:layout_constraintTop_toTopOf="@+id/tv_comments" />
 
-    <View
-        android:background="@color/grey_500"
-        android:layout_width="0dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/tv_comments"
-        android:layout_marginEnd="16dp"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginStart="16dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_height="1dp" />
-</android.support.constraint.ConstraintLayout>
+        <ImageView
+            android:id="@+id/image_up_vote"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_marginStart="16dp"
+            android:contentDescription="@string/up_vote"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_vote"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tv_vote"
+            app:layout_constraintVertical_bias="0.0"
+            app:srcCompat="@drawable/ic_arrow_upward" />
+
+        <ImageView
+            android:id="@+id/image_down_vote"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_marginStart="8dp"
+            android:contentDescription="@string/down_vote"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_vote"
+            app:layout_constraintLeft_toRightOf="@+id/tv_vote"
+            app:layout_constraintTop_toTopOf="@+id/tv_vote"
+            app:layout_constraintVertical_bias="0.0"
+            app:srcCompat="@drawable/ic_arrow_downward" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/grey_500"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_comments" />
+    </android.support.constraint.ConstraintLayout>
+    </android.support.v7.widget.CardView>

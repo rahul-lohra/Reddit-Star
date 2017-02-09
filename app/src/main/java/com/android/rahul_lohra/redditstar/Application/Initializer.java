@@ -8,6 +8,7 @@ import com.android.rahul_lohra.redditstar.dagger.Component.NetComponent;
 import com.android.rahul_lohra.redditstar.dagger.Module.AppModule;
 import com.android.rahul_lohra.redditstar.dagger.Module.NetModule;
 import com.facebook.stetho.Stetho;
+import com.squareup.leakcanary.LeakCanary;
 
 
 /**
@@ -20,6 +21,14 @@ public class Initializer extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        //LeakCanary
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            // This process is dedicated to LeakCanary for heap analysis.
+            // You should not init your app in this process.
+            return;
+        }
+        LeakCanary.install(this);
 
         //Dagger
         mNetComponent = DaggerNetComponent.builder()
