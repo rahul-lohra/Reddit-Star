@@ -94,7 +94,7 @@ public class HomeFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
         frontPageChildList = new ArrayList<>();
-        adapter = new FrontPageAdapter(getActivity(),frontPageChildList);
+        adapter = new FrontPageAdapter(getActivity().getApplicationContext(),frontPageChildList);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);

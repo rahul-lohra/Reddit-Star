@@ -11,7 +11,9 @@ import com.android.rahul_lohra.redditstar.R;
 import com.android.rahul_lohra.redditstar.activity.DetailActivity;
 import com.android.rahul_lohra.redditstar.modal.frontPage.FrontPageChild;
 import com.android.rahul_lohra.redditstar.modal.frontPage.FrontPageChildData;
+import com.android.rahul_lohra.redditstar.modal.frontPage.Preview;
 import com.android.rahul_lohra.redditstar.viewHolder.PostView;
+import com.bumptech.glide.Glide;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -44,8 +46,7 @@ public class FrontPageAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         PostView postView = (PostView)holder;
-        postView.tvTitle.setText(list.get(position).getData().getSubreddit());
-        postView.tvDetail.setText(list.get(position).getData().getTitle());
+
 
         FrontPageChildData frontPageChildData = list.get(position).getData();
         final String id = frontPageChildData.getId();
@@ -60,9 +61,28 @@ public class FrontPageAdapter extends RecyclerView.Adapter {
                 Intent intent = new Intent(context,DetailActivity.class);
                 intent.putExtra("id",id);
                 intent.putExtra("subreddit",subreddit);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
             }
         });
+
+        //set Textual Data
+        Preview preview = frontPageChildData.getPreview();
+        if(preview!=null){
+//            Glide.with(context)
+//                    .load(preview.getImages().get(0).getSource().getUrl())
+//            .into(postView.imageView);
+
+            Glide.with(context)
+                    .load(frontPageChildData.getThumbnail())
+            .into(postView.imageView);
+        }
+
+        postView.tvVote.setText(String.valueOf(frontPageChildData.getUps()));
+        postView.tvTitle.setText(list.get(position).getData().getSubreddit());
+        postView.tvDetail.setText(list.get(position).getData().getTitle());
+        postView.tvComments.setText(String.valueOf(list.get(position).getData().getNumComments()));
+
     }
 
     @Override

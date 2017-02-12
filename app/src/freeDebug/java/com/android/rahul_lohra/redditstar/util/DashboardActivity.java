@@ -133,7 +133,7 @@ public class DashboardActivity extends AppCompatActivity implements
     void showHomeFragment(){
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.content_dashboard, HomeFragment.newInstance("a", "a"), HomeFragment.class.getSimpleName())
-                .addToBackStack("c")
+//                .addToBackStack("c")
                 .commit();
     }
 

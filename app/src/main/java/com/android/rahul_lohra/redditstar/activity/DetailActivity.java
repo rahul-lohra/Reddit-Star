@@ -45,7 +45,6 @@ public class DetailActivity extends AppCompatActivity {
     void showDetailSubredditFragment(String id, String subreddit) {
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.frame_layout, DetailSubredditFragment.newInstance(id, subreddit), DetailSubredditFragment.class.getSimpleName())
-                .addToBackStack("c")
                 .commit();
     }
 
