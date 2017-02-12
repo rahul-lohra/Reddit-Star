@@ -32,16 +32,19 @@ public class DetailActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
 
+        if (null == savedInstanceState) {
 
-        showDetailSubredditFragment(
-                intent.getStringExtra("id"),
-                intent.getStringExtra("subreddit")
-        );
+            showDetailSubredditFragment(
+                    intent.getStringExtra("id"),
+                    intent.getStringExtra("subreddit")
+            );
+
+        }
     }
 
     void showDetailSubredditFragment(String id, String subreddit) {
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.frame_layout, DetailSubredditFragment.newInstance(id,subreddit), DetailSubredditFragment.class.getSimpleName())
+                .replace(R.id.frame_layout, DetailSubredditFragment.newInstance(id, subreddit), DetailSubredditFragment.class.getSimpleName())
                 .addToBackStack("c")
                 .commit();
     }

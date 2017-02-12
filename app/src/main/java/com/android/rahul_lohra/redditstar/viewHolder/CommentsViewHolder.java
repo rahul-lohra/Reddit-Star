@@ -10,30 +10,30 @@ import com.android.rahul_lohra.redditstar.R;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import lombok.Data;
 
 /**
  * Created by rkrde on 22-01-2017.
  */
-
 public class CommentsViewHolder extends RecyclerView.ViewHolder {
-    @Bind(R.id.view)
-    View view;
+    @Bind(R.id.view_2)
+    public View view_2;
     @Bind(R.id.tv_username)
-    TextView tvUsername;
+    public TextView tvUsername;
     @Bind(R.id.tv_comment)
-    TextView tvComment;
+    public TextView tvComment;
     @Bind(R.id.tv_time)
-    TextView tvTime;
+    public TextView tvTime;
     @Bind(R.id.tv_upvote_count)
-    TextView tvUpvoteCount;
+    public TextView tvUpvoteCount;
     @Bind(R.id.view2)
-    View view2;
+    public View view2;
     @Bind(R.id.tv_reply)
-    TextView tvReply;
+    public TextView tvReply;
     @Bind(R.id.img_upVote)
-    AppCompatImageView imgUpVote;
+    public AppCompatImageView imgUpVote;
     @Bind(R.id.img_downVote)
-    AppCompatImageView imgDownVote;
+    public     AppCompatImageView imgDownVote;
 
     public CommentsViewHolder(View itemView) {
         super(itemView);
