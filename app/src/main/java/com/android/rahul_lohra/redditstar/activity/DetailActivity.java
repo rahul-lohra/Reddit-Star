@@ -24,30 +24,24 @@ public class DetailActivity extends AppCompatActivity {
 
 
     Retrofit retrofit;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
-//        Intent intent = getIntent();
-        GsonBuilder builder = new GsonBuilder();
-        builder.registerTypeAdapter(Example.class, new DummyAdapter().nullSafe());
-        // if PointAdapter didn't check for nulls in its read/write methods, you should instead use
-        // builder.registerTypeAdapter(Point.class, new PointAdapter().nullSafe());
-        Gson gson = builder.create();
-        Type listType = new TypeToken<List<Example>>() {}.getType();
-        ArrayList<Example> list = gson.fromJson(string, new TypeToken<ArrayList<Example>>() {}.getType());
-
-//        List<Example> exampleList = gson.fromJson(string,listType);
-        Log.d("1","1");
+        Intent intent = getIntent();
 
 
-
+        showDetailSubredditFragment(
+                intent.getStringExtra("id"),
+                intent.getStringExtra("subreddit")
+        );
     }
 
-    void showDetailSubredditFragment(){
+    void showDetailSubredditFragment(String id, String subreddit) {
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.frame_layout, DetailSubredditFragment.newInstance("a", "a"), DetailSubredditFragment.class.getSimpleName())
+                .replace(R.id.frame_layout, DetailSubredditFragment.newInstance(id,subreddit), DetailSubredditFragment.class.getSimpleName())
                 .addToBackStack("c")
                 .commit();
     }

@@ -122,43 +122,6 @@ public class NetModule {
 
     }
 
-    @Provides
-    @Singleton
-    @Named("comments")
-    Retrofit provideRetrofitForComments() {
-        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-        httpClient.addInterceptor(new Interceptor() {
-            @Override
-            public Response intercept(Interceptor.Chain chain) throws IOException {
-                Request original = chain.request();
-                Request request = original.newBuilder()
-                        .header("Content-Type", "application/json")
-                        .method(original.method(), original.body())
-                        .build();
-
-                return chain.proceed(request);
-            }
-        });
-
-        OkHttpClient client = httpClient.authenticator(new TokenAuthenticator())
-                .addNetworkInterceptor(new StethoInterceptor())
-                .build();
-        GsonBuilder builder = new GsonBuilder();
-        builder.registerTypeAdapter(Example.class, new DummyAdapter());
-        // if PointAdapter didn't check for nulls in its read/write methods, you should instead use
-        // builder.registerTypeAdapter(Point.class, new PointAdapter().nullSafe());
-        Gson gson = builder.create();
-
-        Retrofit retrofit = null;
-        retrofit = new Retrofit.Builder()
-                .baseUrl(MyUrl.LOGIN_AUTHORITY)
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(client)
-                .build();
-
-        return retrofit;
-
-    }
 
     public class TokenAuthenticator implements Authenticator {
 

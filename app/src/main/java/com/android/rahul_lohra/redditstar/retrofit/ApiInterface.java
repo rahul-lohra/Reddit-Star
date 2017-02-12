@@ -34,5 +34,10 @@ public interface ApiInterface {
     @GET("/.json")
     Call<FrontPageResponse> getFrontPage(@QueryMap Map<String,String> options);
 
+    @GET("/r/{subbreddit_name}/comments/{commentsId}.json")
+    Call<ResponseBody> getComments(@Path(value = "commentsId", encoded = true) String commentsId,
+                                   @Path(value = "subbreddit_name", encoded = true) String subbreddit_name,
+                                   @QueryMap Map<String,String> map);
+
 
 }

@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import com.android.rahul_lohra.redditstar.R;
 import com.android.rahul_lohra.redditstar.activity.DetailActivity;
 import com.android.rahul_lohra.redditstar.modal.frontPage.FrontPageChild;
+import com.android.rahul_lohra.redditstar.modal.frontPage.FrontPageChildData;
 import com.android.rahul_lohra.redditstar.viewHolder.PostView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -46,6 +47,9 @@ public class FrontPageAdapter extends RecyclerView.Adapter {
         postView.tvTitle.setText(list.get(position).getData().getSubreddit());
         postView.tvDetail.setText(list.get(position).getData().getTitle());
 
+        FrontPageChildData frontPageChildData = list.get(position).getData();
+        final String id = frontPageChildData.getId();
+        final String subreddit = frontPageChildData.getSubreddit();
         if(position==list.size()-1)
         {
             EventBus.getDefault().post("getNextData");
@@ -53,7 +57,10 @@ public class FrontPageAdapter extends RecyclerView.Adapter {
         postView.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                context.startActivity(new Intent(context, DetailActivity.class));
+                Intent intent = new Intent(context,DetailActivity.class);
+                intent.putExtra("id",id);
+                intent.putExtra("subreddit",subreddit);
+                context.startActivity(intent);
             }
         });
     }

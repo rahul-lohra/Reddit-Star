@@ -23,17 +23,21 @@ import android.view.MenuItem;
 
 import com.android.rahul_lohra.redditstar.R;
 import com.android.rahul_lohra.redditstar.activity.DetailActivity;
+import com.android.rahul_lohra.redditstar.adapter.TypeAdapter.SampleClass;
+import com.android.rahul_lohra.redditstar.adapter.TypeAdapter.SampleTypeAdapter;
 import com.android.rahul_lohra.redditstar.adapter.cursor.SubredditDrawerAdapter;
 import com.android.rahul_lohra.redditstar.adapter.normal.DrawerAdapter;
 import com.android.rahul_lohra.redditstar.contract.IDashboard;
 import com.android.rahul_lohra.redditstar.dialog.AddAccountDialog;
 import com.android.rahul_lohra.redditstar.fragments.HomeFragment;
 import com.android.rahul_lohra.redditstar.modal.DrawerItemModal;
+import com.android.rahul_lohra.redditstar.modal.comments.CommentsGsonTypeAdapter;
 import com.android.rahul_lohra.redditstar.modal.comments.DummyAdapter;
 import com.android.rahul_lohra.redditstar.modal.comments.Example;
 import com.android.rahul_lohra.redditstar.presenter.activity.DashboardPresenter;
 import com.android.rahul_lohra.redditstar.storage.MyProvider;
 import com.android.rahul_lohra.redditstar.storage.column.MySubredditColumn;
+import com.android.rahul_lohra.redditstar.utility.Constants;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -96,18 +100,33 @@ public class DashboardActivity extends AppCompatActivity implements
         setupDrawer();
         setupPresenter();
 //        dashboardPresenter.getMySubredditsAndDeletePreviousOnes();
-        if(null==savedInstanceState)
-            showHomeFragment();
+        if(null==savedInstanceState){
+          showHomeFragment();
+        }
 
         checkGson();
+//        checkSampleGson();
     }
+
+    public void checkSampleGson(){
+        GsonBuilder builder = new GsonBuilder();
+        builder.registerTypeAdapter(SampleClass.class, new SampleTypeAdapter().nullSafe());
+        Gson gson = builder.create();
+        TypeToken<List<SampleClass>> myList = new TypeToken<List<SampleClass>>() {};
+        ArrayList<Example> list = gson.fromJson(Constants.sampleString,myList.getType());
+
+//        ArrayList<Example> list = gson.fromJson(Constants.sampleString, new TypeToken<ArrayList<SampleClass>>() {}.getType());
+        Log.d("1","1");
+    }
+
+
 
     void checkGson(){
         GsonBuilder builder = new GsonBuilder();
-        builder.registerTypeAdapter(Example.class, new DummyAdapter().nullSafe());
+        builder.registerTypeAdapter(Example.class, new CommentsGsonTypeAdapter().nullSafe());
         Gson gson = builder.create();
         Type listType = new TypeToken<List<Example>>() {}.getType();
-        ArrayList<Example> list = gson.fromJson(DetailActivity.string, new TypeToken<ArrayList<Example>>() {}.getType());
+        ArrayList<Example> list = gson.fromJson(Constants.comment_2, new TypeToken<ArrayList<Example>>() {}.getType());
         Log.d("1","1");
     }
 
