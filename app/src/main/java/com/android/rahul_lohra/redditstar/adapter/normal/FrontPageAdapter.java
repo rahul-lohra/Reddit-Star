@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.rahul_lohra.redditstar.R;
@@ -61,7 +62,7 @@ public class FrontPageAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        PostView postView = (PostView)holder;
+        final PostView postView = (PostView) holder;
 
 
         FrontPageChildData frontPageChildData = list.get(position).getData();
@@ -70,23 +71,16 @@ public class FrontPageAdapter extends RecyclerView.Adapter {
         final String thingId = frontPageChildData.getName();
 
         final Object objLikes = frontPageChildData.getLikes();
-        if(objLikes!=null){
-            Boolean b=(Boolean)objLikes;
-            if(b){
+        if (objLikes != null) {
+            Boolean b = (Boolean) objLikes;
+            Integer resId = (b) ? R.drawable.ic_arrow_upward_true : R.drawable.ic_arrow_downward_true;
+            Glide.with(context)
+                    .load(resId)
+                    .into(postView.imageUpVote);
 
-                Glide.with(context)
-                        .load(R.drawable.ic_arrow_upward_true)
-                        .into(postView.imageUpVote);
-            }else {
-
-                Glide.with(context)
-                        .load(R.drawable.ic_arrow_downward_true)
-                        .into(postView.imageDownVote);
-            }
 
         }
-        if(position==list.size()-1)
-        {
+        if (position == list.size() - 1) {
             EventBus.getDefault().post("getNextData");
         }
 
@@ -94,9 +88,9 @@ public class FrontPageAdapter extends RecyclerView.Adapter {
         postView.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context,DetailActivity.class);
-                intent.putExtra("id",id);
-                intent.putExtra("subreddit",subreddit);
+                Intent intent = new Intent(context, DetailActivity.class);
+                intent.putExtra("id", id);
+                intent.putExtra("subreddit", subreddit);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
             }
@@ -108,36 +102,36 @@ public class FrontPageAdapter extends RecyclerView.Adapter {
 
                 boolean loggedIn = UserState.isUserLoggedIn(context);
 
-                if(!loggedIn){
-                    Toast.makeText(context,context.getString(R.string.please_login),Toast.LENGTH_SHORT).show();
+                if (!loggedIn) {
+                    Toast.makeText(context, context.getString(R.string.please_login), Toast.LENGTH_SHORT).show();
                     return;
                 }
 
 
                 int dir = 1;
-                if(objLikes!=null) {
-                    Boolean b = (Boolean)objLikes;
-                    dir = (b)?0:1;
+                if (objLikes != null) {
+                    Boolean b = (Boolean) objLikes;
+                    dir = (b) ? 0 : 1;
                 }
 //                makeVoteRequest(thingId,dir);
 
                 String token = UserState.getAuthToken(context);
-                String auth = "bearer "+token;
-                Map<String,String> map = new HashMap<String, String>();
-                map.put("dir",String.valueOf(dir));
-                map.put("id",thingId);
-                map.put("rank",String.valueOf(2));
+                String auth = "bearer " + token;
+                Map<String, String> map = new HashMap<String, String>();
+                map.put("dir", String.valueOf(dir));
+                map.put("id", thingId);
+                map.put("rank", String.valueOf(2));
 
-                apiInterface.postVote(auth,map).enqueue(new Callback<ResponseBody>() {
+                apiInterface.postVote(auth, map).enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
 
-                        Log.d(TAG,"UpVote onResponse:"+response.code());
+                        Log.d(TAG, "UpVote onResponse:" + response.code());
                     }
 
                     @Override
                     public void onFailure(Call<ResponseBody> call, Throwable t) {
-                        Log.d(TAG,"UpVote onFail:"+t.getMessage());
+                        Log.d(TAG, "UpVote onFail:" + t.getMessage());
                     }
                 });
             }
@@ -145,38 +139,39 @@ public class FrontPageAdapter extends RecyclerView.Adapter {
 
         postView.imageDownVote.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(final View view) {
                 boolean loggedIn = UserState.isUserLoggedIn(context);
 
-                if(!loggedIn){
-                    Toast.makeText(context,context.getString(R.string.please_login),Toast.LENGTH_SHORT).show();
+                if (!loggedIn) {
+                    Toast.makeText(context, context.getString(R.string.please_login), Toast.LENGTH_SHORT).show();
                     return;
                 }
 
                 int dir = -1;
-                if(objLikes!=null) {
-                    Boolean b = (Boolean)objLikes;
-                    dir = (b)?-1:0;
+                if (objLikes != null) {
+                    Boolean b = (Boolean) objLikes;
+                    dir = (b) ? -1 : 0;
                 }
 //                makeVoteRequest(thingId,dir);
 
                 String token = UserState.getAuthToken(context);
-                String auth = "bearer "+token;
-                Map<String,String> map = new HashMap<String, String>();
-                map.put("dir",String.valueOf(dir));
-                map.put("id",thingId);
-                map.put("rank",String.valueOf(2));
+                String auth = "bearer " + token;
+                Map<String, String> map = new HashMap<String, String>();
+                map.put("dir", String.valueOf(dir));
+                map.put("id", thingId);
+                map.put("rank", String.valueOf(2));
 
-                apiInterface.postVote(auth,map).enqueue(new Callback<ResponseBody>() {
+                apiInterface.postVote(auth, map).enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
 
-                        Log.d(TAG,"DownVote onResponse:"+response.code());
+                        Log.d(TAG, "DownVote onResponse:" + response.code());
+//                        setVote(postView.imageDownVote,Integer.parseInt(dir));
                     }
 
                     @Override
                     public void onFailure(Call<ResponseBody> call, Throwable t) {
-                        Log.d(TAG,"DownVote onFail:"+t.getMessage());
+                        Log.d(TAG, "DownVote onFail:" + t.getMessage());
                     }
                 });
             }
@@ -184,10 +179,10 @@ public class FrontPageAdapter extends RecyclerView.Adapter {
 
         //set Textual Data
         Preview preview = frontPageChildData.getPreview();
-        if(preview!=null){
+        if (preview != null) {
             Glide.with(context)
                     .load(frontPageChildData.getThumbnail())
-            .into(postView.imageView);
+                    .into(postView.imageView);
         }
 
         postView.tvVote.setText(String.valueOf(frontPageChildData.getUps()));
@@ -203,7 +198,11 @@ public class FrontPageAdapter extends RecyclerView.Adapter {
     }
 
 
-    private void makeVoteRequest(String thingId,int dir){
+    private void makeVoteRequest(String thingId, int dir) {
+
+    }
+
+    private void setVote(ImageView imageView,Integer resId){
 
     }
 

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.util.Base64;
 import android.util.Log;
 
 import com.android.rahul_lohra.redditstar.modal.AboutMe;
@@ -39,6 +40,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+
+import static com.android.rahul_lohra.redditstar.utility.MyUrl.CLIENT_ID;
 
 /**
  * Created by rkrde on 15-12-2016.
@@ -140,14 +143,16 @@ public class NetModule {
             get accessToken and refreshToken of Active User
              */
                 String arrayOfToken[] = Constants.getAccessTokenAndRefreshTokenOfActiveUser(context);
-                String accessToken = arrayOfToken[0];
                 String refreshToken = arrayOfToken[1];
+                String authString = CLIENT_ID + ":";
+                String encodedAuthString = Base64.encodeToString(authString.getBytes(),
+                        Base64.NO_WRAP);
 
             /*
             Make Synchronous Api Call to refresh Token
              */
                 ApiInterface apiInterface = provideRetrofitForToken().create(ApiInterface.class);
-                String token = "Basic " + accessToken;
+                String token = "Basic " + encodedAuthString;
                 Map<String, String> map = new HashMap<>();
                 map.put("grant_type", "refresh_token");
                 map.put("refresh_token", refreshToken);
