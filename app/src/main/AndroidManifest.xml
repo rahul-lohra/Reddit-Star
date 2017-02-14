@@ -18,6 +18,7 @@
                 android:theme="@style/AppTheme.NoActionBar">
                 <intent-filter>
                     <action android:name="android.intent.action.MAIN" />
+
                     <category android:name="android.intent.category.LAUNCHER" />
                 </intent-filter>
             </activity>
@@ -66,10 +67,12 @@
         <service android:name=".service.GetSubscribedSubredditsService" />
         <service
             android:name=".service.GetDashboardSubredditsService"
-            android:exported="false"></service>
+            android:exported="false" />
         <service
             android:name=".service.GetFrontPageService"
-            android:exported="false"></service>
+            android:exported="false" />
+
+        <activity android:name=".activity.ReplyActivity"></activity>
     </application>
 
 </manifest>

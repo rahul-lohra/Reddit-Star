@@ -95,5 +95,11 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="get_data">Get Data</string>
+    <string name="enter_your_reply">Enter your reply</string>
+    <string name="send">SEND</string>
+
+    <string name="write_something">Write Something</string>
+    <string name="please_login">Please Login</string>
+
 
 </resources>

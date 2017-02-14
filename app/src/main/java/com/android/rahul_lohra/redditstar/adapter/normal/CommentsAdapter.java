@@ -1,6 +1,9 @@
 package com.android.rahul_lohra.redditstar.adapter.normal;
 
 import android.content.Context;
+import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatImageView;
@@ -11,11 +14,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.rahul_lohra.redditstar.R;
+import com.android.rahul_lohra.redditstar.activity.ReplyActivity;
 import com.android.rahul_lohra.redditstar.modal.comments.Child;
 import com.android.rahul_lohra.redditstar.modal.comments.CustomComment;
 import com.android.rahul_lohra.redditstar.modal.comments.Example;
+import com.android.rahul_lohra.redditstar.storage.MyProvider;
+import com.android.rahul_lohra.redditstar.storage.column.UserCredentialsColumn;
 import com.android.rahul_lohra.redditstar.viewHolder.CommentsViewHolder;
 import com.android.rahul_lohra.redditstar.viewHolder.PostView;
 
@@ -50,7 +57,7 @@ public class CommentsAdapter extends RecyclerView.Adapter {
 
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         CommentsViewHolder viewHolder = (CommentsViewHolder)holder;
         int depth = list.get(position).getDepth();
         //set Margin and Color
@@ -71,13 +78,53 @@ public class CommentsAdapter extends RecyclerView.Adapter {
 
         //set Textual Data
 
-        Child child = list.get(position).getChild();
-        String comment = child.t1data.body;
+        final Child child = list.get(position).getChild();
+        final String comment = child.t1data.body;
         String author = child.t1data.author;
         int upvote = child.t1data.ups;
         viewHolder.tvComment.setText(comment);
         viewHolder.tvUsername.setText(author);
         viewHolder.tvUpvoteCount.setText(String.valueOf(upvote));
+
+
+        viewHolder.tvReply.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Check if user is logged in or not
+
+                String thingId = child.t1data.link_id;
+                boolean mTwoPane = false;
+
+                boolean loggedIn = false;
+                Uri mUri = MyProvider.UserCredentialsLists.CONTENT_URI;
+                String mProjection[]={UserCredentialsColumn.ACCESS_TOKEN};
+                String mSelection=UserCredentialsColumn.ACTIVE_STATE+"=?";
+                String mSelectionArgs[]={"1"};
+                Cursor cursor =context.getContentResolver().query(mUri,mProjection,mSelection,mSelectionArgs,null);
+
+                if(cursor.moveToFirst())
+                {
+                    loggedIn=true;
+                }else {
+                    loggedIn = false;
+                }
+                cursor.close();
+
+                if(loggedIn){
+                    //TODO:check for two Pane
+                    if(mTwoPane){
+                        //show Fragment
+                    }else {
+                        //open Activity
+                        Intent intent = new Intent(context, ReplyActivity.class);
+                        intent.putExtra("thing_id",thingId);
+                        context.startActivity(intent);
+                    }
+                }else {
+                    Toast.makeText(context,context.getString(R.string.please_login),Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
     }
 

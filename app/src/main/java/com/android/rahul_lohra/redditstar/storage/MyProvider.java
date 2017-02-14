@@ -59,7 +59,7 @@ public class MyProvider {
         }
     }
 
-    @TableEndpoint(table = MyDatabase.USER_CREDENTIAL_TABLE)
+    @TableEndpoint(table = MyDatabase.USER_FAVORITES_TABLE)
     public static class FavoritesLists {
 
         @ContentUri(
