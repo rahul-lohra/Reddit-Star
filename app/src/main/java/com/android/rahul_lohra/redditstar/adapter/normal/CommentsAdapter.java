@@ -23,6 +23,7 @@ import com.android.rahul_lohra.redditstar.modal.comments.CustomComment;
 import com.android.rahul_lohra.redditstar.modal.comments.Example;
 import com.android.rahul_lohra.redditstar.storage.MyProvider;
 import com.android.rahul_lohra.redditstar.storage.column.UserCredentialsColumn;
+import com.android.rahul_lohra.redditstar.utility.UserState;
 import com.android.rahul_lohra.redditstar.viewHolder.CommentsViewHolder;
 import com.android.rahul_lohra.redditstar.viewHolder.PostView;
 
@@ -95,21 +96,7 @@ public class CommentsAdapter extends RecyclerView.Adapter {
                 String thingId = child.t1data.link_id;
                 boolean mTwoPane = false;
 
-                boolean loggedIn = false;
-                Uri mUri = MyProvider.UserCredentialsLists.CONTENT_URI;
-                String mProjection[]={UserCredentialsColumn.ACCESS_TOKEN};
-                String mSelection=UserCredentialsColumn.ACTIVE_STATE+"=?";
-                String mSelectionArgs[]={"1"};
-                Cursor cursor =context.getContentResolver().query(mUri,mProjection,mSelection,mSelectionArgs,null);
-
-                if(cursor.moveToFirst())
-                {
-                    loggedIn=true;
-                }else {
-                    loggedIn = false;
-                }
-                cursor.close();
-
+                boolean loggedIn = UserState.isUserLoggedIn(context);
                 if(loggedIn){
                     //TODO:check for two Pane
                     if(mTwoPane){

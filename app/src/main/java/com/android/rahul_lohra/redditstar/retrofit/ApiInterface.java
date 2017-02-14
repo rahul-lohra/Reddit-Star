@@ -44,9 +44,9 @@ public interface ApiInterface {
                                    @Path(value = "subbreddit_name", encoded = true) String subbreddit_name,
                                    @QueryMap Map<String, String> map);
 
-    @POST("/api/voteModal")
+    @POST("/api/vote")
     Call<ResponseBody> postVote(@Header(Constants.AUTHORIZATION) String authorization,
-                                @Body VoteModal voteModal);
+                                @QueryMap Map<String, String> map);
 
     @POST("/api/comment")
     Call<ResponseBody> postComment(@Header(Constants.AUTHORIZATION) String authorization,

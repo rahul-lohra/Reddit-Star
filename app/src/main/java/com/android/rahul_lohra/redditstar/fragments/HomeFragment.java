@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.android.rahul_lohra.redditstar.R;
 import com.android.rahul_lohra.redditstar.adapter.normal.FrontPageAdapter;
+import com.android.rahul_lohra.redditstar.application.Initializer;
 import com.android.rahul_lohra.redditstar.modal.frontPage.FrontPageChild;
 import com.android.rahul_lohra.redditstar.modal.frontPage.FrontPageChildData;
 import com.android.rahul_lohra.redditstar.modal.frontPage.FrontPageResponseData;
@@ -93,8 +94,9 @@ public class HomeFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
+        ((Initializer) getContext().getApplicationContext()).getNetComponent().inject(this);
         frontPageChildList = new ArrayList<>();
-        adapter = new FrontPageAdapter(getActivity().getApplicationContext(),frontPageChildList);
+        adapter = new FrontPageAdapter(getActivity().getApplicationContext(),frontPageChildList,retrofit);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
