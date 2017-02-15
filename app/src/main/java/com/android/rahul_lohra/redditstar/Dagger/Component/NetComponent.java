@@ -6,6 +6,7 @@ import com.android.rahul_lohra.redditstar.activity.MainActivity;
 import com.android.rahul_lohra.redditstar.dagger.extras.TokenAuthenticator;
 import com.android.rahul_lohra.redditstar.fragments.HomeFragment;
 import com.android.rahul_lohra.redditstar.fragments.ReplyFragment;
+import com.android.rahul_lohra.redditstar.fragments.subreddit.SubredditFragment;
 import com.android.rahul_lohra.redditstar.loader.CommentsLoader;
 import com.android.rahul_lohra.redditstar.presenter.activity.DashboardPresenter;
 import com.android.rahul_lohra.redditstar.service.GetDashboardSubredditsService;
@@ -32,6 +33,8 @@ public interface NetComponent {
     void inject(CommentsLoader loader);
     void inject(ReplyFragment fragment);
     void inject(HomeFragment fragment);
+    void inject(SubredditFragment fragment);
+
 
 
 

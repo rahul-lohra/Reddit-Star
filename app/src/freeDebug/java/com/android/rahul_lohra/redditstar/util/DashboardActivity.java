@@ -103,32 +103,9 @@ public class DashboardActivity extends AppCompatActivity implements
         if(null==savedInstanceState){
           showHomeFragment();
         }
-
-        checkGson();
-//        checkSampleGson();
-    }
-
-    public void checkSampleGson(){
-        GsonBuilder builder = new GsonBuilder();
-        builder.registerTypeAdapter(SampleClass.class, new SampleTypeAdapter().nullSafe());
-        Gson gson = builder.create();
-        TypeToken<List<SampleClass>> myList = new TypeToken<List<SampleClass>>() {};
-        ArrayList<Example> list = gson.fromJson(Constants.sampleString,myList.getType());
-
-//        ArrayList<Example> list = gson.fromJson(Constants.sampleString, new TypeToken<ArrayList<SampleClass>>() {}.getType());
-        Log.d("1","1");
     }
 
 
-
-    void checkGson(){
-        GsonBuilder builder = new GsonBuilder();
-        builder.registerTypeAdapter(Example.class, new CommentsGsonTypeAdapter().nullSafe());
-        Gson gson = builder.create();
-        Type listType = new TypeToken<List<Example>>() {}.getType();
-        ArrayList<Example> list = gson.fromJson(Constants.comment_2, new TypeToken<ArrayList<Example>>() {}.getType());
-        Log.d("1","1");
-    }
 
     void showHomeFragment(){
         getSupportFragmentManager().beginTransaction()

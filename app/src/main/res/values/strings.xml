@@ -100,6 +100,9 @@
 
     <string name="write_something">Write Something</string>
     <string name="please_login">Please Login</string>
+    <string name="hot">HOT</string>
+    <string name="new_text">NEW</string>
+    <string name="top">TOP</string>
 
 
 </resources>

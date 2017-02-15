@@ -72,7 +72,13 @@
             android:name=".service.GetFrontPageService"
             android:exported="false" />
 
-        <activity android:name=".activity.ReplyActivity"></activity>
+        <activity android:name=".activity.ReplyActivity" />
+        <activity
+            android:label="@string/subreddits"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:name=".activity.SubredditActivity">
+
+        </activity>
     </application>
 
 </manifest>

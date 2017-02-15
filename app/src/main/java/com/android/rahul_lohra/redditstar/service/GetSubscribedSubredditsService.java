@@ -37,7 +37,7 @@ import retrofit2.Retrofit;
 public class GetSubscribedSubredditsService extends IntentService {
 
     @Inject
-    @Named("fun")
+    @Named("withToken")
     Retrofit retrofit;
     ApiInterface apiInterface;
 

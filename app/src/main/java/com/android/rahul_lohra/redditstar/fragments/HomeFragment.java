@@ -51,7 +51,7 @@ public class HomeFragment extends Fragment {
 
 
     @Inject
-    @Named("fun")
+    @Named("withToken")
     Retrofit retrofit;
     ApiInterface apiInterface;
     FrontPageAdapter adapter;

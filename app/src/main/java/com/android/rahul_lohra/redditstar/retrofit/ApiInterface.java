@@ -5,6 +5,8 @@ import com.android.rahul_lohra.redditstar.modal.RefreshTokenResponse;
 import com.android.rahul_lohra.redditstar.modal.SubredditResponse;
 import com.android.rahul_lohra.redditstar.modal.frontPage.FrontPageResponse;
 import com.android.rahul_lohra.redditstar.modal.reply.ReplyModal;
+import com.android.rahul_lohra.redditstar.modal.t5.t5_Response;
+import com.android.rahul_lohra.redditstar.modal.token.RefreshToken;
 import com.android.rahul_lohra.redditstar.modal.vote.VoteModal;
 import com.android.rahul_lohra.redditstar.utility.Constants;
 
@@ -13,6 +15,8 @@ import java.util.Map;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
@@ -32,12 +36,22 @@ public interface ApiInterface {
     @GET("/api/v1/me")
     Call<AboutMe> getAboutMe(@Header(Constants.AUTHORIZATION) String authorization);
 
-    @GET("/api/v1/access_token")
+    @FormUrlEncoded
+    @POST("/api/v1/access_token")
     Call<RefreshTokenResponse> refreshToken(@Header(Constants.AUTHORIZATION) String authorization,
-                                            @QueryMap Map<String, String> options);
+                                    @Field("grant_type") String grant_type,
+                                    @Field("refresh_token") String refresh_token);
 
     @GET("/.json")
     Call<FrontPageResponse> getFrontPage(@QueryMap Map<String, String> options);
+
+    @GET("/r/{subbreddit_name}/.json")
+    Call<FrontPageResponse> getSubredditList(@Header(Constants.AUTHORIZATION) String authorization);
+
+    @GET("/r/{subbreddit_name}/.json")
+    Call<t5_Response> getAboutSubreddit(@Header(Constants.AUTHORIZATION) String authorization,
+                                        @Path(value = "subbreddit_name", encoded = true) String subbreddit_name
+    );
 
     @GET("/r/{subbreddit_name}/comments/{commentsId}.json")
     Call<ResponseBody> getComments(@Path(value = "commentsId", encoded = true) String commentsId,

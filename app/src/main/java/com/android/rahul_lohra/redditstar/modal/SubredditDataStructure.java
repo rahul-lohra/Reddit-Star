@@ -59,4 +59,4 @@ public class SubredditDataStructure {
     @Expose
     private Boolean userIsSubscriber;
 
-}
+} 

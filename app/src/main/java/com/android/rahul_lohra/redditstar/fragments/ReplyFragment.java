@@ -43,7 +43,7 @@ public class ReplyFragment extends Fragment {
     EditText et;
 
     @Inject
-    @Named("fun")
+    @Named("withToken")
     Retrofit retrofit;
     ApiInterface apiInterface;
 

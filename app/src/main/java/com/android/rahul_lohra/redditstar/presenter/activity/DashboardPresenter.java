@@ -39,7 +39,7 @@ import retrofit2.http.QueryMap;
 public class DashboardPresenter implements LoaderManager.LoaderCallbacks{
 
     @Inject
-    @Named("fun")
+    @Named("withToken")
     Retrofit retrofit;
 
     ApiInterface apiInterface;

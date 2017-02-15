@@ -47,7 +47,7 @@ public class CommentsLoader extends AsyncTaskLoader<List<CustomComment>> {
     int depth = 0;
 
     @Inject
-    @Named("token")
+    @Named("withoutToken")
     Retrofit retrofitWithoutToken;
 
     ApiInterface apiInterface;

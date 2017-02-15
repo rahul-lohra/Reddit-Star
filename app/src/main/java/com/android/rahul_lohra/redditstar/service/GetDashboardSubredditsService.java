@@ -15,7 +15,7 @@ import retrofit2.Retrofit;
 public class GetDashboardSubredditsService extends IntentService {
 
     @Inject
-    @Named("fun")
+    @Named("withToken")
     Retrofit retrofit;
     ApiInterface apiInterface;
 

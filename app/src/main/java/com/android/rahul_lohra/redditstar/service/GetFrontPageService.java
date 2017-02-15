@@ -27,7 +27,7 @@ import retrofit2.Retrofit;
 public class GetFrontPageService extends IntentService {
 
     @Inject
-    @Named("token")
+    @Named("withoutToken")
     Retrofit retrofit;
     ApiInterface apiInterface;
 

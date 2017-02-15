@@ -8,22 +8,60 @@ import lombok.Data;
 /**
  * Created by rkrde on 28-01-2017.
  */
-@Data
 public class RefreshTokenResponse {
     @SerializedName("access_token")
     @Expose
-    private String accessToken;
+    public String accessToken;
     @SerializedName("token_type")
     @Expose
-    private String tokenType;
+    public String tokenType;
     @SerializedName("device_id")
     @Expose
-    private String deviceId;
+    public String deviceId;
     @SerializedName("expires_in")
     @Expose
-    private Integer expiresIn;
+    public Integer expiresIn;
     @SerializedName("scope")
     @Expose
-    private String scope;
+    public String scope;
 
+    public String getAccessToken() {
+        return accessToken;
+    }
+
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
+    }
+
+    public String getTokenType() {
+        return tokenType;
+    }
+
+    public void setTokenType(String tokenType) {
+        this.tokenType = tokenType;
+    }
+
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
+    }
+
+    public Integer getExpiresIn() {
+        return expiresIn;
+    }
+
+    public void setExpiresIn(Integer expiresIn) {
+        this.expiresIn = expiresIn;
+    }
+
+    public String getScope() {
+        return scope;
+    }
+
+    public void setScope(String scope) {
+        this.scope = scope;
+    }
 }

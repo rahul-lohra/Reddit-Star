@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.android.rahul_lohra.redditstar.application.Initializer;
 import com.android.rahul_lohra.redditstar.modal.RefreshTokenResponse;
+import com.android.rahul_lohra.redditstar.modal.token.RefreshToken;
 import com.android.rahul_lohra.redditstar.retrofit.ApiInterface;
 import com.android.rahul_lohra.redditstar.utility.Constants;
 
@@ -60,16 +61,17 @@ public class TokenAuthenticator implements Authenticator {
             map.put("grant_type", "refresh_token");
             map.put("refresh_token", refreshToken);
 
-            retrofit2.Response<RefreshTokenResponse> res = apiInterface.refreshToken(token, map).execute();
-            String newValidToken = "bearer ";
-            if (res.code() == 200) {
-                newValidToken = newValidToken + res.body().getAccessToken();
-                //update in db
-                Constants.updateAccessToken(context, res.body().getAccessToken(), refreshToken);
-                return response.request().newBuilder()
-                        .header(Constants.AUTHORIZATION, newValidToken)
-                        .build();
-            }
+            RefreshToken refreshToken1 = new RefreshToken("refresh_token",refreshToken);
+//            retrofit2.Response<RefreshTokenResponse> res = apiInterface.refreshToken(token,refreshToken1).execute();
+//            String newValidToken = "bearer ";
+//            if (res.code() == 200) {
+//                newValidToken = newValidToken + res.body().getAccessToken();
+//                //update in db
+//                Constants.updateAccessToken(context, res.body().getAccessToken(), refreshToken);
+//                return response.request().newBuilder()
+//                        .header(Constants.AUTHORIZATION, newValidToken)
+//                        .build();
+//            }
         }
         return null;
     }

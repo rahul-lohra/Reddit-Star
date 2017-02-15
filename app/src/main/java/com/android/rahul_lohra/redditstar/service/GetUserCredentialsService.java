@@ -24,7 +24,7 @@ import retrofit2.Retrofit;
 public class GetUserCredentialsService extends IntentService {
 
     @Inject
-    @Named("fun")
+    @Named("withToken")
     Retrofit retrofit;
 
     ApiInterface apiInterface;

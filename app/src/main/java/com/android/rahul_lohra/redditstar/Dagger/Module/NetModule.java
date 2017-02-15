@@ -12,6 +12,7 @@ import com.android.rahul_lohra.redditstar.modal.AboutMe;
 import com.android.rahul_lohra.redditstar.modal.RefreshTokenResponse;
 import com.android.rahul_lohra.redditstar.modal.comments.DummyAdapter;
 import com.android.rahul_lohra.redditstar.modal.comments.Example;
+import com.android.rahul_lohra.redditstar.modal.token.RefreshToken;
 import com.android.rahul_lohra.redditstar.retrofit.ApiInterface;
 import com.android.rahul_lohra.redditstar.storage.MyProvider;
 import com.android.rahul_lohra.redditstar.storage.column.UserCredentialsColumn;
@@ -35,6 +36,7 @@ import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 import okhttp3.Route;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -59,7 +61,7 @@ public class NetModule {
 
     @Provides
     @Singleton
-    @Named("fun")
+    @Named("withToken")
     Retrofit provideRetrofitForFun() {
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
         httpClient.addInterceptor(new Interceptor() {
@@ -93,7 +95,7 @@ public class NetModule {
 
     @Provides
     @Singleton
-    @Named("token")
+    @Named("withoutToken")
     Retrofit provideRetrofitForToken() {
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
         httpClient.addInterceptor(new Interceptor() {
@@ -153,16 +155,15 @@ public class NetModule {
              */
                 ApiInterface apiInterface = provideRetrofitForToken().create(ApiInterface.class);
                 String token = "Basic " + encodedAuthString;
-                Map<String, String> map = new HashMap<>();
-                map.put("grant_type", "refresh_token");
-                map.put("refresh_token", refreshToken);
-
-                retrofit2.Response<RefreshTokenResponse> res = apiInterface.refreshToken(token, map).execute();
+                retrofit2.Response<RefreshTokenResponse> res = apiInterface.refreshToken(
+                        token,
+                        "refresh_token",refreshToken).execute();
                 String newValidToken = "bearer ";
                 if (res.code() == 200) {
-                    newValidToken = newValidToken + res.body().getAccessToken();
+                    String newToken = res.body().getAccessToken();
+                    newValidToken = newValidToken + newToken;
                     //update in db
-                    Constants.updateAccessToken(context, res.body().getAccessToken(), refreshToken);
+                    Constants.updateAccessToken(context, newToken, refreshToken);
                     return response.request().newBuilder()
                             .header(Constants.AUTHORIZATION, newValidToken)
                             .build();

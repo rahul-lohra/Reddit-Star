@@ -2,15 +2,18 @@ package com.android.rahul_lohra.redditstar.adapter.cursor;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.android.rahul_lohra.redditstar.R;
+import com.android.rahul_lohra.redditstar.activity.SubredditActivity;
 import com.android.rahul_lohra.redditstar.storage.MyProvider;
 import com.android.rahul_lohra.redditstar.storage.column.MyFavouritesColumn;
 import com.android.rahul_lohra.redditstar.storage.column.MySubredditColumn;
@@ -35,7 +38,7 @@ public class SubredditDrawerAdapter extends CursorRecyclerViewAdapter<RecyclerVi
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, final Cursor cursor) {
-        String displayName = cursor.getString(cursor.getColumnIndex(MySubredditColumn.KEY_DISPLAY_NAME));
+        final String displayName = cursor.getString(cursor.getColumnIndex(MySubredditColumn.KEY_DISPLAY_NAME));
         final String subredditId = cursor.getString(cursor.getColumnIndex(MySubredditColumn.KEY_ID));
 
         DrawerSubreddit drawerSubreddit = (DrawerSubreddit)viewHolder;
@@ -58,6 +61,15 @@ public class SubredditDrawerAdapter extends CursorRecyclerViewAdapter<RecyclerVi
                     int rowsDeleted = context.getContentResolver().delete(mUri,mWhere,mSelectionArgs);
                     Log.d(TAG,"rowsDeleted:"+rowsDeleted);
                 }
+            }
+        });
+
+        drawerSubreddit.tv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, SubredditActivity.class);
+                intent.putExtra("name",displayName);
+                context.startActivity(intent);
             }
         });
 
