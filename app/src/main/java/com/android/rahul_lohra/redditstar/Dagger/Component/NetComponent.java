@@ -8,9 +8,11 @@ import com.android.rahul_lohra.redditstar.fragments.HomeFragment;
 import com.android.rahul_lohra.redditstar.fragments.ReplyFragment;
 import com.android.rahul_lohra.redditstar.fragments.subreddit.SubredditFragment;
 import com.android.rahul_lohra.redditstar.loader.CommentsLoader;
+import com.android.rahul_lohra.redditstar.loader.SubredditLoader;
 import com.android.rahul_lohra.redditstar.presenter.activity.DashboardPresenter;
 import com.android.rahul_lohra.redditstar.service.GetDashboardSubredditsService;
 import com.android.rahul_lohra.redditstar.service.GetFrontPageService;
+import com.android.rahul_lohra.redditstar.service.GetSubredditListService;
 import com.android.rahul_lohra.redditstar.service.GetSubscribedSubredditsService;
 import com.android.rahul_lohra.redditstar.service.GetUserCredentialsService;
 
@@ -34,6 +36,9 @@ public interface NetComponent {
     void inject(ReplyFragment fragment);
     void inject(HomeFragment fragment);
     void inject(SubredditFragment fragment);
+    void inject(GetSubredditListService service);
+    void inject(SubredditLoader loader);
+
 
 
 

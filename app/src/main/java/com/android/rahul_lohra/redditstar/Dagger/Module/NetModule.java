@@ -18,6 +18,9 @@ import com.android.rahul_lohra.redditstar.storage.MyProvider;
 import com.android.rahul_lohra.redditstar.storage.column.UserCredentialsColumn;
 import com.android.rahul_lohra.redditstar.utility.Constants;
 import com.android.rahul_lohra.redditstar.utility.MyUrl;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.GlideBuilder;
+import com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool;
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -127,7 +130,6 @@ public class NetModule {
 
     }
 
-
     public class TokenAuthenticator implements Authenticator {
 
         @Override
@@ -172,4 +174,5 @@ public class NetModule {
             return null;
         }
     }
+
 }

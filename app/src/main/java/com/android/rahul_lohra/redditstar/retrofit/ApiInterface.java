@@ -46,9 +46,11 @@ public interface ApiInterface {
     Call<FrontPageResponse> getFrontPage(@QueryMap Map<String, String> options);
 
     @GET("/r/{subbreddit_name}/.json")
-    Call<FrontPageResponse> getSubredditList(@Header(Constants.AUTHORIZATION) String authorization);
+    Call<FrontPageResponse> getSubredditList(@Header(Constants.AUTHORIZATION) String authorization,
+                                             @Path(value = "subbreddit_name", encoded = true) String subbreddit_name,
+                                             @QueryMap Map<String, String> map);
 
-    @GET("/r/{subbreddit_name}/.json")
+    @GET("/r/{subbreddit_name}/about/.json")
     Call<t5_Response> getAboutSubreddit(@Header(Constants.AUTHORIZATION) String authorization,
                                         @Path(value = "subbreddit_name", encoded = true) String subbreddit_name
     );

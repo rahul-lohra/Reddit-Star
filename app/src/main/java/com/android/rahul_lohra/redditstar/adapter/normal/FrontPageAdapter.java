@@ -2,6 +2,7 @@ package com.android.rahul_lohra.redditstar.adapter.normal;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -43,12 +44,14 @@ public class FrontPageAdapter extends RecyclerView.Adapter {
     private Retrofit retrofit;
     private ApiInterface apiInterface;
     private String TAG = FrontPageAdapter.class.getSimpleName();
+    private Fragment fragment;
 
-    public FrontPageAdapter(Context context, List<FrontPageChild> list, Retrofit retrofit) {
+    public FrontPageAdapter(Fragment fragment,Context context, List<FrontPageChild> list, Retrofit retrofit) {
         this.context = context;
         this.list = list;
         this.retrofit = retrofit;
         this.apiInterface = retrofit.create(ApiInterface.class);
+        this.fragment = fragment;
     }
 
     @Override
@@ -74,13 +77,13 @@ public class FrontPageAdapter extends RecyclerView.Adapter {
         if (objLikes != null) {
             Boolean b = (Boolean) objLikes;
             Integer resId = (b) ? R.drawable.ic_arrow_upward_true : R.drawable.ic_arrow_downward_true;
-            Glide.with(context)
-                    .load(resId)
-                    .into(postView.imageUpVote);
+//            Glide.with(context)
+//                    .load(resId)
+//                    .into(postView.imageUpVote);
 
 
         }
-        if (position == list.size() - 1) {
+        if (position == list.size() - 1 && list.size()>4) {
             EventBus.getDefault().post("getNextData");
         }
 
@@ -180,8 +183,10 @@ public class FrontPageAdapter extends RecyclerView.Adapter {
         //set Textual Data
         Preview preview = frontPageChildData.getPreview();
         if (preview != null) {
-            Glide.with(context)
+            Glide.with(fragment)
                     .load(frontPageChildData.getThumbnail())
+                    .centerCrop()
+                    .crossFade()
                     .into(postView.imageView);
         }
 
@@ -197,14 +202,6 @@ public class FrontPageAdapter extends RecyclerView.Adapter {
         return list.size();
     }
 
-
-    private void makeVoteRequest(String thingId, int dir) {
-
-    }
-
-    private void setVote(ImageView imageView,Integer resId){
-
-    }
 
 
 }

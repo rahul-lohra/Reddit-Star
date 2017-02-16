@@ -9,13 +9,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.android.rahul_lohra.redditstar.R;
 import com.android.rahul_lohra.redditstar.adapter.normal.FrontPageAdapter;
 import com.android.rahul_lohra.redditstar.application.Initializer;
 import com.android.rahul_lohra.redditstar.modal.frontPage.FrontPageChild;
-import com.android.rahul_lohra.redditstar.modal.frontPage.FrontPageChildData;
 import com.android.rahul_lohra.redditstar.modal.frontPage.FrontPageResponseData;
 import com.android.rahul_lohra.redditstar.retrofit.ApiInterface;
 import com.android.rahul_lohra.redditstar.service.GetFrontPageService;
@@ -55,7 +53,7 @@ public class HomeFragment extends Fragment {
     Retrofit retrofit;
     ApiInterface apiInterface;
     FrontPageAdapter adapter;
-    List<FrontPageChild> frontPageChildList;
+    List<FrontPageChild> list;
 
     @OnClick(R.id.btn)
     public void onClick() {
@@ -95,8 +93,8 @@ public class HomeFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
         ((Initializer) getContext().getApplicationContext()).getNetComponent().inject(this);
-        frontPageChildList = new ArrayList<>();
-        adapter = new FrontPageAdapter(getActivity().getApplicationContext(),frontPageChildList,retrofit);
+        list = new ArrayList<>();
+        adapter = new FrontPageAdapter(HomeFragment.this,getActivity().getApplicationContext(), list,retrofit);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -123,8 +121,8 @@ public class HomeFragment extends Fragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(FrontPageResponseData frontPageResponseData) {
         this.frontPageResponseData = frontPageResponseData;
-        int lastPos = frontPageChildList.size();
-        frontPageChildList.addAll(lastPos,frontPageResponseData.getChildren());
+        int lastPos = list.size();
+        list.addAll(lastPos,frontPageResponseData.getChildren());
         adapter.notifyItemRangeInserted(lastPos,frontPageResponseData.getChildren().size());
     }
 
