@@ -22,6 +22,10 @@ public interface MyFavouritesColumn {
     @NotNull @Unique
     String KEY_SUBREDDIT_ID = "subreddit_id";
 
+    @DataType(REAL)
+    @NotNull
+    String KEY_SUBREDDIT_NAME = "subreddit_name";
+
     @DataType(INTEGER)
     @NotNull @DefaultValue("-1")
     String KEY_RANK = "rank";

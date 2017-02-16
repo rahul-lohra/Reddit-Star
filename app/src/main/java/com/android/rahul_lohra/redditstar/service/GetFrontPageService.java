@@ -7,6 +7,7 @@ import android.util.Log;
 import com.android.rahul_lohra.redditstar.application.Initializer;
 import com.android.rahul_lohra.redditstar.modal.frontPage.FrontPageResponse;
 import com.android.rahul_lohra.redditstar.retrofit.ApiInterface;
+import com.android.rahul_lohra.redditstar.utility.UserState;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -28,11 +29,16 @@ public class GetFrontPageService extends IntentService {
 
     @Inject
     @Named("withoutToken")
-    Retrofit retrofit;
+    Retrofit retrofitWithoutToken;
+
+    @Inject
+    @Named("withToken")
+    Retrofit retrofitWithToken;
+
     ApiInterface apiInterface;
 
     public static String after = null;
-
+    public boolean isUserLoggedIn = false;
     private final  String TAG = GetFrontPageService.class.getSimpleName();
     public GetFrontPageService() {
         super(GetFrontPageService.class.getSimpleName());
@@ -41,17 +47,21 @@ public class GetFrontPageService extends IntentService {
     public void onCreate() {
         super.onCreate();
         ((Initializer)getApplication()).getNetComponent().inject(this);
-        apiInterface =retrofit.create(ApiInterface.class);
+        isUserLoggedIn = UserState.isUserLoggedIn(getApplicationContext());
     }
     @Override
     protected void onHandleIntent(Intent intent) {
         if (intent != null) {
+
+            apiInterface = (isUserLoggedIn)?retrofitWithToken.create(ApiInterface.class):retrofitWithoutToken.create(ApiInterface.class);
             after = intent.getStringExtra("after");
             Map<String,String> map = new HashMap<>();
             map.put("limit","10");
             map.put("after",after);
+            String token = (isUserLoggedIn) ? "bearer " + UserState.getAuthToken(getApplicationContext()) : "";
+
             try {
-                Response<FrontPageResponse> res = apiInterface.getFrontPage(map).execute();
+                Response<FrontPageResponse> res = apiInterface.getFrontPage(token,map).execute();
                 if(res.code()==200)
                 {
                     EventBus.getDefault().post(res.body().getData());

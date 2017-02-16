@@ -42,24 +42,16 @@ public class HomeFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private FrontPageResponseData frontPageResponseData = null;
-    @Bind(R.id.btn)
-    Button btn;
     @Bind(R.id.rv)
     RecyclerView rv;
 
-
     @Inject
     @Named("withToken")
-    Retrofit retrofit;
-    ApiInterface apiInterface;
+    Retrofit retrofitWithToken;
+
     FrontPageAdapter adapter;
     List<FrontPageChild> list;
 
-    @OnClick(R.id.btn)
-    public void onClick() {
-        //make Api Call
-        makeApiCall();
-    }
 
     void makeApiCall(){
         Intent intent = new Intent(getActivity(), GetFrontPageService.class);
@@ -94,7 +86,7 @@ public class HomeFragment extends Fragment {
         setRetainInstance(true);
         ((Initializer) getContext().getApplicationContext()).getNetComponent().inject(this);
         list = new ArrayList<>();
-        adapter = new FrontPageAdapter(HomeFragment.this,getActivity().getApplicationContext(), list,retrofit);
+        adapter = new FrontPageAdapter(HomeFragment.this,getActivity().getApplicationContext(), list,retrofitWithToken);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -109,6 +101,7 @@ public class HomeFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_home, container, false);
         ButterKnife.bind(this, v);
         setAdapter();
+        makeApiCall();
         return v;
     }
 

@@ -103,6 +103,9 @@
     <string name="hot">HOT</string>
     <string name="new_text">NEW</string>
     <string name="top">TOP</string>
+    <string name="favorite">Favourites</string>
+    <string name="my_favorites">My Favourites</string>
+    <string name="no_items">No Items</string>
 
 
 </resources>

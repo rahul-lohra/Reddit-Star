@@ -188,6 +188,8 @@ public class FrontPageAdapter extends RecyclerView.Adapter {
                     .centerCrop()
                     .crossFade()
                     .into(postView.imageView);
+        }else {
+            postView.imageView.setVisibility(View.GONE);
         }
 
         postView.tvVote.setText(String.valueOf(frontPageChildData.getUps()));

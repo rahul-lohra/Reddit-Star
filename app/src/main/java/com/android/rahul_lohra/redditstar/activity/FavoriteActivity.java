@@ -6,26 +6,23 @@ import android.os.Bundle;
 
 import com.android.rahul_lohra.redditstar.R;
 import com.android.rahul_lohra.redditstar.fragments.DetailSubredditFragment;
+import com.android.rahul_lohra.redditstar.fragments.FavouriteFragment;
 import com.android.rahul_lohra.redditstar.fragments.ReplyFragment;
 
-public class ReplyActivity extends AppCompatActivity {
+public class FavoriteActivity extends AppCompatActivity {
 
-    String thingId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_reply);
+        setContentView(R.layout.activity_favorite);
 
         if(null==savedInstanceState){
-            Intent intent = getIntent();
-            thingId = intent.getStringExtra("thing_id");
             showReplyFragment();
         }
     }
     private void showReplyFragment(){
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.frame_layout, ReplyFragment.newInstance(thingId), ReplyFragment.class.getSimpleName())
+                .replace(R.id.frame_layout, FavouriteFragment.newInstance(), FavouriteFragment.class.getSimpleName())
                 .commit();
     }
-
 }

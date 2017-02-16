@@ -1,12 +1,15 @@
 package com.android.rahul_lohra.redditstar.adapter.normal;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import com.android.rahul_lohra.redditstar.R;
+import com.android.rahul_lohra.redditstar.activity.FavoriteActivity;
 import com.android.rahul_lohra.redditstar.modal.DrawerItemModal;
 import com.android.rahul_lohra.redditstar.viewHolder.DrawerDropDown;
 import com.android.rahul_lohra.redditstar.viewHolder.DrawerNormal;
@@ -67,6 +70,15 @@ public class DrawerAdapter extends RecyclerView.Adapter {
                 DrawerNormal drawerNormal = (DrawerNormal)holder;
                 drawerNormal.tv.setText(text);
                 drawerNormal.tv.setCompoundDrawablesRelativeWithIntrinsicBounds(drawable,null,null,null);
+
+                if(text.equals(context.getString(R.string.my_favorites))){
+                    drawerNormal.tv.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            context.startActivity(new Intent(context, FavoriteActivity.class));
+                        }
+                    });
+                }
                 break;
             case SEARCH_TYPE:
                 DrawerSearchItem drawerSearchItem = (DrawerSearchItem)holder;
@@ -98,14 +110,5 @@ public class DrawerAdapter extends RecyclerView.Adapter {
         return val;
     }
 
-    @Override
-    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
-        super.onAttachedToRecyclerView(recyclerView);
-    }
-
-    @Override
-    public void onDetachedFromRecyclerView(RecyclerView recyclerView) {
-        super.onDetachedFromRecyclerView(recyclerView);
-    }
 
 }

@@ -43,7 +43,7 @@ public interface ApiInterface {
                                     @Field("refresh_token") String refresh_token);
 
     @GET("/.json")
-    Call<FrontPageResponse> getFrontPage(@QueryMap Map<String, String> options);
+    Call<FrontPageResponse> getFrontPage(@Header(Constants.AUTHORIZATION) String authorization,@QueryMap Map<String, String> options);
 
     @GET("/r/{subbreddit_name}/.json")
     Call<FrontPageResponse> getSubredditList(@Header(Constants.AUTHORIZATION) String authorization,

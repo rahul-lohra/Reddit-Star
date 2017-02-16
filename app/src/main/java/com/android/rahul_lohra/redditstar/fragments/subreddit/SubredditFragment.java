@@ -127,6 +127,7 @@ public class SubredditFragment extends Fragment implements LoaderManager.LoaderC
         setAdapter();
         getSubredditAbout();
         getSubredditList();
+//        getLoaderManager().initLoader(LOADER_ID, savedInstanceState, this);
 
 //        rv.addOnScrollListener(new RecyclerView.OnScrollListener() {
 //            @Override
@@ -150,7 +151,8 @@ public class SubredditFragment extends Fragment implements LoaderManager.LoaderC
 
     private void setToolbar() {
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
-        toolbar.setTitle(subredditName);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(subredditName);
+//        toolbar.setTitle(subredditName);
     }
 
     private void getSubredditAbout() {
@@ -191,7 +193,6 @@ public class SubredditFragment extends Fragment implements LoaderManager.LoaderC
 
     private void getSubredditList() {
         String after = (frontPageResponseData!=null)?frontPageResponseData.getAfter():"";
-//        getLoaderManager().initLoader(LOADER_ID, bundle, this).forceLoad();
         Intent intent = new Intent(getActivity(), GetSubredditListService.class);
         intent.putExtra("subredditName",subredditName);
         intent.putExtra("after",after);

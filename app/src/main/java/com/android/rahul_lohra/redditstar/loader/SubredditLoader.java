@@ -86,6 +86,37 @@ public class SubredditLoader extends AsyncTaskLoader<FrontPageResponse> {
         return frontPageResponse;
     }
 
+    @Override
+    protected void onStartLoading() {
+        super.onStartLoading();
+        if (frontPageResponse != null) {
+            // Use cached data
+            deliverResult(frontPageResponse);
+        } else {
+            // We have no data, so kick off loading it
+            forceLoad();
+        }
+    }
 
+    @Override
+    public void onCanceled(FrontPageResponse data) {
+        super.onCanceled(data);
+    }
 
+    @Override
+    public void deliverResult(FrontPageResponse data) {
+        frontPageResponse = data;
+        super.deliverResult(data);
+
+    }
+
+    @Override
+    protected void onReset() {
+        super.onReset();
+    }
+
+    protected void onReleaseResources(FrontPageResponse data) {
+        // For a simple List<> there is nothing to do.  For something
+        // like a Cursor, we would close it here.
+    }
 }

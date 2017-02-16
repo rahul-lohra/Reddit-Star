@@ -11,10 +11,12 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <!--Glide-->
+
+        <!-- Glide -->
         <meta-data
             android:name="com.android.rahul_lohra.redditstar.glide.MyGlideModule"
             android:value="GlideModule" />
+
         <activity android:name=".dummy.DummyMainActivity">
             <activity
                 android:name=".util.DashboardActivity"
@@ -81,9 +83,12 @@
 
         <activity android:name=".activity.ReplyActivity" />
         <activity
+            android:name=".activity.SubredditActivity"
             android:label="@string/subreddits"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:name=".activity.SubredditActivity">
+            android:theme="@style/AppTheme.NoToolBar"></activity>
+        <activity android:name=".activity.FavoriteActivity"
+            android:label="@string/favorite"
+            android:theme="@style/AppTheme.NoToolBar">
 
         </activity>
     </application>

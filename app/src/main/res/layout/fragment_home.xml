@@ -6,11 +6,11 @@
     tools:context="com.android.rahul_lohra.redditstar.fragments.HomeFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <Button
-        android:id="@+id/btn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/get_data" />
+    <!--<Button-->
+        <!--android:id="@+id/btn"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="@string/get_data" />-->
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv"

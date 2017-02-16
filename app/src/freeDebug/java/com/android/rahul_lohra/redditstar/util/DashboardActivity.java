@@ -120,7 +120,7 @@ public class DashboardActivity extends AppCompatActivity implements
         drawerList.add(new DrawerItemModal("Search",ContextCompat.getDrawable(this,R.drawable.ic_home)));
         drawerList.add(new DrawerItemModal("Home",ContextCompat.getDrawable(this,R.drawable.ic_home)));
         drawerList.add(new DrawerItemModal("My Subreddits",ContextCompat.getDrawable(this,R.drawable.ic_list)));
-        drawerList.add(new DrawerItemModal("My Favourites",ContextCompat.getDrawable(this,R.drawable.ic_star)));
+        drawerList.add(new DrawerItemModal(getString(R.string.my_favorites),ContextCompat.getDrawable(this,R.drawable.ic_star)));
         drawerList.add(new DrawerItemModal("Settings",ContextCompat.getDrawable(this,R.drawable.ic_settings)));
         drawerAdapter = new DrawerAdapter(this,drawerList,this);
         rv.setLayoutManager(new LinearLayoutManager(this));
@@ -133,9 +133,6 @@ public class DashboardActivity extends AppCompatActivity implements
         }
     }
 
-    public void showSubreddits(){
-
-    }
 
     void init(){
         setSupportActionBar(toolbar);

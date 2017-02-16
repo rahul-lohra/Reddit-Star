@@ -2,6 +2,7 @@ package com.android.rahul_lohra.redditstar.service;
 
 import android.app.IntentService;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
@@ -49,6 +50,7 @@ public class GetUserCredentialsService extends IntentService {
             public void onResponse(Call<AboutMe> call, Response<AboutMe> response) {
                 if(response.code()== 200){
                     saveCredentials(response.body(),token);
+                    updateSubscribedSubreddits(getApplicationContext());
                     Log.d(TAG,"success");
                 }else {
                     Log.d(TAG,"fail:"+response.code());
@@ -61,6 +63,13 @@ public class GetUserCredentialsService extends IntentService {
             }
         });
 
+    }
+
+    private void updateSubscribedSubreddits(Context context){
+        Uri mUri = MyProvider.SubredditLists.CONTENT_URI;
+        context.getContentResolver().delete(mUri,null,null);
+        Intent intent = new Intent(context, GetSubscribedSubredditsService.class);
+        context.startService(intent);
     }
 
     void saveCredentials(AboutMe aboutMe,String token){
