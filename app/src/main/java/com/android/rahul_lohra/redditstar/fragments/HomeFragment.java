@@ -1,11 +1,16 @@
 package com.android.rahul_lohra.redditstar.fragments;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -13,6 +18,7 @@ import android.widget.Button;
 import com.android.rahul_lohra.redditstar.R;
 import com.android.rahul_lohra.redditstar.adapter.normal.FrontPageAdapter;
 import com.android.rahul_lohra.redditstar.application.Initializer;
+import com.android.rahul_lohra.redditstar.helper.AwesomeSearchView;
 import com.android.rahul_lohra.redditstar.modal.frontPage.FrontPageChild;
 import com.android.rahul_lohra.redditstar.modal.frontPage.FrontPageResponseData;
 import com.android.rahul_lohra.redditstar.retrofit.ApiInterface;
@@ -84,6 +90,7 @@ public class HomeFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
+        setHasOptionsMenu(true);
         ((Initializer) getContext().getApplicationContext()).getNetComponent().inject(this);
         list = new ArrayList<>();
         adapter = new FrontPageAdapter(HomeFragment.this,getActivity().getApplicationContext(), list,retrofitWithToken);
@@ -129,6 +136,29 @@ public class HomeFragment extends Fragment {
                     makeApiCall();
                 }
             }
+        }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+
+        inflater.inflate(R.menu.menu_search, menu);
+
+        SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
+        AwesomeSearchView searchView = (AwesomeSearchView) menu.findItem(R.id.action_search).getActionView();//.getActionView();
+        // Assumes current activity is the searchable activity
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
+        searchView.setIconifiedByDefault(false);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_search:
+                getActivity().onSearchRequested();
+                return true;
+            default:return false;
         }
     }
 

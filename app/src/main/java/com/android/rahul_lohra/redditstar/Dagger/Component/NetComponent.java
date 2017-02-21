@@ -1,5 +1,6 @@
 package com.android.rahul_lohra.redditstar.dagger.Component;
 
+import com.android.rahul_lohra.redditstar.activity.SearchActivity;
 import com.android.rahul_lohra.redditstar.dagger.Module.AppModule;
 import com.android.rahul_lohra.redditstar.dagger.Module.NetModule;
 import com.android.rahul_lohra.redditstar.activity.MainActivity;
@@ -15,6 +16,8 @@ import com.android.rahul_lohra.redditstar.service.GetFrontPageService;
 import com.android.rahul_lohra.redditstar.service.GetSubredditListService;
 import com.android.rahul_lohra.redditstar.service.GetSubscribedSubredditsService;
 import com.android.rahul_lohra.redditstar.service.GetUserCredentialsService;
+import com.android.rahul_lohra.redditstar.service.search.SearchLinksService;
+import com.android.rahul_lohra.redditstar.service.search.SearchSubredditsService;
 
 import javax.inject.Singleton;
 
@@ -27,6 +30,7 @@ import dagger.Component;
 @Component(modules = {NetModule.class, AppModule.class})
 public interface NetComponent {
     void inject(MainActivity activity);
+    void inject(SearchActivity activity);
     void inject(DashboardPresenter presenter);
     void inject(GetUserCredentialsService service);
     void inject(GetSubscribedSubredditsService service);
@@ -37,11 +41,9 @@ public interface NetComponent {
     void inject(HomeFragment fragment);
     void inject(SubredditFragment fragment);
     void inject(GetSubredditListService service);
+    void inject(SearchSubredditsService service);
+    void inject(SearchLinksService service);
+
     void inject(SubredditLoader loader);
-
-
-
-
-
 
 }

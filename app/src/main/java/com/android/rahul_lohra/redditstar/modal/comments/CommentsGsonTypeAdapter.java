@@ -1,5 +1,6 @@
 package com.android.rahul_lohra.redditstar.modal.comments;
 
+import com.android.rahul_lohra.redditstar.modal.t3_Link.T3_Data;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
@@ -108,7 +109,7 @@ public class CommentsGsonTypeAdapter extends TypeAdapter<List<Example>> {
     public Child readChildItem(JsonReader reader) throws IOException {
 
         String kind = null;
-        T3data t3data = null;
+        T3_Data t3data = null;
         T1data t1data = null;
 
         reader.beginObject();
@@ -135,7 +136,7 @@ public class CommentsGsonTypeAdapter extends TypeAdapter<List<Example>> {
         return new Child(kind, t3data, t1data);
     }
 
-    public T3data readT3Data(JsonReader reader) throws IOException {
+    public T3_Data readT3Data(JsonReader reader) throws IOException {
 
         String subreddit = null;
         Object likes = null;
@@ -211,7 +212,7 @@ public class CommentsGsonTypeAdapter extends TypeAdapter<List<Example>> {
             }
         }
         reader.endObject();
-        return new T3data(
+        return new T3_Data(
                 subreddit,
                 likes,
                 id,

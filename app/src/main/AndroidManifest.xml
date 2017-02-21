@@ -12,22 +12,25 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <!--Search Activity-->
+        <meta-data android:name="android.app.default_searchable"
+            android:value="com.android.rahul_lohra.redditstar.activity.SearchActivity" />
+
         <!-- Glide -->
         <meta-data
             android:name="com.android.rahul_lohra.redditstar.glide.MyGlideModule"
             android:value="GlideModule" />
 
-        <activity android:name=".dummy.DummyMainActivity">
-            <activity
-                android:name=".util.DashboardActivity"
-                android:label="@string/title_activity_dashboard"
-                android:theme="@style/AppTheme.NoActionBar">
-                <intent-filter>
-                    <action android:name="android.intent.action.MAIN" />
+        <activity android:name=".dummy.DummyMainActivity" />
+        <activity
+            android:name=".activity.DashboardActivity"
+            android:label="@string/title_activity_dashboard"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-                    <category android:name="android.intent.category.LAUNCHER" />
-                </intent-filter>
-            </activity>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity android:name=".activity.LoginActivity" />
         <activity android:name=".activity.DetailActivity" />
@@ -60,6 +63,11 @@
             android:exported="false"
             android:syncable="true" />
 
+        <!--Search Provider-->
+        <provider
+            android:name=".storage.MySuggestionProvider"
+            android:authorities="com.android.rahul_lohra.redditstar.MySuggestionProvider" />
+
         <!-- Authenticator -->
         <service android:name=".sync.AuthenticatorService">
             <intent-filter>
@@ -75,6 +83,12 @@
             android:name=".service.GetDashboardSubredditsService"
             android:exported="false" />
         <service
+            android:name=".service.search.SearchLinksService"
+            android:exported="false" />
+        <service
+            android:name=".service.search.SearchSubredditsService"
+            android:exported="false" />
+        <service
             android:name=".service.GetFrontPageService"
             android:exported="false" />
         <service
@@ -85,11 +99,21 @@
         <activity
             android:name=".activity.SubredditActivity"
             android:label="@string/subreddits"
-            android:theme="@style/AppTheme.NoToolBar"></activity>
-        <activity android:name=".activity.FavoriteActivity"
+            android:theme="@style/AppTheme.NoToolBar" />
+        <activity
+            android:name=".activity.FavoriteActivity"
             android:label="@string/favorite"
-            android:theme="@style/AppTheme.NoToolBar">
-
+            android:theme="@style/AppTheme.NoToolBar"></activity>
+        <activity
+            android:name=".activity.SearchActivity"
+            android:theme="@style/AppTheme.NoToolBar"
+            android:launchMode="singleTop">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
         </activity>
     </application>
 

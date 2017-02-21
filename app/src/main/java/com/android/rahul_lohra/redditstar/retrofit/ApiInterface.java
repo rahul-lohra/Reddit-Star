@@ -5,9 +5,9 @@ import com.android.rahul_lohra.redditstar.modal.RefreshTokenResponse;
 import com.android.rahul_lohra.redditstar.modal.SubredditResponse;
 import com.android.rahul_lohra.redditstar.modal.frontPage.FrontPageResponse;
 import com.android.rahul_lohra.redditstar.modal.reply.ReplyModal;
-import com.android.rahul_lohra.redditstar.modal.t5.t5_Response;
-import com.android.rahul_lohra.redditstar.modal.token.RefreshToken;
-import com.android.rahul_lohra.redditstar.modal.vote.VoteModal;
+import com.android.rahul_lohra.redditstar.modal.search.T3_SearchResponse;
+import com.android.rahul_lohra.redditstar.modal.search.T5_SearchResponse;
+import com.android.rahul_lohra.redditstar.modal.t5_Subreddit.t5_Response;
 import com.android.rahul_lohra.redditstar.utility.Constants;
 
 import java.util.Map;
@@ -63,6 +63,15 @@ public interface ApiInterface {
     @POST("/api/vote")
     Call<ResponseBody> postVote(@Header(Constants.AUTHORIZATION) String authorization,
                                 @QueryMap Map<String, String> map);
+
+    @GET("/subreddits/search.json")
+    Call<T5_SearchResponse> searchSubreddits(@Header(Constants.AUTHORIZATION) String authorization,
+                                             @QueryMap Map<String, String> map);
+
+    @GET("search.json")
+    Call<T3_SearchResponse> searchLinks(@Header(Constants.AUTHORIZATION) String authorization,
+                                        @QueryMap Map<String, String> map);
+
 
     @POST("/api/comment")
     Call<ResponseBody> postComment(@Header(Constants.AUTHORIZATION) String authorization,

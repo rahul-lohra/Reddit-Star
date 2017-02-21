@@ -10,12 +10,14 @@ import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.android.rahul_lohra.redditstar.R;
 import com.android.rahul_lohra.redditstar.adapter.cursor.FavoritesAdapter;
+import com.android.rahul_lohra.redditstar.helper.SimpleItemTouchHelperCallback;
 import com.android.rahul_lohra.redditstar.storage.MyProvider;
 import com.android.rahul_lohra.redditstar.storage.column.MyFavouritesColumn;
 import com.android.rahul_lohra.redditstar.storage.column.MySubredditColumn;
@@ -47,7 +49,7 @@ public class FavouriteFragment extends Fragment implements LoaderManager.LoaderC
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        adapter = new FavoritesAdapter(getActivity(),null);
+        adapter = new FavoritesAdapter(getActivity(), null);
         getLoaderManager().initLoader(LOADER_ID, null, this);
     }
 
@@ -57,11 +59,22 @@ public class FavouriteFragment extends Fragment implements LoaderManager.LoaderC
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_favorite, container, false);
         ButterKnife.bind(this, v);
-        rv.setLayoutManager(new LinearLayoutManager(getActivity()));
-        rv.setAdapter(adapter);
+
+        //setupRv
+        setupRv();
 
         return v;
     }
+
+    private void setupRv() {
+//        ItemTouchHelper.Callback callback =
+//                new SimpleItemTouchHelperCallback(adapter);
+//        ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
+//        touchHelper.attachToRecyclerView(rv);
+        rv.setLayoutManager(new LinearLayoutManager(getActivity()));
+        rv.setAdapter(adapter);
+    }
+
 
     @Override
     public void onDestroyView() {
@@ -81,15 +94,15 @@ public class FavouriteFragment extends Fragment implements LoaderManager.LoaderC
                         MyFavouritesColumn.KEY_SUBREDDIT_ID,
                         MyFavouritesColumn.KEY_SUBREDDIT_NAME
                 };
-                return new CursorLoader(getActivity(), uri, mProjection, null, null, null);
+                String sortOrder = MyFavouritesColumn.KEY_RANK;
+                return new CursorLoader(getActivity(), uri, mProjection, null, null, sortOrder);
         }
         return null;
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        switch (loader.getId())
-        {
+        switch (loader.getId()) {
             case LOADER_ID:
                 this.adapter.swapCursor(data);
                 break;
@@ -98,8 +111,8 @@ public class FavouriteFragment extends Fragment implements LoaderManager.LoaderC
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        switch (loader.getId()){
-            case LOADER_ID :
+        switch (loader.getId()) {
+            case LOADER_ID:
                 adapter.swapCursor(null);
                 break;
         }

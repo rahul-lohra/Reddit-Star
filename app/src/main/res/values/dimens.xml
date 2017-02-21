@@ -9,5 +9,6 @@
     <dimen name="drawer_item_padding">12dp</dimen>
     <dimen name="drawer_inner_item_padding">18dp</dimen>
     <dimen name="tab_layout_elevation">4dp</dimen>
+    <dimen name="search_view_inset">5dp</dimen>
 
 </resources>

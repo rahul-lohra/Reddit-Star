@@ -9,7 +9,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,17 +16,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.android.rahul_lohra.redditstar.R;
-import com.android.rahul_lohra.redditstar.adapter.fragmentState.SubredditFragmentAdapter;
 import com.android.rahul_lohra.redditstar.adapter.normal.FrontPageAdapter;
 import com.android.rahul_lohra.redditstar.application.Initializer;
-import com.android.rahul_lohra.redditstar.loader.CommentsLoader;
 import com.android.rahul_lohra.redditstar.loader.SubredditLoader;
 import com.android.rahul_lohra.redditstar.modal.frontPage.FrontPageChild;
 import com.android.rahul_lohra.redditstar.modal.frontPage.FrontPageResponse;
 import com.android.rahul_lohra.redditstar.modal.frontPage.FrontPageResponseData;
-import com.android.rahul_lohra.redditstar.modal.t5.t5_Response;
+import com.android.rahul_lohra.redditstar.modal.t5_Subreddit.t5_Response;
 import com.android.rahul_lohra.redditstar.retrofit.ApiInterface;
-import com.android.rahul_lohra.redditstar.service.GetFrontPageService;
 import com.android.rahul_lohra.redditstar.service.GetSubredditListService;
 import com.android.rahul_lohra.redditstar.utility.UserState;
 

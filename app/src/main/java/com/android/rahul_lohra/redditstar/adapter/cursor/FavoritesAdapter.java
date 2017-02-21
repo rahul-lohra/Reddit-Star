@@ -14,17 +14,23 @@ import android.widget.ImageView;
 
 import com.android.rahul_lohra.redditstar.R;
 import com.android.rahul_lohra.redditstar.activity.SubredditActivity;
+import com.android.rahul_lohra.redditstar.helper.ItemTouchHelperAdapter;
 import com.android.rahul_lohra.redditstar.storage.MyProvider;
 import com.android.rahul_lohra.redditstar.storage.column.MyFavouritesColumn;
 import com.android.rahul_lohra.redditstar.viewHolder.CursorRecyclerViewAdapter;
 import com.android.rahul_lohra.redditstar.viewHolder.DrawerSubreddit;
 import com.varunest.sparkbutton.SparkEventListener;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 /**
  * Created by rkrde on 29-01-2017.
  */
 
-public class FavoritesAdapter extends CursorRecyclerViewAdapter<RecyclerView.ViewHolder> {
+public class FavoritesAdapter extends CursorRecyclerViewAdapter<RecyclerView.ViewHolder> implements
+        ItemTouchHelperAdapter {
 
     private Context context;
     private final String TAG = FavoritesAdapter.class.getSimpleName();
@@ -55,10 +61,10 @@ public class FavoritesAdapter extends CursorRecyclerViewAdapter<RecyclerView.Vie
 //                    context.getContentResolver().insert(mUri,contentValues);
                 }else {
                     //remove
-                    String mWhere = MyFavouritesColumn.KEY_SUBREDDIT_ID +"=?";
-                    String mSelectionArgs []={subredditId};
-                    int rowsDeleted = context.getContentResolver().delete(mUri,mWhere,mSelectionArgs);
-                    Log.d(TAG,"rowsDeleted:"+rowsDeleted);
+//                    String mWhere = MyFavouritesColumn.KEY_SUBREDDIT_ID +"=?";
+//                    String mSelectionArgs []={subredditId};
+//                    int rowsDeleted = context.getContentResolver().delete(mUri,mWhere,mSelectionArgs);
+//                    Log.d(TAG,"rowsDeleted:"+rowsDeleted);
                 }
             }
         });
@@ -77,5 +83,25 @@ public class FavoritesAdapter extends CursorRecyclerViewAdapter<RecyclerView.Vie
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new DrawerSubreddit(context,LayoutInflater.from(parent.getContext()).inflate(R.layout.item_favorite, parent, false));
+    }
+
+    @Override
+    public void onItemMove(int fromPosition, int toPosition) {
+
+        Log.d(TAG,"from:"+fromPosition+",to:"+toPosition);
+        if (fromPosition < toPosition) {
+            for (int i = fromPosition; i < toPosition; i++) {
+//                context.getContentResolver().
+            }
+        } else {
+            for (int i = fromPosition; i > toPosition; i--) {
+//                Collections.swap(mItems, i, i - 1);
+            }
+        }
+    }
+
+    @Override
+    public void onItemDismiss(int position) {
+        //NO USE unless swipe is already disabled
     }
 }
