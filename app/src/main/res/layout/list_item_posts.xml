@@ -62,12 +62,12 @@
 
         <TextView
             android:id="@+id/tv_comments"
-            android:layout_width="58dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:layout_marginStart="16dp"
             android:drawableEnd="@drawable/ic_chat_bubble"
-            android:drawablePadding="1dp"
+            android:drawablePadding="8dp"
             android:text="@string/comments_counts"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"

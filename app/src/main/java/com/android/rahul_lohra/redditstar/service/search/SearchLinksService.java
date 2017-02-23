@@ -59,7 +59,7 @@ public class SearchLinksService extends IntentService {
             after = intent.getStringExtra("after");
             Map<String, String> map = new HashMap<>();
             map.put("after", after);
-            map.put("limit", "15");
+            map.put("limit", "2");
             map.put("q",subredditName);
             try {
                 Response<T3_SearchResponse> res = apiInterface.searchLinks(token,map).execute();

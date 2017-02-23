@@ -92,7 +92,7 @@
 
             <TextView
                 android:id="@+id/tv_vote"
-                android:layout_width="32dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 app:layout_constraintLeft_toRightOf="@+id/image_up_vote"
@@ -128,9 +128,8 @@
                 android:layout_width="150dp"
                 android:layout_height="0dp"
                 android:layout_marginTop="48dp"
-                android:drawablePadding="1dp"
+                android:drawablePadding="16dp"
                 android:drawableStart="@drawable/ic_sort"
-                android:gravity="center"
                 app:layout_constraintLeft_toLeftOf="@+id/tv_title"
                 app:layout_constraintTop_toBottomOf="@+id/tv_comments"
                 tools:text="@string/sort_order" />

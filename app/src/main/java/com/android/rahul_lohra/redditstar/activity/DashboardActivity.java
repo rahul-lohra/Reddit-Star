@@ -3,6 +3,7 @@ package com.android.rahul_lohra.redditstar.activity;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -29,7 +30,9 @@ import com.android.rahul_lohra.redditstar.adapter.cursor.SubredditDrawerAdapter;
 import com.android.rahul_lohra.redditstar.adapter.normal.DrawerAdapter;
 import com.android.rahul_lohra.redditstar.contract.IDashboard;
 import com.android.rahul_lohra.redditstar.dialog.AddAccountDialog;
+import com.android.rahul_lohra.redditstar.fragments.DetailSubredditFragment;
 import com.android.rahul_lohra.redditstar.fragments.HomeFragment;
+import com.android.rahul_lohra.redditstar.fragments.subreddit.HotFragment;
 import com.android.rahul_lohra.redditstar.modal.DrawerItemModal;
 import com.android.rahul_lohra.redditstar.modal.comments.CommentsGsonTypeAdapter;
 import com.android.rahul_lohra.redditstar.modal.comments.DummyAdapter;
@@ -75,8 +78,11 @@ public class DashboardActivity extends AppCompatActivity implements
     List<DrawerItemModal> drawerList;
     DashboardPresenter dashboardPresenter;
     AddAccountDialog addAccountDialog;
+    private boolean mTwoPane;
+    private final String TAG = DashboardActivity.class.getSimpleName();
 
-    private final int  LOADER_ID = 1;
+    private final int LOADER_ID = 1;
+
     @OnClick(R.id.fab)
     public void onClick() {
         Snackbar.make(fab, "Replace with your own action", Snackbar.LENGTH_LONG)
@@ -85,8 +91,8 @@ public class DashboardActivity extends AppCompatActivity implements
     }
 
     @OnClick(R.id.image_view_add)
-    public void onClickAddAccount(){
-         addAccountDialog.show(getFragmentManager(),AddAccountDialog.class.getSimpleName());
+    public void onClickAddAccount() {
+        addAccountDialog.show(getFragmentManager(), AddAccountDialog.class.getSimpleName());
     }
 
 
@@ -96,58 +102,74 @@ public class DashboardActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_dashboard);
         ButterKnife.bind(this);
         init();
-        setAdapter();
+//        setAdapter();
         setupDrawer();
         setupPresenter();
 //        dashboardPresenter.getMySubredditsAndDeletePreviousOnes();
-        if(null==savedInstanceState){
-          showHomeFragment();
+
+
+        if ((findViewById(R.id.frame_layout_right) != null)) {
+            mTwoPane = true;
+            if (savedInstanceState == null) {
+                showDetailSubredditFragment();
+                showHomeFragment(R.id.frame_layout_left);
+            }
+        }else {
+            if(savedInstanceState==null){
+                mTwoPane = false;
+                showHomeFragment(R.id.frame_layout_left);
+            }
         }
+        Log.d(TAG, "isTwoPane:" + mTwoPane + "");
+
     }
 
-
-
-    void showHomeFragment(){
+    void showDetailSubredditFragment() {
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.content_dashboard, HomeFragment.newInstance("a", "a"), HomeFragment.class.getSimpleName())
-//                .addToBackStack("c")
+                .replace(R.id.frame_layout_right, DetailSubredditFragment.newInstance(null), DetailSubredditFragment.class.getSimpleName())
+                .commit();
+    }
+
+    void showHomeFragment(@IdRes int layoutId) {
+        getSupportFragmentManager().beginTransaction()
+                .replace(layoutId, HomeFragment.newInstance(), HomeFragment.class.getSimpleName())
                 .commit();
     }
 
 
-    void setupDrawer(){
+    void setupDrawer() {
         drawerList = new ArrayList<>();
-        drawerList.add(new DrawerItemModal("Search",ContextCompat.getDrawable(this,R.drawable.ic_home)));
-        drawerList.add(new DrawerItemModal("Home",ContextCompat.getDrawable(this,R.drawable.ic_home)));
-        drawerList.add(new DrawerItemModal("My Subreddits",ContextCompat.getDrawable(this,R.drawable.ic_list)));
-        drawerList.add(new DrawerItemModal(getString(R.string.my_favorites),ContextCompat.getDrawable(this,R.drawable.ic_star)));
-        drawerList.add(new DrawerItemModal("Settings",ContextCompat.getDrawable(this,R.drawable.ic_settings)));
-        drawerAdapter = new DrawerAdapter(this,drawerList,this);
+        drawerList.add(new DrawerItemModal("Search", ContextCompat.getDrawable(this, R.drawable.ic_home)));
+        drawerList.add(new DrawerItemModal("Home", ContextCompat.getDrawable(this, R.drawable.ic_home)));
+        drawerList.add(new DrawerItemModal("My Subreddits", ContextCompat.getDrawable(this, R.drawable.ic_list)));
+        drawerList.add(new DrawerItemModal(getString(R.string.my_favorites), ContextCompat.getDrawable(this, R.drawable.ic_star)));
+        drawerList.add(new DrawerItemModal("Settings", ContextCompat.getDrawable(this, R.drawable.ic_settings)));
+        drawerAdapter = new DrawerAdapter(this, drawerList, this);
         rv.setLayoutManager(new LinearLayoutManager(this));
         rv.setAdapter(drawerAdapter);
     }
 
-    void setupPresenter(){
-        if (null==dashboardPresenter){
-            dashboardPresenter = new DashboardPresenter(getApplicationContext(),this);
+    void setupPresenter() {
+        if (null == dashboardPresenter) {
+            dashboardPresenter = new DashboardPresenter(getApplicationContext(), this);
         }
     }
 
 
-    void init(){
+    void init() {
         setSupportActionBar(toolbar);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
-        addAccountDialog  = new AddAccountDialog();
+        addAccountDialog = new AddAccountDialog();
 
-        subredditDrawerAdapter = new SubredditDrawerAdapter(this,null);
+        subredditDrawerAdapter = new SubredditDrawerAdapter(this, null);
         getSupportLoaderManager().initLoader(LOADER_ID, null, this);
     }
 
-    void setAdapter(){
+    void setAdapter() {
 //        rv.setLayoutManager(new LinearLayoutManager(this));
 //        rv.setAdapter(subredditDrawerAdapter);
 //        LinearLayoutManager layoutManager = new LinearLayoutManager(ChatActivity.this,LinearLayoutManager.VERTICAL,false);
@@ -181,6 +203,7 @@ public class DashboardActivity extends AppCompatActivity implements
         }
         return super.onOptionsItemSelected(item);
     }
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -215,7 +238,7 @@ public class DashboardActivity extends AppCompatActivity implements
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 
-        switch (id){
+        switch (id) {
             case LOADER_ID:
                 Uri uri = MyProvider.SubredditLists.CONTENT_URI;
                 String mProjection[] = {
@@ -226,15 +249,14 @@ public class DashboardActivity extends AppCompatActivity implements
                         MySubredditColumn.KEY_TITLE,
                         MySubredditColumn.KEY_URL
                 };
-                return new CursorLoader(this,uri,mProjection,null,null,null);
+                return new CursorLoader(this, uri, mProjection, null, null, null);
         }
         return null;
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        switch (loader.getId())
-        {
+        switch (loader.getId()) {
             case LOADER_ID:
                 this.subredditDrawerAdapter.swapCursor(data);
                 break;
@@ -243,8 +265,8 @@ public class DashboardActivity extends AppCompatActivity implements
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        switch (loader.getId()){
-            case LOADER_ID :
+        switch (loader.getId()) {
+            case LOADER_ID:
                 subredditDrawerAdapter.swapCursor(null);
                 break;
         }
@@ -253,7 +275,7 @@ public class DashboardActivity extends AppCompatActivity implements
 
     @Override
     public void getSubredditRecyclerView(RecyclerView recyclerView) {
-        if(recyclerView!=null){
+        if (recyclerView != null) {
             recyclerView.setAdapter(subredditDrawerAdapter);
         }
     }

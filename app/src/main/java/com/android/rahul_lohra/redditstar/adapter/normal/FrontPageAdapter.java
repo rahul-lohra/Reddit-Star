@@ -16,7 +16,9 @@ import com.android.rahul_lohra.redditstar.activity.DetailActivity;
 import com.android.rahul_lohra.redditstar.modal.frontPage.FrontPageChild;
 import com.android.rahul_lohra.redditstar.modal.frontPage.FrontPageChildData;
 import com.android.rahul_lohra.redditstar.modal.frontPage.Preview;
+import com.android.rahul_lohra.redditstar.modal.transfer.DetailSubredditModal;
 import com.android.rahul_lohra.redditstar.retrofit.ApiInterface;
+import com.android.rahul_lohra.redditstar.utility.Constants;
 import com.android.rahul_lohra.redditstar.utility.UserState;
 import com.android.rahul_lohra.redditstar.viewHolder.PostView;
 import com.bumptech.glide.Glide;
@@ -68,10 +70,18 @@ public class FrontPageAdapter extends RecyclerView.Adapter {
         final PostView postView = (PostView) holder;
 
 
-        FrontPageChildData frontPageChildData = list.get(position).getData();
+        final FrontPageChildData frontPageChildData = list.get(position).getData();
         final String id = frontPageChildData.getId();
         final String subreddit = frontPageChildData.getSubreddit();
         final String thingId = frontPageChildData.getName();
+        final String author = frontPageChildData.getAuthor();
+        final long createdUtc = frontPageChildData.getCreatedUtc();
+        final String time = Constants.getTimeDiff(createdUtc);
+        final String ups = String.valueOf(frontPageChildData.getUps());
+        final String title = String.valueOf(frontPageChildData.getTitle());
+        final String commentsCount = String.valueOf(frontPageChildData.getNumComments());
+        final Preview preview = frontPageChildData.getPreview();
+        final String thumbnail = (preview!=null)?frontPageChildData.getThumbnail():"";
 
         final Object objLikes = frontPageChildData.getLikes();
         if (objLikes != null) {
@@ -92,8 +102,17 @@ public class FrontPageAdapter extends RecyclerView.Adapter {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, DetailActivity.class);
-                intent.putExtra("id", id);
-                intent.putExtra("subreddit", subreddit);
+//                intent.putExtra("id", id);
+//                intent.putExtra("subreddit", subreddit);
+//                intent.putExtra("ups",ups);
+//                intent.putExtra("title",title);
+//                intent.putExtra("commentsCount",commentsCount);
+//                intent.putExtra("time",time);
+//                intent.putExtra("author",author);
+//                intent.putExtra("thumbnail",(preview!=null)?frontPageChildData.getThumbnail():"");
+                DetailSubredditModal modal = new DetailSubredditModal(id,
+                        subreddit,ups,title,commentsCount,thumbnail,time,author);
+                intent.putExtra("modal",modal);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
             }
@@ -109,7 +128,6 @@ public class FrontPageAdapter extends RecyclerView.Adapter {
                     Toast.makeText(context, context.getString(R.string.please_login), Toast.LENGTH_SHORT).show();
                     return;
                 }
-
 
                 int dir = 1;
                 if (objLikes != null) {
@@ -181,7 +199,7 @@ public class FrontPageAdapter extends RecyclerView.Adapter {
         });
 
         //set Textual Data
-        Preview preview = frontPageChildData.getPreview();
+
         if (preview != null) {
             Glide.with(fragment)
                     .load(frontPageChildData.getThumbnail())
@@ -196,6 +214,8 @@ public class FrontPageAdapter extends RecyclerView.Adapter {
         postView.tvTitle.setText(list.get(position).getData().getSubreddit());
         postView.tvDetail.setText(list.get(position).getData().getTitle());
         postView.tvComments.setText(String.valueOf(list.get(position).getData().getNumComments()));
+
+
 
     }
 

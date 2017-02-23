@@ -10,6 +10,10 @@ import android.util.Log;
 import com.android.rahul_lohra.redditstar.storage.MyProvider;
 import com.android.rahul_lohra.redditstar.storage.column.UserCredentialsColumn;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.TimeZone;
+
 /**
  * Created by rkrde on 24-01-2017.
  */
@@ -53,6 +57,22 @@ public class Constants {
         int rowsUpdated = context.getContentResolver().update(mUri,cv,mSelection,mSelectionArgs);
         Log.d(TAG,"rowsUpdated:"+rowsUpdated);
 
+    }
+
+    public static String getTimeDiff(long utcTime){
+
+        Calendar c = Calendar.getInstance();
+        int utcOffset = c.get(Calendar.ZONE_OFFSET) + c.get(Calendar.DST_OFFSET);
+        Long utcMilliseconds = (c.getTimeInMillis() + utcOffset)/1000;
+        long seconds = (utcMilliseconds)- utcTime;
+
+        long sec = seconds % 60;
+        long minutes = seconds % 3600 / 60;
+        long hours = seconds % 86400 / 3600;
+        long days = seconds / 86400;
+
+        String time=String.valueOf((days!=0)?days+"d ":""+((hours!=0)?hours+"h ":"")+((minutes!=0)?minutes+"m ":"")+((sec!=0)?sec+"s ":""));
+        return time;
     }
 
 
