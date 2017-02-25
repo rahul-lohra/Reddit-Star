@@ -2,6 +2,7 @@ package com.android.rahul_lohra.redditstar.activity;
 
 import android.app.ActivityOptions;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ImageView;
@@ -20,13 +21,15 @@ public class SubredditActivity extends AppCompatActivity implements SubredditFra
 
         if(null==savedInstanceState){
             String name = getIntent().getStringExtra("name");
-            showSubredditFragment(name);
+            String fullName = getIntent().getStringExtra("fullName");
+
+            showSubredditFragment(name,fullName);
         }
     }
 
-    void showSubredditFragment(String name){
+    void showSubredditFragment(@NonNull String name,@NonNull String fullName){
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.frame_layout, SubredditFragment.newInstance(name,""), SubredditFragment.class.getSimpleName())
+                .replace(R.id.frame_layout, SubredditFragment.newInstance(name,fullName), SubredditFragment.class.getSimpleName())
                 .commit();
     }
 

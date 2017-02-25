@@ -25,7 +25,7 @@ public class T5_SubredditSearchAdapter extends RecyclerView.Adapter {
     private List<T5_Kind> list;
 
     public interface IT5_SubredditSearchAdapter{
-         void sendData(String name);
+         void sendData(String name,String fullName);
     }
     private IT5_SubredditSearchAdapter mListener;
 
@@ -70,7 +70,7 @@ public class T5_SubredditSearchAdapter extends RecyclerView.Adapter {
             public void onClick(View view) {
                 if(mListener!=null)
                 {
-                    mListener.sendData(t5_data.getDisplayName());
+                    mListener.sendData(t5_data.getDisplayName(),t5_data.getName());
                 }
             }
         });

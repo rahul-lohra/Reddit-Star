@@ -17,15 +17,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.android.rahul_lohra.redditstar.R;
 import com.android.rahul_lohra.redditstar.adapter.normal.FrontPageAdapter;
 import com.android.rahul_lohra.redditstar.application.Initializer;
 import com.android.rahul_lohra.redditstar.loader.SubredditLoader;
+import com.android.rahul_lohra.redditstar.modal.SubscribeSubreddit;
 import com.android.rahul_lohra.redditstar.modal.custom.DetailPostModal;
 import com.android.rahul_lohra.redditstar.modal.frontPage.FrontPageChild;
 import com.android.rahul_lohra.redditstar.modal.frontPage.FrontPageResponse;
 import com.android.rahul_lohra.redditstar.modal.frontPage.FrontPageResponseData;
+import com.android.rahul_lohra.redditstar.modal.t5_Subreddit.T5_Data;
 import com.android.rahul_lohra.redditstar.modal.t5_Subreddit.t5_Response;
 import com.android.rahul_lohra.redditstar.retrofit.ApiInterface;
 import com.android.rahul_lohra.redditstar.service.GetSubredditListService;
@@ -38,13 +41,16 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 import javax.inject.Named;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -98,7 +104,7 @@ public class SubredditFragment extends Fragment
 
 
     private String subredditName;
-    private String mParam2;
+    private String subredditFullName;
     private FrontPageAdapter adapter;
     private FrontPageResponseData frontPageResponseData;
 
@@ -112,11 +118,11 @@ public class SubredditFragment extends Fragment
         // Required empty public constructor
     }
 
-    public static SubredditFragment newInstance(String subredditNameParam, String param2) {
+    public static SubredditFragment newInstance(String subredditNameParam, String subredditFullName) {
         SubredditFragment fragment = new SubredditFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, subredditNameParam);
-        args.putString(ARG_PARAM2, param2);
+        args.putString(ARG_PARAM2, subredditFullName);
         fragment.setArguments(args);
         return fragment;
     }
@@ -132,7 +138,7 @@ public class SubredditFragment extends Fragment
 
         if (getArguments() != null) {
             subredditName = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            subredditFullName = getArguments().getString(ARG_PARAM2);
         }
     }
 
@@ -172,13 +178,37 @@ public class SubredditFragment extends Fragment
         sparkSubs.setEventListener(new SparkEventListener() {
             @Override
             public void onEvent(ImageView button, boolean buttonState) {
-
+                if(UserState.isUserLoggedIn(getActivity())){
+                    String subVal = (buttonState)?"sub":"unsub";
+                    updateSubscription(subVal);
+                }else {
+                    Toast.makeText(getActivity(),getString(R.string.please_login),Toast.LENGTH_SHORT).show();
+                }
             }
         });
 //        getLoaderManager().initLoader(LOADER_ID, savedInstanceState, this);
-
-
         return v;
+    }
+
+    private void updateSubscription(final String subVal){
+        ApiInterface mApiInterface = retrofitWithToken.create(ApiInterface.class);
+        String token = "bearer " + UserState.getAuthToken(getContext());
+        mApiInterface.subscribeSubreddit_new(token,subVal,false,subredditFullName)
+                .enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        Log.d(TAG,"Success responseCode:"+response.code());
+                        if(response.code()==200){
+                            sparkSubs.setChecked((subVal.equals("sub")));
+                            //remove from db
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        Log.d(TAG,"fail:"+t.getMessage());
+                    }
+                });
     }
 
     private void setAdapter() {
@@ -190,7 +220,6 @@ public class SubredditFragment extends Fragment
     private void setToolbar() {
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(subredditName);
-//        toolbar.setTitle(subredditName);
     }
 
     private void getSubredditAbout() {
@@ -200,6 +229,18 @@ public class SubredditFragment extends Fragment
             @Override
             public void onResponse(Call<t5_Response> call, Response<t5_Response> response) {
                 Log.d(TAG, "getSubredditAbout onResponse");
+                if(response.code()==200)
+                {
+                    T5_Data t5_data = response.body().getData();
+                    String accountsActive = String.valueOf(t5_data.getAccountsActive());
+                    boolean isUserSubscriber = t5_data.getUserIsSubscriber();
+                    String totalSubscriber = String.valueOf(t5_data.getSubscribers());
+
+                    if(isUserSubscriber)
+                        sparkSubs.setChecked(true);
+
+
+                }
             }
 
             @Override

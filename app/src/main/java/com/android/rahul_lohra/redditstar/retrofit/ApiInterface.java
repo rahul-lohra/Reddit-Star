@@ -3,6 +3,7 @@ package com.android.rahul_lohra.redditstar.retrofit;
 import com.android.rahul_lohra.redditstar.modal.AboutMe;
 import com.android.rahul_lohra.redditstar.modal.RefreshTokenResponse;
 import com.android.rahul_lohra.redditstar.modal.SubredditResponse;
+import com.android.rahul_lohra.redditstar.modal.SubscribeSubreddit;
 import com.android.rahul_lohra.redditstar.modal.frontPage.FrontPageResponse;
 import com.android.rahul_lohra.redditstar.modal.reply.ReplyModal;
 import com.android.rahul_lohra.redditstar.modal.search.T3_SearchResponse;
@@ -10,6 +11,7 @@ import com.android.rahul_lohra.redditstar.modal.search.T5_SearchResponse;
 import com.android.rahul_lohra.redditstar.modal.t5_Subreddit.t5_Response;
 import com.android.rahul_lohra.redditstar.utility.Constants;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 import okhttp3.ResponseBody;
@@ -21,6 +23,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
 
 /**
@@ -76,4 +79,13 @@ public interface ApiInterface {
     @POST("/api/comment")
     Call<ResponseBody> postComment(@Header(Constants.AUTHORIZATION) String authorization,
                                    @Body ReplyModal replyModal);
+
+    @FormUrlEncoded
+    @POST("/api/subscribe")
+    Call<ResponseBody> subscribeSubreddit_new(@Header(Constants.AUTHORIZATION) String authorization,
+                                              @Field("action") String action,
+                                              @Field("skip_initial_defaults") boolean skip_initial_defaults,
+                                              @Field("sr") String fullName
+                                              );
+
 }

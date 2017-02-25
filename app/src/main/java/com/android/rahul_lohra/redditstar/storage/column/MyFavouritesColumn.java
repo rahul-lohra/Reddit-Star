@@ -8,6 +8,7 @@ import net.simonvt.schematic.annotation.Unique;
 
 import static net.simonvt.schematic.annotation.DataType.Type.INTEGER;
 import static net.simonvt.schematic.annotation.DataType.Type.REAL;
+import static net.simonvt.schematic.annotation.DataType.Type.TEXT;
 
 /**
  * Created by rkrde on 05-02-2017.
@@ -22,9 +23,14 @@ public interface MyFavouritesColumn {
     @NotNull @Unique
     String KEY_SUBREDDIT_ID = "subreddit_id";
 
-    @DataType(REAL)
+    @DataType(TEXT)
     @NotNull
-    String KEY_SUBREDDIT_NAME = "subreddit_name";
+    String KEY_SUBREDDIT_NAME = "name";
+
+    @DataType(TEXT)
+    @NotNull
+    String KEY_DISPLAY_NAME = "display_name";
+
 
     @DataType(INTEGER)
     @NotNull @DefaultValue("-1")

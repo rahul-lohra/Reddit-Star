@@ -172,9 +172,10 @@ public class SearchFragment extends Fragment implements
     }
 
     @Override
-    public void sendData(String name) {
+    public void sendData(String name,String fullName) {
         Intent intent = new Intent(getActivity(), SubredditActivity.class);
         intent.putExtra("name", name);
+        intent.putExtra("fullName",fullName);
         startActivity(intent);
     }
 

@@ -40,6 +40,7 @@ public class SubredditDrawerAdapter extends CursorRecyclerViewAdapter<RecyclerVi
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, final Cursor cursor) {
         final String displayName = cursor.getString(cursor.getColumnIndex(MySubredditColumn.KEY_DISPLAY_NAME));
         final String subredditId = cursor.getString(cursor.getColumnIndex(MySubredditColumn.KEY_ID));
+        final String fullName = cursor.getString(cursor.getColumnIndex(MySubredditColumn.KEY_NAME));
 
         DrawerSubreddit drawerSubreddit = (DrawerSubreddit)viewHolder;
         drawerSubreddit.tv.setText(displayName);
@@ -70,6 +71,8 @@ public class SubredditDrawerAdapter extends CursorRecyclerViewAdapter<RecyclerVi
             public void onClick(View view) {
                 Intent intent = new Intent(context, SubredditActivity.class);
                 intent.putExtra("name",displayName);
+                intent.putExtra("fullName",fullName);
+
                 context.startActivity(intent);
             }
         });
