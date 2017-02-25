@@ -41,8 +41,9 @@ public class FavoritesAdapter extends CursorRecyclerViewAdapter<RecyclerView.Vie
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, final Cursor cursor) {
-        final String displayName = cursor.getString(cursor.getColumnIndex(MyFavouritesColumn.KEY_SUBREDDIT_NAME));
+    public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, Cursor cursor) {
+        final String displayName = cursor.getString(cursor.getColumnIndex(MyFavouritesColumn.KEY_DISPLAY_NAME));
+        final String fullName = cursor.getString(cursor.getColumnIndex(MyFavouritesColumn.KEY_FULL_NAME));
         final String subredditId = cursor.getString(cursor.getColumnIndex(MyFavouritesColumn.KEY_SUBREDDIT_ID));
 
         DrawerSubreddit drawerSubreddit = (DrawerSubreddit)viewHolder;
@@ -74,6 +75,9 @@ public class FavoritesAdapter extends CursorRecyclerViewAdapter<RecyclerView.Vie
             public void onClick(View view) {
                 Intent intent = new Intent(context, SubredditActivity.class);
                 intent.putExtra("name",displayName);
+                intent.putExtra("fullName",fullName);
+                intent.putExtra("subredditId",subredditId);
+
                 context.startActivity(intent);
             }
         });

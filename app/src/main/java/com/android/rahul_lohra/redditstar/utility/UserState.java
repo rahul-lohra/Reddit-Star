@@ -20,7 +20,7 @@ public class UserState {
         String mSelection=UserCredentialsColumn.ACTIVE_STATE+"=?";
         String mSelectionArgs[]={"1"};
         Cursor cursor =context.getContentResolver().query(mUri,mProjection,mSelection,mSelectionArgs,null);
-        boolean loggedIn = (cursor.moveToFirst())?true:false;
+        boolean loggedIn = (cursor.moveToFirst());
         cursor.close();
         return loggedIn;
     }

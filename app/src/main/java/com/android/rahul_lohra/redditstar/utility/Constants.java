@@ -7,7 +7,9 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.android.rahul_lohra.redditstar.modal.FavoritesModal;
 import com.android.rahul_lohra.redditstar.storage.MyProvider;
+import com.android.rahul_lohra.redditstar.storage.column.MyFavouritesColumn;
 import com.android.rahul_lohra.redditstar.storage.column.UserCredentialsColumn;
 
 import java.text.SimpleDateFormat;
@@ -76,4 +78,19 @@ public class Constants {
     }
 
 
+    public static void insertIntoFavoritesDb(Context context,FavoritesModal modal){
+        Uri mUri = MyProvider.FavoritesLists.CONTENT_URI;
+        ContentValues cv = new ContentValues();
+        cv.put(MyFavouritesColumn.KEY_SUBREDDIT_ID,modal.getSubredditId());
+        cv.put(MyFavouritesColumn.KEY_FULL_NAME,modal.getFullName());
+        cv.put(MyFavouritesColumn.KEY_DISPLAY_NAME,modal.getDisplayName());
+        context.getContentResolver().insert(mUri,cv);
+    }
+
+    public static void deleteFromFavoritesDb(Context context,String fullName){
+        Uri mUri = MyProvider.FavoritesLists.CONTENT_URI;
+        String mWhere = MyFavouritesColumn.KEY_FULL_NAME +"=?";
+        String mSelectionArgs[]={fullName};
+        context.getContentResolver().delete(mUri,mWhere,mSelectionArgs);
+    }
 }

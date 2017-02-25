@@ -22,14 +22,16 @@ public class SubredditActivity extends AppCompatActivity implements SubredditFra
         if(null==savedInstanceState){
             String name = getIntent().getStringExtra("name");
             String fullName = getIntent().getStringExtra("fullName");
+            String subredditId = getIntent().getStringExtra("subredditId");
 
-            showSubredditFragment(name,fullName);
+
+            showSubredditFragment(name,fullName,subredditId);
         }
     }
 
-    void showSubredditFragment(@NonNull String name,@NonNull String fullName){
+    void showSubredditFragment(@NonNull String name,@NonNull String fullName,@NonNull String subredditId){
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.frame_layout, SubredditFragment.newInstance(name,fullName), SubredditFragment.class.getSimpleName())
+                .replace(R.id.frame_layout, SubredditFragment.newInstance(name,fullName,subredditId), SubredditFragment.class.getSimpleName())
                 .commit();
     }
 

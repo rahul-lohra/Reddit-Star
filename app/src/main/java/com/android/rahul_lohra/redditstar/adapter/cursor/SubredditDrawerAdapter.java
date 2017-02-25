@@ -14,9 +14,11 @@ import android.widget.ImageView;
 
 import com.android.rahul_lohra.redditstar.R;
 import com.android.rahul_lohra.redditstar.activity.SubredditActivity;
+import com.android.rahul_lohra.redditstar.modal.FavoritesModal;
 import com.android.rahul_lohra.redditstar.storage.MyProvider;
 import com.android.rahul_lohra.redditstar.storage.column.MyFavouritesColumn;
 import com.android.rahul_lohra.redditstar.storage.column.MySubredditColumn;
+import com.android.rahul_lohra.redditstar.utility.Constants;
 import com.android.rahul_lohra.redditstar.viewHolder.CursorRecyclerViewAdapter;
 import com.android.rahul_lohra.redditstar.viewHolder.DrawerNormal;
 import com.android.rahul_lohra.redditstar.viewHolder.DrawerSubreddit;
@@ -52,16 +54,10 @@ public class SubredditDrawerAdapter extends CursorRecyclerViewAdapter<RecyclerVi
                 if(buttonState)
                 {
                     //insert
-                    ContentValues contentValues = new ContentValues();
-                    contentValues.put(MyFavouritesColumn.KEY_SUBREDDIT_ID,subredditId);
-                    contentValues.put(MyFavouritesColumn.KEY_SUBREDDIT_NAME,displayName);
-                    context.getContentResolver().insert(mUri,contentValues);
-                }else {
+                    Constants.insertIntoFavoritesDb(context,new FavoritesModal(displayName,fullName,subredditId));
+                    }else {
                     //remove
-                    String mWhere = MyFavouritesColumn.KEY_SUBREDDIT_ID +"=?";
-                    String mSelectionArgs []={subredditId};
-                    int rowsDeleted = context.getContentResolver().delete(mUri,mWhere,mSelectionArgs);
-                    Log.d(TAG,"rowsDeleted:"+rowsDeleted);
+                    Constants.deleteFromFavoritesDb(context,fullName);
                 }
             }
         });

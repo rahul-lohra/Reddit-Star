@@ -19,13 +19,13 @@ public interface MyFavouritesColumn {
     @PrimaryKey
     String KEY_SQL_ID = "_id";
 
-    @DataType(REAL)
+    @DataType(TEXT)
     @NotNull @Unique
     String KEY_SUBREDDIT_ID = "subreddit_id";
 
     @DataType(TEXT)
     @NotNull
-    String KEY_SUBREDDIT_NAME = "name";
+    String KEY_FULL_NAME = "name";
 
     @DataType(TEXT)
     @NotNull

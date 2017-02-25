@@ -1,7 +1,9 @@
 package com.android.rahul_lohra.redditstar.fragments.subreddit;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
@@ -23,6 +25,7 @@ import com.android.rahul_lohra.redditstar.R;
 import com.android.rahul_lohra.redditstar.adapter.normal.FrontPageAdapter;
 import com.android.rahul_lohra.redditstar.application.Initializer;
 import com.android.rahul_lohra.redditstar.loader.SubredditLoader;
+import com.android.rahul_lohra.redditstar.modal.FavoritesModal;
 import com.android.rahul_lohra.redditstar.modal.SubscribeSubreddit;
 import com.android.rahul_lohra.redditstar.modal.custom.DetailPostModal;
 import com.android.rahul_lohra.redditstar.modal.frontPage.FrontPageChild;
@@ -32,6 +35,9 @@ import com.android.rahul_lohra.redditstar.modal.t5_Subreddit.T5_Data;
 import com.android.rahul_lohra.redditstar.modal.t5_Subreddit.t5_Response;
 import com.android.rahul_lohra.redditstar.retrofit.ApiInterface;
 import com.android.rahul_lohra.redditstar.service.GetSubredditListService;
+import com.android.rahul_lohra.redditstar.storage.MyProvider;
+import com.android.rahul_lohra.redditstar.storage.column.MyFavouritesColumn;
+import com.android.rahul_lohra.redditstar.utility.Constants;
 import com.android.rahul_lohra.redditstar.utility.UserState;
 import com.varunest.sparkbutton.SparkButton;
 import com.varunest.sparkbutton.SparkEventListener;
@@ -83,6 +89,8 @@ public class SubredditFragment extends Fragment
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_PARAM3 = "param3";
+
     private static final String TAG = SubredditFragment.class.getSimpleName();
     private final int LOADER_ID = 1;
 
@@ -105,6 +113,8 @@ public class SubredditFragment extends Fragment
 
     private String subredditName;
     private String subredditFullName;
+    private String subredditId;
+
     private FrontPageAdapter adapter;
     private FrontPageResponseData frontPageResponseData;
 
@@ -118,11 +128,13 @@ public class SubredditFragment extends Fragment
         // Required empty public constructor
     }
 
-    public static SubredditFragment newInstance(String subredditNameParam, String subredditFullName) {
+    public static SubredditFragment newInstance(String subredditNameParam, String subredditFullName,String subredditId) {
         SubredditFragment fragment = new SubredditFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, subredditNameParam);
         args.putString(ARG_PARAM2, subredditFullName);
+        args.putString(ARG_PARAM3, subredditId);
+
         fragment.setArguments(args);
         return fragment;
     }
@@ -139,6 +151,7 @@ public class SubredditFragment extends Fragment
         if (getArguments() != null) {
             subredditName = getArguments().getString(ARG_PARAM1);
             subredditFullName = getArguments().getString(ARG_PARAM2);
+            subredditId =  getArguments().getString(ARG_PARAM3);
         }
     }
 
@@ -173,6 +186,14 @@ public class SubredditFragment extends Fragment
             @Override
             public void onEvent(ImageView button, boolean buttonState) {
 
+                if(buttonState){
+                    //insert
+                    FavoritesModal favoritesModal = new FavoritesModal(subredditName,subredditFullName,subredditId);
+                    Constants.insertIntoFavoritesDb(getContext(),favoritesModal);
+                }else {
+                    //remove
+                    Constants.deleteFromFavoritesDb(getContext(),subredditFullName);
+                }
             }
         });
         sparkSubs.setEventListener(new SparkEventListener() {
@@ -191,6 +212,8 @@ public class SubredditFragment extends Fragment
 //        getLoaderManager().initLoader(LOADER_ID, savedInstanceState, this);
         return v;
     }
+
+
 
     private void updateSubscription(final String subVal){
         ApiInterface mApiInterface = retrofitWithToken.create(ApiInterface.class);

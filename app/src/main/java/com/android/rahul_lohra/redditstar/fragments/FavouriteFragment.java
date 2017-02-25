@@ -3,6 +3,7 @@ package com.android.rahul_lohra.redditstar.fragments;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -25,7 +26,8 @@ import com.android.rahul_lohra.redditstar.storage.column.MySubredditColumn;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class FavouriteFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class FavouriteFragment extends Fragment implements
+        LoaderManager.LoaderCallbacks<Cursor> {
 
     private final int LOADER_ID = 1;
     private FavoritesAdapter adapter;
@@ -49,8 +51,12 @@ public class FavouriteFragment extends Fragment implements LoaderManager.LoaderC
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        adapter = new FavoritesAdapter(getActivity(), null);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         getLoaderManager().initLoader(LOADER_ID, null, this);
+        super.onActivityCreated(savedInstanceState);
     }
 
     @Override
@@ -59,6 +65,7 @@ public class FavouriteFragment extends Fragment implements LoaderManager.LoaderC
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_favorite, container, false);
         ButterKnife.bind(this, v);
+        adapter = new FavoritesAdapter(getActivity(), null);
 
         //setupRv
         setupRv();
@@ -92,7 +99,8 @@ public class FavouriteFragment extends Fragment implements LoaderManager.LoaderC
                         MyFavouritesColumn.KEY_SQL_ID,
                         MyFavouritesColumn.KEY_RANK,
                         MyFavouritesColumn.KEY_SUBREDDIT_ID,
-                        MyFavouritesColumn.KEY_SUBREDDIT_NAME
+                        MyFavouritesColumn.KEY_DISPLAY_NAME,
+                        MyFavouritesColumn.KEY_FULL_NAME
                 };
                 String sortOrder = MyFavouritesColumn.KEY_RANK;
                 return new CursorLoader(getActivity(), uri, mProjection, null, null, sortOrder);

@@ -7,13 +7,17 @@ import com.android.rahul_lohra.redditstar.modal.ListingDS;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-@lombok.Data
 public class FrontPageResponseData extends ListingDS {
-
 
     @SerializedName("children")
     @Expose
     private List<FrontPageChild> children = null;
 
+    public List<FrontPageChild> getChildren() {
+        return children;
+    }
 
+    public void setChildren(List<FrontPageChild> children) {
+        this.children = children;
+    }
 }

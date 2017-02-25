@@ -62,7 +62,7 @@ public class SearchFragment extends Fragment implements
     ApiInterface apiInterface;
     boolean isUSerLoggedIn;
 
-    private final String TAG = SearchActivity.class.getSimpleName();
+    private final String TAG = SearchFragment.class.getSimpleName();
     @Bind(R.id.rv_subreddits)
     RecyclerView rvSubreddits;
     @Bind(R.id.rv_links)
@@ -172,10 +172,12 @@ public class SearchFragment extends Fragment implements
     }
 
     @Override
-    public void sendData(String name,String fullName) {
+    public void sendData(String name,String fullName,String subredditId) {
         Intent intent = new Intent(getActivity(), SubredditActivity.class);
         intent.putExtra("name", name);
         intent.putExtra("fullName",fullName);
+        intent.putExtra("subredditId",subredditId);
+
         startActivity(intent);
     }
 
