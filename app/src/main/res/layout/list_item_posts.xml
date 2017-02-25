@@ -13,6 +13,7 @@
         android:orientation="vertical">
 
         <ImageView
+            android:transitionName="profile"
             android:id="@+id/imageView"
             android:layout_width="100dp"
             android:layout_height="86dp"

@@ -1,13 +1,17 @@
 package com.android.rahul_lohra.redditstar.activity;
 
+import android.app.ActivityOptions;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.android.rahul_lohra.redditstar.R;
-import com.android.rahul_lohra.redditstar.fragments.DetailSubredditFragment;
 import com.android.rahul_lohra.redditstar.fragments.subreddit.SubredditFragment;
+import com.android.rahul_lohra.redditstar.modal.custom.DetailPostModal;
 
-public class SubredditActivity extends AppCompatActivity {
+public class SubredditActivity extends AppCompatActivity implements SubredditFragment.ISubredditFragment {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,5 +28,20 @@ public class SubredditActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.frame_layout, SubredditFragment.newInstance(name,""), SubredditFragment.class.getSimpleName())
                 .commit();
+    }
+
+    @Override
+    public void sendModalAndImageView(DetailPostModal modal, ImageView imageView) {
+//        Toast.makeText(this,"Item clicked",Toast.LENGTH_SHORT).show();
+//        if (mTwoPane) {
+//            showDetailSubredditFragment(modal);
+//        } else {
+            Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(this, imageView, imageView.getTransitionName()).toBundle();
+            Intent intent = new Intent(this, DetailActivity.class);
+            intent.putExtra("modal", modal);
+//            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent, bundle);
+
+//        }
     }
 }

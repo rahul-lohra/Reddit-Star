@@ -4,50 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
+    android:id="@+id/frame_layout"
     tools:context="com.android.rahul_lohra.redditstar.activity.SearchActivity"
     android:background="@color/light_blue_500">
 
-    <android.support.design.widget.FloatingActionButton
-        android:layout_gravity="bottom|end"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:layout_marginRight="16dp"
-        android:clickable="true"
-        android:src="@drawable/ic_menu"
-        app:fabSize="mini" />
-
-    <LinearLayout
-        android:layout_margin="8dp"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <android.support.v7.widget.AppCompatEditText
-            android:inputType="text"
-            android:maxLines="1"
-            android:imeOptions="actionSearch"
-            android:elevation="8dp"
-            android:hint="@string/search_hint"
-            android:id="@+id/et"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:drawableStart="@drawable/ic_arrow_back_black"
-            android:drawablePadding="@dimen/nav_header_vertical_spacing"
-            android:background="@drawable/rect" />
-
-        <android.support.v7.widget.RecyclerView
-            android:layout_marginTop="8dp"
-            android:id="@+id/rv_subreddits"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <android.support.v7.widget.RecyclerView
-            android:layout_marginTop="8dp"
-            android:id="@+id/rv_links"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
 
 </FrameLayout>

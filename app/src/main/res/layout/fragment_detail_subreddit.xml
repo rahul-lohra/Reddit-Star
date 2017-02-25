@@ -14,13 +14,12 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <ImageView
-                android:id="@+id/imageView4"
+            <com.android.rahul_lohra.redditstar.helper.DynamicHeightNetworkImageView
+                android:transitionName="profile"
+                android:id="@+id/imageView"
                 android:layout_width="0dp"
-                android:layout_height="200dp"
-                android:layout_marginEnd="16dp"
+                android:layout_height="0dp"
                 android:contentDescription="@string/subreddit_image"
-                android:scaleType="centerCrop"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -42,8 +41,8 @@
                 android:id="@+id/tv_title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:layout_marginStart="16dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:textAppearance="@style/TextAppearance.AppCompat.Display1"
                 android:textColor="@android:color/black"
@@ -51,7 +50,7 @@
                 android:textStyle="normal|bold"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageView4"
+                app:layout_constraintTop_toBottomOf="@+id/imageView"
                 tools:layout_constraintLeft_creator="1"
                 tools:layout_constraintRight_creator="1"
                 tools:text="@string/comments_title" />
@@ -64,6 +63,7 @@
                 app:layout_constraintLeft_toLeftOf="@+id/tv_category"
                 app:layout_constraintTop_toBottomOf="@+id/tv_category"
                 tools:text="u/Auggernaut88" />
+
 
             <TextView
                 android:id="@+id/tv_share"
@@ -127,7 +127,7 @@
                 android:id="@+id/tv_sort"
                 android:layout_width="150dp"
                 android:layout_height="0dp"
-                android:layout_marginTop="48dp"
+                android:layout_marginTop="16dp"
                 android:drawablePadding="16dp"
                 android:drawableStart="@drawable/ic_sort"
                 app:layout_constraintLeft_toLeftOf="@+id/tv_title"

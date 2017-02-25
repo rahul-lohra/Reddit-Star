@@ -1,5 +1,7 @@
 package com.android.rahul_lohra.redditstar.activity;
 
+import android.app.ActivityOptions;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -21,31 +23,21 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 
 import com.android.rahul_lohra.redditstar.R;
-import com.android.rahul_lohra.redditstar.activity.DetailActivity;
-import com.android.rahul_lohra.redditstar.adapter.TypeAdapter.SampleClass;
-import com.android.rahul_lohra.redditstar.adapter.TypeAdapter.SampleTypeAdapter;
 import com.android.rahul_lohra.redditstar.adapter.cursor.SubredditDrawerAdapter;
 import com.android.rahul_lohra.redditstar.adapter.normal.DrawerAdapter;
 import com.android.rahul_lohra.redditstar.contract.IDashboard;
 import com.android.rahul_lohra.redditstar.dialog.AddAccountDialog;
 import com.android.rahul_lohra.redditstar.fragments.DetailSubredditFragment;
 import com.android.rahul_lohra.redditstar.fragments.HomeFragment;
-import com.android.rahul_lohra.redditstar.fragments.subreddit.HotFragment;
 import com.android.rahul_lohra.redditstar.modal.DrawerItemModal;
-import com.android.rahul_lohra.redditstar.modal.comments.CommentsGsonTypeAdapter;
-import com.android.rahul_lohra.redditstar.modal.comments.DummyAdapter;
-import com.android.rahul_lohra.redditstar.modal.comments.Example;
+import com.android.rahul_lohra.redditstar.modal.custom.DetailPostModal;
 import com.android.rahul_lohra.redditstar.presenter.activity.DashboardPresenter;
 import com.android.rahul_lohra.redditstar.storage.MyProvider;
 import com.android.rahul_lohra.redditstar.storage.column.MySubredditColumn;
-import com.android.rahul_lohra.redditstar.utility.Constants;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,7 +49,8 @@ public class DashboardActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
         IDashboard,
         LoaderManager.LoaderCallbacks<Cursor>,
-        DrawerAdapter.ISubreddit
+        DrawerAdapter.ISubreddit,
+        HomeFragment.IHomeFragment
 
 {
 
@@ -111,7 +104,7 @@ public class DashboardActivity extends AppCompatActivity implements
         if ((findViewById(R.id.frame_layout_right) != null)) {
             mTwoPane = true;
             if (savedInstanceState == null) {
-                showDetailSubredditFragment();
+                showDetailSubredditFragment(null);
                 showHomeFragment(R.id.frame_layout_left);
             }
         }else {
@@ -124,9 +117,9 @@ public class DashboardActivity extends AppCompatActivity implements
 
     }
 
-    void showDetailSubredditFragment() {
+    void showDetailSubredditFragment(DetailPostModal modal) {
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.frame_layout_right, DetailSubredditFragment.newInstance(null), DetailSubredditFragment.class.getSimpleName())
+                .replace(R.id.frame_layout_right, DetailSubredditFragment.newInstance(modal), DetailSubredditFragment.class.getSimpleName())
                 .commit();
     }
 
@@ -277,6 +270,50 @@ public class DashboardActivity extends AppCompatActivity implements
     public void getSubredditRecyclerView(RecyclerView recyclerView) {
         if (recyclerView != null) {
             recyclerView.setAdapter(subredditDrawerAdapter);
+        }
+    }
+
+//    @Subscribe(threadMode = ThreadMode.MAIN)
+//    public void onMessageEvent(DetailPostModal modal) {
+//        if(mTwoPane){
+//            showDetailSubredditFragment(modal);
+//        }else {
+//            Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(this,imageView,imageView.getTransitionName()).toBundle();
+//            Intent intent = new Intent(this, DetailActivity.class);
+//            intent.putExtra("modal",modal);
+////            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//            startActivity(intent,bundle);
+//
+////            getSupportFragmentManager().beginTransaction()
+////                    .replace(R.id.frame_layout_left, DetailSubredditFragment.newInstance(modal), DetailSubredditFragment.class.getSimpleName())
+////                    .addToBackStack(DetailSubredditFragment.class.getSimpleName())
+////                    .commit();
+//        }
+//    }
+
+//    @Override
+//    public void onStart() {
+//        super.onStart();
+//        EventBus.getDefault().register(this);
+//    }
+//
+//    @Override
+//    public void onStop() {
+//        EventBus.getDefault().unregister(this);
+//        super.onStop();
+//    }
+
+    @Override
+    public void sendModalAndImageView(DetailPostModal modal, ImageView imageView) {
+        if (mTwoPane) {
+            showDetailSubredditFragment(modal);
+        } else {
+            Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(this, imageView, imageView.getTransitionName()).toBundle();
+            Intent intent = new Intent(this, DetailActivity.class);
+            intent.putExtra("modal", modal);
+//            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent, bundle);
+
         }
     }
 }

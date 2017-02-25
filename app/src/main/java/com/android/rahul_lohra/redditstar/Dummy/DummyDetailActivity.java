@@ -20,8 +20,8 @@ public class DummyDetailActivity extends AppCompatActivity {
     @Bind(R.id.rv)
     RecyclerView rv;
     AdapterRedditComments adapter;
-    @Bind(R.id.imageView4)
-    ImageView imageView4;
+    @Bind(R.id.imageView)
+    ImageView imageView;
     @Bind(R.id.tv_category)
     TextView tvCategory;
     @Bind(R.id.tv_title)

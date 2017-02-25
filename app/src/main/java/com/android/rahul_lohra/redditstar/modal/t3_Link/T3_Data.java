@@ -9,6 +9,10 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 public class T3_Data {
+
+    @SerializedName("created_utc")
+    @Expose
+    public Integer createdUtc;
     @SerializedName("thumbnail")
     @Expose
     public String thumbnail;

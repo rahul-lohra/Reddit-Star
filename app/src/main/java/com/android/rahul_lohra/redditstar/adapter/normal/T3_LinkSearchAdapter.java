@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.rahul_lohra.redditstar.R;
@@ -17,7 +18,9 @@ import com.android.rahul_lohra.redditstar.activity.ReplyActivity;
 import com.android.rahul_lohra.redditstar.modal.T3_Kind;
 import com.android.rahul_lohra.redditstar.modal.comments.Child;
 import com.android.rahul_lohra.redditstar.modal.comments.CustomComment;
+import com.android.rahul_lohra.redditstar.modal.custom.DetailPostModal;
 import com.android.rahul_lohra.redditstar.modal.frontPage.FrontPageChildData;
+import com.android.rahul_lohra.redditstar.modal.frontPage.Image;
 import com.android.rahul_lohra.redditstar.modal.frontPage.Preview;
 import com.android.rahul_lohra.redditstar.modal.t3_Link.T3_Data;
 import com.android.rahul_lohra.redditstar.retrofit.ApiInterface;
@@ -28,6 +31,7 @@ import com.bumptech.glide.Glide;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -51,9 +55,18 @@ public class T3_LinkSearchAdapter extends RecyclerView.Adapter {
     private ApiInterface apiInterface;
     private static final String TAG  = T3_LinkSearchAdapter.class.getSimpleName();
 
-    public T3_LinkSearchAdapter(Context context, List<T3_Kind> list, Retrofit retrofit) {
+    public interface IT3_LinkSearchAdapter{
+        void sendLink(DetailPostModal modal, ImageView imageView);
+    }
+
+    private IT3_LinkSearchAdapter mListener;
+
+    public T3_LinkSearchAdapter(Context context, List<T3_Kind> list, Retrofit retrofit,IT3_LinkSearchAdapter mListener) {
         this.context = context;
         this.list = list;
+        this.mListener = mListener;
+        this.retrofit = retrofit;
+        apiInterface = retrofit.create(ApiInterface.class);
     }
 
     @Override
@@ -74,6 +87,20 @@ public class T3_LinkSearchAdapter extends RecyclerView.Adapter {
         final String id = t3Data.id;
         final String subreddit = t3Data.subreddit;
         final String thingId = t3Data.name;
+        final String commentsCount = String.valueOf(t3Data.numComments);
+        final String time = String.valueOf(t3Data.createdUtc);
+        final String author = t3Data.author;
+        final Preview preview = t3Data.preview;
+        final String ups = String.valueOf(t3Data.ups);
+        final String title = String.valueOf(t3Data.title);
+        final String thumbnail = (preview!=null)?t3Data.thumbnail:"";
+
+        final List<String> bigImageUrlList = new ArrayList<>();
+        if(preview!=null){
+            for(Image image:preview.getImages()){
+                bigImageUrlList.add(image.getSource().getUrl());
+            }
+        }
 
         final Object objLikes = t3Data.likes;
         if (objLikes != null) {
@@ -89,15 +116,12 @@ public class T3_LinkSearchAdapter extends RecyclerView.Adapter {
             EventBus.getDefault().post("getNextData");
         }
 
-        //click
         postView.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, DetailActivity.class);
-                intent.putExtra("id", id);
-                intent.putExtra("subreddit", subreddit);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(intent);
+                DetailPostModal modal = new DetailPostModal(id,
+                        subreddit,ups,title,commentsCount,thumbnail,time,author,bigImageUrlList);
+                mListener.sendLink(modal,postView.imageView);
             }
         });
 
@@ -183,7 +207,7 @@ public class T3_LinkSearchAdapter extends RecyclerView.Adapter {
         });
 
         //set Textual Data
-        Preview preview = t3Data.preview;
+
         if (preview != null) {
             Glide.with(context)
                     .load(t3Data.thumbnail)

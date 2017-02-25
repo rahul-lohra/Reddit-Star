@@ -1,15 +1,18 @@
 package com.android.rahul_lohra.redditstar.fragments.subreddit;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +22,7 @@ import com.android.rahul_lohra.redditstar.R;
 import com.android.rahul_lohra.redditstar.adapter.normal.FrontPageAdapter;
 import com.android.rahul_lohra.redditstar.application.Initializer;
 import com.android.rahul_lohra.redditstar.loader.SubredditLoader;
+import com.android.rahul_lohra.redditstar.modal.custom.DetailPostModal;
 import com.android.rahul_lohra.redditstar.modal.frontPage.FrontPageChild;
 import com.android.rahul_lohra.redditstar.modal.frontPage.FrontPageResponse;
 import com.android.rahul_lohra.redditstar.modal.frontPage.FrontPageResponseData;
@@ -26,6 +30,8 @@ import com.android.rahul_lohra.redditstar.modal.t5_Subreddit.t5_Response;
 import com.android.rahul_lohra.redditstar.retrofit.ApiInterface;
 import com.android.rahul_lohra.redditstar.service.GetSubredditListService;
 import com.android.rahul_lohra.redditstar.utility.UserState;
+import com.varunest.sparkbutton.SparkButton;
+import com.varunest.sparkbutton.SparkEventListener;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -44,7 +50,11 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class SubredditFragment extends Fragment implements LoaderManager.LoaderCallbacks<FrontPageResponse> {
+public class SubredditFragment extends Fragment
+        implements LoaderManager.LoaderCallbacks<FrontPageResponse>,
+        FrontPageAdapter.IFrontPageAdapter
+
+{
     /*
     1. make two requests
     2. about subreddit
@@ -79,11 +89,24 @@ public class SubredditFragment extends Fragment implements LoaderManager.LoaderC
     RecyclerView rv;
 
     List<FrontPageChild> list = new ArrayList<>();
+    @Bind(R.id.spark_subs)
+    SparkButton sparkSubs;
+    @Bind(R.id.spark_fav)
+    SparkButton sparkFav;
+    @Bind(R.id.nested_sv)
+    NestedScrollView nestedSV;
+
 
     private String subredditName;
     private String mParam2;
     private FrontPageAdapter adapter;
     private FrontPageResponseData frontPageResponseData;
+
+    public interface ISubredditFragment {
+        void sendModalAndImageView(DetailPostModal modal, ImageView imageView);
+    }
+
+    private ISubredditFragment mListener;
 
     public SubredditFragment() {
         // Required empty public constructor
@@ -105,7 +128,7 @@ public class SubredditFragment extends Fragment implements LoaderManager.LoaderC
         ((Initializer) getContext().getApplicationContext()).getNetComponent().inject(this);
         retrofit = (isUserLoggedIn = UserState.isUserLoggedIn(getContext())) ? retrofitWithToken : retrofitWithoutToken;
         apiInterface = retrofit.create(ApiInterface.class);
-        adapter = new FrontPageAdapter(SubredditFragment.this,getActivity().getApplicationContext(), list, retrofit);
+        adapter = new FrontPageAdapter(SubredditFragment.this, getActivity().getApplicationContext(), list, retrofit, this);
 
         if (getArguments() != null) {
             subredditName = getArguments().getString(ARG_PARAM1);
@@ -123,23 +146,42 @@ public class SubredditFragment extends Fragment implements LoaderManager.LoaderC
         setAdapter();
         getSubredditAbout();
         getSubredditList();
+
+        nestedSV.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+//                View view = (View) scrollView.getChildAt(scrollView.getChildCount() - 1);
+                int diff = (rv.getBottom() - (v.getHeight() + v.getScrollY()));
+
+                // if diff is zero, then the bottom has been reached
+                if (diff <= 10) {
+                    // do stuff
+                    Log.d(TAG,"last Position");
+                    fetchNextItems();
+                }
+            }
+        });
+
+
+        sparkFav.setEventListener(new SparkEventListener() {
+            @Override
+            public void onEvent(ImageView button, boolean buttonState) {
+
+            }
+        });
+        sparkSubs.setEventListener(new SparkEventListener() {
+            @Override
+            public void onEvent(ImageView button, boolean buttonState) {
+
+            }
+        });
 //        getLoaderManager().initLoader(LOADER_ID, savedInstanceState, this);
 
-//        rv.addOnScrollListener(new RecyclerView.OnScrollListener() {
-//            @Override
-//            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-//                super.onScrolled(recyclerView, dx, dy);
-//
-//                if(!recyclerView.canScrollVertically(1)){
-//                    getSubredditList();
-//                }
-//            }
-//        });
 
         return v;
     }
 
-    private void setAdapter(){
+    private void setAdapter() {
         rv.setLayoutManager(new LinearLayoutManager(getActivity()));
         rv.setAdapter(adapter);
     }
@@ -166,32 +208,31 @@ public class SubredditFragment extends Fragment implements LoaderManager.LoaderC
             }
         });
     }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(FrontPageResponseData frontPageResponseData) {
         this.frontPageResponseData = frontPageResponseData;
         int lastPos = list.size();
-        list.addAll(lastPos,frontPageResponseData.getChildren());
-        adapter.notifyItemRangeInserted(lastPos,frontPageResponseData.getChildren().size());
+        list.addAll(lastPos, frontPageResponseData.getChildren());
+        adapter.notifyItemRangeInserted(lastPos, frontPageResponseData.getChildren().size());
     }
 
     @Subscribe(threadMode = ThreadMode.BACKGROUND)
     public void onMessageEvent(String string) {
-        if(string.equalsIgnoreCase("getNextData")){
-            if(frontPageResponseData!=null)
-            {
-                if(!frontPageResponseData.getAfter().equalsIgnoreCase(GetSubredditListService.after))
-                {
-                    getSubredditList();
-                }
-            }
-        }
+//        if (string.equals("getNextData")) {
+//            if (frontPageResponseData != null) {
+//                if (!frontPageResponseData.getAfter().equalsIgnoreCase(GetSubredditListService.after)) {
+//                    getSubredditList();
+//                }
+//            }
+//        }
     }
 
     private void getSubredditList() {
-        String after = (frontPageResponseData!=null)?frontPageResponseData.getAfter():"";
+        String after = (frontPageResponseData != null) ? frontPageResponseData.getAfter() : "";
         Intent intent = new Intent(getActivity(), GetSubredditListService.class);
-        intent.putExtra("subredditName",subredditName);
-        intent.putExtra("after",after);
+        intent.putExtra("subredditName", subredditName);
+        intent.putExtra("after", after);
         getContext().startService(intent);
     }
 
@@ -220,10 +261,10 @@ public class SubredditFragment extends Fragment implements LoaderManager.LoaderC
         switch (loader.getId()) {
             case LOADER_ID:
                 this.frontPageResponseData = data.getData();
-                if(data!=null){
+                if (data != null) {
                     int lastPos = list.size();
-                    list.addAll(lastPos,data.getData().getChildren());
-                    adapter.notifyItemRangeInserted(lastPos,data.getData().getChildren().size());
+                    list.addAll(lastPos, data.getData().getChildren());
+                    adapter.notifyItemRangeInserted(lastPos, data.getData().getChildren().size());
                 }
                 break;
         }
@@ -250,4 +291,35 @@ public class SubredditFragment extends Fragment implements LoaderManager.LoaderC
         EventBus.getDefault().unregister(this);
         super.onStop();
     }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof ISubredditFragment) {
+            mListener = (ISubredditFragment) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
+
+    @Override
+    public void sendData(DetailPostModal modal, ImageView imageView) {
+        mListener.sendModalAndImageView(modal, imageView);
+    }
+
+    private void fetchNextItems(){
+            if (frontPageResponseData != null) {
+                if (!frontPageResponseData.getAfter().equalsIgnoreCase(GetSubredditListService.after)) {
+                    getSubredditList();
+                }
+            }
+        }
+
 }

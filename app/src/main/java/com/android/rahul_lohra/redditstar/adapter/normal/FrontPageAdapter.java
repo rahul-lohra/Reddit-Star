@@ -1,7 +1,6 @@
 package com.android.rahul_lohra.redditstar.adapter.normal;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -12,11 +11,12 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.rahul_lohra.redditstar.R;
-import com.android.rahul_lohra.redditstar.activity.DetailActivity;
+import com.android.rahul_lohra.redditstar.fragments.SearchFragment;
 import com.android.rahul_lohra.redditstar.modal.frontPage.FrontPageChild;
 import com.android.rahul_lohra.redditstar.modal.frontPage.FrontPageChildData;
+import com.android.rahul_lohra.redditstar.modal.frontPage.Image;
 import com.android.rahul_lohra.redditstar.modal.frontPage.Preview;
-import com.android.rahul_lohra.redditstar.modal.transfer.DetailSubredditModal;
+import com.android.rahul_lohra.redditstar.modal.custom.DetailPostModal;
 import com.android.rahul_lohra.redditstar.retrofit.ApiInterface;
 import com.android.rahul_lohra.redditstar.utility.Constants;
 import com.android.rahul_lohra.redditstar.utility.UserState;
@@ -25,9 +25,13 @@ import com.bumptech.glide.Glide;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.inject.Inject;
+import javax.inject.Named;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -47,13 +51,21 @@ public class FrontPageAdapter extends RecyclerView.Adapter {
     private ApiInterface apiInterface;
     private String TAG = FrontPageAdapter.class.getSimpleName();
     private Fragment fragment;
+    private IFrontPageAdapter iFrontPageAdapter;
 
-    public FrontPageAdapter(Fragment fragment,Context context, List<FrontPageChild> list, Retrofit retrofit) {
+
+    public interface IFrontPageAdapter{
+        void sendData(DetailPostModal modal, ImageView imageView);
+    }
+
+
+    public FrontPageAdapter(Fragment fragment,Context context, List<FrontPageChild> list, Retrofit retrofit,IFrontPageAdapter iFrontPageAdapter) {
         this.context = context;
         this.list = list;
         this.retrofit = retrofit;
         this.apiInterface = retrofit.create(ApiInterface.class);
         this.fragment = fragment;
+        this.iFrontPageAdapter = iFrontPageAdapter;
     }
 
     @Override
@@ -83,6 +95,13 @@ public class FrontPageAdapter extends RecyclerView.Adapter {
         final Preview preview = frontPageChildData.getPreview();
         final String thumbnail = (preview!=null)?frontPageChildData.getThumbnail():"";
 
+        final List<String> bigImageUrlList = new ArrayList<>();
+        if(preview!=null){
+            for(Image image:frontPageChildData.getPreview().getImages()){
+                bigImageUrlList.add(image.getSource().getUrl());
+            }
+        }
+
         final Object objLikes = frontPageChildData.getLikes();
         if (objLikes != null) {
             Boolean b = (Boolean) objLikes;
@@ -93,28 +112,20 @@ public class FrontPageAdapter extends RecyclerView.Adapter {
 
 
         }
-        if (position == list.size() - 1 && list.size()>4) {
-            EventBus.getDefault().post("getNextData");
+        if(!(fragment instanceof SearchFragment)){
+
+            if (position == list.size() - 1 && list.size()>4) {
+                EventBus.getDefault().post("getNextData");
+            }
         }
 
         //click
         postView.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, DetailActivity.class);
-//                intent.putExtra("id", id);
-//                intent.putExtra("subreddit", subreddit);
-//                intent.putExtra("ups",ups);
-//                intent.putExtra("title",title);
-//                intent.putExtra("commentsCount",commentsCount);
-//                intent.putExtra("time",time);
-//                intent.putExtra("author",author);
-//                intent.putExtra("thumbnail",(preview!=null)?frontPageChildData.getThumbnail():"");
-                DetailSubredditModal modal = new DetailSubredditModal(id,
-                        subreddit,ups,title,commentsCount,thumbnail,time,author);
-                intent.putExtra("modal",modal);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(intent);
+                DetailPostModal modal = new DetailPostModal(id,
+                        subreddit,ups,title,commentsCount,thumbnail,time,author,bigImageUrlList);
+                iFrontPageAdapter.sendData(modal,postView.imageView);
             }
         });
 
@@ -157,6 +168,8 @@ public class FrontPageAdapter extends RecyclerView.Adapter {
                 });
             }
         });
+
+//        postView.imageView.setOnClickListener((View v)->{});
 
         postView.imageDownVote.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -214,16 +227,12 @@ public class FrontPageAdapter extends RecyclerView.Adapter {
         postView.tvTitle.setText(list.get(position).getData().getSubreddit());
         postView.tvDetail.setText(list.get(position).getData().getTitle());
         postView.tvComments.setText(String.valueOf(list.get(position).getData().getNumComments()));
-
-
-
     }
 
     @Override
     public int getItemCount() {
         return list.size();
     }
-
 
 
 }

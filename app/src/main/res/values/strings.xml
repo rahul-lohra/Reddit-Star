@@ -108,6 +108,8 @@
     <string name="no_items">No Items</string>
     <string name="search_hint">Type here</string>
     <string name="voice_search">Voice Search</string>
+    <string name="posts">Posts</string>
+    <string name="subscribe">Subscribe</string>
 
 
 </resources>

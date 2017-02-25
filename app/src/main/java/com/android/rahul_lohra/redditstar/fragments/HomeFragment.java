@@ -1,29 +1,26 @@
 package com.android.rahul_lohra.redditstar.fragments;
 
-import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageView;
 
 import com.android.rahul_lohra.redditstar.R;
 import com.android.rahul_lohra.redditstar.activity.SearchActivity;
 import com.android.rahul_lohra.redditstar.adapter.normal.FrontPageAdapter;
 import com.android.rahul_lohra.redditstar.application.Initializer;
-import com.android.rahul_lohra.redditstar.helper.AwesomeSearchView;
 import com.android.rahul_lohra.redditstar.modal.frontPage.FrontPageChild;
 import com.android.rahul_lohra.redditstar.modal.frontPage.FrontPageResponseData;
-import com.android.rahul_lohra.redditstar.retrofit.ApiInterface;
+import com.android.rahul_lohra.redditstar.modal.custom.DetailPostModal;
 import com.android.rahul_lohra.redditstar.service.GetFrontPageService;
 
 import org.greenrobot.eventbus.EventBus;
@@ -38,14 +35,13 @@ import javax.inject.Named;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import retrofit2.Retrofit;
 
 /**
  * Created by rkrde on 05-02-2017.
  */
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements FrontPageAdapter.IFrontPageAdapter {
 
     private FrontPageResponseData frontPageResponseData = null;
     @Bind(R.id.rv)
@@ -54,9 +50,14 @@ public class HomeFragment extends Fragment {
     @Inject
     @Named("withToken")
     Retrofit retrofitWithToken;
-
     FrontPageAdapter adapter;
     List<FrontPageChild> list;
+
+    public interface IHomeFragment{
+        void sendModalAndImageView(DetailPostModal modal, ImageView imageView);
+    }
+
+    private IHomeFragment mListener;
 
 
     void makeApiCall(){
@@ -69,9 +70,6 @@ public class HomeFragment extends Fragment {
         getContext().startService(intent);
     }
 
-
-    private String mParam1;
-    private String mParam2;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -91,7 +89,7 @@ public class HomeFragment extends Fragment {
         setHasOptionsMenu(true);
         ((Initializer) getContext().getApplicationContext()).getNetComponent().inject(this);
         list = new ArrayList<>();
-        adapter = new FrontPageAdapter(HomeFragment.this,getActivity().getApplicationContext(), list,retrofitWithToken);
+        adapter = new FrontPageAdapter(HomeFragment.this,getActivity().getApplicationContext(), list,retrofitWithToken,this);
     }
 
     @Override
@@ -108,6 +106,7 @@ public class HomeFragment extends Fragment {
     private void setAdapter(){
         rv.setLayoutManager(new LinearLayoutManager(getActivity()));
         rv.setAdapter(adapter);
+//        rv.nested
     }
 
 
@@ -173,6 +172,26 @@ public class HomeFragment extends Fragment {
         EventBus.getDefault().unregister(this);
         super.onStop();
     }
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof IHomeFragment) {
+            mListener = (IHomeFragment) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
 
 
+    @Override
+    public void sendData(DetailPostModal modal, ImageView imageView) {
+        mListener.sendModalAndImageView(modal,imageView);
+    }
 }
