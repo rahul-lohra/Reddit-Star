@@ -178,10 +178,12 @@ public class SubredditFragment extends Fragment
         sparkSubs.setEventListener(new SparkEventListener() {
             @Override
             public void onEvent(ImageView button, boolean buttonState) {
-                if(UserState.isUserLoggedIn(getActivity())){
+                boolean isLggedIn =UserState.isUserLoggedIn(getActivity());
+                if(isLggedIn){
                     String subVal = (buttonState)?"sub":"unsub";
                     updateSubscription(subVal);
                 }else {
+                    sparkSubs.setChecked(isLggedIn);
                     Toast.makeText(getActivity(),getString(R.string.please_login),Toast.LENGTH_SHORT).show();
                 }
             }
@@ -233,12 +235,9 @@ public class SubredditFragment extends Fragment
                 {
                     T5_Data t5_data = response.body().getData();
                     String accountsActive = String.valueOf(t5_data.getAccountsActive());
-                    boolean isUserSubscriber = t5_data.getUserIsSubscriber();
                     String totalSubscriber = String.valueOf(t5_data.getSubscribers());
 
-                    if(isUserSubscriber)
-                        sparkSubs.setChecked(true);
-
+                    sparkSubs.setChecked((t5_data.getUserIsSubscriber()!=null)?(t5_data.getUserIsSubscriber()):(false));
 
                 }
             }
