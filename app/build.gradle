@@ -87,7 +87,6 @@ dependencies {
     compile "com.android.support:recyclerview-v7:$googleSupportVersion"
     compile "com.android.support:design:$googleSupportVersion"
     compile "com.android.support:cardview-v7:$googleSupportVersion"
-    compile "net.dean.jraw:JRAW:$jrawVersion"
 
     compile "com.android.support:design:$googleSupportVersion"
     apt "net.simonvt.schematic:schematic-compiler:$schematicVersion"

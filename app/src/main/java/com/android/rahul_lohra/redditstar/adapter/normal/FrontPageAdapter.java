@@ -19,6 +19,7 @@ import com.android.rahul_lohra.redditstar.modal.frontPage.Preview;
 import com.android.rahul_lohra.redditstar.modal.custom.DetailPostModal;
 import com.android.rahul_lohra.redditstar.retrofit.ApiInterface;
 import com.android.rahul_lohra.redditstar.utility.Constants;
+import com.android.rahul_lohra.redditstar.utility.Share;
 import com.android.rahul_lohra.redditstar.utility.UserState;
 import com.android.rahul_lohra.redditstar.viewHolder.PostView;
 import com.bumptech.glide.Glide;
@@ -88,6 +89,8 @@ public class FrontPageAdapter extends RecyclerView.Adapter {
         final String commentsCount = String.valueOf(frontPageChildData.getNumComments());
         final Preview preview = frontPageChildData.getPreview();
         final String thumbnail = (preview!=null)?frontPageChildData.getThumbnail():"";
+        final String url = frontPageChildData.getUrl();
+
         final Boolean likes = frontPageChildData.getLikes();
         postView.setLikes(likes);
 
@@ -175,7 +178,14 @@ public class FrontPageAdapter extends RecyclerView.Adapter {
                     postView.performVote(PostView.DIRECTION_DOWN,thingId);
                     frontPageChildData.setLikes(false);
                 }
-//
+            }
+        });
+
+        postView.tvShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Share share = new Share();
+                share.shareUrl(fragment.getActivity(),url);
             }
         });
 
