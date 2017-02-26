@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
 
     tools:context="com.android.rahul_lohra.redditstar.activity.SearchActivity"
-    android:background="@color/light_blue_500">
+    android:background="@android:color/white">
 
     <android.support.design.widget.FloatingActionButton
         android:layout_gravity="bottom|end"
@@ -37,17 +37,49 @@
             android:drawablePadding="@dimen/nav_header_vertical_spacing"
             android:background="@drawable/rect" />
 
-        <android.support.v7.widget.RecyclerView
-            android:layout_marginTop="8dp"
-            android:id="@+id/rv_subreddits"
+        <android.support.v4.widget.NestedScrollView
+            android:id="@+id/nested_sv"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="match_parent">
 
-        <android.support.v7.widget.RecyclerView
-            android:layout_marginTop="8dp"
-            android:id="@+id/rv_links"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:padding="8dp"
+                    android:text="@string/subreddits"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:layout_marginTop="8dp"
+                    android:id="@+id/rv_subreddits"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:padding="8dp"
+                    android:text="@string/posts"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:nestedScrollingEnabled="false"
+                    android:layout_marginTop="8dp"
+                    android:id="@+id/rv_links"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </android.support.v4.widget.NestedScrollView>
+
+
+
+
     </LinearLayout>
 
 </FrameLayout>

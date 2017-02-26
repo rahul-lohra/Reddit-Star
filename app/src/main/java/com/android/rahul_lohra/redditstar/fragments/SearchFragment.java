@@ -5,10 +5,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -69,6 +72,9 @@ public class SearchFragment extends Fragment implements
     RecyclerView rvLinks;
     @Bind(R.id.et)
     AppCompatEditText et;
+    @Bind(R.id.nested_sv)
+    NestedScrollView nestedSV;
+
     T3_LinkSearchAdapter t3LinkSearchAdapter;
     T5_SubredditSearchAdapter t5SubredditSearchAdapter;
 
@@ -115,7 +121,8 @@ public class SearchFragment extends Fragment implements
             public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
                 switch (actionId) {
                     case EditorInfo.IME_ACTION_SEARCH: {
-                        doMySearch(et.getText().toString());
+                        doMySearch(et.getText().toString(),true);
+                        searchQuery = et.getText().toString();
                     }
                     return true;
 
@@ -126,8 +133,25 @@ public class SearchFragment extends Fragment implements
             }
         });
 
+        nestedSV.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+//                View view = (View) scrollView.getChildAt(scrollView.getChildCount() - 1);
+                int diff = (rvLinks.getBottom() - (v.getHeight() + v.getScrollY()));
+
+                // if diff is zero, then the bottom has been reached
+                if (diff <= 10) {
+                    // do stuff
+                    Log.d(TAG,"last Position");
+                    getLinks(searchQuery,false);
+                }
+            }
+        });
+
         return v;
     }
+
+
 
     private void setAdapter() {
         t3LinkSearchAdapter = new T3_LinkSearchAdapter(getActivity(), t3dataList, retrofitWithToken,this);
@@ -140,33 +164,46 @@ public class SearchFragment extends Fragment implements
         rvSubreddits.setAdapter(t5SubredditSearchAdapter);
     }
 
-    private void doMySearch(String query) {
+    private void doMySearch(String query,boolean isFromStart) {
+        /*
+         TODO://isFromStart is true only from search Bar else isFromStart is false(for getting next items)
+         */
+        if(isFromStart)
+        {
+            t3dataList.clear();
+            t5dataList.clear();
+            t3LinkSearchAdapter.notifyDataSetChanged();
+            t5SubredditSearchAdapter.notifyDataSetChanged();
+        }
         if (!query.isEmpty()) {
-
-            getLinks(query);
-            getSubreddits(query);
+            getLinks(query,isFromStart);
+            getSubreddits(query,isFromStart);
         }
 
     }
 
-    private void getLinks(String query) {
+    private void getLinks(String query,boolean isFromStart) {
         Intent intentLinkService = new Intent(getActivity(), SearchLinksService.class);
-        if (t3_List_child != null) {
-            intentLinkService.putExtra("after", t3_List_child.getAfter());
-        } else {
-            intentLinkService.putExtra("after", "");
-        }
+        String after = isFromStart?"":(t3_List_child.getAfter()!=null)?t3_List_child.getAfter():"";
+//        if (t3_List_child != null) {
+//            intentLinkService.putExtra("after", t3_List_child.getAfter());
+//        } else {
+//            intentLinkService.putExtra("after", "");
+//        }
+        intentLinkService.putExtra("after", after);
         intentLinkService.putExtra("query", query);
         getActivity().startService(intentLinkService);
     }
 
-    private void getSubreddits(String query) {
+    private void getSubreddits(@NonNull String query, boolean isFromStart) {
         Intent intentSubredditService = new Intent(getActivity(), SearchSubredditsService.class);
-        if (t5_List_child != null) {
-            intentSubredditService.putExtra("after", t5_List_child.getAfter());
-        } else {
-            intentSubredditService.putExtra("after", "");
-        }
+//        if (t5_List_child != null) {
+//            intentSubredditService.putExtra("after", t5_List_child.getAfter());
+//        } else {
+//            intentSubredditService.putExtra("after", "");
+//        }
+        String after = isFromStart?"":(t5_List_child.getAfter()!=null)?t5_List_child.getAfter():"";
+        intentSubredditService.putExtra("after", after);
         intentSubredditService.putExtra("query", query);
         getActivity().startService(intentSubredditService);
     }
@@ -179,6 +216,15 @@ public class SearchFragment extends Fragment implements
         intent.putExtra("subredditId",subredditId);
 
         startActivity(intent);
+    }
+
+    @Override
+    public void getNextSubreddit() {
+        if (t5_List_child != null) {
+            if (!t5_List_child.getAfter().equalsIgnoreCase(SearchSubredditsService.after)) {
+                getSubreddits(searchQuery,false);
+            }
+        }
     }
 
     @Override
@@ -212,13 +258,13 @@ public class SearchFragment extends Fragment implements
         if (string.equals("getNextData") && type.equals("link")) {
             if (t3_List_child != null) {
                 if (!t3_List_child.getAfter().equalsIgnoreCase(SearchLinksService.after)) {
-                    getLinks(searchQuery);
+                    getLinks(searchQuery,false);
                 }
             }
         } else if (string.equals("getNextData") && type.equals("subreddit")) {
             if (t5_List_child != null) {
                 if (!t5_List_child.getAfter().equalsIgnoreCase(SearchSubredditsService.after)) {
-                    getSubreddits(searchQuery);
+                    getSubreddits(searchQuery,false);
                 }
             }
         }

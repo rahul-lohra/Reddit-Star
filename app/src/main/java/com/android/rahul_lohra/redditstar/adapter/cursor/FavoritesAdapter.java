@@ -48,6 +48,7 @@ public class FavoritesAdapter extends CursorRecyclerViewAdapter<RecyclerView.Vie
 
         DrawerSubreddit drawerSubreddit = (DrawerSubreddit)viewHolder;
         drawerSubreddit.tv.setText(displayName);
+        drawerSubreddit.sparkButton.setChecked(true);
         drawerSubreddit.sparkButton.setEventListener(new SparkEventListener() {
             @Override
             public void onEvent(ImageView button, boolean buttonState) {

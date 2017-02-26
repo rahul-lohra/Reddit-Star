@@ -13,6 +13,8 @@ import com.android.rahul_lohra.redditstar.modal.t5_Subreddit.T5_Data;
 import com.android.rahul_lohra.redditstar.viewHolder.SubredditsSmallCard;
 import com.bumptech.glide.Glide;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.List;
 
 /**
@@ -26,6 +28,7 @@ public class T5_SubredditSearchAdapter extends RecyclerView.Adapter {
 
     public interface IT5_SubredditSearchAdapter{
          void sendData(String name,String fullName,String subredditId);
+        void getNextSubreddit();
     }
     private IT5_SubredditSearchAdapter mListener;
 
@@ -58,6 +61,9 @@ public class T5_SubredditSearchAdapter extends RecyclerView.Adapter {
 //        final Preview preview = t5_data.getPreview();
 //        final String thumbnail = (preview!=null)?t5_data.getThumbnail():"";
 
+        if (position == list.size() - 1 && list.size()>4) {
+            mListener.getNextSubreddit();
+        }
 
         viewHolder.tvShare.setText(list.get(position).data.getDisplayName());
         Glide.with(context)
