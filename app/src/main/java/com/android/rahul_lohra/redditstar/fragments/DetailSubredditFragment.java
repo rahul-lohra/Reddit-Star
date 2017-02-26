@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.android.rahul_lohra.redditstar.R;
 import com.android.rahul_lohra.redditstar.adapter.normal.CommentsAdapter;
+import com.android.rahul_lohra.redditstar.helper.AspectRatioImageView;
 import com.android.rahul_lohra.redditstar.loader.CommentsLoader;
 import com.android.rahul_lohra.redditstar.modal.comments.CustomComment;
 import com.android.rahul_lohra.redditstar.modal.custom.DetailPostModal;
@@ -30,7 +31,7 @@ public class DetailSubredditFragment extends Fragment implements LoaderManager.L
 
 
     @Bind(R.id.imageView)
-    ImageView imageView;
+    AspectRatioImageView imageView;
     @Bind(R.id.tv_category)
     TextView tvCategory;
     @Bind(R.id.tv_title)

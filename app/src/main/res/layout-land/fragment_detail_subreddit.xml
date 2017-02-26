@@ -18,7 +18,7 @@
                 android:transitionName="profile"
                 android:id="@+id/imageView"
                 app:aspectRatioEnabled="true"
-                app:aspectRatio="0.7"
+                app:aspectRatio="0.3"
                 app:dominantMeasurement="width"
                 android:layout_height="0dp"
                 android:layout_width="0dp"
