@@ -72,7 +72,7 @@ public class T3_LinkSearchAdapter extends RecyclerView.Adapter {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         RecyclerView.ViewHolder v = null;
-        v = new PostView(LayoutInflater.from(parent.getContext()).
+        v = new PostView(context,LayoutInflater.from(parent.getContext()).
                 inflate(R.layout.list_item_posts, parent, false));
         return v;
     }
@@ -94,6 +94,7 @@ public class T3_LinkSearchAdapter extends RecyclerView.Adapter {
         final String ups = String.valueOf(t3Data.ups);
         final String title = String.valueOf(t3Data.title);
         final String thumbnail = (preview!=null)?t3Data.thumbnail:"";
+        final Boolean likes = t3Data.likes;
 
         final List<String> bigImageUrlList = new ArrayList<>();
         if(preview!=null){
@@ -102,10 +103,9 @@ public class T3_LinkSearchAdapter extends RecyclerView.Adapter {
             }
         }
 
-        final Object objLikes = t3Data.likes;
-        if (objLikes != null) {
-            Boolean b = (Boolean) objLikes;
-            Integer resId = (b) ? R.drawable.ic_arrow_upward_true : R.drawable.ic_arrow_downward_true;
+
+        if (likes != null) {
+            Integer resId = (likes) ? R.drawable.ic_arrow_upward_true : R.drawable.ic_arrow_downward_true;
 //            Glide.with(context)
 //                    .load(resId)
 //                    .into(postView.imageUpVote);
@@ -120,7 +120,7 @@ public class T3_LinkSearchAdapter extends RecyclerView.Adapter {
             @Override
             public void onClick(View view) {
                 DetailPostModal modal = new DetailPostModal(id,
-                        subreddit,ups,title,commentsCount,thumbnail,time,author,bigImageUrlList);
+                        subreddit,ups,title,commentsCount,thumbnail,time,author,bigImageUrlList,likes);
                 mListener.sendLink(modal,postView.imageView);
             }
         });
@@ -138,9 +138,8 @@ public class T3_LinkSearchAdapter extends RecyclerView.Adapter {
 
 
                 int dir = 1;
-                if (objLikes != null) {
-                    Boolean b = (Boolean) objLikes;
-                    dir = (b) ? 0 : 1;
+                if (likes != null) {
+                    dir = (likes) ? 0 : 1;
                 }
 //                makeVoteRequest(thingId,dir);
 
@@ -177,9 +176,8 @@ public class T3_LinkSearchAdapter extends RecyclerView.Adapter {
                 }
 
                 int dir = -1;
-                if (objLikes != null) {
-                    Boolean b = (Boolean) objLikes;
-                    dir = (b) ? -1 : 0;
+                if (likes != null) {
+                    dir = (likes) ? -1 : 0;
                 }
 //                makeVoteRequest(thingId,dir);
 

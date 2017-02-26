@@ -1,33 +1,16 @@
 package com.android.rahul_lohra.redditstar.dagger.Module;
 
-import android.content.ContentValues;
 import android.content.Context;
-import android.content.Intent;
-import android.database.Cursor;
-import android.net.Uri;
 import android.util.Base64;
 import android.util.Log;
 
-import com.android.rahul_lohra.redditstar.modal.AboutMe;
 import com.android.rahul_lohra.redditstar.modal.RefreshTokenResponse;
-import com.android.rahul_lohra.redditstar.modal.comments.DummyAdapter;
-import com.android.rahul_lohra.redditstar.modal.comments.Example;
-import com.android.rahul_lohra.redditstar.modal.token.RefreshToken;
 import com.android.rahul_lohra.redditstar.retrofit.ApiInterface;
-import com.android.rahul_lohra.redditstar.storage.MyProvider;
-import com.android.rahul_lohra.redditstar.storage.column.UserCredentialsColumn;
 import com.android.rahul_lohra.redditstar.utility.Constants;
 import com.android.rahul_lohra.redditstar.utility.MyUrl;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.GlideBuilder;
-import com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool;
 import com.facebook.stetho.okhttp3.StethoInterceptor;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
@@ -39,10 +22,7 @@ import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import okhttp3.ResponseBody;
 import okhttp3.Route;
-import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 

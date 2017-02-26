@@ -19,9 +19,10 @@ public class DetailPostModal implements Parcelable {
     String thumbnail;
     String time;
     String author;
+    Boolean likes;
     List<String> bigImageUrlList = new ArrayList<>();
 
-    public DetailPostModal(String id, String subreddit, String ups, String title, String commentsCount, String thumbnail, String time, String author, List<String> bigImageUrlList) {
+    public DetailPostModal(String id, String subreddit, String ups, String title, String commentsCount, String thumbnail, String time, String author, List<String> bigImageUrlList,Boolean likes) {
         this.id = id;
         this.subreddit = subreddit;
         this.ups = ups;
@@ -31,6 +32,7 @@ public class DetailPostModal implements Parcelable {
         this.time = time;
         this.author = author;
         this.bigImageUrlList = bigImageUrlList;
+        this.likes = likes;
     }
 
     public List<String> getBigImageUrlList() {
@@ -105,6 +107,14 @@ public class DetailPostModal implements Parcelable {
         this.author = author;
     }
 
+    public Boolean getLikes() {
+        return likes;
+    }
+
+    public void setLikes(Boolean likes) {
+        this.likes = likes;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -120,6 +130,7 @@ public class DetailPostModal implements Parcelable {
         dest.writeString(this.thumbnail);
         dest.writeString(this.time);
         dest.writeString(this.author);
+        dest.writeValue(this.likes);
         dest.writeStringList(this.bigImageUrlList);
     }
 
@@ -132,10 +143,11 @@ public class DetailPostModal implements Parcelable {
         this.thumbnail = in.readString();
         this.time = in.readString();
         this.author = in.readString();
+        this.likes = (Boolean) in.readValue(Boolean.class.getClassLoader());
         this.bigImageUrlList = in.createStringArrayList();
     }
 
-    public static final Parcelable.Creator<DetailPostModal> CREATOR = new Parcelable.Creator<DetailPostModal>() {
+    public static final Creator<DetailPostModal> CREATOR = new Creator<DetailPostModal>() {
         @Override
         public DetailPostModal createFromParcel(Parcel source) {
             return new DetailPostModal(source);

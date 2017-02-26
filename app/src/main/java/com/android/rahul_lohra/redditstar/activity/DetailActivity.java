@@ -9,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.rahul_lohra.redditstar.R;
 import com.android.rahul_lohra.redditstar.adapter.normal.CommentsAdapter;
@@ -17,6 +18,7 @@ import com.android.rahul_lohra.redditstar.helper.AspectRatioImageView;
 import com.android.rahul_lohra.redditstar.loader.CommentsLoader;
 import com.android.rahul_lohra.redditstar.modal.comments.CustomComment;
 import com.android.rahul_lohra.redditstar.modal.custom.DetailPostModal;
+import com.android.rahul_lohra.redditstar.utility.UserState;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
@@ -24,10 +26,10 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class DetailActivity extends AppCompatActivity implements
-        LoaderManager.LoaderCallbacks<List<CustomComment>>
-{
+        LoaderManager.LoaderCallbacks<List<CustomComment>> {
 
     @Bind(R.id.imageView)
     AspectRatioImageView imageView;
@@ -58,6 +60,22 @@ public class DetailActivity extends AppCompatActivity implements
     List<CustomComment> list = new ArrayList<>();
     private DetailPostModal subredditModal;
 
+    @OnClick(R.id.image_up_vote)
+    void onClickUpVote() {
+        boolean isUserLoggedIn = UserState.isUserLoggedIn(this);
+
+        if (isUserLoggedIn) {
+            Toast.makeText(this, getString(R.string.please_login), Toast.LENGTH_SHORT).show();
+        } else {
+            performVote();
+        }
+    }
+
+    @OnClick(R.id.image_down_vote)
+    void onClickDownVote() {
+        boolean isUserLoggedIn = UserState.isUserLoggedIn(this);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,15 +101,28 @@ public class DetailActivity extends AppCompatActivity implements
         tvTitle.setText(subredditModal.getTitle());
         tvComments.setText(subredditModal.getCommentsCount());
         tvVote.setText(subredditModal.getUps());
-        tvCategory.setText("r/"+subredditModal.getSubreddit()+"-"+subredditModal.getTime());
+        tvCategory.setText("r/" + subredditModal.getSubreddit() + "-" + subredditModal.getTime());
         tvUsername.setText(subredditModal.getAuthor());
         tvSort.setText("new");
-        String bigImageUrl = (subredditModal.getBigImageUrlList().size()!=0)?subredditModal.getBigImageUrlList().get(0):"";
+        String bigImageUrl = (subredditModal.getBigImageUrlList().size() != 0) ? subredditModal.getBigImageUrlList().get(0) : "";
         Glide.with(this).
                 load(bigImageUrl)
                 .centerCrop()
                 .crossFade()
                 .into(imageView);
+
+        Boolean likes = subredditModal.getLikes();
+
+        if (likes != null) {
+            highlightVote(likes);
+        }
+    }
+
+    private void highlightVote(boolean likes) {
+        Integer resId = (likes) ? R.drawable.ic_arrow_upward_true : R.drawable.ic_arrow_downward_true;
+        Glide.with(this)
+                .load(resId)
+                .into((likes) ? imageUpVote : imageDownVote);
     }
 
     private void setAdapter() {
@@ -100,6 +131,9 @@ public class DetailActivity extends AppCompatActivity implements
         rv.setAdapter(commentsAdapter);
     }
 
+    private void performVote() {
+
+    }
 
     @Override
     public Loader<List<CustomComment>> onCreateLoader(int id, Bundle args) {
@@ -116,8 +150,7 @@ public class DetailActivity extends AppCompatActivity implements
 
     @Override
     public void onLoadFinished(Loader<List<CustomComment>> loader, List<CustomComment> data) {
-        switch (loader.getId())
-        {
+        switch (loader.getId()) {
             case LOADER_ID:
                 list.clear();
                 list.addAll(data);
@@ -128,8 +161,8 @@ public class DetailActivity extends AppCompatActivity implements
 
     @Override
     public void onLoaderReset(Loader<List<CustomComment>> loader) {
-        switch (loader.getId()){
-            case LOADER_ID :
+        switch (loader.getId()) {
+            case LOADER_ID:
                 list.clear();
                 commentsAdapter.notifyDataSetChanged();
                 break;

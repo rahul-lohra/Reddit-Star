@@ -5,29 +5,17 @@ import android.support.v4.content.AsyncTaskLoader;
 import android.util.Log;
 
 import com.android.rahul_lohra.redditstar.application.Initializer;
-import com.android.rahul_lohra.redditstar.modal.comments.Child;
-import com.android.rahul_lohra.redditstar.modal.comments.CommentsGsonTypeAdapter;
-import com.android.rahul_lohra.redditstar.modal.comments.CustomComment;
-import com.android.rahul_lohra.redditstar.modal.comments.Example;
-import com.android.rahul_lohra.redditstar.modal.frontPage.FrontPageChild;
 import com.android.rahul_lohra.redditstar.modal.frontPage.FrontPageResponse;
-import com.android.rahul_lohra.redditstar.modal.frontPage.FrontPageResponseData;
 import com.android.rahul_lohra.redditstar.retrofit.ApiInterface;
 import com.android.rahul_lohra.redditstar.utility.UserState;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import okhttp3.ResponseBody;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 

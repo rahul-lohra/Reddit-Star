@@ -18,7 +18,7 @@ public class FrontPageChildData {
     private String subreddit;
     @SerializedName("likes")
     @Expose
-    private Object likes;
+    private Boolean likes;
     @SerializedName("secure_media")
     @Expose
     private Object secureMedia;

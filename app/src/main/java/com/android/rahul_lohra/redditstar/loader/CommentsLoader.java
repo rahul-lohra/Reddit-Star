@@ -3,22 +3,18 @@ package com.android.rahul_lohra.redditstar.loader;
 import android.content.Context;
 import android.support.v4.content.AsyncTaskLoader;
 import android.util.Log;
-import android.util.SparseArray;
 
-import com.android.rahul_lohra.redditstar.activity.DetailActivity;
 import com.android.rahul_lohra.redditstar.application.Initializer;
 import com.android.rahul_lohra.redditstar.modal.comments.Child;
-import com.android.rahul_lohra.redditstar.modal.comments.CommentsGsonTypeAdapter;
+import com.android.rahul_lohra.redditstar.helper.CommentsGsonTypeAdapter;
 import com.android.rahul_lohra.redditstar.modal.comments.CustomComment;
 import com.android.rahul_lohra.redditstar.modal.comments.Example;
-import com.android.rahul_lohra.redditstar.modal.comments.Replies;
 import com.android.rahul_lohra.redditstar.retrofit.ApiInterface;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -28,7 +24,6 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import okhttp3.ResponseBody;
-import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 

@@ -19,6 +19,7 @@ import com.android.rahul_lohra.redditstar.service.GetSubscribedSubredditsService
 import com.android.rahul_lohra.redditstar.service.GetUserCredentialsService;
 import com.android.rahul_lohra.redditstar.service.search.SearchLinksService;
 import com.android.rahul_lohra.redditstar.service.search.SearchSubredditsService;
+import com.android.rahul_lohra.redditstar.viewHolder.PostView;
 
 import javax.inject.Singleton;
 
@@ -30,23 +31,26 @@ import dagger.Component;
 @Singleton
 @Component(modules = {NetModule.class, AppModule.class})
 public interface NetComponent {
+    //Activity
     void inject(MainActivity activity);
     void inject(SearchActivity activity);
     void inject(DashboardPresenter presenter);
-    void inject(GetUserCredentialsService service);
-    void inject(GetSubscribedSubredditsService service);
-    void inject(GetDashboardSubredditsService service);
-    void inject(GetFrontPageService service);
     void inject(CommentsLoader loader);
     void inject(ReplyFragment fragment);
     void inject(HomeFragment fragment);
     void inject(SubredditFragment fragment);
     void inject(SearchFragment fragment);
-
+    //Service
     void inject(GetSubredditListService service);
     void inject(SearchSubredditsService service);
     void inject(SearchLinksService service);
-
+    void inject(GetUserCredentialsService service);
+    void inject(GetSubscribedSubredditsService service);
+    void inject(GetDashboardSubredditsService service);
+    void inject(GetFrontPageService service);
+    //Loader
     void inject(SubredditLoader loader);
+    //View
+    void inject(PostView view);
 
 }

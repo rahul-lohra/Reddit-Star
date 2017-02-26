@@ -24,7 +24,7 @@ public class T3_Data {
     public String subreddit;
     @SerializedName("likes")
     @Expose
-    public Object likes;
+    public Boolean likes;
     @SerializedName("id")
     @Expose
     public String id;
@@ -80,7 +80,7 @@ public class T3_Data {
     @Expose
     public String permalink;
 
-    public T3_Data(String subreddit, Object likes, String id, Boolean clicked, String author, Object media, Integer score, Boolean over18, String domain, Integer numComments, String subredditId, Integer downs, String name, String url, String title, Integer ups, Double upvoteRatio, Boolean visited, Object numReports, String permalink) {
+    public T3_Data(String subreddit, Boolean likes, String id, Boolean clicked, String author, Object media, Integer score, Boolean over18, String domain, Integer numComments, String subredditId, Integer downs, String name, String url, String title, Integer ups, Double upvoteRatio, Boolean visited, Object numReports, String permalink) {
         this.subreddit = subreddit;
         this.likes = likes;
         this.id = id;

@@ -30,9 +30,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.inject.Inject;
-import javax.inject.Named;
-
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -58,7 +55,6 @@ public class FrontPageAdapter extends RecyclerView.Adapter {
         void sendData(DetailPostModal modal, ImageView imageView);
     }
 
-
     public FrontPageAdapter(Fragment fragment,Context context, List<FrontPageChild> list, Retrofit retrofit,IFrontPageAdapter iFrontPageAdapter) {
         this.context = context;
         this.list = list;
@@ -71,16 +67,14 @@ public class FrontPageAdapter extends RecyclerView.Adapter {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         RecyclerView.ViewHolder v = null;
-        v = new PostView(LayoutInflater.from(parent.getContext()).
+        v = new PostView(context,LayoutInflater.from(parent.getContext()).
                 inflate(R.layout.list_item_posts, parent, false));
         return v;
     }
 
-
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         final PostView postView = (PostView) holder;
-
 
         final FrontPageChildData frontPageChildData = list.get(position).getData();
         final String id = frontPageChildData.getId();
@@ -94,6 +88,10 @@ public class FrontPageAdapter extends RecyclerView.Adapter {
         final String commentsCount = String.valueOf(frontPageChildData.getNumComments());
         final Preview preview = frontPageChildData.getPreview();
         final String thumbnail = (preview!=null)?frontPageChildData.getThumbnail():"";
+        final Boolean likes = frontPageChildData.getLikes();
+        postView.setLikes(likes);
+
+
 
         final List<String> bigImageUrlList = new ArrayList<>();
         if(preview!=null){
@@ -102,14 +100,12 @@ public class FrontPageAdapter extends RecyclerView.Adapter {
             }
         }
 
-        final Object objLikes = frontPageChildData.getLikes();
-        if (objLikes != null) {
-            Boolean b = (Boolean) objLikes;
-            Integer resId = (b) ? R.drawable.ic_arrow_upward_true : R.drawable.ic_arrow_downward_true;
-//            Glide.with(context)
-//                    .load(resId)
-//                    .into(postView.imageUpVote);
-
+        if (likes != null) {
+            Integer resId = (likes) ? R.drawable.ic_arrow_upward_true : R.drawable.ic_arrow_downward_true;
+            Glide.with(context)
+                    .load("")
+                    .placeholder(resId)
+                    .into((likes) ?postView.imageUpVote:postView.imageDownVote);
 
         }
         if(!(fragment instanceof SearchFragment)){
@@ -119,19 +115,18 @@ public class FrontPageAdapter extends RecyclerView.Adapter {
             }
         }
 
-        //click
         postView.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 DetailPostModal modal = new DetailPostModal(id,
-                        subreddit,ups,title,commentsCount,thumbnail,time,author,bigImageUrlList);
+                        subreddit,ups,title,commentsCount,thumbnail,time,author,bigImageUrlList,likes);
                 iFrontPageAdapter.sendData(modal,postView.imageView);
             }
         });
 
         postView.imageUpVote.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(final View view) {
 
                 boolean loggedIn = UserState.isUserLoggedIn(context);
 
@@ -140,32 +135,19 @@ public class FrontPageAdapter extends RecyclerView.Adapter {
                     return;
                 }
 
-                int dir = 1;
-                if (objLikes != null) {
-                    Boolean b = (Boolean) objLikes;
-                    dir = (b) ? 0 : 1;
+                Boolean mLikes = postView.getLikes();
+                if(mLikes!=null){
+                    if(!mLikes)
+                    {
+                        postView.performVote(PostView.DIRECTION_NULL,thingId);
+                        frontPageChildData.setLikes(null);
+                    }
+                }else {
+                    //upvote
+                    postView.performVote(PostView.DIRECTION_UP,thingId);
+                    frontPageChildData.setLikes(true);
                 }
-//                makeVoteRequest(thingId,dir);
 
-                String token = UserState.getAuthToken(context);
-                String auth = "bearer " + token;
-                Map<String, String> map = new HashMap<String, String>();
-                map.put("dir", String.valueOf(dir));
-                map.put("id", thingId);
-                map.put("rank", String.valueOf(2));
-
-                apiInterface.postVote(auth, map).enqueue(new Callback<ResponseBody>() {
-                    @Override
-                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-
-                        Log.d(TAG, "UpVote onResponse:" + response.code());
-                    }
-
-                    @Override
-                    public void onFailure(Call<ResponseBody> call, Throwable t) {
-                        Log.d(TAG, "UpVote onFail:" + t.getMessage());
-                    }
-                });
             }
         });
 
@@ -181,33 +163,19 @@ public class FrontPageAdapter extends RecyclerView.Adapter {
                     return;
                 }
 
-                int dir = -1;
-                if (objLikes != null) {
-                    Boolean b = (Boolean) objLikes;
-                    dir = (b) ? -1 : 0;
+                Boolean mLikes = postView.getLikes();
+                if(mLikes!=null){
+                    if(mLikes)
+                    {
+                        postView.performVote(PostView.DIRECTION_NULL,thingId);
+                        frontPageChildData.setLikes(null);
+                    }
+                }else {
+                    //upvote
+                    postView.performVote(PostView.DIRECTION_DOWN,thingId);
+                    frontPageChildData.setLikes(false);
                 }
-//                makeVoteRequest(thingId,dir);
-
-                String token = UserState.getAuthToken(context);
-                String auth = "bearer " + token;
-                Map<String, String> map = new HashMap<String, String>();
-                map.put("dir", String.valueOf(dir));
-                map.put("id", thingId);
-                map.put("rank", String.valueOf(2));
-
-                apiInterface.postVote(auth, map).enqueue(new Callback<ResponseBody>() {
-                    @Override
-                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-
-                        Log.d(TAG, "DownVote onResponse:" + response.code());
-//                        setVote(postView.imageDownVote,Integer.parseInt(dir));
-                    }
-
-                    @Override
-                    public void onFailure(Call<ResponseBody> call, Throwable t) {
-                        Log.d(TAG, "DownVote onFail:" + t.getMessage());
-                    }
-                });
+//
             }
         });
 
@@ -233,6 +201,5 @@ public class FrontPageAdapter extends RecyclerView.Adapter {
     public int getItemCount() {
         return list.size();
     }
-
 
 }

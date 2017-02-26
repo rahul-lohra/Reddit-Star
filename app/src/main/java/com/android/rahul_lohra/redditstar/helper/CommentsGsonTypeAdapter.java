@@ -1,5 +1,9 @@
-package com.android.rahul_lohra.redditstar.modal.comments;
+package com.android.rahul_lohra.redditstar.helper;
 
+import com.android.rahul_lohra.redditstar.modal.comments.Child;
+import com.android.rahul_lohra.redditstar.modal.comments.Example;
+import com.android.rahul_lohra.redditstar.modal.comments.ParentData;
+import com.android.rahul_lohra.redditstar.modal.comments.T1data;
 import com.android.rahul_lohra.redditstar.modal.t3_Link.T3_Data;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
@@ -139,7 +143,7 @@ public class CommentsGsonTypeAdapter extends TypeAdapter<List<Example>> {
     public T3_Data readT3Data(JsonReader reader) throws IOException {
 
         String subreddit = null;
-        Object likes = null;
+        Boolean likes = null;
         String id = null;
         Boolean clicked = null;
         String author = null;
@@ -170,8 +174,9 @@ public class CommentsGsonTypeAdapter extends TypeAdapter<List<Example>> {
                 subredditId = reader.nextString();
             } else if (temp_name.equals("subreddit")) {
                 subreddit = reader.nextString();
-//            } else if (temp_name.equals("likes")) {
+            } else if (temp_name.equals("likes")) {
                 //TODO code for LIKES
+                likes = reader.nextBoolean();
             } else if (temp_name.equals("id")) {
                 id = reader.nextString();
             } else if (temp_name.equals("clicked")) {

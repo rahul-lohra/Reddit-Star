@@ -103,8 +103,11 @@ public class GetSubscribedSubredditsService extends IntentService {
                     return;
 
                 String after = response.body().getData().getAfter();
-                String arr[] = {accessToken,after};
-                makeApiRequest(arr);
+                if(after!=null){
+                    String arr[] = {accessToken,after};
+                    makeApiRequest(arr);
+                }
+
             }
         } catch (IOException e) {
             e.printStackTrace();
