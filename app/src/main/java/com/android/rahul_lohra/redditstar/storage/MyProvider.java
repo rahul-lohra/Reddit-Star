@@ -2,6 +2,8 @@ package com.android.rahul_lohra.redditstar.storage;
 
 import android.net.Uri;
 
+import com.android.rahul_lohra.redditstar.storage.column.MyFavouritesColumn;
+import com.android.rahul_lohra.redditstar.storage.column.MyPostsColumn;
 import com.android.rahul_lohra.redditstar.storage.column.MySubredditColumn;
 import com.android.rahul_lohra.redditstar.storage.column.UserCredentialsColumn;
 
@@ -72,10 +74,30 @@ public class MyProvider {
                 path = "user_favorites/*",
                 name = "USER_FAVORITES_ID",
                 type = "vnd.android.cursor.item/user_favorites_item",
-                whereColumn = UserCredentialsColumn._ID,
+                whereColumn = MyFavouritesColumn.KEY_SQL_ID,
                 pathSegment = 1)
         public static Uri withId(long id) {
             return Uri.parse("content://" + AUTHORITY + "/user_favorites/" + id);
+        }
+    }
+
+    @TableEndpoint(table = MyDatabase.USER_POSTS_TABLE)
+    public static class PostsLists {
+
+        @ContentUri(
+                path = "user_posts",
+                type = "vnd.android.cursor.dir/user_posts_item"
+        )
+        public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/user_posts");
+
+        @InexactContentUri(
+                path = "user_posts/*",
+                name = "USER_POSTS_ID",
+                type = "vnd.android.cursor.item/user_posts_item",
+                whereColumn = MyPostsColumn.KEY_SQL_ID,
+                pathSegment = 1)
+        public static Uri withId(long id) {
+            return Uri.parse("content://" + AUTHORITY + "/user_posts/" + id);
         }
     }
 

@@ -4,6 +4,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.android.rahul_lohra.redditstar.storage.column.MyFavouritesColumn;
+import com.android.rahul_lohra.redditstar.storage.column.MyPostsColumn;
 import com.android.rahul_lohra.redditstar.storage.column.MySubredditColumn;
 import com.android.rahul_lohra.redditstar.storage.column.UserCredentialsColumn;
 
@@ -22,6 +23,10 @@ public class MyDatabase {
     @Table(UserCredentialsColumn.class) public static final String USER_CREDENTIAL_TABLE = "user_credential_table";
 
     @Table(MyFavouritesColumn.class) public static final String USER_FAVORITES_TABLE = "user_favorites_table";
+
+    @Table(MyPostsColumn.class) public static final String USER_POSTS_TABLE = "user_posts_table";
+
+
 
 //    @OnUpgrade
 //    public static void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {

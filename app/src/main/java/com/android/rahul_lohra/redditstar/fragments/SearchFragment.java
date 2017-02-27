@@ -137,6 +137,10 @@ public class SearchFragment extends Fragment implements
             @Override
             public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
 //                View view = (View) scrollView.getChildAt(scrollView.getChildCount() - 1);
+//                int b = rvLinks.getBottom();
+//                int h = v.getHeight();
+//                int y = v.getScrollY();
+
                 int diff = (rvLinks.getBottom() - (v.getHeight() + v.getScrollY()));
 
                 // if diff is zero, then the bottom has been reached
