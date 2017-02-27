@@ -120,7 +120,7 @@ public class T3_LinkSearchAdapter extends RecyclerView.Adapter {
             @Override
             public void onClick(View view) {
                 DetailPostModal modal = new DetailPostModal(id,
-                        subreddit,ups,title,commentsCount,thumbnail,time,author,bigImageUrlList,likes);
+                        subreddit,ups,title,commentsCount,thumbnail,time,author,bigImageUrlList,likes,thingId);
                 mListener.sendLink(modal,postView.imageView);
             }
         });

@@ -20,9 +20,10 @@ public class DetailPostModal implements Parcelable {
     String time;
     String author;
     Boolean likes;
+    String name;
     List<String> bigImageUrlList = new ArrayList<>();
 
-    public DetailPostModal(String id, String subreddit, String ups, String title, String commentsCount, String thumbnail, String time, String author, List<String> bigImageUrlList,Boolean likes) {
+    public DetailPostModal(String id, String subreddit, String ups, String title, String commentsCount, String thumbnail, String time, String author, List<String> bigImageUrlList,Boolean likes,String name) {
         this.id = id;
         this.subreddit = subreddit;
         this.ups = ups;
@@ -33,6 +34,7 @@ public class DetailPostModal implements Parcelable {
         this.author = author;
         this.bigImageUrlList = bigImageUrlList;
         this.likes = likes;
+        this.name = name;
     }
 
     public List<String> getBigImageUrlList() {
@@ -41,6 +43,14 @@ public class DetailPostModal implements Parcelable {
 
     public void setBigImageUrlList(List<String> bigImageUrlList) {
         this.bigImageUrlList = bigImageUrlList;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getId() {
@@ -131,6 +141,7 @@ public class DetailPostModal implements Parcelable {
         dest.writeString(this.time);
         dest.writeString(this.author);
         dest.writeValue(this.likes);
+        dest.writeString(this.name);
         dest.writeStringList(this.bigImageUrlList);
     }
 
@@ -144,6 +155,7 @@ public class DetailPostModal implements Parcelable {
         this.time = in.readString();
         this.author = in.readString();
         this.likes = (Boolean) in.readValue(Boolean.class.getClassLoader());
+        this.name = in.readString();
         this.bigImageUrlList = in.createStringArrayList();
     }
 

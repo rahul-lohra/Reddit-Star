@@ -104,7 +104,6 @@
 
             <ImageView
                 android:id="@+id/image_up_vote"
-                android:layout_width="18dp"
                 android:layout_height="18dp"
                 android:layout_marginStart="16dp"
                 android:contentDescription="@string/up_vote"
@@ -112,11 +111,11 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/tv_vote"
                 app:layout_constraintVertical_bias="0.0"
-                app:srcCompat="@drawable/ic_arrow_upward" />
+                app:srcCompat="@drawable/ic_arrow_upward"
+                android:layout_width="28dp" />
 
             <ImageView
                 android:id="@+id/image_down_vote"
-                android:layout_width="18dp"
                 android:layout_height="18dp"
                 android:layout_marginStart="8dp"
                 android:contentDescription="@string/down_vote"
@@ -124,7 +123,8 @@
                 app:layout_constraintLeft_toRightOf="@+id/tv_vote"
                 app:layout_constraintTop_toTopOf="@+id/tv_vote"
                 app:layout_constraintVertical_bias="0.0"
-                app:srcCompat="@drawable/ic_arrow_downward" />
+                app:srcCompat="@drawable/ic_arrow_downward"
+                android:layout_width="38dp" />
 
             <TextView
                 android:id="@+id/tv_sort"

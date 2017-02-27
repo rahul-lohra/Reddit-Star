@@ -1,5 +1,6 @@
 package com.android.rahul_lohra.redditstar.dagger.Component;
 
+import com.android.rahul_lohra.redditstar.activity.DetailActivity;
 import com.android.rahul_lohra.redditstar.activity.SearchActivity;
 import com.android.rahul_lohra.redditstar.dagger.Module.AppModule;
 import com.android.rahul_lohra.redditstar.dagger.Module.NetModule;
@@ -34,6 +35,7 @@ public interface NetComponent {
     //Activity
     void inject(MainActivity activity);
     void inject(SearchActivity activity);
+    void inject(DetailActivity activity);
     void inject(DashboardPresenter presenter);
     void inject(CommentsLoader loader);
     void inject(ReplyFragment fragment);
