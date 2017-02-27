@@ -98,9 +98,9 @@ public class FrontPageAdapter extends RecyclerView.Adapter {
 
         final List<String> bigImageUrlList = new ArrayList<>();
         if(preview!=null){
-            for(Image image:frontPageChildData.getPreview().getImages()){
-                bigImageUrlList.add(image.getSource().getUrl());
-            }
+//            for(Image image:frontPageChildData.getPreview().getImages()){
+                bigImageUrlList.add(preview.getImages().get(0).getSource().getUrl());
+//            }
         }
 
         if (likes != null) {

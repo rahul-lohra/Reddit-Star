@@ -50,14 +50,14 @@ public interface MyPostsColumn {
 
     @DataType(TEXT)
     @NotNull
-    String KEY_FULL_NAME = "name";
+    String KEY_NAME = "name";
 
     @DataType(INTEGER)
     @NotNull
     String KEY_CLICKED = "clicked";
 
     @DataType(INTEGER)
-    String KEY_LIKES = "likes";
+    String KEY_LIKES = "likes"; //CAN BE NULL
 
     @DataType(TEXT)
     String KEY_DOMAIN = "domain";
@@ -91,15 +91,10 @@ public interface MyPostsColumn {
     String KEY_LOCKED = "locked";
 
     @DataType(TEXT)
-    String KEY_MEDIA_EMBEDED = "media_embeded";
+    String KEY_MEDIA_OEMBED_TYPE = "media_oembed_type";
 
     @DataType(TEXT)
-    String KEY_PREVIEW_VARIANT = "preview_variant";
+    String KEY_BIG_IMAGE_URL = "big_image_url";
 
-    @DataType(TEXT)
-    String KEY_PREVIEW_URL_LIST= "preview_url_list";
-
-    @DataType(INTEGER)
-    String KEY_PREVIEW_COUNT= "preview_count";
 
 }

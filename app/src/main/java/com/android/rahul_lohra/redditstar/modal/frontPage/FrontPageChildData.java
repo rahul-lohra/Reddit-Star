@@ -10,6 +10,12 @@ import lombok.*;
 @lombok.Data
 public class FrontPageChildData {
 
+    @SerializedName("locked")
+    @Expose
+    private Boolean locked;
+    @SerializedName("is_self")
+    @Expose
+    private Boolean is_self;
     @SerializedName("domain")
     @Expose
     private String domain;
@@ -39,7 +45,7 @@ public class FrontPageChildData {
     private String author;
     @SerializedName("media")
     @Expose
-    private Object media;
+    private Media media;
     @SerializedName("name")
     @Expose
     private String name;

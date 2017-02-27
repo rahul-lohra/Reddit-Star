@@ -8,12 +8,17 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.android.rahul_lohra.redditstar.modal.FavoritesModal;
+import com.android.rahul_lohra.redditstar.modal.frontPage.FrontPageChild;
+import com.android.rahul_lohra.redditstar.modal.frontPage.FrontPageChildData;
+import com.android.rahul_lohra.redditstar.modal.frontPage.FrontPageResponse;
 import com.android.rahul_lohra.redditstar.storage.MyProvider;
 import com.android.rahul_lohra.redditstar.storage.column.MyFavouritesColumn;
+import com.android.rahul_lohra.redditstar.storage.column.MyPostsColumn;
 import com.android.rahul_lohra.redditstar.storage.column.UserCredentialsColumn;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.List;
 import java.util.TimeZone;
 
 /**
@@ -92,5 +97,20 @@ public class Constants {
         String mWhere = MyFavouritesColumn.KEY_FULL_NAME +"=?";
         String mSelectionArgs[]={fullName};
         context.getContentResolver().delete(mUri,mWhere,mSelectionArgs);
+    }
+
+    public static void insertIntoPostsTable(Context context,FrontPageResponse modal){
+        Uri mUri = MyProvider.PostsLists.CONTENT_URI;
+        String mWhere = MyPostsColumn.KEY_ID +"=?";
+        List<FrontPageChild> mList = modal.getData().getChildren();
+
+        for(FrontPageChild frontPageChild :mList){
+            FrontPageChildData data = frontPageChild.getData();
+            String id  = data.getId();
+            String mSelectionArgs[]={id};
+            context.getContentResolver().delete(mUri,mWhere,mSelectionArgs);
+            ContentValues contentValues = CustomOrm.FrontPageChildDataToContentValues(data);
+            context.getContentResolver().insert(mUri,contentValues);
+        }
     }
 }
