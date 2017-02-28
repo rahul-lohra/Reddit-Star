@@ -95,7 +95,9 @@
             android:name=".service.GetSubredditListService"
             android:exported="false" />
 
-        <activity android:name=".activity.ReplyActivity" />
+        <activity
+            android:theme="@style/AppTheme.NoToolBar"
+            android:name=".activity.ReplyActivity" />
         <activity
             android:name=".activity.SubredditActivity"
             android:label="@string/subreddits"

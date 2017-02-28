@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:paddingTop="8dp"
+    android:paddingEnd="8dp"
+    android:orientation="horizontal">
+    <FrameLayout
+        android:layout_alignParentStart="true"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/frameLayout">
+        <include
+            android:id="@+id/include"
+            layout="@layout/item_vote"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </FrameLayout>
+
+    <TextView
+        android:drawablePadding="8dp"
+        android:paddingTop="4dp"
+        android:id="@+id/tv_comments"
+        android:drawableEnd="@drawable/ic_chat_bubble"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        tools:text="472"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:paddingTop="2dp"
+
+        android:drawablePadding="8dp"
+        android:id="@+id/tv_share"
+        android:drawableEnd="@drawable/ic_share_black"
+        android:gravity="center"
+        android:text="@string/share"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true" />
+</RelativeLayout>

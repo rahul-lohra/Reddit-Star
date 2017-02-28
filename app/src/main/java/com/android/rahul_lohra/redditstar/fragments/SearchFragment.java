@@ -82,20 +82,14 @@ public class    SearchFragment extends BaseFragment implements
     @Bind(R.id.nested_sv)
     NestedScrollView nestedSV;
 
-//    T3_LinkSearchAdapter t3LinkSearchAdapter;
     HomeAdapter linkAdapter;
     T5_SubredditSearchAdapter t5SubredditSearchAdapter;
     private final int LOADER_ID = 1;
-
-//    List<T3_Kind> t3dataList = new ArrayList<>();
     List<T5_Kind> t5dataList = new ArrayList<>();
-
-//    T3_ListChild t3_List_child;//Link
     T5_ListChild t5_List_child;//Subreddit
-
     String searchQuery;
     String afterOfLink = "";
-    String afterOfSubreddit;
+//    String afterOfSubreddit;
 
     public interface ISearchFragment{
         void openDetailScreen(DetailPostModal modal, ImageView imageView);
@@ -119,7 +113,7 @@ public class    SearchFragment extends BaseFragment implements
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
         ((Initializer) getContext().getApplicationContext()).getNetComponent().inject(this);
-
+        Constants.clearTable(getContext(),MyProvider.SearchLinkLists.CONTENT_URI);
     }
 
     @Override
@@ -325,6 +319,12 @@ public class    SearchFragment extends BaseFragment implements
     public void sendData(DetailPostModal modal, ImageView imageView) {
         mListener.openDetailScreen(modal,imageView);
     }
+
+    @Override
+    public void pleaseLogin() {
+
+    }
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);

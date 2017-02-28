@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -23,6 +24,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.android.rahul_lohra.redditstar.R;
@@ -37,6 +39,9 @@ import com.android.rahul_lohra.redditstar.modal.custom.DetailPostModal;
 import com.android.rahul_lohra.redditstar.presenter.activity.DashboardPresenter;
 import com.android.rahul_lohra.redditstar.storage.MyProvider;
 import com.android.rahul_lohra.redditstar.storage.column.MySubredditColumn;
+import com.android.rahul_lohra.redditstar.utility.CommonOperations;
+import com.android.rahul_lohra.redditstar.utility.Constants;
+import com.android.rahul_lohra.redditstar.utility.MyUrl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +49,11 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.android.rahul_lohra.redditstar.utility.MyUrl.AUTH_URL;
+import static com.android.rahul_lohra.redditstar.utility.MyUrl.CLIENT_ID;
+import static com.android.rahul_lohra.redditstar.utility.MyUrl.REDIRECT_URI;
+import static com.android.rahul_lohra.redditstar.utility.MyUrl.STATE;
 
 public class DashboardActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
@@ -64,6 +74,8 @@ public class DashboardActivity extends AppCompatActivity implements
     DrawerLayout drawer;
     @Bind(R.id.fab)
     FloatingActionButton fab;
+    @Bind(R.id.coordinator_layout)
+    CoordinatorLayout coordinatorLayout;
 
     //Adapters
     DrawerAdapter drawerAdapter;
@@ -76,11 +88,13 @@ public class DashboardActivity extends AppCompatActivity implements
 
     private final int LOADER_ID = 1;
 
+    private Snackbar snackbar;
+
     @OnClick(R.id.fab)
     public void onClick() {
         Snackbar.make(fab, "Replace with your own action", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show();
-        dashboardPresenter.getMySubredditsAndDeletePreviousOnes();
+//        dashboardPresenter.getMySubredditsAndDeletePreviousOnes();
     }
 
     @OnClick(R.id.image_view_add)
@@ -89,9 +103,11 @@ public class DashboardActivity extends AppCompatActivity implements
     }
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Constants.clearTable(this,MyProvider.PostsLists.CONTENT_URI);
         setContentView(R.layout.activity_dashboard);
         ButterKnife.bind(this);
         init();
@@ -160,6 +176,17 @@ public class DashboardActivity extends AppCompatActivity implements
 
         subredditDrawerAdapter = new SubredditDrawerAdapter(this, null);
         getSupportLoaderManager().initLoader(LOADER_ID, null, this);
+
+        snackbar = Snackbar
+                .make(coordinatorLayout, getString(R.string.please_login), Snackbar.LENGTH_SHORT)
+                .setAction(getString(R.string.login), new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        CommonOperations.addNewAccount(DashboardActivity.this);
+//                        Snackbar snackbar1 = Snackbar.make(coordinatorLayout, "Message is restored!", Snackbar.LENGTH_SHORT);
+//                        snackbar1.show();
+                    }
+                });
     }
 
     void setAdapter() {
@@ -316,4 +343,11 @@ public class DashboardActivity extends AppCompatActivity implements
 
         }
     }
+
+    @Override
+    public void showLoginSnackBar() {
+        snackbar.show();
+    }
+
+
 }

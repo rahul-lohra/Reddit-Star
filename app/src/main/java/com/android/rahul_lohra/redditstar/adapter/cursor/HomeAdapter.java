@@ -111,6 +111,7 @@ public class HomeAdapter extends CursorRecyclerViewAdapter<RecyclerView.ViewHold
                 boolean loggedIn = UserState.isUserLoggedIn(activity);
 
                 if (!loggedIn) {
+                    iFrontPageAdapter.pleaseLogin();
                     Toast.makeText(activity, activity.getString(R.string.please_login), Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -141,6 +142,7 @@ public class HomeAdapter extends CursorRecyclerViewAdapter<RecyclerView.ViewHold
                 boolean loggedIn = UserState.isUserLoggedIn(activity);
                 String thingId = name;
                 if (!loggedIn) {
+                    iFrontPageAdapter.pleaseLogin();
                     Toast.makeText(activity, activity.getString(R.string.please_login), Toast.LENGTH_SHORT).show();
                     return;
                 }

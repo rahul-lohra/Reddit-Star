@@ -6,6 +6,7 @@ import com.android.rahul_lohra.redditstar.dagger.Module.AppModule;
 import com.android.rahul_lohra.redditstar.dagger.Module.NetModule;
 import com.android.rahul_lohra.redditstar.activity.MainActivity;
 import com.android.rahul_lohra.redditstar.dagger.extras.TokenAuthenticator;
+import com.android.rahul_lohra.redditstar.fragments.DetailSubredditFragment;
 import com.android.rahul_lohra.redditstar.fragments.HomeFragment;
 import com.android.rahul_lohra.redditstar.fragments.ReplyFragment;
 import com.android.rahul_lohra.redditstar.fragments.SearchFragment;
@@ -42,6 +43,8 @@ public interface NetComponent {
     void inject(HomeFragment fragment);
     void inject(SubredditFragment fragment);
     void inject(SearchFragment fragment);
+    void inject(DetailSubredditFragment fragment);
+
     //Service
     void inject(GetSubredditListService service);
     void inject(SearchSubredditsService service);

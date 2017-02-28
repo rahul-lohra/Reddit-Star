@@ -1,6 +1,8 @@
 package com.android.rahul_lohra.redditstar.activity;
 
 import android.content.Intent;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +10,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,6 +24,7 @@ import com.android.rahul_lohra.redditstar.loader.CommentsLoader;
 import com.android.rahul_lohra.redditstar.modal.comments.CustomComment;
 import com.android.rahul_lohra.redditstar.modal.custom.DetailPostModal;
 import com.android.rahul_lohra.redditstar.retrofit.ApiInterface;
+import com.android.rahul_lohra.redditstar.utility.CommonOperations;
 import com.android.rahul_lohra.redditstar.utility.UserState;
 import com.android.rahul_lohra.redditstar.viewHolder.PostView;
 import com.bumptech.glide.Glide;
@@ -67,12 +71,14 @@ public class DetailActivity extends AppCompatActivity implements
     TextView tvSort;
     @Bind(R.id.rv)
     RecyclerView rv;
+    @Bind(R.id.coordinator_layout)
+    CoordinatorLayout coordinatorLayout;
 
     @Inject
     @Named("withToken")
     Retrofit retrofit;
     private ApiInterface apiInterface;
-
+    Snackbar snackbar;
 
     private final int LOADER_ID = 1;
     CommentsAdapter commentsAdapter;
@@ -85,7 +91,7 @@ public class DetailActivity extends AppCompatActivity implements
         boolean isUserLoggedIn = UserState.isUserLoggedIn(this);
 
         if (!isUserLoggedIn) {
-            Toast.makeText(this, getString(R.string.please_login), Toast.LENGTH_SHORT).show();
+            snackbar.show();
         } else {
 
             Integer mLikes = subredditModal.getLikes();
@@ -108,7 +114,8 @@ public class DetailActivity extends AppCompatActivity implements
         boolean isUserLoggedIn = UserState.isUserLoggedIn(this);
 
         if (!isUserLoggedIn) {
-            Toast.makeText(this, getString(R.string.please_login), Toast.LENGTH_SHORT).show();
+            snackbar.show();
+//            Toast.makeText(this, getString(R.string.please_login), Toast.LENGTH_SHORT).show();
         } else {
 
             Integer mLikes = subredditModal.getLikes();
@@ -127,6 +134,24 @@ public class DetailActivity extends AppCompatActivity implements
 
     }
 
+    @OnClick(R.id.fab)
+    void onClickFab(){
+        //open Reply Activity
+        boolean isUserLoggedIn = UserState.isUserLoggedIn(this);
+        if (!isUserLoggedIn) {
+            snackbar.show();
+        } else {
+            String name = subredditModal.getName();
+            openReplyActivity(name);
+        }
+    }
+
+    private void openReplyActivity(String thingId){
+        Intent intent = new Intent(this,ReplyActivity.class);
+        intent.putExtra("thing_id",thingId);
+        startActivity(intent);
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -143,10 +168,11 @@ public class DetailActivity extends AppCompatActivity implements
             bundle.putString("id", subredditModal.getId());
             bundle.putString("subbreddit_name", subredditModal.getSubreddit());
 
-            getSupportLoaderManager().initLoader(LOADER_ID, bundle, this).forceLoad();
+            getSupportLoaderManager().initLoader(LOADER_ID, bundle, this).forceLoad();;
             setAdapter();
             initData();
         }
+
 
     }
 
@@ -166,16 +192,30 @@ public class DetailActivity extends AppCompatActivity implements
 
         Integer likes = subredditModal.getLikes();
 
-        if (likes != null) {
-            highlightVote(likes);
-        }
+        highlightVote(likes);
+
+        snackbar = Snackbar
+                .make(coordinatorLayout, getString(R.string.please_login), Snackbar.LENGTH_SHORT)
+                .setAction(getString(R.string.login), new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        CommonOperations.addNewAccount(DetailActivity.this);
+//                        Snackbar snackbar1 = Snackbar.make(coordinatorLayout, "Message is restored!", Snackbar.LENGTH_SHORT);
+//                        snackbar1.show();
+                    }
+                });
+
     }
 
     private void highlightVote(Integer likes) {
-        Integer resId = (likes==1) ? R.drawable.ic_arrow_upward_true : R.drawable.ic_arrow_downward_true;
-        Glide.with(this)
-                .load(resId)
-                .into((likes==1) ? imageUpVote : imageDownVote);
+        if(likes!=0){
+            Integer resId = (likes==1) ? R.drawable.ic_arrow_upward_true : R.drawable.ic_arrow_downward_true;
+            Glide.with(this)
+                    .load("")
+                    .placeholder(resId)
+                    .into((likes==1) ? imageUpVote : imageDownVote);
+        }
+
     }
 
     private void setAdapter() {

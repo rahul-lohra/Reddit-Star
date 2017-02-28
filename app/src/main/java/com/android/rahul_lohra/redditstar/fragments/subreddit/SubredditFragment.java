@@ -417,6 +417,11 @@ public class SubredditFragment extends Fragment
         mListener.sendModalAndImageView(modal, imageView);
     }
 
+    @Override
+    public void pleaseLogin() {
+
+    }
+
     private void fetchNextItems(){
             if (frontPageResponseData != null) {
                 if (!frontPageResponseData.getAfter().equalsIgnoreCase(GetSubredditListService.after)) {

@@ -3,14 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingLeft="4dp"
+    android:layout_weight="1"
     android:orientation="horizontal">
     <android.support.v7.widget.AppCompatImageView
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/img_upVote"
+        android:id="@+id/image_up_vote"
         app:srcCompat="@drawable/ic_arrow_upward" />
     <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/tv_vote"
         android:paddingStart="6dp"
         android:paddingEnd="6dp"
         android:layout_gravity="center"
@@ -18,8 +22,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
     <android.support.v7.widget.AppCompatImageView
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/img_downVote"
+        android:id="@+id/image_down_vote"
         app:srcCompat="@drawable/ic_arrow_downward" />
 </LinearLayout>

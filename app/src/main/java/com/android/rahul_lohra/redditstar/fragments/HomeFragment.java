@@ -72,6 +72,7 @@ public class HomeFragment extends Fragment implements
 
     public interface IHomeFragment{
         void sendModalAndImageView(DetailPostModal modal, ImageView imageView);
+        void showLoginSnackBar();
     }
 
     private IHomeFragment mListener;
@@ -213,6 +214,12 @@ public class HomeFragment extends Fragment implements
     public void sendData(DetailPostModal modal, ImageView imageView) {
         mListener.sendModalAndImageView(modal,imageView);
     }
+
+    @Override
+    public void pleaseLogin() {
+        mListener.showLoginSnackBar();
+    }
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);

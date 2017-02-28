@@ -30,10 +30,6 @@ public class CommentsViewHolder extends RecyclerView.ViewHolder {
     public View view2;
     @Bind(R.id.tv_reply)
     public TextView tvReply;
-    @Bind(R.id.img_upVote)
-    public AppCompatImageView imgUpVote;
-    @Bind(R.id.img_downVote)
-    public     AppCompatImageView imgDownVote;
 
     public CommentsViewHolder(View itemView) {
         super(itemView);

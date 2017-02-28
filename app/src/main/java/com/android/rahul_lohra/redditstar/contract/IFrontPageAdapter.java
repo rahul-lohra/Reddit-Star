@@ -10,5 +10,6 @@ import com.android.rahul_lohra.redditstar.modal.custom.DetailPostModal;
 
 public interface IFrontPageAdapter {
     void sendData(DetailPostModal modal, ImageView imageView);
+    void pleaseLogin();
 
 }
