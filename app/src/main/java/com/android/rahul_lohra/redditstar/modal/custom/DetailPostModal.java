@@ -13,19 +13,19 @@ import java.util.List;
 public class DetailPostModal implements Parcelable {
     String id;          //
     String subreddit;   //
-    String subredditId;//
-    Boolean locked;
+//    String subredditId;//
+//    Boolean locked;
     String ups;         //
     String title;       //
     String commentsCount;//
     String thumbnail;
     String time;        //
     String author;      //
-    Boolean likes;      //
+    Integer likes;      //
     String name;        //
-    List<String> bigImageUrlList = new ArrayList<>();
+    String bigImageUrl;
 
-    public DetailPostModal(String id, String subreddit, String ups, String title, String commentsCount, String thumbnail, String time, String author, List<String> bigImageUrlList,Boolean likes,String name) {
+    public DetailPostModal(String id, String subreddit, String ups, String title, String commentsCount, String thumbnail, String time, String author,String bigImageUrl,Integer likes,String name) {
         this.id = id;
         this.subreddit = subreddit;
         this.ups = ups;
@@ -34,17 +34,13 @@ public class DetailPostModal implements Parcelable {
         this.thumbnail = thumbnail;
         this.time = time;
         this.author = author;
-        this.bigImageUrlList = bigImageUrlList;
+        this.bigImageUrl = bigImageUrl;
         this.likes = likes;
         this.name = name;
     }
 
-    public List<String> getBigImageUrlList() {
-        return bigImageUrlList;
-    }
-
-    public void setBigImageUrlList(List<String> bigImageUrlList) {
-        this.bigImageUrlList = bigImageUrlList;
+    public String getBigImageUrl() {
+        return bigImageUrl;
     }
 
     public String getName() {
@@ -119,12 +115,8 @@ public class DetailPostModal implements Parcelable {
         this.author = author;
     }
 
-    public Boolean getLikes() {
+    public Integer getLikes() {
         return likes;
-    }
-
-    public void setLikes(Boolean likes) {
-        this.likes = likes;
     }
 
     @Override
@@ -144,7 +136,7 @@ public class DetailPostModal implements Parcelable {
         dest.writeString(this.author);
         dest.writeValue(this.likes);
         dest.writeString(this.name);
-        dest.writeStringList(this.bigImageUrlList);
+        dest.writeString(this.bigImageUrl);
     }
 
     protected DetailPostModal(Parcel in) {
@@ -156,9 +148,9 @@ public class DetailPostModal implements Parcelable {
         this.thumbnail = in.readString();
         this.time = in.readString();
         this.author = in.readString();
-        this.likes = (Boolean) in.readValue(Boolean.class.getClassLoader());
+        this.likes = (Integer) in.readValue(Integer.class.getClassLoader());
         this.name = in.readString();
-        this.bigImageUrlList = in.createStringArrayList();
+        this.bigImageUrl = in.readString();
     }
 
     public static final Creator<DetailPostModal> CREATOR = new Creator<DetailPostModal>() {

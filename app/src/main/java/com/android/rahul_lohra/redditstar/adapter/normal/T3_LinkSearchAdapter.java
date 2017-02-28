@@ -96,13 +96,7 @@ public class T3_LinkSearchAdapter extends RecyclerView.Adapter {
         final String thumbnail = (preview!=null)?t3Data.thumbnail:"";
         final Boolean likes = t3Data.likes;
 
-        final List<String> bigImageUrlList = new ArrayList<>();
-        if(preview!=null){
-            for(Image image:preview.getImages()){
-                bigImageUrlList.add(image.getSource().getUrl());
-            }
-        }
-
+        final String bigImageUrl = (preview!=null)?preview.getImages().get(0).getSource().getUrl():"";
 
         if (likes != null) {
             Integer resId = (likes) ? R.drawable.ic_arrow_upward_true : R.drawable.ic_arrow_downward_true;
@@ -119,8 +113,9 @@ public class T3_LinkSearchAdapter extends RecyclerView.Adapter {
         postView.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Integer mLikes = likes!=null?((likes)?1:0):null;
                 DetailPostModal modal = new DetailPostModal(id,
-                        subreddit,ups,title,commentsCount,thumbnail,time,author,bigImageUrlList,likes,thingId);
+                        subreddit,ups,title,commentsCount,thumbnail,time,author,bigImageUrl,mLikes,thingId);
                 mListener.sendLink(modal,postView.imageView);
             }
         });

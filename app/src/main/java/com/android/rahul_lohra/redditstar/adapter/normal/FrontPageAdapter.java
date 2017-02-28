@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.rahul_lohra.redditstar.R;
+import com.android.rahul_lohra.redditstar.contract.IFrontPageAdapter;
 import com.android.rahul_lohra.redditstar.fragments.SearchFragment;
 import com.android.rahul_lohra.redditstar.modal.frontPage.FrontPageChild;
 import com.android.rahul_lohra.redditstar.modal.frontPage.FrontPageChildData;
@@ -52,10 +53,6 @@ public class FrontPageAdapter extends RecyclerView.Adapter {
     private IFrontPageAdapter iFrontPageAdapter;
 
 
-    public interface IFrontPageAdapter{
-        void sendData(DetailPostModal modal, ImageView imageView);
-    }
-
     public FrontPageAdapter(Fragment fragment,Context context, List<FrontPageChild> list, Retrofit retrofit,IFrontPageAdapter iFrontPageAdapter) {
         this.context = context;
         this.list = list;
@@ -92,7 +89,7 @@ public class FrontPageAdapter extends RecyclerView.Adapter {
         final String url = frontPageChildData.getUrl();
 
         final Boolean likes = frontPageChildData.getLikes();
-        postView.setLikes(likes);
+//        postView.setLikes(likes);
 
 
 
@@ -121,9 +118,9 @@ public class FrontPageAdapter extends RecyclerView.Adapter {
         postView.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DetailPostModal modal = new DetailPostModal(id,
-                        subreddit,ups,title,commentsCount,thumbnail,time,author,bigImageUrlList,likes,thingId);
-                iFrontPageAdapter.sendData(modal,postView.imageView);
+//                DetailPostModal modal = new DetailPostModal(id,
+//                        subreddit,ups,title,commentsCount,thumbnail,time,author,bigImageUrlList,likes,thingId);
+//                iFrontPageAdapter.sendData(modal,postView.imageView);
             }
         });
 
@@ -138,9 +135,9 @@ public class FrontPageAdapter extends RecyclerView.Adapter {
                     return;
                 }
 
-                Boolean mLikes = postView.getLikes();
+                Integer mLikes = postView.getLikes();
                 if(mLikes!=null){
-                    if(!mLikes)
+                    if(mLikes!=1)
                     {
                         postView.performVote(PostView.DIRECTION_NULL,thingId);
                         frontPageChildData.setLikes(null);
@@ -166,9 +163,9 @@ public class FrontPageAdapter extends RecyclerView.Adapter {
                     return;
                 }
 
-                Boolean mLikes = postView.getLikes();
+                Integer mLikes = postView.getLikes();
                 if(mLikes!=null){
-                    if(mLikes)
+                    if(mLikes==1)
                     {
                         postView.performVote(PostView.DIRECTION_NULL,thingId);
                         frontPageChildData.setLikes(null);

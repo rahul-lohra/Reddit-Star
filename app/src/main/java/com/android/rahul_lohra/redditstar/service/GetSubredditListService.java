@@ -2,11 +2,14 @@ package com.android.rahul_lohra.redditstar.service;
 
 import android.app.IntentService;
 import android.content.Intent;
+import android.net.Uri;
 import android.util.Log;
 
 import com.android.rahul_lohra.redditstar.application.Initializer;
 import com.android.rahul_lohra.redditstar.modal.frontPage.FrontPageResponse;
 import com.android.rahul_lohra.redditstar.retrofit.ApiInterface;
+import com.android.rahul_lohra.redditstar.storage.MyProvider;
+import com.android.rahul_lohra.redditstar.utility.Constants;
 import com.android.rahul_lohra.redditstar.utility.UserState;
 
 import org.greenrobot.eventbus.EventBus;
@@ -33,6 +36,7 @@ public class GetSubredditListService extends IntentService {
     Retrofit retrofitWithToken;
 
     ApiInterface apiInterface;
+    Uri mUri = MyProvider.TempLists.CONTENT_URI;
 
     public static String after = null;
 
@@ -64,7 +68,8 @@ public class GetSubredditListService extends IntentService {
                 Response<FrontPageResponse> res = apiInterface.getSubredditList(token,subredditName,map).execute();
                 Log.d(TAG,"resCode:"+res.code());
                 if (res.code() == 200) {
-                    EventBus.getDefault().post(res.body().getData());
+//                    EventBus.getDefault().post(res.body().getData());
+                    Constants.insertIntoPostsTable(getApplicationContext(),res.body(),mUri);
                 }
             } catch (IOException e) {
                 e.printStackTrace();

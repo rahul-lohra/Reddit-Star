@@ -13,9 +13,9 @@ public class FrontPageChildData {
     @SerializedName("locked")
     @Expose
     private Boolean locked;
-    @SerializedName("is_self")
-    @Expose
-    private Boolean is_self;
+//    @SerializedName("is_self")
+//    @Expose
+//    private Boolean is_self;
     @SerializedName("domain")
     @Expose
     private String domain;

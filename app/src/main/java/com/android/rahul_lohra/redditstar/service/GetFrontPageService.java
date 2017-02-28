@@ -2,11 +2,14 @@ package com.android.rahul_lohra.redditstar.service;
 
 import android.app.IntentService;
 import android.content.Intent;
+import android.net.Uri;
 import android.util.Log;
 
 import com.android.rahul_lohra.redditstar.application.Initializer;
 import com.android.rahul_lohra.redditstar.modal.frontPage.FrontPageResponse;
 import com.android.rahul_lohra.redditstar.retrofit.ApiInterface;
+import com.android.rahul_lohra.redditstar.storage.MyProvider;
+import com.android.rahul_lohra.redditstar.utility.Constants;
 import com.android.rahul_lohra.redditstar.utility.UserState;
 
 import org.greenrobot.eventbus.EventBus;
@@ -36,6 +39,7 @@ public class GetFrontPageService extends IntentService {
     Retrofit retrofitWithToken;
 
     ApiInterface apiInterface;
+    final Uri mUri = MyProvider.PostsLists.CONTENT_URI;
 
     public static String after = null;
     public boolean isUserLoggedIn = false;
@@ -64,7 +68,8 @@ public class GetFrontPageService extends IntentService {
                 Response<FrontPageResponse> res = apiInterface.getFrontPage(token,map).execute();
                 if(res.code()==200)
                 {
-                    EventBus.getDefault().post(res.body().getData());
+//                    EventBus.getDefault().post(res.body().getData());
+                    Constants.insertIntoPostsTable(getApplicationContext(),res.body(),mUri);
                 }
                 Log.d(TAG,"response:"+res.code());
             } catch (IOException e) {

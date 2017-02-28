@@ -56,7 +56,7 @@ public class PostView extends RecyclerView.ViewHolder {
     @Bind(R.id.card_view)
     public CardView cardView;
 
-    private Boolean likes;
+    private Integer likes;
     private Context context;
 
     @Retention(SOURCE)
@@ -80,12 +80,18 @@ public class PostView extends RecyclerView.ViewHolder {
         apiInterface =retrofit.create(ApiInterface.class);
     }
 
-    public Boolean getLikes() {
+    public Integer getLikes() {
         return likes;
     }
 
-    public void setLikes(Boolean likes) {
+    public void setLikes(Integer likes) {
         this.likes = likes;
+        if(likes!=0){
+            Glide.with(context)
+                    .load("")
+                    .placeholder((likes==1?R.drawable.ic_arrow_upward_true : R.drawable.ic_arrow_downward_true))
+                    .into((likes==1)?imageUpVote:imageDownVote);
+        }
     }
 
     public void performVote(@DirectionMode int mode,String thingId){
@@ -112,14 +118,14 @@ public class PostView extends RecyclerView.ViewHolder {
 
         switch (mode){
             case DIRECTION_UP:{
-                likes=true;
+                likes=1;
                 updateVoteBackground(imageUpVote,R.drawable.ic_arrow_upward_true);
                 updateVoteBackground(imageDownVote,R.drawable.ic_arrow_downward);
 
             }
                 break;
             case DIRECTION_DOWN:{
-                likes=false;
+                likes=0;
                 updateVoteBackground(imageUpVote,R.drawable.ic_arrow_upward);
                 updateVoteBackground(imageDownVote,R.drawable.ic_arrow_downward_true);
 

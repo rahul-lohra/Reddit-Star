@@ -3,10 +3,12 @@ package com.android.rahul_lohra.redditstar.fragments.subreddit;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
@@ -22,8 +24,10 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.rahul_lohra.redditstar.R;
+import com.android.rahul_lohra.redditstar.adapter.cursor.HomeAdapter;
 import com.android.rahul_lohra.redditstar.adapter.normal.FrontPageAdapter;
 import com.android.rahul_lohra.redditstar.application.Initializer;
+import com.android.rahul_lohra.redditstar.contract.IFrontPageAdapter;
 import com.android.rahul_lohra.redditstar.loader.SubredditLoader;
 import com.android.rahul_lohra.redditstar.modal.FavoritesModal;
 import com.android.rahul_lohra.redditstar.modal.SubscribeSubreddit;
@@ -63,8 +67,8 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 
 public class SubredditFragment extends Fragment
-        implements LoaderManager.LoaderCallbacks<FrontPageResponse>,
-        FrontPageAdapter.IFrontPageAdapter
+        implements LoaderManager.LoaderCallbacks<Cursor>,
+        IFrontPageAdapter
 
 {
     /*
@@ -115,7 +119,8 @@ public class SubredditFragment extends Fragment
     private String subredditFullName;
     private String subredditId;
 
-    private FrontPageAdapter adapter;
+//    private FrontPageAdapter adapter;
+    private HomeAdapter adapter;
     private FrontPageResponseData frontPageResponseData;
 
     public interface ISubredditFragment {
@@ -146,7 +151,7 @@ public class SubredditFragment extends Fragment
         ((Initializer) getContext().getApplicationContext()).getNetComponent().inject(this);
         retrofit = (isUserLoggedIn = UserState.isUserLoggedIn(getContext())) ? retrofitWithToken : retrofitWithoutToken;
         apiInterface = retrofit.create(ApiInterface.class);
-        adapter = new FrontPageAdapter(SubredditFragment.this, getActivity().getApplicationContext(), list, retrofit, this);
+//        adapter = new FrontPageAdapter(SubredditFragment.this, getActivity().getApplicationContext(), list, retrofit, this);
 
         if (getArguments() != null) {
             subredditName = getArguments().getString(ARG_PARAM1);
@@ -237,6 +242,7 @@ public class SubredditFragment extends Fragment
     }
 
     private void setAdapter() {
+        adapter = new HomeAdapter(getActivity(),null,this);
         rv.setLayoutManager(new LinearLayoutManager(getActivity()));
         rv.setAdapter(adapter);
     }
@@ -306,42 +312,71 @@ public class SubredditFragment extends Fragment
         ButterKnife.unbind(this);
     }
 
+//    @Override
+//    public Loader<FrontPageResponse> onCreateLoader(int id, Bundle args) {
+//        switch (id) {
+//            case LOADER_ID:
+//                return new SubredditLoader(
+//                        getContext(),
+//                        subredditName,
+//                        args.getString("after")
+//                );
+//        }
+//        return null;
+//    }
+
     @Override
-    public Loader<FrontPageResponse> onCreateLoader(int id, Bundle args) {
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        Uri mUri = MyProvider.TempLists.CONTENT_URI;
         switch (id) {
             case LOADER_ID:
-                return new SubredditLoader(
-                        getContext(),
-                        subredditName,
-                        args.getString("after")
-                );
+                return new CursorLoader(getActivity(),mUri,null,null,null,null);
         }
         return null;
     }
 
     @Override
-    public void onLoadFinished(Loader<FrontPageResponse> loader, FrontPageResponse data) {
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         switch (loader.getId()) {
             case LOADER_ID:
-                this.frontPageResponseData = data.getData();
-                if (data != null) {
-                    int lastPos = list.size();
-                    list.addAll(lastPos, data.getData().getChildren());
-                    adapter.notifyItemRangeInserted(lastPos, data.getData().getChildren().size());
-                }
+                this.adapter.swapCursor(data);
+                break;
+        }
+
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        switch (loader.getId()) {
+            case LOADER_ID:
+                adapter.swapCursor(null);
                 break;
         }
     }
 
-    @Override
-    public void onLoaderReset(Loader<FrontPageResponse> loader) {
-        switch (loader.getId()) {
-            case LOADER_ID:
-                list.clear();
-                adapter.notifyDataSetChanged();
-                break;
-        }
-    }
+//    @Override
+//    public void onLoadFinished(Loader<FrontPageResponse> loader, FrontPageResponse data) {
+//        switch (loader.getId()) {
+//            case LOADER_ID:
+//                this.frontPageResponseData = data.getData();
+//                if (data != null) {
+//                    int lastPos = list.size();
+//                    list.addAll(lastPos, data.getData().getChildren());
+//                    adapter.notifyItemRangeInserted(lastPos, data.getData().getChildren().size());
+//                }
+//                break;
+//        }
+//    }
+//
+//    @Override
+//    public void onLoaderReset(Loader<FrontPageResponse> loader) {
+//        switch (loader.getId()) {
+//            case LOADER_ID:
+//                list.clear();
+//                adapter.notifyDataSetChanged();
+//                break;
+//        }
+//    }
 
     @Override
     public void onStart() {
@@ -364,6 +399,11 @@ public class SubredditFragment extends Fragment
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
         }
+    }
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        getLoaderManager().initLoader(LOADER_ID, null, this);
     }
 
     @Override

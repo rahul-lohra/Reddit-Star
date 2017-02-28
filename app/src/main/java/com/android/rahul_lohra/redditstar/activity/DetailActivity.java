@@ -88,9 +88,9 @@ public class DetailActivity extends AppCompatActivity implements
             Toast.makeText(this, getString(R.string.please_login), Toast.LENGTH_SHORT).show();
         } else {
 
-            Boolean mLikes = subredditModal.getLikes();
+            Integer mLikes = subredditModal.getLikes();
             if(mLikes!=null){
-                if(mLikes)
+                if(mLikes==1)
                 {
                     performVote(PostView.DIRECTION_NULL);
 //                    frontPageChildData.setLikes(null);
@@ -111,9 +111,9 @@ public class DetailActivity extends AppCompatActivity implements
             Toast.makeText(this, getString(R.string.please_login), Toast.LENGTH_SHORT).show();
         } else {
 
-            Boolean mLikes = subredditModal.getLikes();
+            Integer mLikes = subredditModal.getLikes();
             if(mLikes!=null){
-                if(mLikes)
+                if(mLikes==1)
                 {
                     performVote(PostView.DIRECTION_NULL);
 //                    frontPageChildData.setLikes(null);
@@ -157,25 +157,25 @@ public class DetailActivity extends AppCompatActivity implements
         tvCategory.setText("r/" + subredditModal.getSubreddit() + "-" + subredditModal.getTime());
         tvUsername.setText(subredditModal.getAuthor());
         tvSort.setText("new");
-        String bigImageUrl = (subredditModal.getBigImageUrlList().size() != 0) ? subredditModal.getBigImageUrlList().get(0) : "";
+        String bigImageUrl = subredditModal.getBigImageUrl();
         Glide.with(this).
                 load(bigImageUrl)
                 .centerCrop()
                 .crossFade()
                 .into(imageView);
 
-        Boolean likes = subredditModal.getLikes();
+        Integer likes = subredditModal.getLikes();
 
         if (likes != null) {
             highlightVote(likes);
         }
     }
 
-    private void highlightVote(boolean likes) {
-        Integer resId = (likes) ? R.drawable.ic_arrow_upward_true : R.drawable.ic_arrow_downward_true;
+    private void highlightVote(Integer likes) {
+        Integer resId = (likes==1) ? R.drawable.ic_arrow_upward_true : R.drawable.ic_arrow_downward_true;
         Glide.with(this)
                 .load(resId)
-                .into((likes) ? imageUpVote : imageDownVote);
+                .into((likes==1) ? imageUpVote : imageDownVote);
     }
 
     private void setAdapter() {

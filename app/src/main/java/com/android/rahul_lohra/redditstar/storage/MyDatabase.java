@@ -26,6 +26,8 @@ public class MyDatabase {
 
     @Table(MyPostsColumn.class) public static final String USER_POSTS_TABLE = "user_posts_table";
 
+    @Table(MyPostsColumn.class) public static final String USER_TEMP_TABLE = "user_temp_table";
+
 
 
 //    @OnUpgrade

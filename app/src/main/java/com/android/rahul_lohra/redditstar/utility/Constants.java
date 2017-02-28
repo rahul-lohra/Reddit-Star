@@ -99,8 +99,8 @@ public class Constants {
         context.getContentResolver().delete(mUri,mWhere,mSelectionArgs);
     }
 
-    public static void insertIntoPostsTable(Context context,FrontPageResponse modal){
-        Uri mUri = MyProvider.PostsLists.CONTENT_URI;
+    public static void insertIntoPostsTable(Context context,FrontPageResponse modal,Uri mUri){
+//        Uri mUri = MyProvider.PostsLists.CONTENT_URI;
         String mWhere = MyPostsColumn.KEY_ID +"=?";
         List<FrontPageChild> mList = modal.getData().getChildren();
 
@@ -112,5 +112,18 @@ public class Constants {
             ContentValues contentValues = CustomOrm.FrontPageChildDataToContentValues(data);
             context.getContentResolver().insert(mUri,contentValues);
         }
+    }
+
+    public static void updateLikes(Context context,Integer dir,String id){
+        Uri mUriPosts = MyProvider.PostsLists.CONTENT_URI;
+        Uri mUriTemp = MyProvider.TempLists.CONTENT_URI;
+
+        ContentValues cv = new ContentValues();
+        cv.put(MyPostsColumn.KEY_LIKES,dir);
+        String mWhere = MyPostsColumn.KEY_ID +"=?";
+        String mSelectionArgs[]={id};
+        context.getContentResolver().update(mUriPosts,cv,mWhere,mSelectionArgs);
+        context.getContentResolver().update(mUriTemp,cv,mWhere,mSelectionArgs);
+
     }
 }

@@ -2,8 +2,13 @@ package com.android.rahul_lohra.redditstar.fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,12 +21,17 @@ import android.widget.ImageView;
 
 import com.android.rahul_lohra.redditstar.R;
 import com.android.rahul_lohra.redditstar.activity.SearchActivity;
+import com.android.rahul_lohra.redditstar.adapter.cursor.HomeAdapter;
 import com.android.rahul_lohra.redditstar.adapter.normal.FrontPageAdapter;
 import com.android.rahul_lohra.redditstar.application.Initializer;
+import com.android.rahul_lohra.redditstar.contract.IFrontPageAdapter;
+import com.android.rahul_lohra.redditstar.loader.CommentsLoader;
 import com.android.rahul_lohra.redditstar.modal.frontPage.FrontPageChild;
 import com.android.rahul_lohra.redditstar.modal.frontPage.FrontPageResponseData;
 import com.android.rahul_lohra.redditstar.modal.custom.DetailPostModal;
 import com.android.rahul_lohra.redditstar.service.GetFrontPageService;
+import com.android.rahul_lohra.redditstar.storage.MyProvider;
+import com.android.rahul_lohra.redditstar.storage.column.MyPostsColumn;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -41,7 +51,9 @@ import retrofit2.Retrofit;
  * Created by rkrde on 05-02-2017.
  */
 
-public class HomeFragment extends Fragment implements FrontPageAdapter.IFrontPageAdapter {
+public class HomeFragment extends Fragment implements
+        IFrontPageAdapter,
+        LoaderManager.LoaderCallbacks<Cursor>{
 
     private FrontPageResponseData frontPageResponseData = null;
     @Bind(R.id.rv)
@@ -50,8 +62,13 @@ public class HomeFragment extends Fragment implements FrontPageAdapter.IFrontPag
     @Inject
     @Named("withToken")
     Retrofit retrofitWithToken;
-    FrontPageAdapter adapter;
+//    FrontPageAdapter adapter;
     List<FrontPageChild> list;
+    private HomeAdapter adapter;
+
+    private final int LOADER_ID = 1;
+
+
 
     public interface IHomeFragment{
         void sendModalAndImageView(DetailPostModal modal, ImageView imageView);
@@ -89,7 +106,8 @@ public class HomeFragment extends Fragment implements FrontPageAdapter.IFrontPag
         setHasOptionsMenu(true);
         ((Initializer) getContext().getApplicationContext()).getNetComponent().inject(this);
         list = new ArrayList<>();
-        adapter = new FrontPageAdapter(HomeFragment.this,getActivity().getApplicationContext(), list,retrofitWithToken,this);
+//        adapter = new FrontPageAdapter(HomeFragment.this,getActivity().getApplicationContext(), list,retrofitWithToken,this);
+
     }
 
     @Override
@@ -104,6 +122,7 @@ public class HomeFragment extends Fragment implements FrontPageAdapter.IFrontPag
     }
 
     private void setAdapter(){
+        adapter = new HomeAdapter(getActivity(),null,this);
         rv.setLayoutManager(new LinearLayoutManager(getActivity()));
         rv.setAdapter(adapter);
 //        rv.nested
@@ -112,10 +131,10 @@ public class HomeFragment extends Fragment implements FrontPageAdapter.IFrontPag
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(FrontPageResponseData frontPageResponseData) {
-        this.frontPageResponseData = frontPageResponseData;
-        int lastPos = list.size();
-        list.addAll(lastPos,frontPageResponseData.getChildren());
-        adapter.notifyItemRangeInserted(lastPos,frontPageResponseData.getChildren().size());
+//        this.frontPageResponseData = frontPageResponseData;
+//        int lastPos = list.size();
+//        list.addAll(lastPos,frontPageResponseData.getChildren());
+//        adapter.notifyItemRangeInserted(lastPos,frontPageResponseData.getChildren().size());
     }
 
     @Subscribe(threadMode = ThreadMode.BACKGROUND)
@@ -193,5 +212,40 @@ public class HomeFragment extends Fragment implements FrontPageAdapter.IFrontPag
     @Override
     public void sendData(DetailPostModal modal, ImageView imageView) {
         mListener.sendModalAndImageView(modal,imageView);
+    }
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+           getLoaderManager().initLoader(LOADER_ID, null, this);
+    }
+
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        Uri mUri = MyProvider.PostsLists.CONTENT_URI;
+//        String mProjection[]=null;
+        switch (id) {
+            case LOADER_ID:
+                return new CursorLoader(getActivity(),mUri,null,null,null,null);
+        }
+        return null;
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        switch (loader.getId()) {
+            case LOADER_ID:
+                this.adapter.swapCursor(data);
+                break;
+        }
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        switch (loader.getId()) {
+            case LOADER_ID:
+                adapter.swapCursor(null);
+                break;
+        }
     }
 }

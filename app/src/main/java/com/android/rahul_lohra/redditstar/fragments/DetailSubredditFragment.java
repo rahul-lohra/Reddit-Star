@@ -108,7 +108,7 @@ public class DetailSubredditFragment extends Fragment implements LoaderManager.L
         tvCategory.setText("r/"+subredditModal.getSubreddit()+"-"+subredditModal.getTime());
         tvUsername.setText(subredditModal.getAuthor());
         tvSort.setText("new");
-        String bigImageUrl = (subredditModal.getBigImageUrlList().size()!=0)?subredditModal.getBigImageUrlList().get(0):"";
+        String bigImageUrl = subredditModal.getBigImageUrl();
         Glide.with(this).
                 load(bigImageUrl)
                 .centerCrop()

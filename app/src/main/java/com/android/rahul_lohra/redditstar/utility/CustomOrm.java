@@ -28,10 +28,11 @@ public class CustomOrm {
         cv.put(MyPostsColumn.KEY_CREATED,data.getCreated());
         cv.put(MyPostsColumn.KEY_NAME,data.getName());
         cv.put(MyPostsColumn.KEY_CLICKED,data.getClicked());
-        cv.put(MyPostsColumn.KEY_LIKES,data.getLikes()); //check Boolean
+        Boolean likes = data.getLikes();
+        cv.put(MyPostsColumn.KEY_LIKES,likes!=null?(likes?1:-1):0); //check Boolean
 //        cv.put(MyPostsColumn.KEY_LIKES,(data.getLikes()!=null)?((data.getLikes())?1:-1):0);
         cv.put(MyPostsColumn.KEY_DOMAIN,data.getDomain());
-        cv.put(MyPostsColumn.KEY_IS_SELF,data.getIs_self());//check Boolean
+        cv.put(MyPostsColumn.KEY_IS_SELF,data.getIsSelf());//check Boolean
         cv.put(MyPostsColumn.KEY_OVER_18,data.getOver18()); //check Boolean
         cv.put(MyPostsColumn.KEY_PERMALINK,data.getPermalink());
         cv.put(MyPostsColumn.KEY_POST_HINT,data.getPostHint());

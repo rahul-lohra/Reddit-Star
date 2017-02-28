@@ -101,4 +101,24 @@ public class MyProvider {
         }
     }
 
+    @TableEndpoint(table = MyDatabase.USER_TEMP_TABLE)
+    public static class TempLists {
+
+        @ContentUri(
+                path = "temp_posts",
+                type = "vnd.android.cursor.dir/temp_posts_item"
+        )
+        public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/temp_posts");
+
+        @InexactContentUri(
+                path = "temp_posts/*",
+                name = "TEMP_POSTS_ID",
+                type = "vnd.android.cursor.item/temp_posts_item",
+                whereColumn = MyPostsColumn.KEY_SQL_ID,
+                pathSegment = 1)
+        public static Uri withId(long id) {
+            return Uri.parse("content://" + AUTHORITY + "/temp_posts/" + id);
+        }
+    }
+
 }
