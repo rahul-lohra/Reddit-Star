@@ -12,8 +12,6 @@ import com.android.rahul_lohra.redditstar.storage.MyProvider;
 import com.android.rahul_lohra.redditstar.utility.Constants;
 import com.android.rahul_lohra.redditstar.utility.UserState;
 
-import org.greenrobot.eventbus.EventBus;
-
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,9 +19,6 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
@@ -69,7 +64,7 @@ public class GetFrontPageService extends IntentService {
                 if(res.code()==200)
                 {
 //                    EventBus.getDefault().post(res.body().getData());
-                    Constants.insertIntoPostsTable(getApplicationContext(),res.body(),mUri);
+                    Constants.insertPostsIntoTable(getApplicationContext(),res.body(),mUri);
                 }
                 Log.d(TAG,"response:"+res.code());
             } catch (IOException e) {

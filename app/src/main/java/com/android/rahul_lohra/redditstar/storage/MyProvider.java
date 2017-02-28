@@ -121,4 +121,23 @@ public class MyProvider {
         }
     }
 
+    @TableEndpoint(table = MyDatabase.USER_SEARCH_LINK_TABLE)
+    public static class SearchLinkLists {
+
+        @ContentUri(
+                path = "search_link",
+                type = "vnd.android.cursor.dir/search_link_item"
+        )
+        public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/search_link");
+
+        @InexactContentUri(
+                path = "search_link/*",
+                name = "SEARCH_LINK_ID",
+                type = "vnd.android.cursor.item/search_link_item",
+                whereColumn = MyPostsColumn.KEY_SQL_ID,
+                pathSegment = 1)
+        public static Uri withId(long id) {
+            return Uri.parse("content://" + AUTHORITY + "/search_link/" + id);
+        }
+    }
 }

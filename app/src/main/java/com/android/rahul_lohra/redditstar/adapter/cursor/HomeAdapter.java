@@ -83,22 +83,7 @@ public class HomeAdapter extends CursorRecyclerViewAdapter<RecyclerView.ViewHold
         final String bigImageUrl = cursor.getString(cursor.getColumnIndex(MyPostsColumn.KEY_BIG_IMAGE_URL));
 
         postView.setLikes(likes);
-//
-//        final List<String> bigImageUrlList = new ArrayList<>();
-//        if(preview!=null){
-////            for(Image image:frontPageChildData.getPreview().getImages()){
-//            bigImageUrlList.add(preview.getImages().get(0).getSource().getUrl());
-////            }
-//        }
-        //set Vote Arrow
-//        if (likes != null) {
-//            Integer resId = (likes) ? R.drawable.ic_arrow_upward_true : R.drawable.ic_arrow_downward_true;
-//            Glide.with(context)
-//                    .load("")
-//                    .placeholder(resId)
-//                    .into((likes) ?postView.imageUpVote:postView.imageDownVote);
 
-//        }
 //        if(!(fragment instanceof SearchFragment)){
 
         if(cursor.isLast()){

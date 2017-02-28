@@ -12,8 +12,6 @@ import com.android.rahul_lohra.redditstar.storage.MyProvider;
 import com.android.rahul_lohra.redditstar.utility.Constants;
 import com.android.rahul_lohra.redditstar.utility.UserState;
 
-import org.greenrobot.eventbus.EventBus;
-
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -69,7 +67,7 @@ public class GetSubredditListService extends IntentService {
                 Log.d(TAG,"resCode:"+res.code());
                 if (res.code() == 200) {
 //                    EventBus.getDefault().post(res.body().getData());
-                    Constants.insertIntoPostsTable(getApplicationContext(),res.body(),mUri);
+                    Constants.insertPostsIntoTable(getApplicationContext(),res.body(),mUri);
                 }
             } catch (IOException e) {
                 e.printStackTrace();

@@ -99,7 +99,7 @@ public class Constants {
         context.getContentResolver().delete(mUri,mWhere,mSelectionArgs);
     }
 
-    public static void insertIntoPostsTable(Context context,FrontPageResponse modal,Uri mUri){
+    public static void insertPostsIntoTable(Context context, FrontPageResponse modal, Uri mUri){
 //        Uri mUri = MyProvider.PostsLists.CONTENT_URI;
         String mWhere = MyPostsColumn.KEY_ID +"=?";
         List<FrontPageChild> mList = modal.getData().getChildren();
@@ -124,6 +124,9 @@ public class Constants {
         String mSelectionArgs[]={id};
         context.getContentResolver().update(mUriPosts,cv,mWhere,mSelectionArgs);
         context.getContentResolver().update(mUriTemp,cv,mWhere,mSelectionArgs);
+    }
 
+    public static void clearTable(Context context,Uri mUri){
+        context.getContentResolver().delete(mUri,null,null);
     }
 }

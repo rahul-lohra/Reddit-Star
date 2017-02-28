@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.android.rahul_lohra.redditstar.application.Initializer;
-import com.android.rahul_lohra.redditstar.modal.frontPage.FrontPageResponse;
 import com.android.rahul_lohra.redditstar.modal.search.T5_SearchResponse;
 import com.android.rahul_lohra.redditstar.retrofit.ApiInterface;
 import com.android.rahul_lohra.redditstar.utility.UserState;
@@ -19,7 +18,6 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import okhttp3.ResponseBody;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
@@ -37,6 +35,7 @@ public class SearchSubredditsService extends IntentService {
     @Named("withToken")
     Retrofit retrofitWithToken;
     ApiInterface apiInterface;
+
 
     public static String after = null;
     private static final String TAG = SearchSubredditsService.class.getSimpleName();

@@ -46,7 +46,8 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import retrofit2.Retrofit;
 
-public class SearchActivity extends AppCompatActivity
+public class SearchActivity extends AppCompatActivity implements SearchFragment.ISearchFragment
+
 {
 
 
@@ -92,6 +93,15 @@ public class SearchActivity extends AppCompatActivity
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.frame_layout, SearchFragment.newInstance(), SearchFragment.class.getSimpleName())
                 .commit();
+    }
+
+    @Override
+    public void openDetailScreen(DetailPostModal modal, ImageView imageView) {
+        Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(this, imageView, imageView.getTransitionName()).toBundle();
+        Intent intent = new Intent(this, DetailActivity.class);
+        intent.putExtra("modal", modal);
+//            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent, bundle);
     }
 
 //    private void setAdapter() {

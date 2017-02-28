@@ -72,7 +72,7 @@ public interface ApiInterface {
                                              @QueryMap Map<String, String> map);
 
     @GET("search.json")
-    Call<T3_SearchResponse> searchLinks(@Header(Constants.AUTHORIZATION) String authorization,
+    Call<FrontPageResponse> searchLinks(@Header(Constants.AUTHORIZATION) String authorization,
                                         @QueryMap Map<String, String> map);
 
 

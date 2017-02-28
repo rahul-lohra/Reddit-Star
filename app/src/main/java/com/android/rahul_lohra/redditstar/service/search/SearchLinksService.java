@@ -2,12 +2,15 @@ package com.android.rahul_lohra.redditstar.service.search;
 
 import android.app.IntentService;
 import android.content.Intent;
+import android.net.Uri;
 import android.util.Log;
 
 import com.android.rahul_lohra.redditstar.application.Initializer;
-import com.android.rahul_lohra.redditstar.modal.search.T3_SearchResponse;
-import com.android.rahul_lohra.redditstar.modal.search.T5_SearchResponse;
+import com.android.rahul_lohra.redditstar.modal.custom.AfterModal;
+import com.android.rahul_lohra.redditstar.modal.frontPage.FrontPageResponse;
 import com.android.rahul_lohra.redditstar.retrofit.ApiInterface;
+import com.android.rahul_lohra.redditstar.storage.MyProvider;
+import com.android.rahul_lohra.redditstar.utility.Constants;
 import com.android.rahul_lohra.redditstar.utility.UserState;
 
 import org.greenrobot.eventbus.EventBus;
@@ -62,10 +65,13 @@ public class SearchLinksService extends IntentService {
             map.put("limit", "7");
             map.put("q",subredditName);
             try {
-                Response<T3_SearchResponse> res = apiInterface.searchLinks(token,map).execute();
+                Response<FrontPageResponse> res = apiInterface.searchLinks(token,map).execute();
                 Log.d(TAG,"resCode:"+res.code());
                 if (res.code() == 200) {
-                    EventBus.getDefault().post(res.body().data);
+                    FrontPageResponse modal = res.body();
+                    Uri mUri = MyProvider.SearchLinkLists.CONTENT_URI;
+                    Constants.insertPostsIntoTable(getApplicationContext(),modal,mUri);
+                    EventBus.getDefault().post(new AfterModal(modal.getData().getAfter()));
                 }
             } catch (IOException e) {
                 e.printStackTrace();

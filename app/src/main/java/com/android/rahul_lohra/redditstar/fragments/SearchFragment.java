@@ -3,10 +3,13 @@ package com.android.rahul_lohra.redditstar.fragments;
 import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.LinearLayoutManager;
@@ -22,22 +25,24 @@ import android.widget.TextView;
 
 import com.android.rahul_lohra.redditstar.R;
 import com.android.rahul_lohra.redditstar.activity.DetailActivity;
-import com.android.rahul_lohra.redditstar.activity.SearchActivity;
 import com.android.rahul_lohra.redditstar.activity.SubredditActivity;
+import com.android.rahul_lohra.redditstar.adapter.cursor.HomeAdapter;
 import com.android.rahul_lohra.redditstar.adapter.normal.T3_LinkSearchAdapter;
 import com.android.rahul_lohra.redditstar.adapter.normal.T5_SubredditSearchAdapter;
 import com.android.rahul_lohra.redditstar.application.Initializer;
-import com.android.rahul_lohra.redditstar.modal.T3_Kind;
+import com.android.rahul_lohra.redditstar.contract.IFrontPageAdapter;
 import com.android.rahul_lohra.redditstar.modal.T5_Kind;
+import com.android.rahul_lohra.redditstar.modal.custom.AfterModal;
 import com.android.rahul_lohra.redditstar.modal.custom.DetailPostModal;
 import com.android.rahul_lohra.redditstar.modal.search.T3_ListChild;
 import com.android.rahul_lohra.redditstar.modal.search.T5_ListChild;
 import com.android.rahul_lohra.redditstar.retrofit.ApiInterface;
 import com.android.rahul_lohra.redditstar.service.search.SearchLinksService;
 import com.android.rahul_lohra.redditstar.service.search.SearchSubredditsService;
+import com.android.rahul_lohra.redditstar.storage.MyProvider;
+import com.android.rahul_lohra.redditstar.utility.Constants;
 import com.android.rahul_lohra.redditstar.utility.UserState;
 
-import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -51,9 +56,11 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import retrofit2.Retrofit;
 
-public class SearchFragment extends Fragment implements
+public class    SearchFragment extends BaseFragment implements
         T5_SubredditSearchAdapter.IT5_SubredditSearchAdapter,
-        T3_LinkSearchAdapter.IT3_LinkSearchAdapter{
+        T3_LinkSearchAdapter.IT3_LinkSearchAdapter,
+        LoaderManager.LoaderCallbacks<Cursor>,
+        IFrontPageAdapter {
 
     @Inject
     @Named("withToken")
@@ -75,18 +82,26 @@ public class SearchFragment extends Fragment implements
     @Bind(R.id.nested_sv)
     NestedScrollView nestedSV;
 
-    T3_LinkSearchAdapter t3LinkSearchAdapter;
+//    T3_LinkSearchAdapter t3LinkSearchAdapter;
+    HomeAdapter linkAdapter;
     T5_SubredditSearchAdapter t5SubredditSearchAdapter;
+    private final int LOADER_ID = 1;
 
-    List<T3_Kind> t3dataList = new ArrayList<>();
+//    List<T3_Kind> t3dataList = new ArrayList<>();
     List<T5_Kind> t5dataList = new ArrayList<>();
 
-    T3_ListChild t3_List_child;//Link
+//    T3_ListChild t3_List_child;//Link
     T5_ListChild t5_List_child;//Subreddit
 
     String searchQuery;
+    String afterOfLink = "";
+    String afterOfSubreddit;
 
+    public interface ISearchFragment{
+        void openDetailScreen(DetailPostModal modal, ImageView imageView);
+    }
 
+    private ISearchFragment mListener;
 
     public SearchFragment() {
         // Required empty public constructor
@@ -125,14 +140,11 @@ public class SearchFragment extends Fragment implements
                         searchQuery = et.getText().toString();
                     }
                     return true;
-
                     default:
                         return false;
                 }
-
             }
         });
-
         nestedSV.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
             @Override
             public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
@@ -158,13 +170,15 @@ public class SearchFragment extends Fragment implements
 
 
     private void setAdapter() {
-        t3LinkSearchAdapter = new T3_LinkSearchAdapter(getActivity(), t3dataList, retrofitWithToken,this);
+        linkAdapter = new HomeAdapter(getActivity(),null,this);
+//        t3LinkSearchAdapter = new T3_LinkSearchAdapter(getActivity(), t3dataList, retrofitWithToken,this);
         t5SubredditSearchAdapter = new T5_SubredditSearchAdapter(getActivity(), t5dataList, this);
 
         rvLinks.setLayoutManager(new LinearLayoutManager(getActivity()));
         rvSubreddits.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
 
-        rvLinks.setAdapter(t3LinkSearchAdapter);
+//        rvLinks.setAdapter(t3LinkSearchAdapter);
+        rvLinks.setAdapter(linkAdapter);
         rvSubreddits.setAdapter(t5SubredditSearchAdapter);
     }
 
@@ -174,9 +188,11 @@ public class SearchFragment extends Fragment implements
          */
         if(isFromStart)
         {
-            t3dataList.clear();
+//            t3dataList.clear();
             t5dataList.clear();
-            t3LinkSearchAdapter.notifyDataSetChanged();
+//            t3LinkSearchAdapter.notifyDataSetChanged();
+            Uri mUri = MyProvider.SearchLinkLists.CONTENT_URI;
+            Constants.clearTable(getContext(),mUri);
             t5SubredditSearchAdapter.notifyDataSetChanged();
         }
         if (!query.isEmpty()) {
@@ -187,25 +203,17 @@ public class SearchFragment extends Fragment implements
     }
 
     private void getLinks(String query,boolean isFromStart) {
-        Intent intentLinkService = new Intent(getActivity(), SearchLinksService.class);
-        String after = isFromStart?"":(t3_List_child.getAfter()!=null)?t3_List_child.getAfter():"";
-//        if (t3_List_child != null) {
-//            intentLinkService.putExtra("after", t3_List_child.getAfter());
-//        } else {
-//            intentLinkService.putExtra("after", "");
-//        }
-        intentLinkService.putExtra("after", after);
-        intentLinkService.putExtra("query", query);
-        getActivity().startService(intentLinkService);
+        if(afterOfLink!=null){
+            Intent intentLinkService = new Intent(getActivity(), SearchLinksService.class);
+            String mAfter = isFromStart?"":afterOfLink;
+            intentLinkService.putExtra("after", mAfter);
+            intentLinkService.putExtra("query", query);
+            getActivity().startService(intentLinkService);
+        }
     }
 
     private void getSubreddits(@NonNull String query, boolean isFromStart) {
         Intent intentSubredditService = new Intent(getActivity(), SearchSubredditsService.class);
-//        if (t5_List_child != null) {
-//            intentSubredditService.putExtra("after", t5_List_child.getAfter());
-//        } else {
-//            intentSubredditService.putExtra("after", "");
-//        }
         String after = isFromStart?"":(t5_List_child.getAfter()!=null)?t5_List_child.getAfter():"";
         intentSubredditService.putExtra("after", after);
         intentSubredditService.putExtra("query", query);
@@ -249,22 +257,29 @@ public class SearchFragment extends Fragment implements
         t5SubredditSearchAdapter.notifyItemRangeInserted(lastPos, t5_List_child.children.size());
     }
 
+    @Subscribe(threadMode = ThreadMode.BACKGROUND)
+    public void onMessageEvent(AfterModal afterModal) {
+        this.afterOfLink = afterModal.getmAfterLink();
+    }
+
+
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(T3_ListChild t3_List_child) {
-        this.t3_List_child = t3_List_child;
-        int lastPos = t3dataList.size();
-        t3dataList.addAll(lastPos, t3_List_child.children);
-        t3LinkSearchAdapter.notifyItemRangeInserted(lastPos, t3_List_child.children.size());
+//        this.t3_List_child = t3_List_child;
+//        int lastPos = t3dataList.size();
+//        t3dataList.addAll(lastPos, t3_List_child.children);
+//        t3LinkSearchAdapter.notifyItemRangeInserted(lastPos, t3_List_child.children.size());
     }
 
     @Subscribe(threadMode = ThreadMode.BACKGROUND)
     public void onMessageEvent(String string, String type) {
         if (string.equals("getNextData") && type.equals("link")) {
-            if (t3_List_child != null) {
-                if (!t3_List_child.getAfter().equalsIgnoreCase(SearchLinksService.after)) {
-                    getLinks(searchQuery,false);
-                }
-            }
+//            if (t3_List_child != null) {
+//                if (!t3_List_child.getAfter().equalsIgnoreCase(SearchLinksService.after)) {
+//                    getLinks(searchQuery,false);
+//                }
+//            }
         } else if (string.equals("getNextData") && type.equals("subreddit")) {
             if (t5_List_child != null) {
                 if (!t5_List_child.getAfter().equalsIgnoreCase(SearchSubredditsService.after)) {
@@ -274,15 +289,63 @@ public class SearchFragment extends Fragment implements
         }
     }
 
+
+
     @Override
-    public void onStart() {
-        super.onStart();
-        EventBus.getDefault().register(this);
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        Uri mUri = MyProvider.SearchLinkLists.CONTENT_URI;
+        switch (id) {
+            case LOADER_ID:
+                return new CursorLoader(getActivity(),mUri,null,null,null,null);
+        }
+        return null;
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
-        EventBus.getDefault().unregister(this);
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        switch (loader.getId()) {
+            case LOADER_ID:
+                this.linkAdapter.swapCursor(data);
+                break;
+        }
+
     }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        switch (loader.getId()) {
+            case LOADER_ID:
+                linkAdapter.swapCursor(null);
+                break;
+        }
+    }
+
+
+    @Override
+    public void sendData(DetailPostModal modal, ImageView imageView) {
+        mListener.openDetailScreen(modal,imageView);
+    }
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        getLoaderManager().initLoader(LOADER_ID, null, this);
+    }
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof ISearchFragment) {
+            mListener = (ISearchFragment) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
+
+
 }
