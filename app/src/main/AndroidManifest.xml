@@ -96,6 +96,7 @@
             android:exported="false" />
 
         <activity
+            android:label="@string/reply"
             android:theme="@style/AppTheme.NoToolBar"
             android:name=".activity.ReplyActivity" />
         <activity

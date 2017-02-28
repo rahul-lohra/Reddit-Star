@@ -4,6 +4,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -35,7 +36,6 @@ import retrofit2.Retrofit;
 
 public class ReplyFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
     private static final String TAG = ReplyFragment.class.getSimpleName();
     @Bind(R.id.toolbar)
     Toolbar toolbar;
@@ -96,6 +96,7 @@ public class ReplyFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_reply, container, false);
         ButterKnife.bind(this, v);
+        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
         return v;
 
     }
@@ -129,7 +130,7 @@ public class ReplyFragment extends Fragment {
         }
         String auth = "bearer "+token;
         ReplyModal modal  = new ReplyModal("json",message, thingId);
-        apiInterface.postComment(auth,modal).enqueue(new Callback<ResponseBody>() {
+        apiInterface.postComment(auth,"json",message, thingId).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Log.d(TAG,"onResponse");

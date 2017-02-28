@@ -46,7 +46,7 @@ public class MyDatabase {
 //                        db.execSQL(migration);
 //                        db.setTransactionSuccessful();
 //                    } catch (Exception e) {
-//                        Log.e("onUpgrade", "Error executing database migration: %s"+ migration);
+//                        Log.e("onUpgrade", "JsonData executing database migration: %s"+ migration);
 //                        break;
 //                    } finally {
 //                        db.endTransaction();

@@ -75,10 +75,12 @@ public interface ApiInterface {
     Call<FrontPageResponse> searchLinks(@Header(Constants.AUTHORIZATION) String authorization,
                                         @QueryMap Map<String, String> map);
 
-
+    @FormUrlEncoded
     @POST("/api/comment")
     Call<ResponseBody> postComment(@Header(Constants.AUTHORIZATION) String authorization,
-                                   @Body ReplyModal replyModal);
+                                   @Field("api_type")String api_type,
+                                   @Field("text")String text,
+                                   @Field("thing_id")String thing_id);
 
     @FormUrlEncoded
     @POST("/api/subscribe")
