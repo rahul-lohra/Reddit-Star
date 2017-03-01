@@ -17,7 +17,6 @@ import android.support.v4.content.Loader;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -26,6 +25,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.android.rahul_lohra.redditstar.R;
 import com.android.rahul_lohra.redditstar.adapter.cursor.SubredditDrawerAdapter;
@@ -41,7 +41,8 @@ import com.android.rahul_lohra.redditstar.storage.MyProvider;
 import com.android.rahul_lohra.redditstar.storage.column.MySubredditColumn;
 import com.android.rahul_lohra.redditstar.utility.CommonOperations;
 import com.android.rahul_lohra.redditstar.utility.Constants;
-import com.android.rahul_lohra.redditstar.utility.MyUrl;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,12 +51,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.android.rahul_lohra.redditstar.utility.MyUrl.AUTH_URL;
-import static com.android.rahul_lohra.redditstar.utility.MyUrl.CLIENT_ID;
-import static com.android.rahul_lohra.redditstar.utility.MyUrl.REDIRECT_URI;
-import static com.android.rahul_lohra.redditstar.utility.MyUrl.STATE;
-
-public class DashboardActivity extends AppCompatActivity implements
+public class DashboardActivity extends BaseActivity implements
         NavigationView.OnNavigationItemSelectedListener,
         IDashboard,
         LoaderManager.LoaderCallbacks<Cursor>,
@@ -83,13 +79,23 @@ public class DashboardActivity extends AppCompatActivity implements
     List<DrawerItemModal> drawerList;
     DashboardPresenter dashboardPresenter;
     AddAccountDialog addAccountDialog;
+    @Bind(R.id.adView)
+    AdView adView;
+    @Bind(R.id.image_view)
+    ImageView imageView;
+    @Bind(R.id.textView)
+    TextView textView;
+    @Bind(R.id.name)
+    TextView name;
+    @Bind(R.id.image_view_add)
+    ImageView imageViewAdd;
     private boolean mTwoPane;
     private final String TAG = DashboardActivity.class.getSimpleName();
 
     private final int LOADER_ID = 1;
 
     private Snackbar snackbar;
-
+    private AdRequest adRequest;
     @OnClick(R.id.fab)
     public void onClick() {
         Snackbar.make(fab, "Replace with your own action", Snackbar.LENGTH_LONG)
@@ -103,11 +109,10 @@ public class DashboardActivity extends AppCompatActivity implements
     }
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Constants.clearTable(this,MyProvider.PostsLists.CONTENT_URI);
+        Constants.clearTable(this, MyProvider.PostsLists.CONTENT_URI);
         setContentView(R.layout.activity_dashboard);
         ButterKnife.bind(this);
         init();
@@ -123,8 +128,8 @@ public class DashboardActivity extends AppCompatActivity implements
                 showDetailSubredditFragment(null);
                 showHomeFragment(R.id.frame_layout_left);
             }
-        }else {
-            if(savedInstanceState==null){
+        } else {
+            if (savedInstanceState == null) {
                 mTwoPane = false;
                 showHomeFragment(R.id.frame_layout_left);
             }
@@ -187,6 +192,8 @@ public class DashboardActivity extends AppCompatActivity implements
 //                        snackbar1.show();
                     }
                 });
+        adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
     }
 
     void setAdapter() {

@@ -8,7 +8,7 @@ import com.android.rahul_lohra.redditstar.R;
 import com.android.rahul_lohra.redditstar.fragments.DetailSubredditFragment;
 import com.android.rahul_lohra.redditstar.fragments.ReplyFragment;
 
-public class ReplyActivity extends AppCompatActivity {
+public class ReplyActivity extends BaseActivity {
 
     String thingId;
     @Override

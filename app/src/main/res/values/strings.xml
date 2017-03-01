@@ -3,6 +3,8 @@
     <string name="login">Login</string>
     <string name="get_token">Get Token</string>
     <string name="share">Share</string>
+    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+
 
     <!--Content Description-->
     <string name="subreddit_image">Subreddit Image</string>

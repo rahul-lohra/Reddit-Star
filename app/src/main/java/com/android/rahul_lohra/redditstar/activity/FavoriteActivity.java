@@ -9,7 +9,7 @@ import com.android.rahul_lohra.redditstar.fragments.DetailSubredditFragment;
 import com.android.rahul_lohra.redditstar.fragments.FavouriteFragment;
 import com.android.rahul_lohra.redditstar.fragments.ReplyFragment;
 
-public class FavoriteActivity extends AppCompatActivity {
+public class FavoriteActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

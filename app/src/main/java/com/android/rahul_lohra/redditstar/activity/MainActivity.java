@@ -28,7 +28,7 @@ import static com.android.rahul_lohra.redditstar.utility.MyUrl.CLIENT_ID;
 import static com.android.rahul_lohra.redditstar.utility.MyUrl.REDIRECT_URI;
 import static com.android.rahul_lohra.redditstar.utility.MyUrl.STATE;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
 

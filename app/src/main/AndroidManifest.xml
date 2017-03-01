@@ -3,7 +3,8 @@
     package="com.android.rahul_lohra.redditstar">
 
     <uses-permission android:name="android.permission.INTERNET" />
-
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
     <application
         android:name=".application.Initializer"
         android:allowBackup="true"
@@ -12,8 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <!--Search Activity-->
-        <meta-data android:name="android.app.default_searchable"
+        <!-- Search Activity -->
+        <meta-data
+            android:name="android.app.default_searchable"
             android:value="com.android.rahul_lohra.redditstar.activity.SearchActivity" />
 
         <!-- Glide -->
@@ -63,7 +65,7 @@
             android:exported="false"
             android:syncable="true" />
 
-        <!--Search Provider-->
+        <!-- Search Provider -->
         <provider
             android:name=".storage.MySuggestionProvider"
             android:authorities="com.android.rahul_lohra.redditstar.MySuggestionProvider" />
@@ -96,9 +98,9 @@
             android:exported="false" />
 
         <activity
+            android:name=".activity.ReplyActivity"
             android:label="@string/reply"
-            android:theme="@style/AppTheme.NoToolBar"
-            android:name=".activity.ReplyActivity" />
+            android:theme="@style/AppTheme.NoToolBar" />
         <activity
             android:name=".activity.SubredditActivity"
             android:label="@string/subreddits"
@@ -106,18 +108,20 @@
         <activity
             android:name=".activity.FavoriteActivity"
             android:label="@string/favorite"
-            android:theme="@style/AppTheme.NoToolBar"></activity>
+            android:theme="@style/AppTheme.NoToolBar" />
         <activity
             android:name=".activity.SearchActivity"
-            android:theme="@style/AppTheme.NoToolBar"
-            android:launchMode="singleTop">
+            android:launchMode="singleTop"
+            android:theme="@style/AppTheme.NoToolBar">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
+
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
+        <activity android:name=".activity.BaseActivity"></activity>
     </application>
 
 </manifest>

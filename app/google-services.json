@@ -1,0 +1,63 @@
+{
+  "project_info": {
+    "project_number": "1002042983541",
+    "firebase_url": "https://redditstar-e6a5b.firebaseio.com",
+    "project_id": "redditstar-e6a5b",
+    "storage_bucket": "redditstar-e6a5b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1002042983541:android:7ab47136134ea05c",
+        "android_client_info": {
+          "package_name": "com.android.rahul_lohra.redditstar"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1002042983541-aro3hlpdf4l6t4t51bmmq33kvmisnb1c.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.android.rahul_lohra.redditstar",
+            "certificate_hash": "d3c56a9a9e3bbe931a4013d241fe1a7783e6f796"
+          }
+        },
+        {
+          "client_id": "1002042983541-lchcdmbi5o2cron086d71c61c5datfnd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.android.rahul_lohra.redditstar",
+            "certificate_hash": "b4d29f8de6ed5a9b9521229d8813f353a68b8a33"
+          }
+        },
+        {
+          "client_id": "1002042983541-4mmoh1u1g31b0o2l3r5glitlfvcqdt0a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDKi57foYu5nO8Hwf7UNaXiX7ZQOaoMnHU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1002042983541-4mmoh1u1g31b0o2l3r5glitlfvcqdt0a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

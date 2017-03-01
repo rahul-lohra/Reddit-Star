@@ -52,7 +52,7 @@ import static com.android.rahul_lohra.redditstar.viewHolder.PostView.DIRECTION_D
 import static com.android.rahul_lohra.redditstar.viewHolder.PostView.DIRECTION_NULL;
 import static com.android.rahul_lohra.redditstar.viewHolder.PostView.DIRECTION_UP;
 
-public class DetailActivity extends AppCompatActivity implements
+public class DetailActivity extends BaseActivity implements
         LoaderManager.LoaderCallbacks<List<CustomComment>> {
 
     @Bind(R.id.imageView)

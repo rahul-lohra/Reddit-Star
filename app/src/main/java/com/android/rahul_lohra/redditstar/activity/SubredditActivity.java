@@ -12,7 +12,7 @@ import com.android.rahul_lohra.redditstar.R;
 import com.android.rahul_lohra.redditstar.fragments.subreddit.SubredditFragment;
 import com.android.rahul_lohra.redditstar.modal.custom.DetailPostModal;
 
-public class SubredditActivity extends AppCompatActivity implements SubredditFragment.ISubredditFragment {
+public class SubredditActivity extends BaseActivity implements SubredditFragment.ISubredditFragment {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

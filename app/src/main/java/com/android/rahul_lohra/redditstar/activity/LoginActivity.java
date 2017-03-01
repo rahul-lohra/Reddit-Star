@@ -12,7 +12,7 @@ import com.android.rahul_lohra.redditstar.utility.MyUrl;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends BaseActivity {
 
     /*
     https://www.reddit.com/api/v1/authorize?client_id=CLIENT_ID&response_type=TYPE&

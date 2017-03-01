@@ -21,7 +21,7 @@ import butterknife.ButterKnife;
 
 import static com.android.rahul_lohra.redditstar.utility.MyUrl.STATE;
 
-public class WebViewActivity extends AppCompatActivity {
+public class WebViewActivity extends BaseActivity {
 
 
     @Bind(R.id.webView)

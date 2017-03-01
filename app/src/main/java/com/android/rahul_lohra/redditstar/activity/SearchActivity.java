@@ -46,7 +46,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import retrofit2.Retrofit;
 
-public class SearchActivity extends AppCompatActivity implements SearchFragment.ISearchFragment
+public class SearchActivity extends BaseActivity implements SearchFragment.ISearchFragment
 
 {
 
