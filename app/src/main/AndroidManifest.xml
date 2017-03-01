@@ -3,8 +3,9 @@
     package="com.android.rahul_lohra.redditstar">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
     <application
         android:name=".application.Initializer"
         android:allowBackup="true"
@@ -22,6 +23,70 @@
         <meta-data
             android:name="com.android.rahul_lohra.redditstar.glide.MyGlideModule"
             android:value="GlideModule" />
+
+        <!-- widget -->
+        <receiver android:name=".widget.MyWidgetProvider">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="com.sam_chordas.android.stockhawk.service.stockTaskService" />
+                <action android:name="WidgetActivity" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/appwidget_info" />
+        </receiver>
+
+        <receiver android:name=".widget.NewAppWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/new_app_widget_info" />
+        </receiver>
+
+        <!-- service -->
+        <service
+            android:name=".service.GetNewTokenService"
+            android:exported="false" />
+        <service
+            android:name=".service.GetUserCredentialsService"
+            android:exported="false" />
+        <service android:name=".service.GetSubscribedSubredditsService" />
+        <service
+            android:name=".service.GetDashboardSubredditsService"
+            android:exported="false" />
+        <service
+            android:name=".service.search.SearchLinksService"
+            android:exported="false" />
+        <service
+            android:name=".service.search.SearchSubredditsService"
+            android:exported="false" />
+        <service
+            android:name=".service.GetFrontPageService"
+            android:exported="false" />
+        <service
+            android:name=".service.GetSubredditListService"
+            android:exported="false" />
+
+        <!-- Authenticator -->
+        <service android:name=".sync.AuthenticatorService">
+            <intent-filter>
+                <action android:name="android.accounts.AccountAuthenticator" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.accounts.AccountAuthenticator"
+                android:resource="@xml/authenticator" />
+        </service>
+        <!--widget service-->
+        <service
+            android:name=".service.widget.ListWidgetService"
+            android:exported="false"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
 
         <activity android:name=".dummy.DummyMainActivity" />
         <activity
@@ -51,13 +116,6 @@
             android:label="@string/reddit_login"
             android:theme="@style/AppTheme.NoToolBar" />
 
-        <service
-            android:name=".service.GetNewTokenService"
-            android:exported="false" />
-        <service
-            android:name=".service.GetUserCredentialsService"
-            android:exported="false" />
-
         <!-- Generated Provider -->
         <provider
             android:name=".storage.generated.MyProvider"
@@ -69,33 +127,6 @@
         <provider
             android:name=".storage.MySuggestionProvider"
             android:authorities="com.android.rahul_lohra.redditstar.MySuggestionProvider" />
-
-        <!-- Authenticator -->
-        <service android:name=".sync.AuthenticatorService">
-            <intent-filter>
-                <action android:name="android.accounts.AccountAuthenticator" />
-            </intent-filter>
-
-            <meta-data
-                android:name="android.accounts.AccountAuthenticator"
-                android:resource="@xml/authenticator" />
-        </service>
-        <service android:name=".service.GetSubscribedSubredditsService" />
-        <service
-            android:name=".service.GetDashboardSubredditsService"
-            android:exported="false" />
-        <service
-            android:name=".service.search.SearchLinksService"
-            android:exported="false" />
-        <service
-            android:name=".service.search.SearchSubredditsService"
-            android:exported="false" />
-        <service
-            android:name=".service.GetFrontPageService"
-            android:exported="false" />
-        <service
-            android:name=".service.GetSubredditListService"
-            android:exported="false" />
 
         <activity
             android:name=".activity.ReplyActivity"
@@ -121,7 +152,14 @@
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
-        <activity android:name=".activity.BaseActivity"></activity>
+        <activity android:name=".activity.BaseActivity" />
+        <activity android:name=".activity.AppWidgetConfigureActivity">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+            </intent-filter>
+        </activity>
+
+
     </application>
 
 </manifest>

@@ -114,6 +114,8 @@
     <string name="subscribe">Subscribe</string>
     <string name="more">MORE</string>
     <string name="success">Success</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
 
 
 </resources>
