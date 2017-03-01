@@ -15,6 +15,7 @@ import com.android.rahul_lohra.redditstar.storage.MyProvider;
 import com.android.rahul_lohra.redditstar.storage.column.MyFavouritesColumn;
 import com.android.rahul_lohra.redditstar.storage.column.MyPostsColumn;
 import com.android.rahul_lohra.redditstar.storage.column.UserCredentialsColumn;
+import com.android.rahul_lohra.redditstar.viewHolder.PostView;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -114,9 +115,10 @@ public class Constants {
         }
     }
 
-    public static void updateLikes(Context context,Integer dir,String id){
+    public static void updateLikes(Context context, @PostView.DirectionMode Integer dir, String id){
         Uri mUriPosts = MyProvider.PostsLists.CONTENT_URI;
         Uri mUriTemp = MyProvider.TempLists.CONTENT_URI;
+        Uri mUriSearch = MyProvider.SearchLinkLists.CONTENT_URI;
 
         ContentValues cv = new ContentValues();
         cv.put(MyPostsColumn.KEY_LIKES,dir);
@@ -124,9 +126,12 @@ public class Constants {
         String mSelectionArgs[]={id};
         context.getContentResolver().update(mUriPosts,cv,mWhere,mSelectionArgs);
         context.getContentResolver().update(mUriTemp,cv,mWhere,mSelectionArgs);
-    }
+        context.getContentResolver().update(mUriSearch,cv,mWhere,mSelectionArgs);
 
+    }
     public static void clearTable(Context context,Uri mUri){
         context.getContentResolver().delete(mUri,null,null);
     }
+
+
 }

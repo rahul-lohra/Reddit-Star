@@ -40,6 +40,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.android.rahul_lohra.redditstar.utility.Constants.updateLikes;
+import static com.android.rahul_lohra.redditstar.viewHolder.PostView.DIRECTION_NULL;
 
 /**
  * Created by rkrde on 29-01-2017.
@@ -117,18 +118,15 @@ public class HomeAdapter extends CursorRecyclerViewAdapter<RecyclerView.ViewHold
                 }
 
                 Integer mLikes = postView.getLikes();
-                if(mLikes!=null){
-                    if(mLikes==0)
+                    if(mLikes == -1)
                     {
-                        postView.performVote(PostView.DIRECTION_NULL,thingId);
-//                        frontPageChildData.setLikes(null);
-                        updateLikes(activity.getApplicationContext(),null,id);
-                    }
-                }else {
+                        postView.performVote(DIRECTION_NULL,thingId);
+                        updateLikes(activity.getApplicationContext(),DIRECTION_NULL,id);
+
+                }else if(mLikes == 0) {
                     //upvote
                     postView.performVote(PostView.DIRECTION_UP,thingId);
-//                    frontPageChildData.setLikes(true);
-                    updateLikes(activity.getApplicationContext(),1,id);
+                    updateLikes(activity.getApplicationContext(),PostView.DIRECTION_UP,id);
                 }
 
             }
@@ -148,18 +146,13 @@ public class HomeAdapter extends CursorRecyclerViewAdapter<RecyclerView.ViewHold
                 }
 
                 Integer mLikes = postView.getLikes();
-                if(mLikes!=null){
                     if(mLikes==1)
                     {
-                        postView.performVote(PostView.DIRECTION_NULL,thingId);
-                        updateLikes(activity.getApplicationContext(),null,id);
-//                        frontPageChildData.setLikes(null);
-                    }
-                }else {
-                    //upvote
+                        postView.performVote(DIRECTION_NULL,thingId);
+                        updateLikes(activity.getApplicationContext(), DIRECTION_NULL,id);
+                }else if(mLikes==0){
                     postView.performVote(PostView.DIRECTION_DOWN,thingId);
-                    updateLikes(activity.getApplicationContext(),0,id);
-//                    frontPageChildData.setLikes(false);
+                    updateLikes(activity.getApplicationContext(),PostView.DIRECTION_DOWN,id);
                 }
             }
         });

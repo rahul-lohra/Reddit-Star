@@ -87,10 +87,25 @@ public class PostView extends RecyclerView.ViewHolder {
     public void setLikes(Integer likes) {
         this.likes = likes;
         if(likes!=0){
-            Glide.with(context)
-                    .load("")
-                    .placeholder((likes==1?R.drawable.ic_arrow_upward_true : R.drawable.ic_arrow_downward_true))
-                    .into((likes==1)?imageUpVote:imageDownVote);
+            if(likes==1){
+                Glide.with(context)
+                        .load("")
+                        .placeholder(R.drawable.ic_arrow_upward_true)
+                        .into(imageUpVote);
+                Glide.with(context)
+                        .load("")
+                        .placeholder(R.drawable.ic_arrow_downward)
+                        .into(imageDownVote);
+            }else if(likes==-1){
+                Glide.with(context)
+                        .load("")
+                        .placeholder(R.drawable.ic_arrow_upward)
+                        .into(imageUpVote);
+                Glide.with(context)
+                        .load("")
+                        .placeholder(R.drawable.ic_arrow_downward_true)
+                        .into(imageDownVote);
+            }
         }
     }
 

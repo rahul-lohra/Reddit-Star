@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -25,6 +26,7 @@ import com.android.rahul_lohra.redditstar.modal.comments.CustomComment;
 import com.android.rahul_lohra.redditstar.modal.custom.DetailPostModal;
 import com.android.rahul_lohra.redditstar.retrofit.ApiInterface;
 import com.android.rahul_lohra.redditstar.utility.CommonOperations;
+import com.android.rahul_lohra.redditstar.utility.Constants;
 import com.android.rahul_lohra.redditstar.utility.UserState;
 import com.android.rahul_lohra.redditstar.viewHolder.PostView;
 import com.bumptech.glide.Glide;
@@ -45,6 +47,10 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
+
+import static com.android.rahul_lohra.redditstar.viewHolder.PostView.DIRECTION_DOWN;
+import static com.android.rahul_lohra.redditstar.viewHolder.PostView.DIRECTION_NULL;
+import static com.android.rahul_lohra.redditstar.viewHolder.PostView.DIRECTION_UP;
 
 public class DetailActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<List<CustomComment>> {
@@ -95,15 +101,18 @@ public class DetailActivity extends AppCompatActivity implements
         } else {
 
             Integer mLikes = subredditModal.getLikes();
-            if(mLikes!=null){
-                if(mLikes==1)
+                if(mLikes== -1)
                 {
-                    performVote(PostView.DIRECTION_NULL);
-//                    frontPageChildData.setLikes(null);
+                    performVote(DIRECTION_NULL);
+                    updateVote(DIRECTION_NULL);
+                    tvVote.setTextColor(ContextCompat.getColor(this,R.color.grey_700));
+                    updateVoteCount(1);
                 }
-            }else {
-                performVote(PostView.DIRECTION_UP);
-//                frontPageChildData.setLikes(false);
+            else if(mLikes==0){
+                performVote(DIRECTION_UP);
+                    updateVote(DIRECTION_UP);
+                    tvVote.setTextColor(ContextCompat.getColor(this,R.color.light_blue_500));
+                    updateVoteCount(1);
             }
 
         }
@@ -115,19 +124,21 @@ public class DetailActivity extends AppCompatActivity implements
 
         if (!isUserLoggedIn) {
             snackbar.show();
-//            Toast.makeText(this, getString(R.string.please_login), Toast.LENGTH_SHORT).show();
         } else {
 
             Integer mLikes = subredditModal.getLikes();
-            if(mLikes!=null){
                 if(mLikes==1)
                 {
-                    performVote(PostView.DIRECTION_NULL);
-//                    frontPageChildData.setLikes(null);
+                    performVote(DIRECTION_NULL);
+                    updateVote(DIRECTION_NULL);
+                    tvVote.setTextColor(ContextCompat.getColor(this,R.color.grey_700));
+                    updateVoteCount(-1);
                 }
-            }else {
-                performVote(PostView.DIRECTION_DOWN);
-//                frontPageChildData.setLikes(false);
+            else if(mLikes==0){
+                performVote(DIRECTION_DOWN);
+                    updateVote(DIRECTION_DOWN);
+                    tvVote.setTextColor(ContextCompat.getColor(this,R.color.green_500));
+                    updateVoteCount(-1);
             }
         }
 
@@ -214,6 +225,8 @@ public class DetailActivity extends AppCompatActivity implements
                     .load("")
                     .placeholder(resId)
                     .into((likes==1) ? imageUpVote : imageDownVote);
+
+            tvVote.setTextColor((likes==1)?ContextCompat.getColor(this,R.color.light_blue_500):ContextCompat.getColor(this,R.color.green_500));
         }
 
     }
@@ -224,7 +237,7 @@ public class DetailActivity extends AppCompatActivity implements
         rv.setAdapter(commentsAdapter);
     }
 
-    private void performVote(@PostView.DirectionMode int mode) {
+    private void performVote(@PostView.DirectionMode final int mode) {
         String token = UserState.getAuthToken(this);
         String auth = "bearer " + token;
         Map<String, String> map = new HashMap<String, String>();
@@ -236,6 +249,7 @@ public class DetailActivity extends AppCompatActivity implements
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
 
                 Log.d(TAG, "UpVote onResponse:" + response.code());
+                Constants.updateLikes(getApplicationContext(),mode,subredditModal.getId());
             }
 
             @Override
@@ -279,10 +293,54 @@ public class DetailActivity extends AppCompatActivity implements
         }
     }
 
+
+
     void showDetailSubredditFragment(DetailPostModal modal) {
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.frame_layout, DetailSubredditFragment.newInstance(modal), DetailSubredditFragment.class.getSimpleName())
                 .commit();
+    }
+
+    private void updateVote(@PostView.DirectionMode Integer mode)
+    {
+        subredditModal.setLikes(mode);
+        switch (mode){
+            case DIRECTION_UP:{
+                updateVoteBackground(imageUpVote,R.drawable.ic_arrow_upward_true);
+                updateVoteBackground(imageDownVote,R.drawable.ic_arrow_downward);
+
+            }
+            break;
+            case DIRECTION_DOWN:{
+                updateVoteBackground(imageUpVote,R.drawable.ic_arrow_upward);
+                updateVoteBackground(imageDownVote,R.drawable.ic_arrow_downward_true);
+
+            }
+            break;
+            case DIRECTION_NULL:{
+                updateVoteBackground(imageUpVote,R.drawable.ic_arrow_upward);
+                updateVoteBackground(imageDownVote,R.drawable.ic_arrow_downward);
+            }
+            break;
+            default:
+        }
+    }
+
+    private void updateVoteBackground(ImageView imageView,int resId){
+        Glide.with(this)
+                .load("")
+                .placeholder(resId)
+                .into(imageView);
+    }
+
+    private void updateVoteCount(int c){
+
+        int count = Integer.parseInt(tvVote.getText().toString());
+        count =count+c;
+        String newCount = String.valueOf(count);
+        subredditModal.setCommentsCount(newCount);
+        tvVote.setText(newCount);
+
     }
 
 

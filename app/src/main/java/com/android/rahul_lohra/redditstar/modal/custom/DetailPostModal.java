@@ -119,6 +119,10 @@ public class DetailPostModal implements Parcelable {
         return likes;
     }
 
+    public void setLikes(Integer likes) {
+        this.likes = likes;
+    }
+
     @Override
     public int describeContents() {
         return 0;

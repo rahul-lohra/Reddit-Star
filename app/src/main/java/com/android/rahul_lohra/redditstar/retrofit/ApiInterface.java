@@ -6,6 +6,7 @@ import com.android.rahul_lohra.redditstar.modal.SubredditResponse;
 import com.android.rahul_lohra.redditstar.modal.SubscribeSubreddit;
 import com.android.rahul_lohra.redditstar.modal.frontPage.FrontPageResponse;
 import com.android.rahul_lohra.redditstar.modal.reply.ReplyModal;
+import com.android.rahul_lohra.redditstar.modal.reply.ReplyResponse;
 import com.android.rahul_lohra.redditstar.modal.search.T3_SearchResponse;
 import com.android.rahul_lohra.redditstar.modal.search.T5_SearchResponse;
 import com.android.rahul_lohra.redditstar.modal.t5_Subreddit.t5_Response;
@@ -77,10 +78,10 @@ public interface ApiInterface {
 
     @FormUrlEncoded
     @POST("/api/comment")
-    Call<ResponseBody> postComment(@Header(Constants.AUTHORIZATION) String authorization,
-                                   @Field("api_type")String api_type,
-                                   @Field("text")String text,
-                                   @Field("thing_id")String thing_id);
+    Call<ReplyResponse> postComment(@Header(Constants.AUTHORIZATION) String authorization,
+                                    @Field("api_type")String api_type,
+                                    @Field("text")String text,
+                                    @Field("thing_id")String thing_id);
 
     @FormUrlEncoded
     @POST("/api/subscribe")

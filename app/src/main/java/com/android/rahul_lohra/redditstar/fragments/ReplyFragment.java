@@ -19,9 +19,12 @@ import android.widget.Toast;
 import com.android.rahul_lohra.redditstar.R;
 import com.android.rahul_lohra.redditstar.application.Initializer;
 import com.android.rahul_lohra.redditstar.modal.reply.ReplyModal;
+import com.android.rahul_lohra.redditstar.modal.reply.ReplyResponse;
 import com.android.rahul_lohra.redditstar.retrofit.ApiInterface;
 import com.android.rahul_lohra.redditstar.storage.MyProvider;
 import com.android.rahul_lohra.redditstar.storage.column.UserCredentialsColumn;
+
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -130,14 +133,22 @@ public class ReplyFragment extends Fragment {
         }
         String auth = "bearer "+token;
         ReplyModal modal  = new ReplyModal("json",message, thingId);
-        apiInterface.postComment(auth,"json",message, thingId).enqueue(new Callback<ResponseBody>() {
+        apiInterface.postComment(auth,"json",message, thingId).enqueue(new Callback<ReplyResponse>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+            public void onResponse(Call<ReplyResponse> call, Response<ReplyResponse> response) {
                 Log.d(TAG,"onResponse");
+                if(response.code()==200){
+                    List<String> mErrorList = response.body().getJsonData().getMError();
+                    if(mErrorList.size()>0){
+                        showToast((mErrorList.get(1)!=null?mErrorList.get(1):mErrorList.get(0)));
+                    }else {
+                        showToast(getString(R.string.success));
+                    }
+                }
             }
 
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
+            public void onFailure(Call<ReplyResponse> call, Throwable t) {
                 Log.d(TAG,"onFail");
             }
         });
@@ -149,5 +160,9 @@ public class ReplyFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+    }
+
+    private void showToast(String message){
+        Toast.makeText(getContext(),message,Toast.LENGTH_SHORT).show();
     }
 }
