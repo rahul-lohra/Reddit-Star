@@ -58,7 +58,7 @@ import retrofit2.Retrofit;
 
 public class    SearchFragment extends BaseFragment implements
         T5_SubredditSearchAdapter.IT5_SubredditSearchAdapter,
-        T3_LinkSearchAdapter.IT3_LinkSearchAdapter,
+//        T3_LinkSearchAdapter.IT3_LinkSearchAdapter,
         LoaderManager.LoaderCallbacks<Cursor>,
         IFrontPageAdapter {
 
@@ -90,9 +90,10 @@ public class    SearchFragment extends BaseFragment implements
     String searchQuery;
     String afterOfLink = "";
 //    String afterOfSubreddit;
+    private Uri mUri = MyProvider.SearchLinkLists.CONTENT_URI;
 
     public interface ISearchFragment{
-        void openDetailScreen(DetailPostModal modal, ImageView imageView);
+        void openDetailScreen(DetailPostModal modal,ImageView imageView,String id);
     }
 
     private ISearchFragment mListener;
@@ -233,15 +234,15 @@ public class    SearchFragment extends BaseFragment implements
         }
     }
 
-    @Override
-    public void sendLink(DetailPostModal modal, ImageView imageView) {
-        Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(getActivity(), imageView, imageView.getTransitionName()).toBundle();
-        Intent intent = new Intent(getActivity(), DetailActivity.class);
-        intent.putExtra("modal", modal);
-//            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent, bundle);
-
-    }
+//    @Override
+//    public void sendLink(DetailPostModal modal, ImageView imageView) {
+//        Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(getActivity(), imageView, imageView.getTransitionName()).toBundle();
+//        Intent intent = new Intent(getActivity(), DetailActivity.class);
+//        intent.putExtra("modal", modal);
+////            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//        startActivity(intent, bundle);
+//
+//    }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(T5_ListChild t5_List_child) {
@@ -287,7 +288,6 @@ public class    SearchFragment extends BaseFragment implements
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        Uri mUri = MyProvider.SearchLinkLists.CONTENT_URI;
         switch (id) {
             case LOADER_ID:
                 return new CursorLoader(getActivity(),mUri,null,null,null,null);
@@ -316,8 +316,8 @@ public class    SearchFragment extends BaseFragment implements
 
 
     @Override
-    public void sendData(DetailPostModal modal, ImageView imageView) {
-        mListener.openDetailScreen(modal,imageView);
+    public void sendData(DetailPostModal modal,ImageView imageView,String id) {
+        mListener.openDetailScreen(modal,imageView,id);
     }
 
     @Override

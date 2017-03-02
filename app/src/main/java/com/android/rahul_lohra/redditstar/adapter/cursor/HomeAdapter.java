@@ -53,7 +53,6 @@ public class HomeAdapter extends CursorRecyclerViewAdapter<RecyclerView.ViewHold
     private final String TAG = HomeAdapter.class.getSimpleName();
     private IFrontPageAdapter iFrontPageAdapter;
 
-
     public HomeAdapter(Activity activity, Cursor cursor, IFrontPageAdapter iFrontPageAdapter) {
         super(activity, cursor);
         this.activity = activity;
@@ -101,7 +100,7 @@ public class HomeAdapter extends CursorRecyclerViewAdapter<RecyclerView.ViewHold
             public void onClick(View view) {
                 DetailPostModal modal = new DetailPostModal(id,
                         subreddit,ups,title,commentsCount,thumbnail,time,author,bigImageUrl,likes,name);
-                iFrontPageAdapter.sendData(modal,postView.imageView);
+                iFrontPageAdapter.sendData(modal,postView.imageView,id);
             }
         });
 

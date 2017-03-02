@@ -2,10 +2,13 @@ package com.android.rahul_lohra.redditstar.utility;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 
 import com.android.rahul_lohra.redditstar.R;
 import com.android.rahul_lohra.redditstar.activity.WebViewActivity;
+import com.android.rahul_lohra.redditstar.modal.custom.DetailPostModal;
+import com.android.rahul_lohra.redditstar.storage.column.MyPostsColumn;
 
 import static com.android.rahul_lohra.redditstar.utility.MyUrl.AUTH_URL;
 import static com.android.rahul_lohra.redditstar.utility.MyUrl.CLIENT_ID;
@@ -24,5 +27,28 @@ public class CommonOperations {
         Intent intent = new Intent(activity, WebViewActivity.class);
         intent.setData(Uri.parse(url));
         activity.startActivity(intent);
+    }
+
+    public static DetailPostModal getDetailModalFromCursor(Cursor cursor){
+        final String sqlId = cursor.getString(cursor.getColumnIndex(MyPostsColumn.KEY_SQL_ID));
+        final String id = cursor.getString(cursor.getColumnIndex(MyPostsColumn.KEY_ID));
+        final String subreddit = cursor.getString(cursor.getColumnIndex(MyPostsColumn.KEY_SUBREDDIT));
+        final String subredditId = cursor.getString(cursor.getColumnIndex(MyPostsColumn.KEY_SUBREDDIT_ID));
+
+        final String name = cursor.getString(cursor.getColumnIndex(MyPostsColumn.KEY_NAME));
+        final String author = cursor.getString(cursor.getColumnIndex(MyPostsColumn.KEY_AUTHOR));
+        final long createdUtc = cursor.getLong(cursor.getColumnIndex(MyPostsColumn.KEY_CREATED_UTC));
+        final String time = Constants.getTimeDiff(createdUtc);
+        final String ups = String.valueOf(cursor.getString(cursor.getColumnIndex(MyPostsColumn.KEY_UPS)));
+        final String title = String.valueOf(cursor.getString(cursor.getColumnIndex(MyPostsColumn.KEY_TITLE)));
+        final String commentsCount = String.valueOf(cursor.getString(cursor.getColumnIndex(MyPostsColumn.KEY_COMMENTS_COUNT)));
+//        final Preview preview = frontPageChildData.getPreview();
+        final String thumbnail = cursor.getString(cursor.getColumnIndex(MyPostsColumn.KEY_THUMBNAIL));
+        final String url = cursor.getString(cursor.getColumnIndex(MyPostsColumn.KEY_URL));
+        final Integer likes = cursor.getInt(cursor.getColumnIndex(MyPostsColumn.KEY_LIKES));
+        final String bigImageUrl = cursor.getString(cursor.getColumnIndex(MyPostsColumn.KEY_BIG_IMAGE_URL));
+
+        return new DetailPostModal(id,
+                subreddit,ups,title,commentsCount,thumbnail,time,author,bigImageUrl,likes,name);
     }
 }

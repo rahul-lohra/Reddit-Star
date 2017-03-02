@@ -1,11 +1,13 @@
 package com.android.rahul_lohra.redditstar.activity;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -26,6 +28,7 @@ import com.android.rahul_lohra.redditstar.loader.CommentsLoader;
 import com.android.rahul_lohra.redditstar.modal.comments.CustomComment;
 import com.android.rahul_lohra.redditstar.modal.custom.DetailPostModal;
 import com.android.rahul_lohra.redditstar.retrofit.ApiInterface;
+import com.android.rahul_lohra.redditstar.storage.column.MyPostsColumn;
 import com.android.rahul_lohra.redditstar.utility.CommonOperations;
 import com.android.rahul_lohra.redditstar.utility.Constants;
 import com.android.rahul_lohra.redditstar.utility.UserState;
@@ -59,7 +62,7 @@ import static com.android.rahul_lohra.redditstar.viewHolder.PostView.DIRECTION_U
  2. uri of table
  */
 public class DetailActivity extends BaseActivity implements
-        LoaderManager.LoaderCallbacks<List<CustomComment>> {
+        LoaderManager.LoaderCallbacks<Cursor> {
 
     @Bind(R.id.imageView)
     AspectRatioImageView imageView;
@@ -109,20 +112,27 @@ public class DetailActivity extends BaseActivity implements
 
         Intent intent = getIntent();
         id = intent.getStringExtra("id");
-        mUriReadTable = Uri.parse(intent.getStringExtra("uri"));
-
+        mUriReadTable = intent.getParcelableExtra("uri");
         subredditModal = (DetailPostModal) intent.getParcelableExtra("modal");
+
         apiInterface = retrofit.create(ApiInterface.class);
 
-        if (subredditModal != null) {
-            Bundle bundle = new Bundle();
-            bundle.putString("id", subredditModal.getId());
-            bundle.putString("subbreddit_name", subredditModal.getSubreddit());
+        String mSeletion = MyPostsColumn.KEY_ID +"=?";
+        String mSelectionArgs[] = {id};
+
+        Cursor cursor = getContentResolver().query(mUriReadTable,null,mSeletion,mSelectionArgs,null);
+        setDataInView(cursor);
+//            getSupportLoaderManager().initLoader(LOADER_ID,null,this);
+
+//        if (subredditModal != null) {
+//            Bundle bundle = new Bundle();
+//            bundle.putString("id", subredditModal.getId());
+//            bundle.putString("subbreddit_name", subredditModal.getSubreddit());
 
 //            getSupportLoaderManager().initLoader(LOADER_ID, bundle, this).forceLoad();;
             setAdapter();
-            initData();
-        }
+//            initData();
+//        }
 
 
     }
@@ -199,47 +209,47 @@ public class DetailActivity extends BaseActivity implements
         });
     }
 
-    @Override
-    public Loader<List<CustomComment>> onCreateLoader(int id, Bundle args) {
-        switch (id) {
-            case LOADER_ID:
-                return new CommentsLoader(
-                        this,
-                        args.getString("subbreddit_name"),
-                        args.getString("id")
-                );
-        }
-        return null;
-    }
+//    @Override
+//    public Loader<List<CustomComment>> onCreateLoader(int id, Bundle args) {
+//        switch (id) {
+//            case LOADER_ID:
+//                return new CommentsLoader(
+//                        this,
+//                        args.getString("subbreddit_name"),
+//                        args.getString("id")
+//                );
+//        }
+//        return null;
+//    }
+//
+//    @Override
+//    public void onLoadFinished(Loader<List<CustomComment>> loader, List<CustomComment> data) {
+//        switch (loader.getId()) {
+//            case LOADER_ID:
+//                list.clear();
+//                list.addAll(data);
+//                this.commentsAdapter.notifyDataSetChanged();
+//                break;
+//        }
+//    }
+//
+//    @Override
+//    public void onLoaderReset(Loader<List<CustomComment>> loader) {
+//        switch (loader.getId()) {
+//            case LOADER_ID:
+//                list.clear();
+//                commentsAdapter.notifyDataSetChanged();
+//                break;
+//        }
+//    }
 
-    @Override
-    public void onLoadFinished(Loader<List<CustomComment>> loader, List<CustomComment> data) {
-        switch (loader.getId()) {
-            case LOADER_ID:
-                list.clear();
-                list.addAll(data);
-                this.commentsAdapter.notifyDataSetChanged();
-                break;
-        }
-    }
-
-    @Override
-    public void onLoaderReset(Loader<List<CustomComment>> loader) {
-        switch (loader.getId()) {
-            case LOADER_ID:
-                list.clear();
-                commentsAdapter.notifyDataSetChanged();
-                break;
-        }
-    }
 
 
-
-    void showDetailSubredditFragment(DetailPostModal modal) {
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.frame_layout, DetailSubredditFragment.newInstance(modal), DetailSubredditFragment.class.getSimpleName())
-                .commit();
-    }
+//    void showDetailSubredditFragment(DetailPostModal modal) {
+//        getSupportFragmentManager().beginTransaction()
+//                .replace(R.id.frame_layout, DetailSubredditFragment.newInstance(modal), DetailSubredditFragment.class.getSimpleName())
+//                .commit();
+//    }
 
     private void updateVote(@PostView.DirectionMode Integer mode)
     {
@@ -354,4 +364,40 @@ public class DetailActivity extends BaseActivity implements
         startActivity(intent);
     }
 
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        switch (id) {
+            case LOADER_ID:
+                return new CursorLoader(this,
+                        mUriReadTable,null,null,null,null);
+        }
+        return null;
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        switch (loader.getId()) {
+            case LOADER_ID:
+                setDataInView(data);
+                break;
+        }
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        switch (loader.getId()) {
+            case LOADER_ID:
+                subredditModal = null;
+                break;
+        }
+    }
+
+    private void setDataInView(Cursor cursor){
+        if(cursor.moveToFirst()){
+            subredditModal = CommonOperations.getDetailModalFromCursor(cursor);
+            if(subredditModal!=null)
+                initData();
+        }
+        cursor.close();
+    }
 }

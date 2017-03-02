@@ -71,7 +71,7 @@ public class HomeFragment extends Fragment implements
 
 
     public interface IHomeFragment{
-        void sendModalAndImageView(DetailPostModal modal, ImageView imageView);
+        void sendModalAndImageView(DetailPostModal modal, ImageView imageView,String id);
         void showLoginSnackBar();
     }
 
@@ -211,8 +211,8 @@ public class HomeFragment extends Fragment implements
 
 
     @Override
-    public void sendData(DetailPostModal modal, ImageView imageView) {
-        mListener.sendModalAndImageView(modal,imageView);
+    public void sendData(DetailPostModal modal, ImageView imageView,String id) {
+        mListener.sendModalAndImageView(modal,imageView,id);
     }
 
     @Override

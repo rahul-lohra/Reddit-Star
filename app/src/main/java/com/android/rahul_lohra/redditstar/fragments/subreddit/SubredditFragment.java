@@ -124,7 +124,7 @@ public class SubredditFragment extends Fragment
     private FrontPageResponseData frontPageResponseData;
 
     public interface ISubredditFragment {
-        void sendModalAndImageView(DetailPostModal modal, ImageView imageView);
+        void sendModalAndImageView(DetailPostModal modal, ImageView imageView,String id);
     }
 
     private ISubredditFragment mListener;
@@ -413,8 +413,8 @@ public class SubredditFragment extends Fragment
     }
 
     @Override
-    public void sendData(DetailPostModal modal, ImageView imageView) {
-        mListener.sendModalAndImageView(modal, imageView);
+    public void sendData(DetailPostModal modal, ImageView imageView,String id) {
+        mListener.sendModalAndImageView(modal, imageView,id);
     }
 
     @Override

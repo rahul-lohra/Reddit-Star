@@ -125,7 +125,7 @@ public class DashboardActivity extends BaseActivity implements
         if ((findViewById(R.id.frame_layout_right) != null)) {
             mTwoPane = true;
             if (savedInstanceState == null) {
-                showDetailSubredditFragment(null);
+                showDetailSubredditFragment(null,null,null);
                 showHomeFragment(R.id.frame_layout_left);
             }
         } else {
@@ -138,9 +138,9 @@ public class DashboardActivity extends BaseActivity implements
 
     }
 
-    void showDetailSubredditFragment(DetailPostModal modal) {
+    void showDetailSubredditFragment(DetailPostModal modal,String id, Uri uri) {
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.frame_layout_right, DetailSubredditFragment.newInstance(modal), DetailSubredditFragment.class.getSimpleName())
+                .replace(R.id.frame_layout_right, DetailSubredditFragment.newInstance(modal,id,uri), DetailSubredditFragment.class.getSimpleName())
                 .commit();
     }
 
@@ -338,14 +338,15 @@ public class DashboardActivity extends BaseActivity implements
 //    }
 
     @Override
-    public void sendModalAndImageView(DetailPostModal modal, ImageView imageView) {
+    public void sendModalAndImageView(DetailPostModal modal, ImageView imageView,String id) {
         if (mTwoPane) {
-            showDetailSubredditFragment(modal);
+            showDetailSubredditFragment(modal,id,MyProvider.PostsLists.CONTENT_URI);
         } else {
             Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(this, imageView, imageView.getTransitionName()).toBundle();
             Intent intent = new Intent(this, DetailActivity.class);
             intent.putExtra("modal", modal);
-//            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.putExtra("id",id);
+            intent.putExtra("uri", MyProvider.PostsLists.CONTENT_URI);
             startActivity(intent, bundle);
 
         }

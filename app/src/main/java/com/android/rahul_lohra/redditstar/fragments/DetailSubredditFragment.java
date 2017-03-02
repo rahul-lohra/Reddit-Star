@@ -1,5 +1,6 @@
 package com.android.rahul_lohra.redditstar.fragments;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
@@ -53,8 +54,6 @@ import static com.android.rahul_lohra.redditstar.viewHolder.PostView.DIRECTION_N
 import static com.android.rahul_lohra.redditstar.viewHolder.PostView.DIRECTION_UP;
 
 public class DetailSubredditFragment extends Fragment implements LoaderManager.LoaderCallbacks<List<CustomComment>> {
-
-
 
     @Bind(R.id.imageView)
     AspectRatioImageView imageView;
@@ -142,15 +141,20 @@ public class DetailSubredditFragment extends Fragment implements LoaderManager.L
     @Named("withToken")
     Retrofit retrofit;
     private ApiInterface apiInterface;
+    private String id;
+    private Uri uri;
 
     public DetailSubredditFragment() {
         // Required empty public constructor
     }
 
-    public static DetailSubredditFragment newInstance(DetailPostModal subredditModal) {
+    public static DetailSubredditFragment newInstance(DetailPostModal subredditModal,String id, Uri uri) {
         DetailSubredditFragment fragment = new DetailSubredditFragment();
         Bundle args = new Bundle();
         args.putParcelable("modal",subredditModal);
+        args.putString("id",id);
+        args.putParcelable("uri",uri);
+
         fragment.setArguments(args);
         return fragment;
     }
@@ -161,6 +165,8 @@ public class DetailSubredditFragment extends Fragment implements LoaderManager.L
         ((Initializer) getContext().getApplicationContext()).getNetComponent().inject(this);
         if (getArguments() != null) {
             subredditModal = (DetailPostModal) getArguments().getParcelable("modal");
+            id = getArguments().getString("id");
+            uri = (Uri)getArguments().getParcelable("uri");
         }
     }
 
