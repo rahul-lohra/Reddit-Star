@@ -23,6 +23,7 @@ import com.android.rahul_lohra.redditstar.utility.Constants;
 
 public class ListWidgetService extends RemoteViewsService {
 
+    final String TAG = ListWidgetService.class.getSimpleName();
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
         return new ListRemoteViewsFactory(this.getApplicationContext(), intent);
@@ -44,11 +45,12 @@ public class ListWidgetService extends RemoteViewsService {
         }
         @Override
         public void onCreate() {
-
+            Log.d(TAG, "onCreate");
         }
 
         @Override
         public void onDataSetChanged() {
+            Log.d(TAG, "onDataSetChanged");
             final long identityToken = Binder.clearCallingIdentity();
             data = getContentResolver().query(mUri, mProjection, mSelectionClause, mSelectionArgs, null);
             Binder.restoreCallingIdentity(identityToken);
@@ -56,6 +58,7 @@ public class ListWidgetService extends RemoteViewsService {
 
         @Override
         public void onDestroy() {
+            Log.d(TAG, "onDestroy");
             if (data != null) {
                 data.close();
                 data = null;
@@ -69,6 +72,7 @@ public class ListWidgetService extends RemoteViewsService {
 
         @Override
         public RemoteViews getViewAt(int position) {
+            Log.d(TAG, "RemoteViews getViewAt");
             if (position == AdapterView.INVALID_POSITION ||
                     data == null || !data.moveToPosition(position)) {
                 return null;
@@ -95,12 +99,12 @@ public class ListWidgetService extends RemoteViewsService {
                     subreddit,ups,title,commentsCount,thumbnail,time,author,bigImageUrl,likes,name);
 
             rv.setTextViewText(R.id.tv_detail,title);
-            rv.setTextViewText(R.id.tv_vote,ups);
+//            rv.setTextViewText(R.id.tv_vote,ups);
             rv.setTextViewText(R.id.tv_title, subreddit+" - "+time);
 
             final Intent fillInIntent = new Intent();
             fillInIntent.putExtra("modal", modal);
-            rv.setOnClickFillInIntent(R.id.coordinator_layout, fillInIntent);
+            rv.setOnClickFillInIntent(R.id.parent, fillInIntent);
             return rv;
         }
 
@@ -121,7 +125,7 @@ public class ListWidgetService extends RemoteViewsService {
 
         @Override
         public boolean hasStableIds() {
-            return true;
+            return false;
         }
     }
 }

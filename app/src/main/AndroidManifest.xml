@@ -27,10 +27,7 @@
         <!-- widget -->
         <receiver android:name=".widget.MyWidgetProvider">
             <intent-filter>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-                <action android:name="com.sam_chordas.android.stockhawk.service.stockTaskService" />
-                <action android:name="WidgetActivity" />
             </intent-filter>
 
             <meta-data

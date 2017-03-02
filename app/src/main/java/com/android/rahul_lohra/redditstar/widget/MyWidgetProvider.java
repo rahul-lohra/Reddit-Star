@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.app.TaskStackBuilder;
+import android.util.Log;
 import android.widget.RemoteViews;
 
 import com.android.rahul_lohra.redditstar.R;
@@ -21,14 +22,16 @@ import com.android.rahul_lohra.redditstar.service.widget.ListWidgetService;
 public class MyWidgetProvider extends AppWidgetProvider {
 
 
-
+    final String TAG = MyWidgetProvider.class.getSimpleName();
     @Override
     public void onReceive(Context context, Intent intent) {
+        Log.d(TAG,"onReceive");
         super.onReceive(context, intent);
     }
 
     @Override
     public void onEnabled(Context context) {
+        Log.d(TAG,"onEnabled");
         super.onEnabled(context);
     }
 
@@ -36,6 +39,7 @@ public class MyWidgetProvider extends AppWidgetProvider {
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         super.onUpdate(context, appWidgetManager, appWidgetIds);
+        Log.d(TAG, "onUpdate");
         for (int appWidgetId : appWidgetIds) {
             updateAppWidget(context, appWidgetManager, appWidgetId);
         }
@@ -54,8 +58,7 @@ public class MyWidgetProvider extends AppWidgetProvider {
 
     void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                          int appWidgetId) {
-
-        CharSequence widgetText = context.getString(R.string.appwidget_text);
+        Log.d(TAG, "updateAppWidget");
         // Construct the RemoteViews object
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.my_widget);
         Intent listWidgetIntent = new Intent(context, ListWidgetService.class);
