@@ -117,6 +117,7 @@
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>
     <string name="empty_view_text">Nothing to display</string>
+    <string name="thumbnail">Thumbnail</string>
 
 
 </resources>
