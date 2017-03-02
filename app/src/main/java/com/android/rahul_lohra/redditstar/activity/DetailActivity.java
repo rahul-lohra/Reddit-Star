@@ -1,6 +1,7 @@
 package com.android.rahul_lohra.redditstar.activity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.LoaderManager;
@@ -52,6 +53,11 @@ import static com.android.rahul_lohra.redditstar.viewHolder.PostView.DIRECTION_D
 import static com.android.rahul_lohra.redditstar.viewHolder.PostView.DIRECTION_NULL;
 import static com.android.rahul_lohra.redditstar.viewHolder.PostView.DIRECTION_UP;
 
+/*
+ Needs two item in intent
+ 1. sqlId or id
+ 2. uri of table
+ */
 public class DetailActivity extends BaseActivity implements
         LoaderManager.LoaderCallbacks<List<CustomComment>> {
 
@@ -91,78 +97,8 @@ public class DetailActivity extends BaseActivity implements
     List<CustomComment> list = new ArrayList<>();
     private DetailPostModal subredditModal;
     private final String TAG = DetailActivity.class.getSimpleName();
-
-    @OnClick(R.id.image_up_vote)
-    void onClickUpVote() {
-        boolean isUserLoggedIn = UserState.isUserLoggedIn(this);
-
-        if (!isUserLoggedIn) {
-            snackbar.show();
-        } else {
-
-            Integer mLikes = subredditModal.getLikes();
-                if(mLikes== -1)
-                {
-                    performVote(DIRECTION_NULL);
-                    updateVote(DIRECTION_NULL);
-                    tvVote.setTextColor(ContextCompat.getColor(this,R.color.grey_700));
-                    updateVoteCount(1);
-                }
-            else if(mLikes==0){
-                performVote(DIRECTION_UP);
-                    updateVote(DIRECTION_UP);
-                    tvVote.setTextColor(ContextCompat.getColor(this,R.color.light_blue_500));
-                    updateVoteCount(1);
-            }
-
-        }
-    }
-
-    @OnClick(R.id.image_down_vote)
-    void onClickDownVote() {
-        boolean isUserLoggedIn = UserState.isUserLoggedIn(this);
-
-        if (!isUserLoggedIn) {
-            snackbar.show();
-        } else {
-
-            Integer mLikes = subredditModal.getLikes();
-                if(mLikes==1)
-                {
-                    performVote(DIRECTION_NULL);
-                    updateVote(DIRECTION_NULL);
-                    tvVote.setTextColor(ContextCompat.getColor(this,R.color.grey_700));
-                    updateVoteCount(-1);
-                }
-            else if(mLikes==0){
-                performVote(DIRECTION_DOWN);
-                    updateVote(DIRECTION_DOWN);
-                    tvVote.setTextColor(ContextCompat.getColor(this,R.color.green_500));
-                    updateVoteCount(-1);
-            }
-        }
-
-
-    }
-
-    @OnClick(R.id.fab)
-    void onClickFab(){
-        //open Reply Activity
-        boolean isUserLoggedIn = UserState.isUserLoggedIn(this);
-        if (!isUserLoggedIn) {
-            snackbar.show();
-        } else {
-            String name = subredditModal.getName();
-            openReplyActivity(name);
-        }
-    }
-
-    private void openReplyActivity(String thingId){
-        Intent intent = new Intent(this,ReplyActivity.class);
-        intent.putExtra("thing_id",thingId);
-        startActivity(intent);
-    }
-
+    private Uri mUriReadTable;
+    private String id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -170,7 +106,11 @@ public class DetailActivity extends BaseActivity implements
         setContentView(R.layout.fragment_detail_subreddit);
         ButterKnife.bind(this);
         ((Initializer)getApplicationContext()).getNetComponent().inject(this);
+
         Intent intent = getIntent();
+        id = intent.getStringExtra("id");
+        mUriReadTable = Uri.parse(intent.getStringExtra("uri"));
+
         subredditModal = (DetailPostModal) intent.getParcelableExtra("modal");
         apiInterface = retrofit.create(ApiInterface.class);
 
@@ -179,7 +119,7 @@ public class DetailActivity extends BaseActivity implements
             bundle.putString("id", subredditModal.getId());
             bundle.putString("subbreddit_name", subredditModal.getSubreddit());
 
-            getSupportLoaderManager().initLoader(LOADER_ID, bundle, this).forceLoad();;
+//            getSupportLoaderManager().initLoader(LOADER_ID, bundle, this).forceLoad();;
             setAdapter();
             initData();
         }
@@ -343,6 +283,75 @@ public class DetailActivity extends BaseActivity implements
 
     }
 
+    @OnClick(R.id.image_up_vote)
+    void onClickUpVote() {
+        boolean isUserLoggedIn = UserState.isUserLoggedIn(this);
 
+        if (!isUserLoggedIn) {
+            snackbar.show();
+        } else {
+
+            Integer mLikes = subredditModal.getLikes();
+            if(mLikes== -1)
+            {
+                performVote(DIRECTION_NULL);
+                updateVote(DIRECTION_NULL);
+                tvVote.setTextColor(ContextCompat.getColor(this,R.color.grey_700));
+                updateVoteCount(1);
+            }
+            else if(mLikes==0){
+                performVote(DIRECTION_UP);
+                updateVote(DIRECTION_UP);
+                tvVote.setTextColor(ContextCompat.getColor(this,R.color.light_blue_500));
+                updateVoteCount(1);
+            }
+
+        }
+    }
+
+    @OnClick(R.id.image_down_vote)
+    void onClickDownVote() {
+        boolean isUserLoggedIn = UserState.isUserLoggedIn(this);
+
+        if (!isUserLoggedIn) {
+            snackbar.show();
+        } else {
+
+            Integer mLikes = subredditModal.getLikes();
+            if(mLikes==1)
+            {
+                performVote(DIRECTION_NULL);
+                updateVote(DIRECTION_NULL);
+                tvVote.setTextColor(ContextCompat.getColor(this,R.color.grey_700));
+                updateVoteCount(-1);
+            }
+            else if(mLikes==0){
+                performVote(DIRECTION_DOWN);
+                updateVote(DIRECTION_DOWN);
+                tvVote.setTextColor(ContextCompat.getColor(this,R.color.green_500));
+                updateVoteCount(-1);
+            }
+        }
+
+
+    }
+
+    @OnClick(R.id.fab)
+    void onClickFab(){
+        //open Reply Activity
+        boolean isUserLoggedIn = UserState.isUserLoggedIn(this);
+        if (!isUserLoggedIn) {
+            snackbar.show();
+        } else {
+            String name = subredditModal.getName();
+            openReplyActivity(name);
+        }
+    }
+
+    private void openReplyActivity(String thingId){
+        Intent intent = new Intent(this,ReplyActivity.class);
+        intent.putExtra("thing_id",thingId);
+        startActivity(intent);
+    }
 
 }

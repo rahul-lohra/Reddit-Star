@@ -30,6 +30,8 @@ public class MyDatabase {
 
     @Table(MyPostsColumn.class) public static final String USER_SEARCH_LINK_TABLE = "user_search_link_table";
 
+    @Table(MyPostsColumn.class) public static final String WIDGET_TABLE = "widget_table";
+
 
 //    @OnUpgrade
 //    public static void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {

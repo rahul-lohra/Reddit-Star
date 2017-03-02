@@ -3,6 +3,8 @@ package com.android.rahul_lohra.redditstar.widget;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
+import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.widget.RemoteViews;
 
 import com.android.rahul_lohra.redditstar.R;
@@ -40,6 +42,11 @@ public class NewAppWidget extends AppWidgetProvider {
     @Override
     public void onDisabled(Context context) {
         // Enter relevant functionality for when the last widget is disabled
+    }
+
+    private void setRemoteAdapter(Context context, @NonNull final RemoteViews views, Intent intent) {
+        views.setRemoteAdapter(R.id.list_view,
+                intent);
     }
 }
 
