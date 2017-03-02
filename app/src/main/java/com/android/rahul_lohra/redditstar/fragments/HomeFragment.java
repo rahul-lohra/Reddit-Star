@@ -26,6 +26,7 @@ import com.android.rahul_lohra.redditstar.adapter.normal.FrontPageAdapter;
 import com.android.rahul_lohra.redditstar.application.Initializer;
 import com.android.rahul_lohra.redditstar.contract.IFrontPageAdapter;
 import com.android.rahul_lohra.redditstar.loader.CommentsLoader;
+import com.android.rahul_lohra.redditstar.modal.custom.AfterModal;
 import com.android.rahul_lohra.redditstar.modal.frontPage.FrontPageChild;
 import com.android.rahul_lohra.redditstar.modal.frontPage.FrontPageResponseData;
 import com.android.rahul_lohra.redditstar.modal.custom.DetailPostModal;
@@ -63,9 +64,9 @@ public class HomeFragment extends Fragment implements
     @Named("withToken")
     Retrofit retrofitWithToken;
 //    FrontPageAdapter adapter;
-    List<FrontPageChild> list;
+//    List<FrontPageChild> list;
     private HomeAdapter adapter;
-
+    String afterOfLink = "";
     private final int LOADER_ID = 1;
 
 
@@ -80,11 +81,12 @@ public class HomeFragment extends Fragment implements
 
     void makeApiCall(){
         Intent intent = new Intent(getActivity(), GetFrontPageService.class);
-        if(frontPageResponseData!=null){
-            intent.putExtra("after",frontPageResponseData.getAfter());
-        }else {
-            intent.putExtra("after","");
-        }
+//        if(frontPageResponseData!=null){
+//            intent.putExtra("after",frontPageResponseData.getAfter());
+//        }else {
+//            intent.putExtra("after","");
+//        }
+        intent.putExtra("after",afterOfLink);
         getContext().startService(intent);
     }
 
@@ -106,7 +108,8 @@ public class HomeFragment extends Fragment implements
         setRetainInstance(true);
         setHasOptionsMenu(true);
         ((Initializer) getContext().getApplicationContext()).getNetComponent().inject(this);
-        list = new ArrayList<>();
+        makeApiCall();
+//        list = new ArrayList<>();
 //        adapter = new FrontPageAdapter(HomeFragment.this,getActivity().getApplicationContext(), list,retrofitWithToken,this);
 
     }
@@ -118,7 +121,7 @@ public class HomeFragment extends Fragment implements
         View v = inflater.inflate(R.layout.fragment_home, container, false);
         ButterKnife.bind(this, v);
         setAdapter();
-        makeApiCall();
+//        makeApiCall();
         return v;
     }
 
@@ -141,14 +144,16 @@ public class HomeFragment extends Fragment implements
     @Subscribe(threadMode = ThreadMode.BACKGROUND)
     public void onMessageEvent(String string) {
         if(string.equalsIgnoreCase("getNextData")){
-            if(frontPageResponseData!=null)
-            {
-                if(!frontPageResponseData.getAfter().equalsIgnoreCase(GetFrontPageService.after))
-                {
+//                if(!frontPageResponseData.getAfter().equalsIgnoreCase(GetFrontPageService.after))
+//                {
                     makeApiCall();
-                }
-            }
+//                }
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.BACKGROUND)
+    public void onMessageEvent(AfterModal afterModal) {
+        this.afterOfLink = afterModal.getmAfterLink();
     }
 
     @Override

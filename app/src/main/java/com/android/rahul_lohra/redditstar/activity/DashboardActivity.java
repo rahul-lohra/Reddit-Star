@@ -112,7 +112,7 @@ public class DashboardActivity extends BaseActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Constants.clearTable(this, MyProvider.PostsLists.CONTENT_URI);
+//        Constants.clearTable(this, MyProvider.PostsLists.CONTENT_URI);
         setContentView(R.layout.activity_dashboard);
         ButterKnife.bind(this);
         init();

@@ -6,11 +6,14 @@ import android.net.Uri;
 import android.util.Log;
 
 import com.android.rahul_lohra.redditstar.application.Initializer;
+import com.android.rahul_lohra.redditstar.modal.custom.AfterModal;
 import com.android.rahul_lohra.redditstar.modal.frontPage.FrontPageResponse;
 import com.android.rahul_lohra.redditstar.retrofit.ApiInterface;
 import com.android.rahul_lohra.redditstar.storage.MyProvider;
 import com.android.rahul_lohra.redditstar.utility.Constants;
 import com.android.rahul_lohra.redditstar.utility.UserState;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -64,6 +67,7 @@ public class GetFrontPageService extends IntentService {
                 if(res.code()==200)
                 {
 //                    EventBus.getDefault().post(res.body().getData());
+                    EventBus.getDefault().post(new AfterModal(res.body().getData().getAfter()));
                     Constants.insertPostsIntoTable(getApplicationContext(),res.body(),mUri);
                 }
                 Log.d(TAG,"response:"+res.code());
