@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.IntDef;
 import android.support.annotation.IntegerRes;
+import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -18,6 +19,7 @@ import android.widget.RemoteViews;
 
 import com.android.rahul_lohra.redditstar.R;
 import com.android.rahul_lohra.redditstar.service.widget.WidgetTaskService;
+import com.android.rahul_lohra.redditstar.utility.Constants;
 import com.android.rahul_lohra.redditstar.utility.SpConstants;
 import com.android.rahul_lohra.redditstar.widget.MyWidgetProvider;
 import com.google.android.gms.gcm.GcmNetworkManager;
@@ -50,7 +52,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
     @Bind(R.id.rb_group)
     RadioGroup rbGroup;
     @Bind(R.id.et_subreddit)
-    EditText etSubreddit;
+    TextInputEditText etSubreddit;
     @Bind(R.id.tl_subreddit)
     TextInputLayout tlSubreddit;
     @Bind(R.id.btn_apply)
@@ -105,6 +107,8 @@ public class WidgetConfigureActivity extends AppCompatActivity {
     }
 
     private void submit(){
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = sp.edit();
         int checkedRbId = rbGroup.getCheckedRadioButtonId();
         if(checkedRbId==-1){
             return;
@@ -114,20 +118,31 @@ public class WidgetConfigureActivity extends AppCompatActivity {
         switch (checkedRbId){
             case R.id.rb_popular:
                 subscribe = POPULAR;
+                editor.putString(Constants.Subs.SUBREDDIT,null);
                 break;
             case R.id.rb_front_page:
                 subscribe = FRONT_PAGE;
+                editor.putString(Constants.Subs.SUBREDDIT,null);
                 break;
             case R.id.rb_subreddit:
                 subscribe = SUBREDDIT;
+                String subreddit_name = etSubreddit.getText().toString();
+                if(subreddit_name.isEmpty()){
+                    tlSubreddit.setError(getString(R.string.subreddit_name_must_not_be_empty));
+                    return;
+                }else {
+                    editor.putString(Constants.Subs.SUBREDDIT,subreddit_name);
+                }
                 break;
             case R.id.rb_fav:
                 subscribe = FAV;
+                editor.putString(Constants.Subs.SUBREDDIT,null);
                 break;
         }
 
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-        sp.edit().putInt(SpConstants.WIDGET_SUBSCRIBE,subscribe).apply();
+
+        editor.putInt(SpConstants.WIDGET_SUBSCRIBE,subscribe);
+        editor.apply();
 
         makeApiCall();
     }

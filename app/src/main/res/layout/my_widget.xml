@@ -24,14 +24,14 @@
             android:layout_centerVertical="true"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            app:srcCompat="@drawable/ic_refresh_white_18dp" />
+            app:srcCompat="@drawable/ic_refresh_white_24dp_small" />
         <ImageView
             android:id="@+id/image_configure"
             android:layout_centerVertical="true"
             android:layout_alignParentEnd="true"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            app:srcCompat="@mipmap/ic_menu_white" />
+            app:srcCompat="@drawable/ic_refresh_white_24dp_small" />
 
     </RelativeLayout>
     <ListView

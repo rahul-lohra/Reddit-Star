@@ -125,5 +125,6 @@
     <string name="subreddit_name">Subreddit Name</string>
     <string name="apply">Apply</string>
     <string name="configure_widget">Configure Widget</string>
+    <string name="subreddit_name_must_not_be_empty">Subreddit name must not be empty</string>
 
 </resources>

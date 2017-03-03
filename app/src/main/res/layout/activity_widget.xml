@@ -40,11 +40,12 @@
             android:layout_height="wrap_content" />
     </RadioGroup>
     <android.support.design.widget.TextInputLayout
+        android:visibility="gone"
         android:id="@+id/tl_subreddit"
         android:layout_width="match_parent"
         android:hint="@string/subreddit_name"
         android:layout_height="wrap_content">
-        <EditText
+        <android.support.design.widget.TextInputEditText
             android:id="@+id/et_subreddit"
             android:inputType="textAutoComplete"
             android:layout_width="match_parent"
