@@ -160,7 +160,7 @@ public class DashboardActivity extends BaseActivity implements
         mGcmNetworkManager = GcmNetworkManager.getInstance(this);
         Task task = new PeriodicTask.Builder()
                 .setService(WidgetTaskService.class)
-                .setPeriod(60)
+                .setPeriod(60*31)
                 .setFlex(10)
                 .setTag(WidgetTaskService.TAG_PERIODIC)
                 .setPersisted(true)

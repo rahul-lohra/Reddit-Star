@@ -152,7 +152,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
         GcmNetworkManager mGcmNetworkManager = GcmNetworkManager.getInstance(this);
         Task task = new OneoffTask.Builder()
                 .setService(WidgetTaskService.class)
-                .setExecutionWindow(0, 5)
+                .setExecutionWindow(0, 2)
                 .setTag(WidgetTaskService.TAG_ONCE)
                 .setUpdateCurrent(false)
                 .setRequiredNetwork(Task.NETWORK_STATE_CONNECTED)

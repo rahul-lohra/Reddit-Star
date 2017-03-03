@@ -176,6 +176,7 @@
             android:name=".activity.WidgetConfigureActivity">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+                <action android:name="CONFIGURE_ACTIVITY"/>
             </intent-filter>
         </activity>
 

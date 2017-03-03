@@ -35,6 +35,7 @@ public class MyWidgetProvider extends AppWidgetProvider {
     private final static String REFRESH_INTENT_ACTION = "REFRESH_DATA";
     private final static String CONFIGURE_ACTIVITY_INTENT_ACTION = "CONFIGURE_ACTIVITY";
 
+
     @Override
     public void onReceive(Context context, Intent intent) {
         Log.d(TAG,"onReceive");
@@ -79,8 +80,9 @@ public class MyWidgetProvider extends AppWidgetProvider {
                 Intent configureActivityIntent = new Intent(context, WidgetConfigureActivity.class);
                 Bundle extras = new Bundle();
                 extras.putInt(AppWidgetManager.EXTRA_APPWIDGET_ID,mAppWidgetId);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(configureActivityIntent);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.setAction(CONFIGURE_ACTIVITY_INTENT_ACTION);
+                context.getApplicationContext().startActivity(configureActivityIntent);
             }
         }
     }
