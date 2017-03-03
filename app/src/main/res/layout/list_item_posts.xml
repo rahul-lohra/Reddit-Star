@@ -22,7 +22,7 @@
             android:scaleType="centerCrop"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@mipmap/ic_launcher" />
+            tools:src="@mipmap/ic_launcher" />
 
         <TextView
             android:id="@+id/tv_title"
@@ -31,7 +31,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:text="@string/sample_reddit_title"
+            tools:text="@string/sample_reddit_title"
             app:layout_constraintHorizontal_bias="0.62"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toLeftOf="@+id/imageView"
@@ -44,7 +44,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:text="@string/sample_text"
+            tools:text="@string/sample_text"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toLeftOf="@+id/imageView"
             app:layout_constraintTop_toBottomOf="@+id/tv_title" />
@@ -69,7 +69,7 @@
             android:layout_marginStart="16dp"
             android:drawableEnd="@drawable/ic_chat_bubble"
             android:drawablePadding="8dp"
-            android:text="@string/comments_counts"
+            tools:text="@string/comments_counts"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             android:layout_marginTop="16dp"
@@ -80,7 +80,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:text="@string/upvote_counts"
+            tools:text="@string/upvote_counts"
             app:layout_constraintLeft_toRightOf="@+id/image_up_vote"
             app:layout_constraintTop_toTopOf="@+id/tv_comments" />
 

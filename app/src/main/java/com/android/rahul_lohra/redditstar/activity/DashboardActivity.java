@@ -40,6 +40,7 @@ import com.android.rahul_lohra.redditstar.presenter.activity.DashboardPresenter;
 import com.android.rahul_lohra.redditstar.service.widget.WidgetTaskService;
 import com.android.rahul_lohra.redditstar.storage.MyProvider;
 import com.android.rahul_lohra.redditstar.storage.column.MySubredditColumn;
+import com.android.rahul_lohra.redditstar.storage.column.UserCredentialsColumn;
 import com.android.rahul_lohra.redditstar.utility.CommonOperations;
 import com.android.rahul_lohra.redditstar.utility.Constants;
 import com.google.android.gms.ads.AdRequest;
@@ -89,14 +90,16 @@ public class DashboardActivity extends BaseActivity implements
     ImageView imageView;
     @Bind(R.id.textView)
     TextView textView;
-    @Bind(R.id.name)
-    TextView name;
+    @Bind(R.id.tv_name)
+    TextView tv_name;
     @Bind(R.id.image_view_add)
     ImageView imageViewAdd;
     private boolean mTwoPane;
     private final String TAG = DashboardActivity.class.getSimpleName();
 
     private final int LOADER_ID = 1;
+    private final int LOADER_ID_NAME = 2;
+
     private static final String INTENT_TAG = "com.android.rahul_lohra.redditstar.activity.DashboardActivity";
     private GcmNetworkManager mGcmNetworkManager;
     private Snackbar snackbar;
@@ -176,7 +179,7 @@ public class DashboardActivity extends BaseActivity implements
         drawerList.add(new DrawerItemModal("Home", ContextCompat.getDrawable(this, R.drawable.ic_home)));
         drawerList.add(new DrawerItemModal("My Subreddits", ContextCompat.getDrawable(this, R.drawable.ic_list)));
         drawerList.add(new DrawerItemModal(getString(R.string.my_favorites), ContextCompat.getDrawable(this, R.drawable.ic_star)));
-        drawerList.add(new DrawerItemModal("Settings", ContextCompat.getDrawable(this, R.drawable.ic_settings)));
+        drawerList.add(new DrawerItemModal(getString(R.string.settings), ContextCompat.getDrawable(this, R.drawable.ic_settings)));
         drawerAdapter = new DrawerAdapter(this, drawerList, this);
         rv.setLayoutManager(new LinearLayoutManager(this));
         rv.setAdapter(drawerAdapter);
@@ -200,6 +203,8 @@ public class DashboardActivity extends BaseActivity implements
 
         subredditDrawerAdapter = new SubredditDrawerAdapter(this, null);
         getSupportLoaderManager().initLoader(LOADER_ID, null, this);
+        getSupportLoaderManager().initLoader(LOADER_ID_NAME, null, this);
+
 
         snackbar = Snackbar
                 .make(coordinatorLayout, getString(R.string.please_login), Snackbar.LENGTH_SHORT)
@@ -244,10 +249,25 @@ public class DashboardActivity extends BaseActivity implements
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
+        switch (id){
+            case R.id.action_logout:
+            {
+                performLogout();
+            }
             return true;
+            case R.id.action_settings:{
+                return true;
+            }
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void performLogout(){
+        Uri delUri = MyProvider.UserCredentialsLists.CONTENT_URI;
+        getContentResolver().delete(delUri,null,null);
+        Snackbar snackbarLogOut = Snackbar
+                .make(coordinatorLayout, getString(R.string.user_logged_out), Snackbar.LENGTH_SHORT);
+        snackbarLogOut.show();
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -296,6 +316,15 @@ public class DashboardActivity extends BaseActivity implements
                         MySubredditColumn.KEY_URL
                 };
                 return new CursorLoader(this, uri, mProjection, null, null, null);
+            case LOADER_ID_NAME: {
+                Uri uri_2 = MyProvider.UserCredentialsLists.CONTENT_URI;
+                String proj_2[] = {UserCredentialsColumn.NAME};
+                String mSelection_2 = UserCredentialsColumn.ACTIVE_STATE +"=?";
+                String mSelectionArgs_2[] = {"1"};
+
+                return new CursorLoader(this, uri_2, proj_2, mSelection_2,mSelectionArgs_2, null);
+            }
+
         }
         return null;
     }
@@ -306,6 +335,11 @@ public class DashboardActivity extends BaseActivity implements
             case LOADER_ID:
                 this.subredditDrawerAdapter.swapCursor(data);
                 break;
+            case LOADER_ID_NAME:
+            {
+                updateName(data);
+            }
+            break;
         }
     }
 
@@ -315,6 +349,10 @@ public class DashboardActivity extends BaseActivity implements
             case LOADER_ID:
                 subredditDrawerAdapter.swapCursor(null);
                 break;
+            case LOADER_ID_NAME:
+            {
+                resetName();
+            }
         }
     }
 
@@ -325,24 +363,6 @@ public class DashboardActivity extends BaseActivity implements
             recyclerView.setAdapter(subredditDrawerAdapter);
         }
     }
-
-//    @Subscribe(threadMode = ThreadMode.MAIN)
-//    public void onMessageEvent(DetailPostModal modal) {
-//        if(mTwoPane){
-//            showDetailSubredditFragment(modal);
-//        }else {
-//            Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(this,imageView,imageView.getTransitionName()).toBundle();
-//            Intent intent = new Intent(this, DetailActivity.class);
-//            intent.putExtra("modal",modal);
-////            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//            startActivity(intent,bundle);
-//
-////            getSupportFragmentManager().beginTransaction()
-////                    .replace(R.id.frame_layout_left, DetailSubredditFragment.newInstance(modal), DetailSubredditFragment.class.getSimpleName())
-////                    .addToBackStack(DetailSubredditFragment.class.getSimpleName())
-////                    .commit();
-//        }
-//    }
 
 //    @Override
 //    public void onStart() {
@@ -376,5 +396,18 @@ public class DashboardActivity extends BaseActivity implements
         snackbar.show();
     }
 
+    private void updateName(Cursor cursor){
+        if(cursor!=null){
+
+            if(cursor.moveToFirst()){
+                String name = cursor.getString(cursor.getColumnIndex(UserCredentialsColumn.NAME));
+                tv_name.setText(name);
+            }
+        }
+    }
+
+    private void resetName(){
+        tv_name.setText(getString(R.string.no_name));
+    }
 
 }

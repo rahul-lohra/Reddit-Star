@@ -73,15 +73,18 @@ public class GetUserCredentialsService extends IntentService {
     }
 
     void saveCredentials(AboutMe aboutMe,String token){
-
+        Uri mUri = MyProvider.UserCredentialsLists.CONTENT_URI;
         String name = aboutMe.getName();
-        String redditId = aboutMe.getId();
+        String redditId = aboutMe.getRedditId();
         boolean over_18 = aboutMe.getOver18();
+
+        String delWhere = UserCredentialsColumn.REDDIT_ID +"=?";
+        String delWhereArgs[]={redditId};
+        getContentResolver().delete(mUri,delWhere,delWhereArgs);
 
         ContentValues cv = new ContentValues();
         cv.put(UserCredentialsColumn.NAME,name);
         cv.put(UserCredentialsColumn.REDDIT_ID,redditId);
-        Uri mUri = MyProvider.UserCredentialsLists.CONTENT_URI;
         String mWhere = UserCredentialsColumn.ACCESS_TOKEN +"=?";
         String mSelectionArgs[] = {token};
         getContentResolver().update(mUri,cv,mWhere,mSelectionArgs);

@@ -17,6 +17,6 @@ public class AboutMe {
     private Boolean over18;
     @SerializedName("id")
     @Expose
-    private String id;
+    private String redditId;
 
 }

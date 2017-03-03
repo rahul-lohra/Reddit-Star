@@ -47,7 +47,7 @@ public class AddAccountDialog extends DialogFragment {
         String scopeArray[] = getResources().getStringArray(R.array.scope);
         String scope = MyUrl.getProperScope(scopeArray);
         String url = String.format(AUTH_URL, CLIENT_ID, STATE, REDIRECT_URI, scope);
-        Intent intent = new Intent(getContext(), WebViewActivity.class);
+        Intent intent = new Intent(getActivity(), WebViewActivity.class);
         intent.setData(Uri.parse(url));
         startActivity(intent);
     }

@@ -27,13 +27,11 @@
         <!-- widget -->
         <receiver android:name=".widget.MyWidgetProvider">
             <intent-filter>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
                 <action android:name="com.android.rahul_lohra.redditstar.service.widget.WidgetTaskService" />
                 <action android:name="REFRESH_DATA" />
                 <action android:name="CONFIGURE_ACTIVITY" />
-
-
             </intent-filter>
 
             <meta-data
@@ -41,15 +39,17 @@
                 android:resource="@xml/appwidget_info" />
         </receiver>
 
-        <!--<receiver android:name=".widget.NewAppWidget">-->
-            <!--<intent-filter>-->
-                <!--<action android:name="android.appwidget.action.APPWIDGET_UPDATE" />-->
-            <!--</intent-filter>-->
+        <!-- <receiver android:name=".widget.NewAppWidget"> -->
+        <!-- <intent-filter> -->
+        <!-- <action android:name="android.appwidget.action.APPWIDGET_UPDATE" /> -->
+        <!-- </intent-filter> -->
 
-            <!--<meta-data-->
-                <!--android:name="android.appwidget.provider"-->
-                <!--android:resource="@xml/new_app_widget_info" />-->
-        <!--</receiver>-->
+
+        <!-- <meta-data -->
+        <!-- android:name="android.appwidget.provider" -->
+        <!-- android:resource="@xml/new_app_widget_info" /> -->
+        <!-- </receiver> -->
+
 
         <!-- service -->
         <service
@@ -85,7 +85,6 @@
                 android:name="android.accounts.AccountAuthenticator"
                 android:resource="@xml/authenticator" />
         </service>
-
         <service
             android:name=".service.widget.WidgetTaskService"
             android:exported="true"
@@ -94,7 +93,7 @@
                 <action android:name="com.google.android.gms.gcm.ACTION_TASK_READY" />
             </intent-filter>
         </service>
-        <!--widget service-->
+        <!-- widget service -->
         <service
             android:name=".service.widget.ListWidgetService"
             android:exported="false"
@@ -117,7 +116,7 @@
             android:parentActivityName=".activity.DashboardActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.DashboardActivity"/>
+                android:value=".activity.DashboardActivity" />
         </activity>
         <activity
             android:name=".dummy.DummyDashboardActivity"
@@ -172,15 +171,21 @@
         </activity>
         <activity android:name=".activity.BaseActivity" />
         <activity
-            android:label="@string/configure_widget"
-            android:name=".activity.WidgetConfigureActivity">
+            android:name=".activity.WidgetConfigureActivity"
+            android:label="@string/configure_widget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
-                <action android:name="CONFIGURE_ACTIVITY"/>
+                <action android:name="CONFIGURE_ACTIVITY" />
             </intent-filter>
         </activity>
-
-
+        <activity
+            android:name=".activity.SettingsActivity"
+            android:label="@string/title_activity_settings"
+            android:parentActivityName=".activity.DashboardActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.android.rahul_lohra.redditstar.activity.DashboardActivity" />
+        </activity>
     </application>
 
 </manifest>

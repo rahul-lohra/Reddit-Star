@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 
 import com.android.rahul_lohra.redditstar.R;
 import com.android.rahul_lohra.redditstar.activity.FavoriteActivity;
+import com.android.rahul_lohra.redditstar.activity.SettingsActivity;
 import com.android.rahul_lohra.redditstar.modal.DrawerItemModal;
 import com.android.rahul_lohra.redditstar.viewHolder.DrawerDropDown;
 import com.android.rahul_lohra.redditstar.viewHolder.DrawerNormal;
@@ -76,6 +77,16 @@ public class DrawerAdapter extends RecyclerView.Adapter {
                         @Override
                         public void onClick(View view) {
                             context.startActivity(new Intent(context, FavoriteActivity.class));
+                        }
+                    });
+
+                }
+
+                if(text.equals(context.getString(R.string.settings))) {
+                    drawerNormal.tv.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            context.startActivity(new Intent(context, SettingsActivity.class));
                         }
                     });
                 }
