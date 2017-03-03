@@ -37,12 +37,16 @@ import com.android.rahul_lohra.redditstar.fragments.HomeFragment;
 import com.android.rahul_lohra.redditstar.modal.DrawerItemModal;
 import com.android.rahul_lohra.redditstar.modal.custom.DetailPostModal;
 import com.android.rahul_lohra.redditstar.presenter.activity.DashboardPresenter;
+import com.android.rahul_lohra.redditstar.service.widget.WidgetTaskService;
 import com.android.rahul_lohra.redditstar.storage.MyProvider;
 import com.android.rahul_lohra.redditstar.storage.column.MySubredditColumn;
 import com.android.rahul_lohra.redditstar.utility.CommonOperations;
 import com.android.rahul_lohra.redditstar.utility.Constants;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.gcm.GcmNetworkManager;
+import com.google.android.gms.gcm.PeriodicTask;
+import com.google.android.gms.gcm.Task;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -93,7 +97,8 @@ public class DashboardActivity extends BaseActivity implements
     private final String TAG = DashboardActivity.class.getSimpleName();
 
     private final int LOADER_ID = 1;
-
+    private static final String INTENT_TAG = "com.android.rahul_lohra.redditstar.activity.DashboardActivity";
+    private GcmNetworkManager mGcmNetworkManager;
     private Snackbar snackbar;
     private AdRequest adRequest;
     @OnClick(R.id.fab)
@@ -119,6 +124,7 @@ public class DashboardActivity extends BaseActivity implements
 //        setAdapter();
         setupDrawer();
         setupPresenter();
+        startPeriodicTask();
 //        dashboardPresenter.getMySubredditsAndDeletePreviousOnes();
 
 
@@ -148,6 +154,19 @@ public class DashboardActivity extends BaseActivity implements
         getSupportFragmentManager().beginTransaction()
                 .replace(layoutId, HomeFragment.newInstance(), HomeFragment.class.getSimpleName())
                 .commit();
+    }
+
+    void startPeriodicTask(){
+        mGcmNetworkManager = GcmNetworkManager.getInstance(this);
+        Task task = new PeriodicTask.Builder()
+                .setService(WidgetTaskService.class)
+                .setPeriod(60)
+                .setFlex(10)
+                .setTag(WidgetTaskService.TAG_PERIODIC)
+                .setPersisted(true)
+                .build();
+
+        mGcmNetworkManager.schedule(task);
     }
 
 

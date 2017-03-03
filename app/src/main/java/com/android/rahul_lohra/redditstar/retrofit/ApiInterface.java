@@ -90,5 +90,12 @@ public interface ApiInterface {
                                               @Field("skip_initial_defaults") boolean skip_initial_defaults,
                                               @Field("sr") String fullName
                                               );
+//    https://www.reddit.com/r/all/controversial/?sort=controversial&t=month
+    @GET("/r/{subbreddit_name}/{sort}/.json")
+    Call<FrontPageResponse> getSubredditPosts(@Header(Constants.AUTHORIZATION) String authorization,
+                                              @Path(value = "subbreddit_name", encoded = true) String subreddit_name,
+                                              @Path(value = "sort", encoded = true) String sort,
+                                              @QueryMap Map<String, String> options);
+
 
 }

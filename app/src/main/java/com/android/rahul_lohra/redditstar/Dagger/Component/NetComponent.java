@@ -21,6 +21,7 @@ import com.android.rahul_lohra.redditstar.service.GetSubscribedSubredditsService
 import com.android.rahul_lohra.redditstar.service.GetUserCredentialsService;
 import com.android.rahul_lohra.redditstar.service.search.SearchLinksService;
 import com.android.rahul_lohra.redditstar.service.search.SearchSubredditsService;
+import com.android.rahul_lohra.redditstar.service.widget.WidgetTaskService;
 import com.android.rahul_lohra.redditstar.viewHolder.PostView;
 
 import javax.inject.Singleton;
@@ -53,6 +54,8 @@ public interface NetComponent {
     void inject(GetSubscribedSubredditsService service);
     void inject(GetDashboardSubredditsService service);
     void inject(GetFrontPageService service);
+    void inject(WidgetTaskService service);
+
     //Loader
     void inject(SubredditLoader loader);
     //View

@@ -20,8 +20,11 @@ public class UserState {
         String mSelection=UserCredentialsColumn.ACTIVE_STATE+"=?";
         String mSelectionArgs[]={"1"};
         Cursor cursor =context.getContentResolver().query(mUri,mProjection,mSelection,mSelectionArgs,null);
-        boolean loggedIn = (cursor.moveToFirst());
-        cursor.close();
+        boolean loggedIn = false;
+        if(cursor!=null) {
+            loggedIn = (cursor.moveToFirst());
+            cursor.close();
+        }
         return loggedIn;
     }
 
@@ -34,6 +37,9 @@ public class UserState {
         String mSelectionArgs[]={"1"};
         Cursor cursor = context.getContentResolver().query(mUri,mProjection,mSelection,mSelectionArgs,null);
 
+        if(null==cursor){
+            return token;
+        }
         if(cursor.moveToFirst())
         {
             do{

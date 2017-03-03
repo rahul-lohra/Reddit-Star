@@ -26,6 +26,8 @@ public class MyUrl {
 
 
 
+
+
     public static String getProperScope(String array[]){
         String scope = "";
         for(int i=0;i<array.length;++i){

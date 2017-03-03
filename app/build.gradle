@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.neenbedankt.android-apt'
 
 def googleSupportVersion = '25.0.1'
-def playServiceVersion = '7.5.0'
+def playServiceVersion = '9.0.0'
 def jrawVersion = '0.9.0'
 def schematicVersion = '0.7.0'
 
@@ -89,6 +89,9 @@ dependencies {
     compile "com.android.support:cardview-v7:$googleSupportVersion"
 
     compile "com.android.support:design:$googleSupportVersion"
+
+    //Play Services
+    compile 'com.google.android.gms:play-services-gcm:10.0.1'
     apt "net.simonvt.schematic:schematic-compiler:$schematicVersion"
     compile "net.simonvt.schematic:schematic:$schematicVersion"
 
@@ -110,6 +113,7 @@ dependencies {
     compile 'com.google.firebase:firebase-core:10.0.1'
     compile 'com.google.firebase:firebase-crash:10.0.1'
     compile 'com.google.firebase:firebase-ads:10.0.1'
+    compile 'com.google.firebase:firebase-messaging:10.0.1'
     testCompile 'junit:junit:4.12'
     testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
     apt 'com.google.dagger:dagger-compiler:2.2'

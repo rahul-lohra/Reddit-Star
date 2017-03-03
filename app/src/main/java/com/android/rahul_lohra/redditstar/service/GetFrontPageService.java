@@ -53,7 +53,7 @@ public class GetFrontPageService extends IntentService {
     @Override
     public void onCreate() {
         super.onCreate();
-        ((Initializer)getApplication()).getNetComponent().inject(this);
+        ((Initializer) getApplication()).getNetComponent().inject(this);
         isUserLoggedIn = UserState.isUserLoggedIn(getApplicationContext());
     }
     @Override

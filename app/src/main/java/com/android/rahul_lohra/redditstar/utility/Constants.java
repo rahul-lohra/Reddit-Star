@@ -31,6 +31,15 @@ public class Constants {
     public static final String CONTENT_TYPE = "Content-Type";
     public static final String CONTENT_TYPE_FORM_URL_ENCODED = "application/x-www-form-urlencoded";
 
+    public static class Subs{
+
+        public static final String POPULAR = "popular";
+        public static final String ALL = "all";
+        public static final String FRONT_PAGE = "front_page";
+        public static final String SUBREDDIT = "subreddit";
+
+    }
+
     private static String TAG = Constants.class.getSimpleName();
 
     public static String[] getAccessTokenAndRefreshTokenOfActiveUser(Context context){
@@ -101,7 +110,6 @@ public class Constants {
     }
 
     public static void insertPostsIntoTable(Context context, FrontPageResponse modal, Uri mUri){
-//        Uri mUri = MyProvider.PostsLists.CONTENT_URI;
         String mWhere = MyPostsColumn.KEY_ID +"=?";
         List<FrontPageChild> mList = modal.getData().getChildren();
 

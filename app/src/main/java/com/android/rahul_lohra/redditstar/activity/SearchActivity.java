@@ -73,6 +73,8 @@ public class SearchActivity extends BaseActivity implements SearchFragment.ISear
         Intent intent = new Intent(this, DetailActivity.class);
         intent.putExtra("id",id);
         intent.putExtra("uri",uri);
+        intent.putExtra("modal",modal);
+
         startActivity(intent, bundle);
     }
 

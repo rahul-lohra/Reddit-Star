@@ -118,6 +118,12 @@
     <string name="add_widget">Add widget</string>
     <string name="empty_view_text">Nothing to display</string>
     <string name="thumbnail">Thumbnail</string>
+    <string name="popular">Popular</string>
+    <string name="front_page">Front Page</string>
+    <string name="subreddit">Subreddit</string>
 
+    <string name="subreddit_name">Subreddit Name</string>
+    <string name="apply">Apply</string>
+    <string name="configure_widget">Configure Widget</string>
 
 </resources>

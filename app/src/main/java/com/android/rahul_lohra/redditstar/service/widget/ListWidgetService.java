@@ -46,7 +46,7 @@ public class ListWidgetService extends RemoteViewsService {
         String[] mProjection = null;
         String mSelectionClause = null;
         String mSelectionArgs[] = null;
-        Uri mUri = MyProvider.PostsLists.CONTENT_URI;
+        Uri mUri = MyProvider.WidgetLists.CONTENT_URI;
         private Cursor data = null;
         public ListRemoteViewsFactory(Context context, Intent intent) {
             mContext = context;
@@ -78,12 +78,15 @@ public class ListWidgetService extends RemoteViewsService {
 
         @Override
         public int getCount() {
+            if(data!=null)
+                Log.wtf(TAG,"getCount:"+data.getCount());
             return data == null ? 0 : data.getCount();
+
         }
 
         @Override
         public RemoteViews getViewAt(int position) {
-            Log.d(TAG, "RemoteViews getViewAt");
+//            Log.d(TAG, "RemoteViews getViewAt");
             if (position == AdapterView.INVALID_POSITION ||
                     data == null || !data.moveToPosition(position)) {
                 return null;
@@ -115,13 +118,18 @@ public class ListWidgetService extends RemoteViewsService {
             rv.setTextViewText(R.id.tv_title, subreddit+" - "+time);
 
 
-            final AppWidgetTarget appWidgetTarget = new AppWidgetTarget( mContext, rv, R.id.image_view,mAppWidgetId );
+//            final AppWidgetTarget appWidgetTarget = new AppWidgetTarget( mContext, rv, R.id.image_view,mAppWidgetId );
 //            BitmapTypeRequest bitmapTypeRequest = Glide.with(mContext.getApplicationContext() ) // safer!
 //                    .load(thumbnail)
 //                    .asBitmap();
 
 //            FutureTarget<Bitmap> ft = bitmapTypeRequest.into(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL);
+            Intent fillInIntent = new Intent();
+//            fillInIntent.putExtra("modal", modal);
+            fillInIntent.putExtra("id", id);
+            fillInIntent.putExtra("uri",MyProvider.PostsLists.CONTENT_URI);
 
+            rv.setOnClickFillInIntent(R.id.parent, fillInIntent);
 
             try {
                 Bitmap bmp = Glide.with(mContext)
@@ -134,16 +142,11 @@ public class ListWidgetService extends RemoteViewsService {
 
                 rv.setImageViewBitmap(R.id.image_view,bmp);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+//                e.printStackTrace();
             } catch (ExecutionException e) {
-                e.printStackTrace();
+//                e.printStackTrace();
             }
-            final Intent fillInIntent = new Intent();
-            fillInIntent.putExtra("modal", modal);
-            fillInIntent.putExtra("id", id);
-            fillInIntent.putExtra("uri",MyProvider.WidgetLists.CONTENT_URI);
 
-            rv.setOnClickFillInIntent(R.id.parent, fillInIntent);
 
             return rv;
         }
