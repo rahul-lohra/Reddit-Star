@@ -3,18 +3,19 @@ package com.android.rahul_lohra.redditstar.activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,9 +23,9 @@ import android.widget.Toast;
 import com.android.rahul_lohra.redditstar.R;
 import com.android.rahul_lohra.redditstar.adapter.normal.CommentsAdapter;
 import com.android.rahul_lohra.redditstar.application.Initializer;
-import com.android.rahul_lohra.redditstar.fragments.DetailSubredditFragment;
+import com.android.rahul_lohra.redditstar.fragments.CommentsFragment;
+import com.android.rahul_lohra.redditstar.fragments.HomeFragment;
 import com.android.rahul_lohra.redditstar.helper.AspectRatioImageView;
-import com.android.rahul_lohra.redditstar.loader.CommentsLoader;
 import com.android.rahul_lohra.redditstar.modal.comments.CustomComment;
 import com.android.rahul_lohra.redditstar.modal.custom.DetailPostModal;
 import com.android.rahul_lohra.redditstar.retrofit.ApiInterface;
@@ -64,7 +65,7 @@ import static com.android.rahul_lohra.redditstar.viewHolder.PostView.DIRECTION_U
  1. sqlId or id
  2. uri of table
  */
-public class DetailActivity extends BaseActivity implements
+public class DetailActivityNew extends BaseActivity implements
         LoaderManager.LoaderCallbacks<Cursor> {
 
     @Bind(R.id.imageView)
@@ -91,6 +92,9 @@ public class DetailActivity extends BaseActivity implements
     RecyclerView rv;
     @Bind(R.id.coordinator_layout)
     CoordinatorLayout coordinatorLayout;
+    @Bind(R.id.frame_layout)
+    FrameLayout frameLayout;
+
 
     @Inject
     @Named("withToken")
@@ -100,21 +104,19 @@ public class DetailActivity extends BaseActivity implements
 
     private final int LOADER_ID = 1;
     private final int LOADER_ID_COMMENTS = 2;
-    private final int LOADER_ID_COMMENTS_POSTS = 3;
-
     private final String BUNDLE_LINK_ID = "link_id";
 
     CommentsAdapter commentsAdapter;
     List<CustomComment> list = new ArrayList<>();
     private DetailPostModal subredditModal;
-    private final String TAG = DetailActivity.class.getSimpleName();
+    private final String TAG = DetailActivityNew.class.getSimpleName();
     private Uri mUriReadTable;
     private String id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_detail_subreddit_new);
+        setContentView(R.layout.fragment_detail_subreddit_2);
         ButterKnife.bind(this);
         ((Initializer)getApplicationContext()).getNetComponent().inject(this);
 
@@ -131,17 +133,24 @@ public class DetailActivity extends BaseActivity implements
         Cursor cursor = getContentResolver().query(mUriReadTable,null,mSeletion,mSelectionArgs,null);
         setDataInView(cursor);
 
+        String properLinkId = "t3_"+id;
+//        showCommentsFragment(R.id.frame_layout,properLinkId,subredditModal.getSubreddit());
+
         //requestComments
         requestComments();
 
-
         Bundle bundle = new Bundle();
-        String properLinkId = id;
         bundle.putString(BUNDLE_LINK_ID,properLinkId);
-        getSupportLoaderManager().initLoader(LOADER_ID_COMMENTS_POSTS,bundle,this);
+        getSupportLoaderManager().initLoader(LOADER_ID_COMMENTS,bundle,this);
 
         setAdapter();
 
+    }
+
+    void showCommentsFragment(@IdRes int layoutId,String linkId,String subreddit) {
+        getSupportFragmentManager().beginTransaction()
+                .add(layoutId, CommentsFragment.newInstance(linkId,subreddit), CommentsFragment.class.getSimpleName())
+                .commit();
     }
 
     private void requestComments(){
@@ -194,7 +203,7 @@ public class DetailActivity extends BaseActivity implements
                 .setAction(getString(R.string.login), new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        CommonOperations.addNewAccount(DetailActivity.this);
+                        CommonOperations.addNewAccount(DetailActivityNew.this);
 //                        Snackbar snackbar1 = Snackbar.make(coordinatorLayout, "Message is restored!", Snackbar.LENGTH_SHORT);
 //                        snackbar1.show();
                     }
@@ -362,8 +371,7 @@ public class DetailActivity extends BaseActivity implements
         Uri commentsUri = MyProvider.CommentsLists.CONTENT_URI;
         switch (id) {
             case LOADER_ID:
-                return new CursorLoader(this,
-                        mUriReadTable,null,null,null,null);
+                return new CursorLoader(this,mUriReadTable,null,null,null,null);
             case LOADER_ID_COMMENTS:
             {
                 String linkId = args.getString(BUNDLE_LINK_ID);
@@ -372,17 +380,6 @@ public class DetailActivity extends BaseActivity implements
                 String sortOrder = CommentsColumn.KEY_SQL_ID+" LIMIT 200";
                 return new CursorLoader(this,commentsUri,null,mWhereComments,mWhereCommentsArgs,sortOrder);
             }
-            case LOADER_ID_COMMENTS_POSTS:{
-                String linkId = args.getString(BUNDLE_LINK_ID);
-
-                String mWhere3 = CommentsColumn.KEY_LINK_ID + "=?";
-                String mWhereArgs3[] = {linkId};
-                String sortOrder = CommentsColumn.KEY_SQL_ID+" LIMIT 200";
-
-                return new CursorLoader(this,MyProvider.PostsComments.CONTENT_URI,null,mWhere3,mWhereArgs3,sortOrder);
-            }
-
-
         }
         return null;
     }
@@ -396,10 +393,12 @@ public class DetailActivity extends BaseActivity implements
             case LOADER_ID_COMMENTS:
             {
                 commentsAdapter.swapCursor(data);
+//                if(data!=null){
+//                    if(!data.moveToFirst()){
+//                    }
+//
+//                }
             }
-            break;
-            case LOADER_ID_COMMENTS_POSTS:
-                commentsAdapter.swapCursor(data);
         }
     }
 

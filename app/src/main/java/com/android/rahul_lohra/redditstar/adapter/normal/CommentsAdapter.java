@@ -48,8 +48,12 @@ public class CommentsAdapter extends CursorRecyclerViewAdapter<RecyclerView.View
         this.context = context;
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        return super.getItemViewType(position);
+    }
 
-//    public CommentsAdapter(Context context, Cursor cursor) {
+    //    public CommentsAdapter(Context context, Cursor cursor) {
 //        this.context = context;
 //        this.list = list;
 //    }

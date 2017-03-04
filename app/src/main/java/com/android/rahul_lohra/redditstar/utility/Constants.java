@@ -202,6 +202,7 @@ public class Constants {
 
         }
         context.getContentResolver().bulkInsert(mUri,cv);
+        context.getContentResolver().notifyChange(MyProvider.PostsComments.CONTENT_URI,null);
     }
 
     public static void deletePreviousComments(Context context,String linkId){

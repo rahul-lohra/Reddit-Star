@@ -91,6 +91,7 @@ public class MyProvider {
         )
         public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/user_posts");
 
+
         @InexactContentUri(
                 path = "user_posts/*",
                 name = "USER_POSTS_ID",
@@ -166,19 +167,29 @@ public class MyProvider {
     public static class CommentsLists {
 
         @ContentUri(
-                path = "comments_posts",
-                type = "vnd.android.cursor.dir/comments_posts_item"
+                path = "comments",
+                type = "vnd.android.cursor.dir/comments_item"
         )
-        public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/comments_posts");
+        public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/comments");
 
         @InexactContentUri(
-                path = "comments_posts/*",
-                name = "COMMENTS_POSTS_ID",
-                type = "vnd.android.cursor.item/comments_posts_item",
+                path = "comments/*",
+                name = "COMMENTS_ID",
+                type = "vnd.android.cursor.item/comments_item",
                 whereColumn = CommentsColumn.KEY_SQL_ID,
                 pathSegment = 1)
         public static Uri withId(long id) {
-            return Uri.parse("content://" + AUTHORITY + "/comments_posts/" + id);
+            return Uri.parse("content://" + AUTHORITY + "/comments/" + id);
         }
+    }
+    @TableEndpoint(table = MyDatabase.COMMENTS_TABLE)
+    public static class PostsComments{
+        @ContentUri(
+                path = "comments_posts",
+                type = "vnd.android.cursor.dir/comments_posts_item",
+                join = "INNER JOIN "+MyDatabase.USER_POSTS_TABLE+ " ON "+ MyDatabase.COMMENTS_TABLE+"."+CommentsColumn.KEY_LINK_ID+ " = "+MyDatabase.USER_POSTS_TABLE+"."+MyPostsColumn.KEY_ID
+        )
+        public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/comments_posts");
+
     }
 }

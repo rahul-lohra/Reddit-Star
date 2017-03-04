@@ -17,7 +17,7 @@ public class CustomOrm {
     public static  ContentValues FrontPageChildDataToContentValues(FrontPageChildData data){
         ContentValues cv = new ContentValues();
 
-        cv.put(MyPostsColumn.KEY_ID,data.getId());
+        cv.put(MyPostsColumn.KEY_ID,"t3_"+data.getId());
         cv.put(MyPostsColumn.KEY_AUTHOR,data.getAuthor());
         cv.put(MyPostsColumn.KEY_SUBREDDIT_ID,data.getSubredditId());
         cv.put(MyPostsColumn.KEY_SUBREDDIT,data.getSubreddit());

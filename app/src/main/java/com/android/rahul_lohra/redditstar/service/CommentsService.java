@@ -66,7 +66,7 @@ public class CommentsService extends IntentService {
             isUserLoggedIn = UserState.isUserLoggedIn(getApplicationContext());
             apiInterface = (isUserLoggedIn)?retrofitWithToken.create(ApiInterface.class):retrofitWithoutToken.create(ApiInterface.class);
             String subbreditName = intent.getStringExtra(SUBREDDIT_NAME);
-            String postId = intent.getStringExtra(POST_ID);
+            String postId = intent.getStringExtra(POST_ID).substring(3);
             List<List<Example>> exampleList = new ArrayList<>();
             Map<String, String> map = new HashMap<>();
             map.put("depth", "");
