@@ -5,10 +5,12 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -22,24 +24,19 @@ import android.widget.ImageView;
 import com.android.rahul_lohra.redditstar.R;
 import com.android.rahul_lohra.redditstar.activity.SearchActivity;
 import com.android.rahul_lohra.redditstar.adapter.cursor.HomeAdapter;
-import com.android.rahul_lohra.redditstar.adapter.normal.FrontPageAdapter;
 import com.android.rahul_lohra.redditstar.application.Initializer;
 import com.android.rahul_lohra.redditstar.contract.IFrontPageAdapter;
-import com.android.rahul_lohra.redditstar.loader.CommentsLoader;
 import com.android.rahul_lohra.redditstar.modal.custom.AfterModal;
-import com.android.rahul_lohra.redditstar.modal.frontPage.FrontPageChild;
-import com.android.rahul_lohra.redditstar.modal.frontPage.FrontPageResponseData;
 import com.android.rahul_lohra.redditstar.modal.custom.DetailPostModal;
+import com.android.rahul_lohra.redditstar.modal.frontPage.FrontPageResponseData;
 import com.android.rahul_lohra.redditstar.service.GetFrontPageService;
 import com.android.rahul_lohra.redditstar.storage.MyProvider;
 import com.android.rahul_lohra.redditstar.storage.column.MyPostsColumn;
+import com.android.rahul_lohra.redditstar.utility.Constants;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -54,39 +51,40 @@ import retrofit2.Retrofit;
 
 public class HomeFragment extends Fragment implements
         IFrontPageAdapter,
-        LoaderManager.LoaderCallbacks<Cursor>{
+        LoaderManager.LoaderCallbacks<Cursor> {
 
-    private FrontPageResponseData frontPageResponseData = null;
     @Bind(R.id.rv)
     RecyclerView rv;
 
     @Inject
     @Named("withToken")
     Retrofit retrofitWithToken;
-//    FrontPageAdapter adapter;
+    @Bind(R.id.swipe_refresh)
+    SwipeRefreshLayout swipeRefresh;
+    //    FrontPageAdapter adapter;
 //    List<FrontPageChild> list;
     private HomeAdapter adapter;
     String afterOfLink = "";
     private final int LOADER_ID = 1;
 
 
+    public interface IHomeFragment {
+        void sendModalAndImageView(DetailPostModal modal, ImageView imageView, String id);
 
-    public interface IHomeFragment{
-        void sendModalAndImageView(DetailPostModal modal, ImageView imageView,String id);
         void showLoginSnackBar();
     }
 
     private IHomeFragment mListener;
 
 
-    void makeApiCall(){
+    void makeApiCall() {
         Intent intent = new Intent(getActivity(), GetFrontPageService.class);
 //        if(frontPageResponseData!=null){
 //            intent.putExtra("after",frontPageResponseData.getAfter());
 //        }else {
 //            intent.putExtra("after","");
 //        }
-        intent.putExtra("after",afterOfLink);
+        intent.putExtra("after", afterOfLink);
         getContext().startService(intent);
     }
 
@@ -108,7 +106,18 @@ public class HomeFragment extends Fragment implements
         setRetainInstance(true);
         setHasOptionsMenu(true);
         ((Initializer) getContext().getApplicationContext()).getNetComponent().inject(this);
-        makeApiCall();
+        String mProj[] = {MyPostsColumn.KEY_ID};
+        Cursor cursor = getContext().getContentResolver().query(MyProvider.PostsLists.CONTENT_URI, mProj, null, null, null);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                //Dont make api Call
+            } else {
+                Constants.clearTable(getContext(), MyProvider.PostsLists.CONTENT_URI);
+                Constants.clearTable(getContext(), MyProvider.CommentsLists.CONTENT_URI);
+                makeApiCall();
+            }
+            cursor.close();
+        }
 //        list = new ArrayList<>();
 //        adapter = new FrontPageAdapter(HomeFragment.this,getActivity().getApplicationContext(), list,retrofitWithToken,this);
 
@@ -122,11 +131,43 @@ public class HomeFragment extends Fragment implements
         ButterKnife.bind(this, v);
         setAdapter();
 //        makeApiCall();
+
+        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // Your code to refresh the list here.
+                // Make sure you call swipeContainer.setRefreshing(false)
+                // once the network request has completed successfully.
+                Constants.clearTable(getContext(), MyProvider.PostsLists.CONTENT_URI);
+                Constants.clearTable(getContext(), MyProvider.CommentsLists.CONTENT_URI);
+                makeApiCall();
+
+                CountDownTimer countDownTimer = new CountDownTimer(7000, 1000) {
+
+                    public void onTick(long millisUntilFinished) {
+//                        mTextField.setText("seconds remaining: " + millisUntilFinished / 1000);
+                    }
+
+                    public void onFinish() {
+                        if(swipeRefresh.isRefreshing()){
+                            swipeRefresh.setRefreshing(false);
+                        }
+                    }
+                };
+                countDownTimer.start();
+            }
+        });
+        // Configure the refreshing colors
+        swipeRefresh.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+
         return v;
     }
 
-    private void setAdapter(){
-        adapter = new HomeAdapter(getActivity(),null,this);
+    private void setAdapter() {
+        adapter = new HomeAdapter(getActivity(), null, this);
         rv.setLayoutManager(new LinearLayoutManager(getActivity()));
         rv.setAdapter(adapter);
 //        rv.nested
@@ -143,10 +184,10 @@ public class HomeFragment extends Fragment implements
 
     @Subscribe(threadMode = ThreadMode.BACKGROUND)
     public void onMessageEvent(String string) {
-        if(string.equalsIgnoreCase("getNextData")){
+        if (string.equalsIgnoreCase("getNextData")) {
 //                if(!frontPageResponseData.getAfter().equalsIgnoreCase(GetFrontPageService.after))
 //                {
-                    makeApiCall();
+            makeApiCall();
 //                }
         }
     }
@@ -176,7 +217,8 @@ public class HomeFragment extends Fragment implements
 //                getActivity().onSearchRequested();
                 startActivity(new Intent(getActivity(), SearchActivity.class));
                 return true;
-            default:return false;
+            default:
+                return false;
         }
     }
 
@@ -197,6 +239,7 @@ public class HomeFragment extends Fragment implements
         EventBus.getDefault().unregister(this);
         super.onStop();
     }
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -216,8 +259,8 @@ public class HomeFragment extends Fragment implements
 
 
     @Override
-    public void sendData(DetailPostModal modal, ImageView imageView,String id) {
-        mListener.sendModalAndImageView(modal,imageView,id);
+    public void sendData(DetailPostModal modal, ImageView imageView, String id) {
+        mListener.sendModalAndImageView(modal, imageView, id);
     }
 
     @Override
@@ -228,7 +271,7 @@ public class HomeFragment extends Fragment implements
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-           getLoaderManager().initLoader(LOADER_ID, null, this);
+        getLoaderManager().initLoader(LOADER_ID, null, this);
     }
 
 
@@ -238,7 +281,7 @@ public class HomeFragment extends Fragment implements
 //        String mProjection[]=null;
         switch (id) {
             case LOADER_ID:
-                return new CursorLoader(getActivity(),mUri,null,null,null,null);
+                return new CursorLoader(getActivity(), mUri, null, null, null, null);
         }
         return null;
     }
@@ -248,6 +291,13 @@ public class HomeFragment extends Fragment implements
         switch (loader.getId()) {
             case LOADER_ID:
                 this.adapter.swapCursor(data);
+                if(data!=null){
+                    if(data.moveToFirst()){
+                        swipeRefresh.setRefreshing(false);
+                    }
+
+                }
+
                 break;
         }
     }

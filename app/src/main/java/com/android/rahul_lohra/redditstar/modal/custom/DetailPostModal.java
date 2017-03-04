@@ -13,7 +13,7 @@ import java.util.List;
 public class DetailPostModal implements Parcelable {
     String id;          //
     String subreddit;   //
-//    String subredditId;//
+    String postHint;//
 //    Boolean locked;
     String ups;         //
     String title;       //
@@ -25,7 +25,7 @@ public class DetailPostModal implements Parcelable {
     String name;        //
     String bigImageUrl;
 
-    public DetailPostModal(String id, String subreddit, String ups, String title, String commentsCount, String thumbnail, String time, String author,String bigImageUrl,Integer likes,String name) {
+    public DetailPostModal(String id, String subreddit, String ups, String title, String commentsCount, String thumbnail, String time, String author,String bigImageUrl,Integer likes,String name,String postHint) {
         this.id = id;
         this.subreddit = subreddit;
         this.ups = ups;
@@ -37,6 +37,11 @@ public class DetailPostModal implements Parcelable {
         this.bigImageUrl = bigImageUrl;
         this.likes = likes;
         this.name = name;
+        this.postHint = postHint;
+    }
+
+    public String getPostHint() {
+        return postHint;
     }
 
     public String getBigImageUrl() {
@@ -123,6 +128,7 @@ public class DetailPostModal implements Parcelable {
         this.likes = likes;
     }
 
+
     @Override
     public int describeContents() {
         return 0;
@@ -132,6 +138,7 @@ public class DetailPostModal implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.id);
         dest.writeString(this.subreddit);
+        dest.writeString(this.postHint);
         dest.writeString(this.ups);
         dest.writeString(this.title);
         dest.writeString(this.commentsCount);
@@ -146,6 +153,7 @@ public class DetailPostModal implements Parcelable {
     protected DetailPostModal(Parcel in) {
         this.id = in.readString();
         this.subreddit = in.readString();
+        this.postHint = in.readString();
         this.ups = in.readString();
         this.title = in.readString();
         this.commentsCount = in.readString();

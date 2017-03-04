@@ -203,5 +203,6 @@
     <string name="pref_title_vibrate">Vibrate</string>
     <string name="logout">Log out</string>
     <string name="user_logged_out">User Logged Out</string>
+    <string name="loading_comments">Loading Comments</string>
 
 </resources>

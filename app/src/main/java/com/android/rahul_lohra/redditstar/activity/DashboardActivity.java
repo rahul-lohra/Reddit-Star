@@ -42,7 +42,6 @@ import com.android.rahul_lohra.redditstar.storage.MyProvider;
 import com.android.rahul_lohra.redditstar.storage.column.MySubredditColumn;
 import com.android.rahul_lohra.redditstar.storage.column.UserCredentialsColumn;
 import com.android.rahul_lohra.redditstar.utility.CommonOperations;
-import com.android.rahul_lohra.redditstar.utility.Constants;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.gcm.GcmNetworkManager;
@@ -161,15 +160,25 @@ public class DashboardActivity extends BaseActivity implements
 
     void startPeriodicTask(){
         mGcmNetworkManager = GcmNetworkManager.getInstance(this);
-        Task task = new PeriodicTask.Builder()
+        Task widgetTask = new PeriodicTask.Builder()
                 .setService(WidgetTaskService.class)
                 .setPeriod(60*31)
                 .setFlex(10)
-                .setTag(WidgetTaskService.TAG_PERIODIC)
+                .setTag(WidgetTaskService.TAG_PERIODIC_WIDGET)
                 .setPersisted(true)
                 .build();
 
-        mGcmNetworkManager.schedule(task);
+        Task frontPageTask = new PeriodicTask.Builder()
+                .setService(WidgetTaskService.class)
+                .setPeriod(60*31)
+                .setFlex(10)
+                .setTag(WidgetTaskService.TAG_PERIODIC_WIDGET)
+                .setPersisted(true)
+                .build();
+
+        mGcmNetworkManager.schedule(widgetTask);
+        mGcmNetworkManager.schedule(frontPageTask);
+
     }
 
 

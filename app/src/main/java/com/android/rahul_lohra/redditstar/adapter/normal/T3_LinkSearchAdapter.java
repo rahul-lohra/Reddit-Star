@@ -95,6 +95,8 @@ public class T3_LinkSearchAdapter extends RecyclerView.Adapter {
         final String title = String.valueOf(t3Data.title);
         final String thumbnail = (preview!=null)?t3Data.thumbnail:"";
         final Boolean likes = t3Data.likes;
+//        final String postHint = t3Data.pos;
+
 
         final String bigImageUrl = (preview!=null)?preview.getImages().get(0).getSource().getUrl():"";
 
@@ -114,9 +116,9 @@ public class T3_LinkSearchAdapter extends RecyclerView.Adapter {
             @Override
             public void onClick(View view) {
                 Integer mLikes = likes!=null?((likes)?1:0):null;
-                DetailPostModal modal = new DetailPostModal(id,
-                        subreddit,ups,title,commentsCount,thumbnail,time,author,bigImageUrl,mLikes,thingId);
-                mListener.sendLink(modal,postView.imageView);
+//                DetailPostModal modal = new DetailPostModal(id,
+//                        subreddit,ups,title,commentsCount,thumbnail,time,author,bigImageUrl,mLikes,thingId);
+//                mListener.sendLink(modal,postView.imageView);
             }
         });
 

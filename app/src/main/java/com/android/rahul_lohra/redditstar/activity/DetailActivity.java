@@ -129,23 +129,25 @@ public class DetailActivity extends BaseActivity implements
         Cursor cursor = getContentResolver().query(mUriReadTable,null,mSeletion,mSelectionArgs,null);
         setDataInView(cursor);
 
-//        getComments();
+        //requestComments
+        requestComments();
+
+
         Bundle bundle = new Bundle();
         String properLinkId = "t3_"+id;
         bundle.putString(BUNDLE_LINK_ID,properLinkId);
         getSupportLoaderManager().initLoader(LOADER_ID_COMMENTS,bundle,this);
 
-//        if (subredditModal != null) {
-//            Bundle bundle = new Bundle();
-//            bundle.putString("id", subredditModal.getId());
-//            bundle.putString("subbreddit_name", subredditModal.getSubreddit());
+        setAdapter();
 
-//            getSupportLoaderManager().initLoader(LOADER_ID, bundle, this).forceLoad();;
-            setAdapter();
-//            initData();
-//        }
+    }
 
-
+    private void requestComments(){
+        Toast.makeText(getApplicationContext(),getString(R.string.loading_comments),Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(getApplicationContext(),CommentsService.class);
+        intent.putExtra(CommentsService.POST_ID,subredditModal.getId());
+        intent.putExtra(CommentsService.SUBREDDIT_NAME,subredditModal.getSubreddit());
+        startService(intent);
     }
 
     private void getComments(){
@@ -167,11 +169,19 @@ public class DetailActivity extends BaseActivity implements
         tvUsername.setText(subredditModal.getAuthor());
         tvSort.setText("new");
         String bigImageUrl = subredditModal.getBigImageUrl();
-        Glide.with(this).
-                load(bigImageUrl)
-                .centerCrop()
-                .crossFade()
-                .into(imageView);
+        String postHint = subredditModal.getPostHint();
+        if(postHint!=null){
+            if(postHint.equals("image")){
+                Glide.with(this).
+                        load(bigImageUrl)
+                        .centerCrop()
+                        .crossFade()
+                        .into(imageView);
+            }else {
+                imageView.setVisibility(View.GONE);
+            }
+
+        }
 
         Integer likes = subredditModal.getLikes();
 
@@ -231,47 +241,6 @@ public class DetailActivity extends BaseActivity implements
         });
     }
 
-//    @Override
-//    public Loader<List<CustomComment>> onCreateLoader(int id, Bundle args) {
-//        switch (id) {
-//            case LOADER_ID:
-//                return new CommentsLoader(
-//                        this,
-//                        args.getString("subbreddit_name"),
-//                        args.getString("id")
-//                );
-//        }
-//        return null;
-//    }
-//
-//    @Override
-//    public void onLoadFinished(Loader<List<CustomComment>> loader, List<CustomComment> data) {
-//        switch (loader.getId()) {
-//            case LOADER_ID:
-//                list.clear();
-//                list.addAll(data);
-//                this.commentsAdapter.notifyDataSetChanged();
-//                break;
-//        }
-//    }
-//
-//    @Override
-//    public void onLoaderReset(Loader<List<CustomComment>> loader) {
-//        switch (loader.getId()) {
-//            case LOADER_ID:
-//                list.clear();
-//                commentsAdapter.notifyDataSetChanged();
-//                break;
-//        }
-//    }
-
-
-
-//    void showDetailSubredditFragment(DetailPostModal modal) {
-//        getSupportFragmentManager().beginTransaction()
-//                .replace(R.id.frame_layout, DetailSubredditFragment.newInstance(modal), DetailSubredditFragment.class.getSimpleName())
-//                .commit();
-//    }
 
     private void updateVote(@PostView.DirectionMode Integer mode)
     {
@@ -414,9 +383,11 @@ public class DetailActivity extends BaseActivity implements
             case LOADER_ID_COMMENTS:
             {
                 commentsAdapter.swapCursor(data);
-                if(null ==data){
-                    Log.wtf(TAG,"request Comments ASAP");
-                }
+//                if(data!=null){
+//                    if(!data.moveToFirst()){
+//                    }
+//
+//                }
             }
         }
     }

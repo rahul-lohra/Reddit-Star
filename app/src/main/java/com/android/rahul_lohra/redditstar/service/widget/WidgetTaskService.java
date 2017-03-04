@@ -13,14 +13,16 @@ import com.android.rahul_lohra.redditstar.modal.frontPage.FrontPageResponse;
 import com.android.rahul_lohra.redditstar.retrofit.ApiInterface;
 import com.android.rahul_lohra.redditstar.storage.MyProvider;
 import com.android.rahul_lohra.redditstar.utility.Constants;
-import com.android.rahul_lohra.redditstar.utility.MyUrl;
 import com.android.rahul_lohra.redditstar.utility.RedditSort;
 import com.android.rahul_lohra.redditstar.utility.SpConstants;
 import com.android.rahul_lohra.redditstar.utility.UserState;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.FutureTarget;
 import com.google.android.gms.gcm.GcmNetworkManager;
 import com.google.android.gms.gcm.GcmTaskService;
 import com.google.android.gms.gcm.TaskParams;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -29,7 +31,6 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
@@ -50,12 +51,14 @@ public class WidgetTaskService extends GcmTaskService {
     ApiInterface apiInterface;
 
     SharedPreferences sp;
-    Uri mUri = MyProvider.WidgetLists.CONTENT_URI;
+    Uri widgetUri = MyProvider.WidgetLists.CONTENT_URI;
 
     final String TAG = WidgetTaskService.class.getSimpleName();
     public  final static String INTENT_TAG = "com.android.rahul_lohra.redditstar.service.widget.WidgetTaskService";
     public final static String TAG_ONCE = "once";
-    public final static String TAG_PERIODIC = "periodic";
+    public final static String TAG_PERIODIC_WIDGET = "periodic_widget";
+    public final static String TAG_PERIODIC_FRONT_PAGE = "periodic_front_page";
+
     private Context mContext;
     @Override
     public void onCreate() {
@@ -70,6 +73,8 @@ public class WidgetTaskService extends GcmTaskService {
 
     @Override
     public int onRunTask(TaskParams taskParams) {
+        Boolean isUserLoggedIn = UserState.isUserLoggedIn(mContext);
+        apiInterface = (isUserLoggedIn)?retrofitWithToken.create(ApiInterface.class):retrofitWithoutToken.create(ApiInterface.class);
 
         Log.d(TAG,"onRunTask,tag="+taskParams.getTag());
         int result = GcmNetworkManager.RESULT_FAILURE;
@@ -79,9 +84,7 @@ public class WidgetTaskService extends GcmTaskService {
             return GcmNetworkManager.RESULT_RESCHEDULE;
         }
 
-        if(taskParams.getTag().equals(TAG_ONCE) || taskParams.getTag().equals(TAG_PERIODIC)){
-            Boolean isUserLoggedIn = UserState.isUserLoggedIn(mContext);
-            apiInterface = (isUserLoggedIn)?retrofitWithToken.create(ApiInterface.class):retrofitWithoutToken.create(ApiInterface.class);
+        if(taskParams.getTag().equals(TAG_ONCE) || taskParams.getTag().equals(TAG_PERIODIC_WIDGET)){
             String mAfter = sp.getString(SpConstants.WIDGET_AFTER,"");
             String mSort = sp.getString(SpConstants.SORT,"");
             String mTime = sp.getString(SpConstants.TIME,"");
@@ -126,8 +129,8 @@ public class WidgetTaskService extends GcmTaskService {
                         List<FrontPageChild> mList = res.body().getData().getChildren();
                         String after  = res.body().getData().getAfter();
                         sp.edit().putString(SpConstants.WIDGET_AFTER,after).apply();
-                        getContentResolver().delete(mUri,null,null);
-                        Constants.insertPostsIntoTable(mContext,res.body(),mUri);
+                        getContentResolver().delete(widgetUri,null,null);
+                        Constants.insertPostsIntoTable(mContext,res.body(), widgetUri);
                     /*
                     update App widget
                      */
@@ -141,7 +144,39 @@ public class WidgetTaskService extends GcmTaskService {
             }
 
             return result;
-        }else {
+        } else if(taskParams.getTag().equals(TAG_PERIODIC_FRONT_PAGE)){
+            apiInterface = (isUserLoggedIn)?retrofitWithToken.create(ApiInterface.class):retrofitWithoutToken.create(ApiInterface.class);
+            Map<String,String> map = new HashMap<>();
+            map.put("limit","30");
+            map.put("after","");
+            String token = (isUserLoggedIn) ? "bearer " + UserState.getAuthToken(getApplicationContext()) : "";
+
+            try {
+                Response<FrontPageResponse> res = apiInterface.getFrontPage(token,map).execute();
+                if(res.code()==200)
+                {
+                    Constants.clearTable(getApplicationContext(),MyProvider.PostsLists.CONTENT_URI);
+                    Constants.clearTable(getApplicationContext(),MyProvider.CommentsLists.CONTENT_URI);
+                    Constants.insertPostsIntoTable(getApplicationContext(),res.body(), MyProvider.PostsLists.CONTENT_URI);
+                    for(FrontPageChild frontPageChild:res.body().getData().getChildren()){
+                        String url = frontPageChild.getData().getThumbnail();
+                        FutureTarget<File> future = Glide.with(getApplicationContext())
+                                .load(url)
+                                .downloadOnly(100, 100);
+                    }
+                }
+                Log.d(TAG,"response:"+res.code());
+            } catch (IOException e) {
+                e.printStackTrace();
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            } catch (ExecutionException e) {
+//                e.printStackTrace();
+            }
+            return result;
+        }
+
+        else {
             return result;
         }
 

@@ -47,8 +47,10 @@ public class CommonOperations {
         final String url = cursor.getString(cursor.getColumnIndex(MyPostsColumn.KEY_URL));
         final Integer likes = cursor.getInt(cursor.getColumnIndex(MyPostsColumn.KEY_LIKES));
         final String bigImageUrl = cursor.getString(cursor.getColumnIndex(MyPostsColumn.KEY_BIG_IMAGE_URL));
+        final String postHint = cursor.getString(cursor.getColumnIndex(MyPostsColumn.KEY_POST_HINT));
+
 
         return new DetailPostModal(id,
-                subreddit,ups,title,commentsCount,thumbnail,time,author,bigImageUrl,likes,name);
+                subreddit,ups,title,commentsCount,thumbnail,time,author,bigImageUrl,likes,name,postHint);
     }
 }
