@@ -228,7 +228,7 @@ public class DetailSubredditFragment extends Fragment implements LoaderManager.L
     }
 
     private void setAdapter(){
-        commentsAdapter = new CommentsAdapter(getContext(),list);
+        commentsAdapter = new CommentsAdapter(getContext(),null);
         rv.setLayoutManager(new LinearLayoutManager(getActivity()));
         rv.setAdapter(commentsAdapter);
     }

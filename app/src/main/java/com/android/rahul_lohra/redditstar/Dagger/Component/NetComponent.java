@@ -14,6 +14,7 @@ import com.android.rahul_lohra.redditstar.fragments.subreddit.SubredditFragment;
 import com.android.rahul_lohra.redditstar.loader.CommentsLoader;
 import com.android.rahul_lohra.redditstar.loader.SubredditLoader;
 import com.android.rahul_lohra.redditstar.presenter.activity.DashboardPresenter;
+import com.android.rahul_lohra.redditstar.service.CommentsService;
 import com.android.rahul_lohra.redditstar.service.GetDashboardSubredditsService;
 import com.android.rahul_lohra.redditstar.service.GetFrontPageService;
 import com.android.rahul_lohra.redditstar.service.GetSubredditListService;
@@ -55,6 +56,7 @@ public interface NetComponent {
     void inject(GetDashboardSubredditsService service);
     void inject(GetFrontPageService service);
     void inject(WidgetTaskService service);
+    void inject(CommentsService service);
 
     //Loader
     void inject(SubredditLoader loader);

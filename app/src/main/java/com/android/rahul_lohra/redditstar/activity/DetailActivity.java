@@ -28,6 +28,9 @@ import com.android.rahul_lohra.redditstar.loader.CommentsLoader;
 import com.android.rahul_lohra.redditstar.modal.comments.CustomComment;
 import com.android.rahul_lohra.redditstar.modal.custom.DetailPostModal;
 import com.android.rahul_lohra.redditstar.retrofit.ApiInterface;
+import com.android.rahul_lohra.redditstar.service.CommentsService;
+import com.android.rahul_lohra.redditstar.storage.MyProvider;
+import com.android.rahul_lohra.redditstar.storage.column.CommentsColumn;
 import com.android.rahul_lohra.redditstar.storage.column.MyPostsColumn;
 import com.android.rahul_lohra.redditstar.utility.CommonOperations;
 import com.android.rahul_lohra.redditstar.utility.Constants;
@@ -96,6 +99,8 @@ public class DetailActivity extends BaseActivity implements
     Snackbar snackbar;
 
     private final int LOADER_ID = 1;
+    private final int LOADER_ID_COMMENTS = 2;
+
     CommentsAdapter commentsAdapter;
     List<CustomComment> list = new ArrayList<>();
     private DetailPostModal subredditModal;
@@ -122,7 +127,9 @@ public class DetailActivity extends BaseActivity implements
 
         Cursor cursor = getContentResolver().query(mUriReadTable,null,mSeletion,mSelectionArgs,null);
         setDataInView(cursor);
-//            getSupportLoaderManager().initLoader(LOADER_ID,null,this);
+
+//        getComments();
+        getSupportLoaderManager().initLoader(LOADER_ID_COMMENTS,null,this);
 
 //        if (subredditModal != null) {
 //            Bundle bundle = new Bundle();
@@ -134,6 +141,17 @@ public class DetailActivity extends BaseActivity implements
 //            initData();
 //        }
 
+
+    }
+
+    private void getComments(){
+        String subredditName = subredditModal.getSubreddit();
+        String postId = subredditModal.getId();
+
+        Intent intent = new Intent(this, CommentsService.class);
+        intent.putExtra(CommentsService.POST_ID,postId);
+        intent.putExtra(CommentsService.SUBREDDIT_NAME,subredditName);
+        startService(intent);
 
     }
 
@@ -182,7 +200,7 @@ public class DetailActivity extends BaseActivity implements
     }
 
     private void setAdapter() {
-        commentsAdapter = new CommentsAdapter(this, list);
+        commentsAdapter = new CommentsAdapter(this, null);
         rv.setLayoutManager(new LinearLayoutManager(this));
         rv.setAdapter(commentsAdapter);
     }
@@ -366,10 +384,17 @@ public class DetailActivity extends BaseActivity implements
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        Uri commentsUri = MyProvider.CommentsLists.CONTENT_URI;
         switch (id) {
             case LOADER_ID:
                 return new CursorLoader(this,
                         mUriReadTable,null,null,null,null);
+            case LOADER_ID_COMMENTS:
+            {
+                String mWhereComments = CommentsColumn.KEY_LINK_ID +"=?";
+                String mWhereCommentsArgs[] = {subredditModal.getSubreddit()};
+                return new CursorLoader(this,commentsUri,null,mWhereComments,mWhereCommentsArgs,null);
+            }
         }
         return null;
     }
@@ -380,6 +405,13 @@ public class DetailActivity extends BaseActivity implements
             case LOADER_ID:
                 setDataInView(data);
                 break;
+            case LOADER_ID_COMMENTS:
+            {
+                commentsAdapter.swapCursor(data);
+                if(null ==data){
+                    Log.wtf(TAG,"request Comments ASAP");
+                }
+            }
         }
     }
 
@@ -389,6 +421,9 @@ public class DetailActivity extends BaseActivity implements
             case LOADER_ID:
                 subredditModal = null;
                 break;
+            case LOADER_ID_COMMENTS:{
+                commentsAdapter.swapCursor(null);
+            }
         }
     }
 

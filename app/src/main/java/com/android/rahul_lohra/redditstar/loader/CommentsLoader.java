@@ -74,8 +74,7 @@ public class CommentsLoader extends AsyncTaskLoader<List<CustomComment>> {
                 GsonBuilder builder = new GsonBuilder();
                 builder.registerTypeAdapter(Example.class, new CommentsGsonTypeAdapter().nullSafe());
                 Gson gson = builder.create();
-                exampleList = gson.fromJson(res.body().string(), new TypeToken<ArrayList<Example>>() {
-                }.getType());
+                exampleList = gson.fromJson(res.body().string(), new TypeToken<ArrayList<Example>>() {}.getType());
                 traverse(exampleList.get(1).get(0), depth);
                 Log.d(TAG, "Custom List Size->" + customCommentList.size());
 

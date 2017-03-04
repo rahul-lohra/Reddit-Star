@@ -2,21 +2,28 @@ package com.android.rahul_lohra.redditstar.utility;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.android.rahul_lohra.redditstar.modal.FavoritesModal;
+import com.android.rahul_lohra.redditstar.modal.comments.Child;
+import com.android.rahul_lohra.redditstar.modal.comments.CustomComment;
+import com.android.rahul_lohra.redditstar.modal.comments.T1data;
 import com.android.rahul_lohra.redditstar.modal.frontPage.FrontPageChild;
 import com.android.rahul_lohra.redditstar.modal.frontPage.FrontPageChildData;
 import com.android.rahul_lohra.redditstar.modal.frontPage.FrontPageResponse;
+import com.android.rahul_lohra.redditstar.service.CommentsService;
 import com.android.rahul_lohra.redditstar.storage.MyProvider;
+import com.android.rahul_lohra.redditstar.storage.column.CommentsColumn;
 import com.android.rahul_lohra.redditstar.storage.column.MyFavouritesColumn;
 import com.android.rahul_lohra.redditstar.storage.column.MyPostsColumn;
 import com.android.rahul_lohra.redditstar.storage.column.UserCredentialsColumn;
 import com.android.rahul_lohra.redditstar.viewHolder.PostView;
 
+import java.security.PublicKey;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
@@ -116,10 +123,28 @@ public class Constants {
         for(FrontPageChild frontPageChild :mList){
             FrontPageChildData data = frontPageChild.getData();
             String id  = data.getId();
+            String subredditName = data.getSubreddit();
             String mSelectionArgs[]={id};
-            context.getContentResolver().delete(mUri,mWhere,mSelectionArgs);
+             int rowsDeleted = context.getContentResolver().delete(mUri,mWhere,mSelectionArgs);
+            if (rowsDeleted == 0) {
+//
+//                //Insert Comments
+//                Intent intentCommentService = new Intent(context, CommentsService.class);
+//                intentCommentService.putExtra(CommentsService.POST_ID,id);
+//                intentCommentService.putExtra(CommentsService.SUBREDDIT_NAME,subredditName);
+//                context.startService(intentCommentService);
+            }else {
+                Log.wtf(TAG,"row deleted: with id:"+id);
+            }
+            Log.wtf(TAG,"insert row : with id:"+id+",subreddit:"+subredditName);
             ContentValues contentValues = CustomOrm.FrontPageChildDataToContentValues(data);
             context.getContentResolver().insert(mUri,contentValues);
+
+            Intent intentCommentService = new Intent(context, CommentsService.class);
+                intentCommentService.putExtra(CommentsService.POST_ID,id);
+                intentCommentService.putExtra(CommentsService.SUBREDDIT_NAME,subredditName);
+                context.startService(intentCommentService);
+
         }
     }
 
@@ -139,6 +164,74 @@ public class Constants {
     }
     public static void clearTable(Context context,Uri mUri){
         context.getContentResolver().delete(mUri,null,null);
+    }
+
+    public static void bulkInsertIntoCommentsTable(Context context, List<CustomComment> list,String postId,String subredditName){
+
+        if(list.size()<1){
+            return;
+        }
+        Log.wtf(TAG,"bulk insert row postId:,"+postId+",subredditName:"+subredditName);
+            String linkId = list.get(0).getChild().t1data.getLink_id();
+            String id = list.get(0).getChild().t1data.getId();
+         deletePreviousComments(context,linkId);
+
+        Uri mUri = MyProvider.CommentsLists.CONTENT_URI;
+        ContentValues cv[] = new ContentValues[list.size()];
+        for(int i=0;i<list.size();++i){
+
+//            findSimilarComment(context,id);
+
+            cv[i] = new ContentValues();
+            CustomComment customComment = list.get(i);
+            Child child = customComment.getChild();
+            T1data t1data = child.t1data;
+            cv[i].put(CommentsColumn.KEY_DEPTH,customComment.getDepth());
+            cv[i].put(CommentsColumn.KEY_SUBREDDIT_ID,t1data.getSubredditId());
+            cv[i].put(CommentsColumn.KEY_LIKES,t1data.getLikes());
+            cv[i].put(CommentsColumn.KEY_ID,t1data.getId());
+            cv[i].put(CommentsColumn.KEY_AUTHOR,t1data.getAuthor());
+            cv[i].put(CommentsColumn.PARENT_ID,t1data.getParentId());
+            cv[i].put(CommentsColumn.KEY_SCORE,t1data.getScore());
+            cv[i].put(CommentsColumn.KEY_BODY,t1data.getBody());
+            cv[i].put(CommentsColumn.KEY_DOWNS,t1data.getDowns());
+            cv[i].put(CommentsColumn.KEY_SUBREDDIT,t1data.getSubreddit());
+            cv[i].put(CommentsColumn.KEY_NAME,t1data.getName());
+            cv[i].put(CommentsColumn.KEY_UPS,t1data.getUps());
+            cv[i].put(CommentsColumn.KEY_LINK_ID,t1data.getLink_id());
+
+        }
+        context.getContentResolver().bulkInsert(mUri,cv);
+    }
+
+    public static void deletePreviousComments(Context context,String linkId){
+        Uri mUri  = MyProvider.CommentsLists.CONTENT_URI;
+        String mWhere = CommentsColumn.KEY_LINK_ID + "=?";
+        String mWhereArgs[]={linkId};
+        int c = context.getContentResolver().delete(mUri,mWhere,mWhereArgs);
+        Log.wtf(TAG,"deleted row comments count: "+c+",linkId:"+linkId);
+    }
+
+    public static void findSimilarComment(Context context,String id){
+        Uri mUri = MyProvider.CommentsLists.CONTENT_URI;
+        String mWhere = CommentsColumn.KEY_ID+"=?";
+        String mWhereArgs[]={id};
+        String mProjection[]={CommentsColumn.KEY_SQL_ID,CommentsColumn.KEY_BODY,CommentsColumn.KEY_SUBREDDIT};
+        Cursor cursor = context.getContentResolver().query(mUri,mProjection,mWhere,mWhereArgs,null);
+
+        if(cursor!=null){
+//
+            if(cursor.moveToFirst()){
+                do{
+
+                    String sqlId = cursor.getString(cursor.getColumnIndex(CommentsColumn.KEY_SQL_ID));
+                    String body = cursor.getString(cursor.getColumnIndex(CommentsColumn.KEY_BODY));
+                    String subreddit = cursor.getString(cursor.getColumnIndex(CommentsColumn.KEY_SUBREDDIT));
+                    Log.wtf(TAG,"duplicate Comments:"+"sqlId:"+sqlId+",body:"+body+",subreddit:"+subreddit);
+                }while (cursor.moveToNext());
+            }
+        cursor.close();
+        }
     }
 
 

@@ -2,6 +2,7 @@ package com.android.rahul_lohra.redditstar.storage;
 
 import android.net.Uri;
 
+import com.android.rahul_lohra.redditstar.storage.column.CommentsColumn;
 import com.android.rahul_lohra.redditstar.storage.column.MyFavouritesColumn;
 import com.android.rahul_lohra.redditstar.storage.column.MyPostsColumn;
 import com.android.rahul_lohra.redditstar.storage.column.MySubredditColumn;
@@ -158,6 +159,26 @@ public class MyProvider {
                 pathSegment = 1)
         public static Uri withId(long id) {
             return Uri.parse("content://" + AUTHORITY + "/widget_posts/" + id);
+        }
+    }
+
+    @TableEndpoint(table = MyDatabase.COMMENTS_TABLE)
+    public static class CommentsLists {
+
+        @ContentUri(
+                path = "comments_posts",
+                type = "vnd.android.cursor.dir/comments_posts_item"
+        )
+        public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/comments_posts");
+
+        @InexactContentUri(
+                path = "comments_posts/*",
+                name = "COMMENTS_POSTS_ID",
+                type = "vnd.android.cursor.item/comments_posts_item",
+                whereColumn = CommentsColumn.KEY_SQL_ID,
+                pathSegment = 1)
+        public static Uri withId(long id) {
+            return Uri.parse("content://" + AUTHORITY + "/comments_posts/" + id);
         }
     }
 }

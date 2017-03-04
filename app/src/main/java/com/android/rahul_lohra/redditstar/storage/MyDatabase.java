@@ -3,6 +3,7 @@ package com.android.rahul_lohra.redditstar.storage;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.android.rahul_lohra.redditstar.storage.column.CommentsColumn;
 import com.android.rahul_lohra.redditstar.storage.column.MyFavouritesColumn;
 import com.android.rahul_lohra.redditstar.storage.column.MyPostsColumn;
 import com.android.rahul_lohra.redditstar.storage.column.MySubredditColumn;
@@ -31,6 +32,9 @@ public class MyDatabase {
     @Table(MyPostsColumn.class) public static final String USER_SEARCH_LINK_TABLE = "user_search_link_table";
 
     @Table(MyPostsColumn.class) public static final String WIDGET_TABLE = "widget_table";
+
+    @Table(CommentsColumn.class) public static final String COMMENTS_TABLE = "comments_table";
+
 
 
 //    @OnUpgrade

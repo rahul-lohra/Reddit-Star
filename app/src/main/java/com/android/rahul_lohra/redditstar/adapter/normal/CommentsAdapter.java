@@ -22,9 +22,11 @@ import com.android.rahul_lohra.redditstar.modal.comments.Child;
 import com.android.rahul_lohra.redditstar.modal.comments.CustomComment;
 import com.android.rahul_lohra.redditstar.modal.comments.Example;
 import com.android.rahul_lohra.redditstar.storage.MyProvider;
+import com.android.rahul_lohra.redditstar.storage.column.CommentsColumn;
 import com.android.rahul_lohra.redditstar.storage.column.UserCredentialsColumn;
 import com.android.rahul_lohra.redditstar.utility.UserState;
 import com.android.rahul_lohra.redditstar.viewHolder.CommentsViewHolder;
+import com.android.rahul_lohra.redditstar.viewHolder.CursorRecyclerViewAdapter;
 import com.android.rahul_lohra.redditstar.viewHolder.PostView;
 
 
@@ -36,17 +38,21 @@ import butterknife.Bind;
  * Created by rkrde on 22-01-2017.
  */
 
-public class CommentsAdapter extends RecyclerView.Adapter {
+public class CommentsAdapter extends CursorRecyclerViewAdapter<RecyclerView.ViewHolder> {
 
 
     private Context context;
-    List<CustomComment> list;
 
-
-    public CommentsAdapter(Context context, List<CustomComment> list) {
+    public CommentsAdapter(Context context, Cursor cursor) {
+        super(context, cursor);
         this.context = context;
-        this.list = list;
     }
+
+
+//    public CommentsAdapter(Context context, Cursor cursor) {
+//        this.context = context;
+//        this.list = list;
+//    }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -58,9 +64,9 @@ public class CommentsAdapter extends RecyclerView.Adapter {
 
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, Cursor cursor) {
         CommentsViewHolder viewHolder = (CommentsViewHolder)holder;
-        int depth = list.get(position).getDepth();
+        int depth = cursor.getInt(cursor.getColumnIndex(CommentsColumn.KEY_DEPTH));
         //set Margin and Color
         switch (depth){
             case 1: viewHolder.view_2.setBackgroundColor(ContextCompat.getColor(context,R.color.colorAccent));
@@ -79,10 +85,12 @@ public class CommentsAdapter extends RecyclerView.Adapter {
 
         //set Textual Data
 
-        final Child child = list.get(position).getChild();
-        final String comment = child.t1data.body;
-        String author = child.t1data.author;
-        int upvote = child.t1data.ups;
+//        final Child child = list.get(position).getChild();
+        final String comment = cursor.getString(cursor.getColumnIndex(CommentsColumn.KEY_BODY));
+        final String author = cursor.getString(cursor.getColumnIndex(CommentsColumn.KEY_AUTHOR));
+        final int upvote = cursor.getInt(cursor.getColumnIndex(CommentsColumn.KEY_UPS));
+        final int thingId = cursor.getInt(cursor.getColumnIndex(CommentsColumn.KEY_LINK_ID));
+
         viewHolder.tvComment.setText(comment);
         viewHolder.tvUsername.setText(author);
         viewHolder.tvUpvoteCount.setText(String.valueOf(upvote));
@@ -92,8 +100,6 @@ public class CommentsAdapter extends RecyclerView.Adapter {
             @Override
             public void onClick(View view) {
                 //Check if user is logged in or not
-
-                String thingId = child.t1data.link_id;
                 boolean mTwoPane = false;
 
                 boolean loggedIn = UserState.isUserLoggedIn(context);
@@ -113,11 +119,6 @@ public class CommentsAdapter extends RecyclerView.Adapter {
             }
         });
 
-    }
-
-    @Override
-    public int getItemCount() {
-        return list.size();
     }
 
 

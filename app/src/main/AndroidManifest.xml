@@ -186,6 +186,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.android.rahul_lohra.redditstar.activity.DashboardActivity" />
         </activity>
+
+        <service
+            android:name=".service.CommentsService"
+            android:exported="false"></service>
     </application>
 
 </manifest>

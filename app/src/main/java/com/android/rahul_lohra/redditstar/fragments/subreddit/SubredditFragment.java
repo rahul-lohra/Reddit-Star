@@ -1,6 +1,5 @@
 package com.android.rahul_lohra.redditstar.fragments.subreddit;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -16,7 +15,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,22 +23,17 @@ import android.widget.Toast;
 
 import com.android.rahul_lohra.redditstar.R;
 import com.android.rahul_lohra.redditstar.adapter.cursor.HomeAdapter;
-import com.android.rahul_lohra.redditstar.adapter.normal.FrontPageAdapter;
 import com.android.rahul_lohra.redditstar.application.Initializer;
 import com.android.rahul_lohra.redditstar.contract.IFrontPageAdapter;
-import com.android.rahul_lohra.redditstar.loader.SubredditLoader;
 import com.android.rahul_lohra.redditstar.modal.FavoritesModal;
-import com.android.rahul_lohra.redditstar.modal.SubscribeSubreddit;
 import com.android.rahul_lohra.redditstar.modal.custom.DetailPostModal;
 import com.android.rahul_lohra.redditstar.modal.frontPage.FrontPageChild;
-import com.android.rahul_lohra.redditstar.modal.frontPage.FrontPageResponse;
 import com.android.rahul_lohra.redditstar.modal.frontPage.FrontPageResponseData;
 import com.android.rahul_lohra.redditstar.modal.t5_Subreddit.T5_Data;
 import com.android.rahul_lohra.redditstar.modal.t5_Subreddit.t5_Response;
 import com.android.rahul_lohra.redditstar.retrofit.ApiInterface;
 import com.android.rahul_lohra.redditstar.service.GetSubredditListService;
 import com.android.rahul_lohra.redditstar.storage.MyProvider;
-import com.android.rahul_lohra.redditstar.storage.column.MyFavouritesColumn;
 import com.android.rahul_lohra.redditstar.utility.Constants;
 import com.android.rahul_lohra.redditstar.utility.UserState;
 import com.varunest.sparkbutton.SparkButton;
@@ -51,9 +44,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.inject.Inject;
 import javax.inject.Named;

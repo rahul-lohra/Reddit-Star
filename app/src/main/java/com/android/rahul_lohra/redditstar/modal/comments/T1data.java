@@ -12,7 +12,7 @@ public class T1data {
     public String subredditId;
     @SerializedName("likes")
     @Expose
-    public Object likes;
+    public Boolean likes;
     @SerializedName("replies")
     @Expose
     public Example replies;
@@ -47,7 +47,7 @@ public class T1data {
     @Expose
     public String link_id;
 
-    public T1data(String subredditId, Object likes, Example replies, String id, String author, String parentId, Integer score, String body, Integer downs, String subreddit, String name, Integer ups, String link_id) {
+    public T1data(String subredditId, Boolean likes, Example replies, String id, String author, String parentId, Integer score, String body, Integer downs, String subreddit, String name, Integer ups, String link_id) {
         this.subredditId = subredditId;
         this.likes = likes;
         this.replies = replies;
@@ -61,5 +61,57 @@ public class T1data {
         this.name = name;
         this.ups = ups;
         this.link_id = link_id;
+    }
+
+    public String getSubredditId() {
+        return subredditId;
+    }
+
+    public Boolean getLikes() {
+        return likes;
+    }
+
+    public Example getReplies() {
+        return replies;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public String getParentId() {
+        return parentId;
+    }
+
+    public Integer getScore() {
+        return score;
+    }
+
+    public String getBody() {
+        return body;
+    }
+
+    public Integer getDowns() {
+        return downs;
+    }
+
+    public String getSubreddit() {
+        return subreddit;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Integer getUps() {
+        return ups;
+    }
+
+    public String getLink_id() {
+        return link_id;
     }
 }

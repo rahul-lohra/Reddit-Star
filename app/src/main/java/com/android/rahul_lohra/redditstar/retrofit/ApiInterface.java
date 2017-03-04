@@ -59,8 +59,8 @@ public interface ApiInterface {
                                         @Path(value = "subbreddit_name", encoded = true) String subbreddit_name
     );
 
-    @GET("/r/{subbreddit_name}/comments/{commentsId}.json")
-    Call<ResponseBody> getComments(@Path(value = "commentsId", encoded = true) String commentsId,
+    @GET("/r/{subbreddit_name}/comments/{postId}.json")
+    Call<ResponseBody> getComments(@Path(value = "postId", encoded = true) String postId,
                                    @Path(value = "subbreddit_name", encoded = true) String subbreddit_name,
                                    @QueryMap Map<String, String> map);
 

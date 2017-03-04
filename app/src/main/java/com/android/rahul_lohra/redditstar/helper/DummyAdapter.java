@@ -198,7 +198,7 @@ public class DummyAdapter extends TypeAdapter<List<Example>> {
                 subreddit = reader.nextString();
             } else if (temp_name.equals("likes")) {
                 //TODO code for LIKES
-//                likes = reader.nex
+                likes = reader.nextBoolean();
             } else if (temp_name.equals("id")) {
                 id = reader.nextString();
             } else if (temp_name.equals("clicked")) {
@@ -267,7 +267,7 @@ public class DummyAdapter extends TypeAdapter<List<Example>> {
 
     public T1data readT1Data(JsonReader reader) throws IOException {
         String subredditId = null;
-        Object likes = null;
+        Boolean likes = null;
         Example replies = null;
         String id = null;
         String author = null;
@@ -321,7 +321,10 @@ public class DummyAdapter extends TypeAdapter<List<Example>> {
                 ups = reader.nextInt();
             } else if (temp_name.equals("link_id")) {
                 linkId = reader.nextString();
-            } else {
+            } else if (temp_name.equals("likes")) {
+                likes = reader.nextBoolean();
+            }
+            else {
                 reader.skipValue();
             }
         }
