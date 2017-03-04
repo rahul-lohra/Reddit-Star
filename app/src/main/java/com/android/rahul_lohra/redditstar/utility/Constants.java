@@ -140,10 +140,10 @@ public class Constants {
             ContentValues contentValues = CustomOrm.FrontPageChildDataToContentValues(data);
             context.getContentResolver().insert(mUri,contentValues);
 
-            Intent intentCommentService = new Intent(context, CommentsService.class);
-                intentCommentService.putExtra(CommentsService.POST_ID,id);
-                intentCommentService.putExtra(CommentsService.SUBREDDIT_NAME,subredditName);
-                context.startService(intentCommentService);
+//            Intent intentCommentService = new Intent(context, CommentsService.class);
+//                intentCommentService.putExtra(CommentsService.POST_ID,id);
+//                intentCommentService.putExtra(CommentsService.SUBREDDIT_NAME,subredditName);
+//                context.startService(intentCommentService);
 
         }
     }

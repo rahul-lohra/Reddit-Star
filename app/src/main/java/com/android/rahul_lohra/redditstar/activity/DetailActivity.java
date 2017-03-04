@@ -100,6 +100,7 @@ public class DetailActivity extends BaseActivity implements
 
     private final int LOADER_ID = 1;
     private final int LOADER_ID_COMMENTS = 2;
+    private final String BUNDLE_LINK_ID = "link_id";
 
     CommentsAdapter commentsAdapter;
     List<CustomComment> list = new ArrayList<>();
@@ -111,7 +112,7 @@ public class DetailActivity extends BaseActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_detail_subreddit);
+        setContentView(R.layout.fragment_detail_subreddit_new);
         ButterKnife.bind(this);
         ((Initializer)getApplicationContext()).getNetComponent().inject(this);
 
@@ -129,7 +130,10 @@ public class DetailActivity extends BaseActivity implements
         setDataInView(cursor);
 
 //        getComments();
-        getSupportLoaderManager().initLoader(LOADER_ID_COMMENTS,null,this);
+        Bundle bundle = new Bundle();
+        String properLinkId = "t3_"+id;
+        bundle.putString(BUNDLE_LINK_ID,properLinkId);
+        getSupportLoaderManager().initLoader(LOADER_ID_COMMENTS,bundle,this);
 
 //        if (subredditModal != null) {
 //            Bundle bundle = new Bundle();
@@ -391,9 +395,11 @@ public class DetailActivity extends BaseActivity implements
                         mUriReadTable,null,null,null,null);
             case LOADER_ID_COMMENTS:
             {
+                String linkId = args.getString(BUNDLE_LINK_ID);
                 String mWhereComments = CommentsColumn.KEY_LINK_ID +"=?";
-                String mWhereCommentsArgs[] = {subredditModal.getSubreddit()};
-                return new CursorLoader(this,commentsUri,null,mWhereComments,mWhereCommentsArgs,null);
+                String mWhereCommentsArgs[] = {linkId};
+                String sortOrder = CommentsColumn.KEY_SQL_ID+" LIMIT 200";
+                return new CursorLoader(this,commentsUri,null,mWhereComments,mWhereCommentsArgs,sortOrder);
             }
         }
         return null;
