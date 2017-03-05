@@ -73,7 +73,7 @@ public class GetFrontPageService extends IntentService {
                 {
 //                    EventBus.getDefault().post(res.body().getData());
                     EventBus.getDefault().post(new AfterModal(res.body().getData().getAfter()));
-                    Constants.insertPostsIntoTable(getApplicationContext(),res.body(),mUri);
+                    Constants.insertPostsIntoTable(getApplicationContext(),res.body(),Constants.TYPE_POST);
                     for(FrontPageChild frontPageChild:res.body().getData().getChildren()){
                         String url = frontPageChild.getData().getThumbnail();
                         FutureTarget<File> future = Glide.with(getApplicationContext())

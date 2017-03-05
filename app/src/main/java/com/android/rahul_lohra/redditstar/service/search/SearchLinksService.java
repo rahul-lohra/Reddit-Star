@@ -69,8 +69,7 @@ public class SearchLinksService extends IntentService {
                 Log.d(TAG,"resCode:"+res.code());
                 if (res.code() == 200) {
                     FrontPageResponse modal = res.body();
-                    Uri mUri = MyProvider.SearchLinkLists.CONTENT_URI;
-                    Constants.insertPostsIntoTable(getApplicationContext(),modal,mUri);
+                    Constants.insertPostsIntoTable(getApplicationContext(),modal,Constants.TYPE_SEARCH);
                     EventBus.getDefault().post(new AfterModal(modal.getData().getAfter()));
                 }
             } catch (IOException e) {

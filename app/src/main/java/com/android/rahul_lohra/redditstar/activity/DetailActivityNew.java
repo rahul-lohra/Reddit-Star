@@ -88,8 +88,8 @@ public class DetailActivityNew extends BaseActivity implements
     ImageView imageDownVote;
     @Bind(R.id.tv_sort)
     TextView tvSort;
-    @Bind(R.id.rv)
-    RecyclerView rv;
+//    @Bind(R.id.rv)
+//    RecyclerView rv;
     @Bind(R.id.coordinator_layout)
     CoordinatorLayout coordinatorLayout;
     @Bind(R.id.frame_layout)
@@ -120,30 +120,30 @@ public class DetailActivityNew extends BaseActivity implements
         ButterKnife.bind(this);
         ((Initializer)getApplicationContext()).getNetComponent().inject(this);
 
-        Intent intent = getIntent();
-        id = intent.getStringExtra("id");
-        mUriReadTable = intent.getParcelableExtra("uri");
-        subredditModal = (DetailPostModal) intent.getParcelableExtra("modal");
-
-        apiInterface = retrofit.create(ApiInterface.class);
-
-        String mSeletion = MyPostsColumn.KEY_ID +"=?";
-        String mSelectionArgs[] = {id};
-
-        Cursor cursor = getContentResolver().query(mUriReadTable,null,mSeletion,mSelectionArgs,null);
-        setDataInView(cursor);
-
-        String properLinkId = "t3_"+id;
+//        Intent intent = getIntent();
+//        id = intent.getStringExtra("id");
+//        mUriReadTable = intent.getParcelableExtra("uri");
+//        subredditModal = (DetailPostModal) intent.getParcelableExtra("modal");
+//
+//        apiInterface = retrofit.create(ApiInterface.class);
+//
+//        String mSeletion = MyPostsColumn.KEY_ID +"=?";
+//        String mSelectionArgs[] = {id};
+//
+//        Cursor cursor = getContentResolver().query(mUriReadTable,null,mSeletion,mSelectionArgs,null);
+//        setDataInView(cursor);
+//
+//        String properLinkId = id;
 //        showCommentsFragment(R.id.frame_layout,properLinkId,subredditModal.getSubreddit());
+//
+//        //requestComments
+//        requestComments();
+//
+//        Bundle bundle = new Bundle();
+//        bundle.putString(BUNDLE_LINK_ID,properLinkId);
+//        getSupportLoaderManager().initLoader(LOADER_ID_COMMENTS,bundle,this);
 
-        //requestComments
-        requestComments();
-
-        Bundle bundle = new Bundle();
-        bundle.putString(BUNDLE_LINK_ID,properLinkId);
-        getSupportLoaderManager().initLoader(LOADER_ID_COMMENTS,bundle,this);
-
-        setAdapter();
+//        setAdapter();
 
     }
 
@@ -191,11 +191,9 @@ public class DetailActivityNew extends BaseActivity implements
             }else {
                 imageView.setVisibility(View.GONE);
             }
-
         }
 
         Integer likes = subredditModal.getLikes();
-
         highlightVote(likes);
 
         snackbar = Snackbar
@@ -225,9 +223,9 @@ public class DetailActivityNew extends BaseActivity implements
     }
 
     private void setAdapter() {
-        commentsAdapter = new CommentsAdapter(this, null);
-        rv.setLayoutManager(new LinearLayoutManager(this));
-        rv.setAdapter(commentsAdapter);
+//        commentsAdapter = new CommentsAdapter(this, null);
+//        rv.setLayoutManager(new LinearLayoutManager(this));
+//        rv.setAdapter(commentsAdapter);
     }
 
     private void performVote(@PostView.DirectionMode final int mode) {
@@ -344,8 +342,6 @@ public class DetailActivityNew extends BaseActivity implements
                 updateVoteCount(-1);
             }
         }
-
-
     }
 
     @OnClick(R.id.fab)
@@ -393,11 +389,7 @@ public class DetailActivityNew extends BaseActivity implements
             case LOADER_ID_COMMENTS:
             {
                 commentsAdapter.swapCursor(data);
-//                if(data!=null){
-//                    if(!data.moveToFirst()){
-//                    }
-//
-//                }
+                break;
             }
         }
     }

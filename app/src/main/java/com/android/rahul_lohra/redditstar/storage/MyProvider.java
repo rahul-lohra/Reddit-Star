@@ -103,45 +103,6 @@ public class MyProvider {
         }
     }
 
-    @TableEndpoint(table = MyDatabase.USER_TEMP_TABLE)
-    public static class TempLists {
-
-        @ContentUri(
-                path = "temp_posts",
-                type = "vnd.android.cursor.dir/temp_posts_item"
-        )
-        public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/temp_posts");
-
-        @InexactContentUri(
-                path = "temp_posts/*",
-                name = "TEMP_POSTS_ID",
-                type = "vnd.android.cursor.item/temp_posts_item",
-                whereColumn = MyPostsColumn.KEY_SQL_ID,
-                pathSegment = 1)
-        public static Uri withId(long id) {
-            return Uri.parse("content://" + AUTHORITY + "/temp_posts/" + id);
-        }
-    }
-
-    @TableEndpoint(table = MyDatabase.USER_SEARCH_LINK_TABLE)
-    public static class SearchLinkLists {
-
-        @ContentUri(
-                path = "search_link",
-                type = "vnd.android.cursor.dir/search_link_item"
-        )
-        public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/search_link");
-
-        @InexactContentUri(
-                path = "search_link/*",
-                name = "SEARCH_LINK_ID",
-                type = "vnd.android.cursor.item/search_link_item",
-                whereColumn = MyPostsColumn.KEY_SQL_ID,
-                pathSegment = 1)
-        public static Uri withId(long id) {
-            return Uri.parse("content://" + AUTHORITY + "/search_link/" + id);
-        }
-    }
 
     @TableEndpoint(table = MyDatabase.WIDGET_TABLE)
     public static class WidgetLists {
@@ -182,14 +143,38 @@ public class MyProvider {
             return Uri.parse("content://" + AUTHORITY + "/comments/" + id);
         }
     }
-    @TableEndpoint(table = MyDatabase.COMMENTS_TABLE)
+    @TableEndpoint(table = MyDatabase.USER_POSTS_TABLE)
     public static class PostsComments{
         @ContentUri(
                 path = "comments_posts",
                 type = "vnd.android.cursor.dir/comments_posts_item",
-                join = "INNER JOIN "+MyDatabase.USER_POSTS_TABLE+ " ON "+ MyDatabase.COMMENTS_TABLE+"."+CommentsColumn.KEY_LINK_ID+ " = "+MyDatabase.USER_POSTS_TABLE+"."+MyPostsColumn.KEY_ID
+                join = "LEFT JOIN "+MyDatabase.COMMENTS_TABLE+ " ON "+ MyDatabase.COMMENTS_TABLE+"."+CommentsColumn.KEY_LINK_ID+ " = "+MyDatabase.USER_POSTS_TABLE+"."+MyPostsColumn.KEY_ID
         )
         public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/comments_posts");
+        public static final String mProjection[]={
+                MyDatabase.USER_POSTS_TABLE+"."+MyPostsColumn.KEY_SQL_ID,
+                MyDatabase.USER_POSTS_TABLE+"."+MyPostsColumn.KEY_ID,
+                MyDatabase.USER_POSTS_TABLE+"."+MyPostsColumn.KEY_SUBREDDIT,
+                MyDatabase.USER_POSTS_TABLE+"."+MyPostsColumn.KEY_SUBREDDIT_ID,
+                MyDatabase.USER_POSTS_TABLE+"."+MyPostsColumn.KEY_NAME,
+                MyDatabase.USER_POSTS_TABLE+"."+MyPostsColumn.KEY_AUTHOR,
+                MyDatabase.USER_POSTS_TABLE+"."+MyPostsColumn.KEY_CREATED_UTC,
+                MyDatabase.USER_POSTS_TABLE+"."+MyPostsColumn.KEY_UPS,
+                MyDatabase.USER_POSTS_TABLE+"."+MyPostsColumn.KEY_TITLE,
+                MyDatabase.USER_POSTS_TABLE+"."+MyPostsColumn.KEY_THUMBNAIL,
+                MyDatabase.USER_POSTS_TABLE+"."+MyPostsColumn.KEY_URL,
+                MyDatabase.USER_POSTS_TABLE+"."+MyPostsColumn.KEY_LIKES,
+                MyDatabase.USER_POSTS_TABLE+"."+MyPostsColumn.KEY_BIG_IMAGE_URL,
+                MyDatabase.USER_POSTS_TABLE+"."+MyPostsColumn.KEY_POST_HINT,
+                MyDatabase.USER_POSTS_TABLE+"."+MyPostsColumn.KEY_COMMENTS_COUNT,
+                MyDatabase.COMMENTS_TABLE+"."+CommentsColumn.KEY_SQL_ID,
+                MyDatabase.COMMENTS_TABLE+"."+CommentsColumn.KEY_BODY,
+                MyDatabase.COMMENTS_TABLE+"."+CommentsColumn.KEY_AUTHOR,
+                MyDatabase.COMMENTS_TABLE+"."+CommentsColumn.KEY_UPS,
+                MyDatabase.COMMENTS_TABLE+"."+CommentsColumn.KEY_LINK_ID,
+                MyDatabase.COMMENTS_TABLE+"."+CommentsColumn.KEY_SQL_ID,
+                MyDatabase.COMMENTS_TABLE+"."+CommentsColumn.KEY_DEPTH
+        };
 
     }
 }

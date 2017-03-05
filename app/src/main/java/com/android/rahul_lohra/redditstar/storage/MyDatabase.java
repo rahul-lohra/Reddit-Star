@@ -27,10 +27,6 @@ public class MyDatabase {
 
     @Table(MyPostsColumn.class) public static final String USER_POSTS_TABLE = "user_posts_table";
 
-    @Table(MyPostsColumn.class) public static final String USER_TEMP_TABLE = "user_temp_table";
-
-    @Table(MyPostsColumn.class) public static final String USER_SEARCH_LINK_TABLE = "user_search_link_table";
-
     @Table(MyPostsColumn.class) public static final String WIDGET_TABLE = "widget_table";
 
     @Table(CommentsColumn.class) public static final String COMMENTS_TABLE = "comments_table";

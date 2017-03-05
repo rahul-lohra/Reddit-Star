@@ -23,11 +23,15 @@ import com.android.rahul_lohra.redditstar.modal.comments.CustomComment;
 import com.android.rahul_lohra.redditstar.modal.comments.Example;
 import com.android.rahul_lohra.redditstar.storage.MyProvider;
 import com.android.rahul_lohra.redditstar.storage.column.CommentsColumn;
+import com.android.rahul_lohra.redditstar.storage.column.MyPostsColumn;
 import com.android.rahul_lohra.redditstar.storage.column.UserCredentialsColumn;
+import com.android.rahul_lohra.redditstar.utility.Constants;
+import com.android.rahul_lohra.redditstar.utility.Share;
 import com.android.rahul_lohra.redditstar.utility.UserState;
 import com.android.rahul_lohra.redditstar.viewHolder.CommentsViewHolder;
 import com.android.rahul_lohra.redditstar.viewHolder.CursorRecyclerViewAdapter;
 import com.android.rahul_lohra.redditstar.viewHolder.PostView;
+import com.android.rahul_lohra.redditstar.viewHolder.PostViewDetail;
 
 
 import java.util.List;
@@ -43,6 +47,9 @@ public class CommentsAdapter extends CursorRecyclerViewAdapter<RecyclerView.View
 
     private Context context;
 
+    private static final int POST_TYPE = 1;
+    private static final int COMMENTS_TYPE = 2;
+
     public CommentsAdapter(Context context, Cursor cursor) {
         super(context, cursor);
         this.context = context;
@@ -50,78 +57,137 @@ public class CommentsAdapter extends CursorRecyclerViewAdapter<RecyclerView.View
 
     @Override
     public int getItemViewType(int position) {
-        return super.getItemViewType(position);
+        int val = -1;
+        switch (position){
+            case 0: val = POST_TYPE;
+                break;
+            default: val = COMMENTS_TYPE;
+        }
+        return val;
     }
 
-    //    public CommentsAdapter(Context context, Cursor cursor) {
-//        this.context = context;
-//        this.list = list;
-//    }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         RecyclerView.ViewHolder v = null;
-        v = new CommentsViewHolder(LayoutInflater.from(parent.getContext()).
-                inflate(R.layout.list_item_comments, parent, false));
+        switch (viewType){
+            case POST_TYPE:
+            {
+                v = new PostViewDetail(context,LayoutInflater.from(parent.getContext()).
+                        inflate(R.layout.list_item_posts_detail, parent, false));
+            }
+            break;
+            case COMMENTS_TYPE:
+                v =  new CommentsViewHolder(LayoutInflater.from(parent.getContext()).
+                        inflate(R.layout.list_item_comments, parent, false));
+                break;
+        }
         return v;
+
     }
 
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, Cursor cursor) {
-        CommentsViewHolder viewHolder = (CommentsViewHolder)holder;
-        int depth = cursor.getInt(cursor.getColumnIndex(CommentsColumn.KEY_DEPTH));
-        //set Margin and Color
-        switch (depth){
-            case 1: viewHolder.view_2.setBackgroundColor(ContextCompat.getColor(context,R.color.colorAccent));
-                break;
-            case 2: viewHolder.view_2.setBackgroundColor(ContextCompat.getColor(context,R.color.colorPrimary));
-                break;
-            case 3: viewHolder.view_2.setBackgroundColor(ContextCompat.getColor(context,R.color.grey_500));
-                break;
-        }
 
-        int margin = depth *20;
-        ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams)viewHolder.view_2.getLayoutParams();
-        params.setMarginStart(margin);
-        viewHolder.view_2.setLayoutParams(params);
-        viewHolder.view_2.requestLayout();
 
-        //set Textual Data
+        switch (holder.getItemViewType()){
+            case POST_TYPE:
+            {
+                PostViewDetail viewHolder = (PostViewDetail)holder;
+                final String sqlId = cursor.getString(cursor.getColumnIndex(MyPostsColumn.KEY_SQL_ID));
+                final String id = cursor.getString(cursor.getColumnIndex(MyPostsColumn.KEY_ID));
+                final String subreddit = cursor.getString(cursor.getColumnIndex(MyPostsColumn.KEY_SUBREDDIT));
+                final String subredditId = cursor.getString(cursor.getColumnIndex(MyPostsColumn.KEY_SUBREDDIT_ID));
+                final String name = cursor.getString(cursor.getColumnIndex(MyPostsColumn.KEY_NAME));
+                final String author = cursor.getString(cursor.getColumnIndex(MyPostsColumn.KEY_AUTHOR));
+                final long createdUtc = cursor.getLong(cursor.getColumnIndex(MyPostsColumn.KEY_CREATED_UTC));
+                final String time = Constants.getTimeDiff(createdUtc);
+                final String ups = String.valueOf(cursor.getString(cursor.getColumnIndex(MyPostsColumn.KEY_UPS)));
+                final String title = String.valueOf(cursor.getString(cursor.getColumnIndex(MyPostsColumn.KEY_TITLE)));
+                final String commentsCount = String.valueOf(cursor.getString(cursor.getColumnIndex(MyPostsColumn.KEY_COMMENTS_COUNT)));
+                final String thumbnail = cursor.getString(cursor.getColumnIndex(MyPostsColumn.KEY_THUMBNAIL));
+                final String url = cursor.getString(cursor.getColumnIndex(MyPostsColumn.KEY_URL));
+                final Integer likes = cursor.getInt(cursor.getColumnIndex(MyPostsColumn.KEY_LIKES));
+                final String bigImageUrl = cursor.getString(cursor.getColumnIndex(MyPostsColumn.KEY_BIG_IMAGE_URL));
+                final String postHint =  cursor.getString(cursor.getColumnIndex(MyPostsColumn.KEY_POST_HINT));
+
+                viewHolder.setLikes(likes);
+                viewHolder.tvShare.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+//                        Share share = new Share();
+//                        share.shareUrl(activity,url);
+                    }
+                });
+                viewHolder.tvVote.setText(ups);
+                viewHolder.tvTitle.setText(title);
+                viewHolder.tvComments.setText(commentsCount);
+
+                viewHolder.tvCategory.setText("r/" + subreddit + "-" + time);
+                viewHolder.tvUsername.setText(author);
+
+
+            }break;
+            case COMMENTS_TYPE:{
+                CommentsViewHolder viewHolder = (CommentsViewHolder)holder;
+                int depth = cursor.getInt(cursor.getColumnIndex(CommentsColumn.KEY_DEPTH));
+                //set Margin and Color
+                switch (depth){
+                    case 1: viewHolder.view_2.setBackgroundColor(ContextCompat.getColor(context,R.color.colorAccent));
+                        break;
+                    case 2: viewHolder.view_2.setBackgroundColor(ContextCompat.getColor(context,R.color.colorPrimary));
+                        break;
+                    case 3: viewHolder.view_2.setBackgroundColor(ContextCompat.getColor(context,R.color.grey_500));
+                        break;
+                }
+
+                int margin = depth *20;
+                ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams)viewHolder.view_2.getLayoutParams();
+                params.setMarginStart(margin);
+                viewHolder.view_2.setLayoutParams(params);
+                viewHolder.view_2.requestLayout();
+
+                //set Textual Data
 
 //        final Child child = list.get(position).getChild();
-        final String comment = cursor.getString(cursor.getColumnIndex(CommentsColumn.KEY_BODY));
-        final String author = cursor.getString(cursor.getColumnIndex(CommentsColumn.KEY_AUTHOR));
-        final int upvote = cursor.getInt(cursor.getColumnIndex(CommentsColumn.KEY_UPS));
-        final int thingId = cursor.getInt(cursor.getColumnIndex(CommentsColumn.KEY_LINK_ID));
+                final String comment = cursor.getString(cursor.getColumnIndex(CommentsColumn.KEY_BODY));
+                final String author = cursor.getString(cursor.getColumnIndex(CommentsColumn.KEY_AUTHOR));
+                final int upvote = cursor.getInt(cursor.getColumnIndex(CommentsColumn.KEY_UPS));
+                final int thingId = cursor.getInt(cursor.getColumnIndex(CommentsColumn.KEY_LINK_ID));
 
-        viewHolder.tvComment.setText(comment);
-        viewHolder.tvUsername.setText(author);
-        viewHolder.tvUpvoteCount.setText(String.valueOf(upvote));
+                viewHolder.tvComment.setText(comment);
+                viewHolder.tvUsername.setText(author);
+                viewHolder.tvUpvoteCount.setText(String.valueOf(upvote));
 
 
-        viewHolder.tvReply.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //Check if user is logged in or not
-                boolean mTwoPane = false;
+                viewHolder.tvReply.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        //Check if user is logged in or not
+                        boolean mTwoPane = false;
 
-                boolean loggedIn = UserState.isUserLoggedIn(context);
-                if(loggedIn){
-                    //TODO:check for two Pane
-                    if(mTwoPane){
-                        //show Fragment
-                    }else {
-                        //open Activity
-                        Intent intent = new Intent(context, ReplyActivity.class);
-                        intent.putExtra("thing_id",thingId);
-                        context.startActivity(intent);
+                        boolean loggedIn = UserState.isUserLoggedIn(context);
+                        if(loggedIn){
+                            //TODO:check for two Pane
+                            if(mTwoPane){
+                                //show Fragment
+                            }else {
+                                //open Activity
+                                Intent intent = new Intent(context, ReplyActivity.class);
+                                intent.putExtra("thing_id",thingId);
+                                context.startActivity(intent);
+                            }
+                        }else {
+                            Toast.makeText(context,context.getString(R.string.please_login),Toast.LENGTH_SHORT).show();
+                        }
                     }
-                }else {
-                    Toast.makeText(context,context.getString(R.string.please_login),Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+                });
+            }break;
+        }
+
+
+
 
     }
 

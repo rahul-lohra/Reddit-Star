@@ -1,11 +1,18 @@
 package com.android.rahul_lohra.redditstar.storage.column;
 
+import android.support.annotation.IntDef;
+import android.support.annotation.IntRange;
+import android.support.annotation.IntegerRes;
+
 import net.simonvt.schematic.annotation.DataType;
 import net.simonvt.schematic.annotation.DefaultValue;
 import net.simonvt.schematic.annotation.NotNull;
 import net.simonvt.schematic.annotation.PrimaryKey;
 import net.simonvt.schematic.annotation.Unique;
 
+import java.lang.annotation.Retention;
+
+import static java.lang.annotation.RetentionPolicy.SOURCE;
 import static net.simonvt.schematic.annotation.DataType.Type.INTEGER;
 import static net.simonvt.schematic.annotation.DataType.Type.TEXT;
 
@@ -95,6 +102,20 @@ public interface MyPostsColumn {
 
     @DataType(TEXT)
     String KEY_BIG_IMAGE_URL = "big_image_url";
+
+    @DataType(INTEGER)
+    @NotNull @DefaultValue("-1")
+    String TYPE_POST = "type_post";
+    @DataType(INTEGER)
+    @NotNull @DefaultValue("-1")
+    String TYPE_SEARCH = "type_search";
+    @DataType(INTEGER)
+    @NotNull @DefaultValue("-1")
+    String TYPE_WIDGET = "type_widget";
+    @DataType(INTEGER)
+    @NotNull @DefaultValue("-1")
+    String TYPE_TEMP = "type_temp";
+
 
 
 }

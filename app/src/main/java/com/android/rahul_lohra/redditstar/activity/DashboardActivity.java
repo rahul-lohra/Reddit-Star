@@ -39,6 +39,7 @@ import com.android.rahul_lohra.redditstar.modal.custom.DetailPostModal;
 import com.android.rahul_lohra.redditstar.presenter.activity.DashboardPresenter;
 import com.android.rahul_lohra.redditstar.service.widget.WidgetTaskService;
 import com.android.rahul_lohra.redditstar.storage.MyProvider;
+import com.android.rahul_lohra.redditstar.storage.column.MyPostsColumn;
 import com.android.rahul_lohra.redditstar.storage.column.MySubredditColumn;
 import com.android.rahul_lohra.redditstar.storage.column.UserCredentialsColumn;
 import com.android.rahul_lohra.redditstar.utility.CommonOperations;
@@ -119,7 +120,7 @@ public class DashboardActivity extends BaseActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        Constants.clearTable(this, MyProvider.PostsLists.CONTENT_URI);
+//        Constants.clearPosts(this, MyProvider.PostsLists.CONTENT_URI);
         setContentView(R.layout.activity_dashboard);
         ButterKnife.bind(this);
         init();
@@ -168,16 +169,16 @@ public class DashboardActivity extends BaseActivity implements
                 .setPersisted(true)
                 .build();
 
-        Task frontPageTask = new PeriodicTask.Builder()
-                .setService(WidgetTaskService.class)
-                .setPeriod(60*31)
-                .setFlex(10)
-                .setTag(WidgetTaskService.TAG_PERIODIC_WIDGET)
-                .setPersisted(true)
-                .build();
+//        Task frontPageTask = new PeriodicTask.Builder()
+//                .setService(WidgetTaskService.class)
+//                .setPeriod(60*31)
+//                .setFlex(10)
+//                .setTag(WidgetTaskService.TAG_PERIODIC_WIDGET)
+//                .setPersisted(true)
+//                .build();
 
         mGcmNetworkManager.schedule(widgetTask);
-        mGcmNetworkManager.schedule(frontPageTask);
+//        mGcmNetworkManager.schedule(frontPageTask);
 
     }
 
@@ -390,12 +391,29 @@ public class DashboardActivity extends BaseActivity implements
         if (mTwoPane) {
             showDetailSubredditFragment(modal,id,MyProvider.PostsLists.CONTENT_URI);
         } else {
-            Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(this, imageView, imageView.getTransitionName()).toBundle();
+            String mProjection[]={MyPostsColumn.KEY_POST_HINT};
+            String mSelectionArgs[]={id,"image"};
+            String mSelection = MyPostsColumn.KEY_ID+"= ? AND "+MyPostsColumn.KEY_POST_HINT+" =?";
+
+            Cursor cursor = getContentResolver().query(MyProvider.PostsLists.CONTENT_URI,mProjection,mSelection,mSelectionArgs,null);
             Intent intent = new Intent(this, DetailActivity.class);
             intent.putExtra("modal", modal);
             intent.putExtra("id",id);
             intent.putExtra("uri", MyProvider.PostsLists.CONTENT_URI);
-            startActivity(intent, bundle);
+
+            if(cursor!=null)
+            {
+                if(cursor.moveToFirst()){
+                    Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(this, imageView, imageView.getTransitionName()).toBundle();
+                    cursor.close();
+                    startActivity(intent,bundle);
+                }else {
+                    cursor.close();
+                    startActivity(intent);
+                }
+            }
+
+//            startActivity(intent);
 
         }
     }

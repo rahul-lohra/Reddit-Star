@@ -112,8 +112,8 @@ public class HomeFragment extends Fragment implements
             if (cursor.moveToFirst()) {
                 //Dont make api Call
             } else {
-                Constants.clearTable(getContext(), MyProvider.PostsLists.CONTENT_URI);
-                Constants.clearTable(getContext(), MyProvider.CommentsLists.CONTENT_URI);
+                Constants.clearPosts(getContext(),Constants.TYPE_POST);
+                Constants.clearComments(getContext());
                 makeApiCall();
             }
             cursor.close();
@@ -138,8 +138,10 @@ public class HomeFragment extends Fragment implements
                 // Your code to refresh the list here.
                 // Make sure you call swipeContainer.setRefreshing(false)
                 // once the network request has completed successfully.
-                Constants.clearTable(getContext(), MyProvider.PostsLists.CONTENT_URI);
-                Constants.clearTable(getContext(), MyProvider.CommentsLists.CONTENT_URI);
+                Constants.clearPosts(getContext(), Constants.TYPE_POST);
+                Constants.clearPosts(getContext(), Constants.TYPE_SEARCH);
+                Constants.clearPosts(getContext(), Constants.TYPE_TEMP);
+                Constants.clearComments(getContext());
                 makeApiCall();
 
                 CountDownTimer countDownTimer = new CountDownTimer(7000, 1000) {
@@ -278,10 +280,13 @@ public class HomeFragment extends Fragment implements
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         Uri mUri = MyProvider.PostsLists.CONTENT_URI;
+        String mWhere = MyPostsColumn.TYPE_POST+"=?";
+        String mWhereArgs[] ={"1"};
+
 //        String mProjection[]=null;
         switch (id) {
             case LOADER_ID:
-                return new CursorLoader(getActivity(), mUri, null, null, null, null);
+                return new CursorLoader(getActivity(), mUri, null, mWhere, mWhereArgs, null);
         }
         return null;
     }

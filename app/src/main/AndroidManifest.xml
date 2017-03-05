@@ -119,6 +119,14 @@
                 android:value=".activity.DashboardActivity" />
         </activity>
         <activity
+            android:name=".activity.DetailActivityNew"
+            android:parentActivityName=".activity.DashboardActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.DashboardActivity" />
+        </activity>
+
+        <activity
             android:name=".dummy.DummyDashboardActivity"
             android:label="@string/home" />
         <activity

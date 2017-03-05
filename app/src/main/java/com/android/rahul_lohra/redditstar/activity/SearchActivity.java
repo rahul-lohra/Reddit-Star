@@ -51,7 +51,7 @@ import retrofit2.Retrofit;
 public class SearchActivity extends BaseActivity implements SearchFragment.ISearchFragment
 
 {
-    private Uri uri = MyProvider.SearchLinkLists.CONTENT_URI;
+    private Uri uri = MyProvider.PostsLists.CONTENT_URI;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

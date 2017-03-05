@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    android:id="@+id/card_view"
+    android:clickable="true"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            android:textStyle="normal|bold"
+            tools:text="@string/comments_title" />
+
+        <TextView
+            android:padding="8dp"
+            android:id="@+id/tv_category"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="@string/sample_category" />
+
+        <TextView
+            android:padding="8dp"
+            android:id="@+id/tv_username"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="u/Auggernaut88" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:id="@+id/frameLayout2">
+
+            <include layout="@layout/item_vote_commments_share" />
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/tv_sort"
+            android:layout_height="wrap_content"
+            android:drawablePadding="16dp"
+            android:drawableStart="@drawable/ic_sort"
+            tools:text="@string/sort_order"
+            android:layout_width="match_parent"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="16dp" />
+
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>

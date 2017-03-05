@@ -34,7 +34,7 @@ public class GetSubredditListService extends IntentService {
     Retrofit retrofitWithToken;
 
     ApiInterface apiInterface;
-    Uri mUri = MyProvider.TempLists.CONTENT_URI;
+
 
     public static String after = null;
 
@@ -67,7 +67,7 @@ public class GetSubredditListService extends IntentService {
                 Log.d(TAG,"resCode:"+res.code());
                 if (res.code() == 200) {
 //                    EventBus.getDefault().post(res.body().getData());
-                    Constants.insertPostsIntoTable(getApplicationContext(),res.body(),mUri);
+                    Constants.insertPostsIntoTable(getApplicationContext(),res.body(),Constants.TYPE_TEMP);
                 }
             } catch (IOException e) {
                 e.printStackTrace();

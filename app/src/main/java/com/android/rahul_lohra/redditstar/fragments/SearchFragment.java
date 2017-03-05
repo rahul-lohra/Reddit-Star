@@ -1,6 +1,5 @@
 package com.android.rahul_lohra.redditstar.fragments;
 
-import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -24,10 +23,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.rahul_lohra.redditstar.R;
-import com.android.rahul_lohra.redditstar.activity.DetailActivity;
 import com.android.rahul_lohra.redditstar.activity.SubredditActivity;
 import com.android.rahul_lohra.redditstar.adapter.cursor.HomeAdapter;
-import com.android.rahul_lohra.redditstar.adapter.normal.T3_LinkSearchAdapter;
 import com.android.rahul_lohra.redditstar.adapter.normal.T5_SubredditSearchAdapter;
 import com.android.rahul_lohra.redditstar.application.Initializer;
 import com.android.rahul_lohra.redditstar.contract.IFrontPageAdapter;
@@ -40,6 +37,7 @@ import com.android.rahul_lohra.redditstar.retrofit.ApiInterface;
 import com.android.rahul_lohra.redditstar.service.search.SearchLinksService;
 import com.android.rahul_lohra.redditstar.service.search.SearchSubredditsService;
 import com.android.rahul_lohra.redditstar.storage.MyProvider;
+import com.android.rahul_lohra.redditstar.storage.column.MyPostsColumn;
 import com.android.rahul_lohra.redditstar.utility.Constants;
 import com.android.rahul_lohra.redditstar.utility.UserState;
 
@@ -58,7 +56,6 @@ import retrofit2.Retrofit;
 
 public class    SearchFragment extends BaseFragment implements
         T5_SubredditSearchAdapter.IT5_SubredditSearchAdapter,
-//        T3_LinkSearchAdapter.IT3_LinkSearchAdapter,
         LoaderManager.LoaderCallbacks<Cursor>,
         IFrontPageAdapter {
 
@@ -90,7 +87,7 @@ public class    SearchFragment extends BaseFragment implements
     String searchQuery;
     String afterOfLink = "";
 //    String afterOfSubreddit;
-    private Uri mUri = MyProvider.SearchLinkLists.CONTENT_URI;
+    private Uri mUri = MyProvider.PostsLists.CONTENT_URI;
 
     public interface ISearchFragment{
         void openDetailScreen(DetailPostModal modal,ImageView imageView,String id);
@@ -114,7 +111,7 @@ public class    SearchFragment extends BaseFragment implements
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
         ((Initializer) getContext().getApplicationContext()).getNetComponent().inject(this);
-        Constants.clearTable(getContext(),MyProvider.SearchLinkLists.CONTENT_URI);
+        Constants.clearPosts(getContext(),Constants.TYPE_SEARCH);
     }
 
     @Override
@@ -183,11 +180,8 @@ public class    SearchFragment extends BaseFragment implements
          */
         if(isFromStart)
         {
-//            t3dataList.clear();
             t5dataList.clear();
-//            t3LinkSearchAdapter.notifyDataSetChanged();
-            Uri mUri = MyProvider.SearchLinkLists.CONTENT_URI;
-            Constants.clearTable(getContext(),mUri);
+            Constants.clearPosts(getContext(),Constants.TYPE_SEARCH);
             t5SubredditSearchAdapter.notifyDataSetChanged();
         }
         if (!query.isEmpty()) {
@@ -289,8 +283,12 @@ public class    SearchFragment extends BaseFragment implements
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         switch (id) {
-            case LOADER_ID:
-                return new CursorLoader(getActivity(),mUri,null,null,null,null);
+            case LOADER_ID:{
+                String mWhere = MyPostsColumn.TYPE_SEARCH+"=?";
+                String mWhereArgs[]={"1"};
+                return new CursorLoader(getActivity(),mUri,null,mWhere,mWhereArgs,null);
+            }
+
         }
         return null;
     }

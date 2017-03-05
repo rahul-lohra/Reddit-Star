@@ -25,6 +25,7 @@ import com.android.rahul_lohra.redditstar.service.search.SearchLinksService;
 import com.android.rahul_lohra.redditstar.service.search.SearchSubredditsService;
 import com.android.rahul_lohra.redditstar.service.widget.WidgetTaskService;
 import com.android.rahul_lohra.redditstar.viewHolder.PostView;
+import com.android.rahul_lohra.redditstar.viewHolder.PostViewDetail;
 
 import javax.inject.Singleton;
 
@@ -64,5 +65,7 @@ public interface NetComponent {
     void inject(SubredditLoader loader);
     //View
     void inject(PostView view);
+    void inject(PostViewDetail view);
+
 
 }

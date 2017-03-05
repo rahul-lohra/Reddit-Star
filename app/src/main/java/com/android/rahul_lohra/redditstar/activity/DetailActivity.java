@@ -29,6 +29,7 @@ import com.android.rahul_lohra.redditstar.modal.comments.CustomComment;
 import com.android.rahul_lohra.redditstar.modal.custom.DetailPostModal;
 import com.android.rahul_lohra.redditstar.retrofit.ApiInterface;
 import com.android.rahul_lohra.redditstar.service.CommentsService;
+import com.android.rahul_lohra.redditstar.storage.MyDatabase;
 import com.android.rahul_lohra.redditstar.storage.MyProvider;
 import com.android.rahul_lohra.redditstar.storage.column.CommentsColumn;
 import com.android.rahul_lohra.redditstar.storage.column.MyPostsColumn;
@@ -69,32 +70,36 @@ public class DetailActivity extends BaseActivity implements
 
     @Bind(R.id.imageView)
     AspectRatioImageView imageView;
-    @Bind(R.id.tv_category)
-    TextView tvCategory;
-    @Bind(R.id.tv_title)
-    TextView tvTitle;
-    @Bind(R.id.tv_username)
-    TextView tvUsername;
-    @Bind(R.id.tv_share)
-    TextView tvShare;
-    @Bind(R.id.tv_comments)
-    TextView tvComments;
-    @Bind(R.id.tv_vote)
-    TextView tvVote;
-    @Bind(R.id.image_up_vote)
-    ImageView imageUpVote;
-    @Bind(R.id.image_down_vote)
-    ImageView imageDownVote;
-    @Bind(R.id.tv_sort)
-    TextView tvSort;
+    //    @Bind(R.id.tv_category)
+//    TextView tvCategory;
+//    @Bind(R.id.tv_title)
+//    TextView tvTitle;
+//    @Bind(R.id.tv_username)
+//    TextView tvUsername;
+//    @Bind(R.id.tv_share)
+//    TextView tvShare;
+//    @Bind(R.id.tv_comments)
+//    TextView tvComments;
+//    @Bind(R.id.tv_vote)
+//    TextView tvVote;
+//    @Bind(R.id.image_up_vote)
+//    ImageView imageUpVote;
+//    @Bind(R.id.image_down_vote)
+//    ImageView imageDownVote;
+//    @Bind(R.id.tv_sort)
+//    TextView tvSort;
     @Bind(R.id.rv)
     RecyclerView rv;
     @Bind(R.id.coordinator_layout)
     CoordinatorLayout coordinatorLayout;
 
     @Inject
+    @Named("withoutToken")
+    Retrofit retrofitWithoutToken;
+
+    @Inject
     @Named("withToken")
-    Retrofit retrofit;
+    Retrofit retrofitWithToken;
     private ApiInterface apiInterface;
     Snackbar snackbar;
 
@@ -105,89 +110,104 @@ public class DetailActivity extends BaseActivity implements
     private final String BUNDLE_LINK_ID = "link_id";
 
     CommentsAdapter commentsAdapter;
-    List<CustomComment> list = new ArrayList<>();
+    //    List<CustomComment> list = new ArrayList<>();
     private DetailPostModal subredditModal;
     private final String TAG = DetailActivity.class.getSimpleName();
     private Uri mUriReadTable;
     private String id;
+    private boolean isUserLoggedIn = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_detail_subreddit_new);
         ButterKnife.bind(this);
-        ((Initializer)getApplicationContext()).getNetComponent().inject(this);
+        ((Initializer) getApplicationContext()).getNetComponent().inject(this);
 
         Intent intent = getIntent();
         id = intent.getStringExtra("id");
         mUriReadTable = intent.getParcelableExtra("uri");
         subredditModal = (DetailPostModal) intent.getParcelableExtra("modal");
 
-        apiInterface = retrofit.create(ApiInterface.class);
-
-        String mSeletion = MyPostsColumn.KEY_ID +"=?";
-        String mSelectionArgs[] = {id};
-
-        Cursor cursor = getContentResolver().query(mUriReadTable,null,mSeletion,mSelectionArgs,null);
-        setDataInView(cursor);
-
-        //requestComments
-        requestComments();
-
-
+        isUserLoggedIn = UserState.isUserLoggedIn(getApplicationContext());
+        apiInterface = (isUserLoggedIn)?retrofitWithToken.create(ApiInterface.class):retrofitWithoutToken.create(ApiInterface.class);
+//
+////        String mSeletion = MyPostsColumn.KEY_ID +"=?";
+////        String mSelectionArgs[] = {id};
+////        Cursor cursor = getContentResolver().query(mUriReadTable,null,mSeletion,mSelectionArgs,null);
+////        setDataInView(cursor);
+//
+        requestComments(id);
+//
         Bundle bundle = new Bundle();
         String properLinkId = id;
-        bundle.putString(BUNDLE_LINK_ID,properLinkId);
-        getSupportLoaderManager().initLoader(LOADER_ID_COMMENTS_POSTS,bundle,this);
+        bundle.putString(BUNDLE_LINK_ID, properLinkId);
+        getSupportLoaderManager().initLoader(LOADER_ID_COMMENTS_POSTS, bundle, this);
+        getSupportLoaderManager().initLoader(LOADER_ID, bundle, this);
+
 
         setAdapter();
 
     }
 
-    private void requestComments(){
-        Toast.makeText(getApplicationContext(),getString(R.string.loading_comments),Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(getApplicationContext(),CommentsService.class);
-        intent.putExtra(CommentsService.POST_ID,subredditModal.getId());
-        intent.putExtra(CommentsService.SUBREDDIT_NAME,subredditModal.getSubreddit());
-        startService(intent);
+    private void requestComments(String linkId) {
+
+        String mProj[] = {CommentsColumn.KEY_SQL_ID};
+        String mWhere = CommentsColumn.KEY_LINK_ID + "=?";
+        String mWhereArgs[] = {linkId};
+        Cursor cursor = getContentResolver().query(MyProvider.CommentsLists.CONTENT_URI, mProj, mWhere, mWhereArgs, null);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+
+
+            } else {
+
+                Toast.makeText(this, getString(R.string.loading_comments), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(this, CommentsService.class);
+                intent.putExtra(CommentsService.POST_ID, subredditModal.getId());
+                intent.putExtra(CommentsService.SUBREDDIT_NAME, subredditModal.getSubreddit());
+                startService(intent);
+            }
+            cursor.close();
+        }
     }
 
-    private void getComments(){
+    private void getComments() {
         String subredditName = subredditModal.getSubreddit();
         String postId = subredditModal.getId();
 
         Intent intent = new Intent(this, CommentsService.class);
-        intent.putExtra(CommentsService.POST_ID,postId);
-        intent.putExtra(CommentsService.SUBREDDIT_NAME,subredditName);
+        intent.putExtra(CommentsService.POST_ID, postId);
+        intent.putExtra(CommentsService.SUBREDDIT_NAME, subredditName);
         startService(intent);
 
     }
 
     private void initData() {
-        tvTitle.setText(subredditModal.getTitle());
-        tvComments.setText(subredditModal.getCommentsCount());
-        tvVote.setText(subredditModal.getUps());
-        tvCategory.setText("r/" + subredditModal.getSubreddit() + "-" + subredditModal.getTime());
-        tvUsername.setText(subredditModal.getAuthor());
-        tvSort.setText("new");
-        String bigImageUrl = subredditModal.getBigImageUrl();
-        String postHint = subredditModal.getPostHint();
-        if(postHint!=null){
-            if(postHint.equals("image")){
-                Glide.with(this).
-                        load(bigImageUrl)
-                        .centerCrop()
-                        .crossFade()
-                        .into(imageView);
-            }else {
-                imageView.setVisibility(View.GONE);
-            }
+//        tvTitle.setText(subredditModal.getTitle());
+//        tvComments.setText(subredditModal.getCommentsCount());
+//        tvVote.setText(subredditModal.getUps());
+//        tvCategory.setText("r/" + subredditModal.getSubreddit() + "-" + subredditModal.getTime());
+//        tvUsername.setText(subredditModal.getAuthor());
+//        tvSort.setText("new");
+//        String bigImageUrl = subredditModal.getBigImageUrl();
+//        String postHint = subredditModal.getPostHint();
+//        if(postHint!=null){
+//            if(postHint.equals("image")){
+//                Glide.with(this).
+//                        load(bigImageUrl)
+//                        .centerCrop()
+//                        .crossFade()
+//                        .into(imageView);
+//            }else {
+//                imageView.setVisibility(View.GONE);
+//            }
 
-        }
+//        }
 
-        Integer likes = subredditModal.getLikes();
-
-        highlightVote(likes);
+//        Integer likes = subredditModal.getLikes();
+//
+//        highlightVote(likes);
 
         snackbar = Snackbar
                 .make(coordinatorLayout, getString(R.string.please_login), Snackbar.LENGTH_SHORT)
@@ -203,15 +223,15 @@ public class DetailActivity extends BaseActivity implements
     }
 
     private void highlightVote(Integer likes) {
-        if(likes!=0){
-            Integer resId = (likes==1) ? R.drawable.ic_arrow_upward_true : R.drawable.ic_arrow_downward_true;
-            Glide.with(this)
-                    .load("")
-                    .placeholder(resId)
-                    .into((likes==1) ? imageUpVote : imageDownVote);
-
-            tvVote.setTextColor((likes==1)?ContextCompat.getColor(this,R.color.light_blue_500):ContextCompat.getColor(this,R.color.green_500));
-        }
+//        if(likes!=0){
+//            Integer resId = (likes==1) ? R.drawable.ic_arrow_upward_true : R.drawable.ic_arrow_downward_true;
+//            Glide.with(this)
+//                    .load("")
+//                    .placeholder(resId)
+//                    .into((likes==1) ? imageUpVote : imageDownVote);
+//
+//            tvVote.setTextColor((likes==1)?ContextCompat.getColor(this,R.color.light_blue_500):ContextCompat.getColor(this,R.color.green_500));
+//        }
 
     }
 
@@ -233,7 +253,7 @@ public class DetailActivity extends BaseActivity implements
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
 
                 Log.d(TAG, "UpVote onResponse:" + response.code());
-                Constants.updateLikes(getApplicationContext(),mode,subredditModal.getId());
+                Constants.updateLikes(getApplicationContext(), mode, subredditModal.getId());
             }
 
             @Override
@@ -244,103 +264,103 @@ public class DetailActivity extends BaseActivity implements
     }
 
 
-    private void updateVote(@PostView.DirectionMode Integer mode)
-    {
-        subredditModal.setLikes(mode);
-        switch (mode){
-            case DIRECTION_UP:{
-                updateVoteBackground(imageUpVote,R.drawable.ic_arrow_upward_true);
-                updateVoteBackground(imageDownVote,R.drawable.ic_arrow_downward);
+//    private void updateVote(@PostView.DirectionMode Integer mode)
+//    {
+//        subredditModal.setLikes(mode);
+//        switch (mode){
+//            case DIRECTION_UP:{
+//                updateVoteBackground(imageUpVote,R.drawable.ic_arrow_upward_true);
+//                updateVoteBackground(imageDownVote,R.drawable.ic_arrow_downward);
+//
+//            }
+//            break;
+//            case DIRECTION_DOWN:{
+//                updateVoteBackground(imageUpVote,R.drawable.ic_arrow_upward);
+//                updateVoteBackground(imageDownVote,R.drawable.ic_arrow_downward_true);
+//
+//            }
+//            break;
+//            case DIRECTION_NULL:{
+//                updateVoteBackground(imageUpVote,R.drawable.ic_arrow_upward);
+//                updateVoteBackground(imageDownVote,R.drawable.ic_arrow_downward);
+//            }
+//            break;
+//            default:
+//        }
+//    }
 
-            }
-            break;
-            case DIRECTION_DOWN:{
-                updateVoteBackground(imageUpVote,R.drawable.ic_arrow_upward);
-                updateVoteBackground(imageDownVote,R.drawable.ic_arrow_downward_true);
-
-            }
-            break;
-            case DIRECTION_NULL:{
-                updateVoteBackground(imageUpVote,R.drawable.ic_arrow_upward);
-                updateVoteBackground(imageDownVote,R.drawable.ic_arrow_downward);
-            }
-            break;
-            default:
-        }
-    }
-
-    private void updateVoteBackground(ImageView imageView,int resId){
+    private void updateVoteBackground(ImageView imageView, int resId) {
         Glide.with(this)
                 .load("")
                 .placeholder(resId)
                 .into(imageView);
     }
 
-    private void updateVoteCount(int c){
+    private void updateVoteCount(int c) {
 
-        int count = Integer.parseInt(tvVote.getText().toString());
-        count =count+c;
-        String newCount = String.valueOf(count);
-        subredditModal.setCommentsCount(newCount);
-        tvVote.setText(newCount);
-
-    }
-
-    @OnClick(R.id.image_up_vote)
-    void onClickUpVote() {
-        boolean isUserLoggedIn = UserState.isUserLoggedIn(this);
-
-        if (!isUserLoggedIn) {
-            snackbar.show();
-        } else {
-
-            Integer mLikes = subredditModal.getLikes();
-            if(mLikes== -1)
-            {
-                performVote(DIRECTION_NULL);
-                updateVote(DIRECTION_NULL);
-                tvVote.setTextColor(ContextCompat.getColor(this,R.color.grey_700));
-                updateVoteCount(1);
-            }
-            else if(mLikes==0){
-                performVote(DIRECTION_UP);
-                updateVote(DIRECTION_UP);
-                tvVote.setTextColor(ContextCompat.getColor(this,R.color.light_blue_500));
-                updateVoteCount(1);
-            }
-
-        }
-    }
-
-    @OnClick(R.id.image_down_vote)
-    void onClickDownVote() {
-        boolean isUserLoggedIn = UserState.isUserLoggedIn(this);
-
-        if (!isUserLoggedIn) {
-            snackbar.show();
-        } else {
-
-            Integer mLikes = subredditModal.getLikes();
-            if(mLikes==1)
-            {
-                performVote(DIRECTION_NULL);
-                updateVote(DIRECTION_NULL);
-                tvVote.setTextColor(ContextCompat.getColor(this,R.color.grey_700));
-                updateVoteCount(-1);
-            }
-            else if(mLikes==0){
-                performVote(DIRECTION_DOWN);
-                updateVote(DIRECTION_DOWN);
-                tvVote.setTextColor(ContextCompat.getColor(this,R.color.green_500));
-                updateVoteCount(-1);
-            }
-        }
-
+//        int count = Integer.parseInt(tvVote.getText().toString());
+//        count =count+c;
+//        String newCount = String.valueOf(count);
+//        subredditModal.setCommentsCount(newCount);
+//        tvVote.setText(newCount);
 
     }
+
+//    @OnClick(R.id.image_up_vote)
+//    void onClickUpVote() {
+//        boolean isUserLoggedIn = UserState.isUserLoggedIn(this);
+//
+//        if (!isUserLoggedIn) {
+//            snackbar.show();
+//        } else {
+//
+//            Integer mLikes = subredditModal.getLikes();
+//            if(mLikes== -1)
+//            {
+//                performVote(DIRECTION_NULL);
+//                updateVote(DIRECTION_NULL);
+//                tvVote.setTextColor(ContextCompat.getColor(this,R.color.grey_700));
+//                updateVoteCount(1);
+//            }
+//            else if(mLikes==0){
+//                performVote(DIRECTION_UP);
+//                updateVote(DIRECTION_UP);
+//                tvVote.setTextColor(ContextCompat.getColor(this,R.color.light_blue_500));
+//                updateVoteCount(1);
+//            }
+//
+//        }
+//    }
+
+//    @OnClick(R.id.image_down_vote)
+//    void onClickDownVote() {
+//        boolean isUserLoggedIn = UserState.isUserLoggedIn(this);
+//
+//        if (!isUserLoggedIn) {
+//            snackbar.show();
+//        } else {
+//
+//            Integer mLikes = subredditModal.getLikes();
+//            if(mLikes==1)
+//            {
+//                performVote(DIRECTION_NULL);
+//                updateVote(DIRECTION_NULL);
+//                tvVote.setTextColor(ContextCompat.getColor(this,R.color.grey_700));
+//                updateVoteCount(-1);
+//            }
+//            else if(mLikes==0){
+//                performVote(DIRECTION_DOWN);
+//                updateVote(DIRECTION_DOWN);
+//                tvVote.setTextColor(ContextCompat.getColor(this,R.color.green_500));
+//                updateVoteCount(-1);
+//            }
+//        }
+//
+//
+//    }
 
     @OnClick(R.id.fab)
-    void onClickFab(){
+    void onClickFab() {
         //open Reply Activity
         boolean isUserLoggedIn = UserState.isUserLoggedIn(this);
         if (!isUserLoggedIn) {
@@ -351,35 +371,40 @@ public class DetailActivity extends BaseActivity implements
         }
     }
 
-    private void openReplyActivity(String thingId){
-        Intent intent = new Intent(this,ReplyActivity.class);
-        intent.putExtra("thing_id",thingId);
+    private void openReplyActivity(String thingId) {
+        Intent intent = new Intent(this, ReplyActivity.class);
+        intent.putExtra("thing_id", thingId);
         startActivity(intent);
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        Uri commentsUri = MyProvider.CommentsLists.CONTENT_URI;
         switch (id) {
-            case LOADER_ID:
+            case LOADER_ID: {
+                String mId = args.getString(BUNDLE_LINK_ID);
+                String mProjection[] = {MyPostsColumn.KEY_POST_HINT, MyPostsColumn.KEY_BIG_IMAGE_URL};
+                String mWhere = MyPostsColumn.KEY_ID + " =?";
+                String mWherArgs[] = {mId};
                 return new CursorLoader(this,
-                        mUriReadTable,null,null,null,null);
-            case LOADER_ID_COMMENTS:
-            {
-                String linkId = args.getString(BUNDLE_LINK_ID);
-                String mWhereComments = CommentsColumn.KEY_LINK_ID +"=?";
-                String mWhereCommentsArgs[] = {linkId};
-                String sortOrder = CommentsColumn.KEY_SQL_ID+" LIMIT 200";
-                return new CursorLoader(this,commentsUri,null,mWhereComments,mWhereCommentsArgs,sortOrder);
+                        mUriReadTable, mProjection, mWhere, mWherArgs, null);
+
             }
-            case LOADER_ID_COMMENTS_POSTS:{
+            case LOADER_ID_COMMENTS:
+//            {
+//                String linkId = args.getString(BUNDLE_LINK_ID);
+//                String mWhereComments = CommentsColumn.KEY_LINK_ID +"=?";
+//                String mWhereCommentsArgs[] = {linkId};
+//                String sortOrder = CommentsColumn.KEY_SQL_ID+" LIMIT 200";
+//                return new CursorLoader(this,commentsUri,null,mWhereComments,mWhereCommentsArgs,sortOrder);
+//            }
+            case LOADER_ID_COMMENTS_POSTS: {
                 String linkId = args.getString(BUNDLE_LINK_ID);
 
-                String mWhere3 = CommentsColumn.KEY_LINK_ID + "=?";
+                String mWhere3 = MyDatabase.USER_POSTS_TABLE + "." + MyPostsColumn.KEY_ID + "=?";
                 String mWhereArgs3[] = {linkId};
-                String sortOrder = CommentsColumn.KEY_SQL_ID+" LIMIT 200";
+                String sortOrder = MyDatabase.COMMENTS_TABLE + "." + CommentsColumn.KEY_SQL_ID + " LIMIT 50";
 
-                return new CursorLoader(this,MyProvider.PostsComments.CONTENT_URI,null,mWhere3,mWhereArgs3,sortOrder);
+                return new CursorLoader(this, MyProvider.PostsComments.CONTENT_URI, MyProvider.PostsComments.mProjection, mWhere3, mWhereArgs3, sortOrder);
             }
 
 
@@ -393,8 +418,7 @@ public class DetailActivity extends BaseActivity implements
             case LOADER_ID:
                 setDataInView(data);
                 break;
-            case LOADER_ID_COMMENTS:
-            {
+            case LOADER_ID_COMMENTS: {
                 commentsAdapter.swapCursor(data);
             }
             break;
@@ -409,17 +433,27 @@ public class DetailActivity extends BaseActivity implements
             case LOADER_ID:
                 subredditModal = null;
                 break;
-            case LOADER_ID_COMMENTS:{
+            case LOADER_ID_COMMENTS: {
                 commentsAdapter.swapCursor(null);
             }
         }
     }
 
-    private void setDataInView(Cursor cursor){
-        if(cursor.moveToFirst()){
-            subredditModal = CommonOperations.getDetailModalFromCursor(cursor);
-            if(subredditModal!=null)
-                initData();
+    private void setDataInView(Cursor cursor) {
+        if (cursor.moveToFirst()) {
+            String bigImageUrl = cursor.getString(cursor.getColumnIndex(MyPostsColumn.KEY_BIG_IMAGE_URL));
+            String postHint = cursor.getString(cursor.getColumnIndex(MyPostsColumn.KEY_POST_HINT));
+            if (postHint != null) {
+                if (postHint.equals("image")) {
+                    Glide.with(this).
+                            load(bigImageUrl)
+                            .centerCrop()
+                            .crossFade()
+                            .into(imageView);
+                } else {
+                    imageView.setVisibility(View.GONE);
+                }
+            }
         }
         cursor.close();
     }

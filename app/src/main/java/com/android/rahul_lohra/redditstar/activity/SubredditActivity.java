@@ -2,6 +2,7 @@ package com.android.rahul_lohra.redditstar.activity;
 
 import android.app.ActivityOptions;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -13,10 +14,11 @@ import com.android.rahul_lohra.redditstar.R;
 import com.android.rahul_lohra.redditstar.fragments.subreddit.SubredditFragment;
 import com.android.rahul_lohra.redditstar.modal.custom.DetailPostModal;
 import com.android.rahul_lohra.redditstar.storage.MyProvider;
+import com.android.rahul_lohra.redditstar.storage.column.MyPostsColumn;
 
 public class SubredditActivity extends BaseActivity implements SubredditFragment.ISubredditFragment {
 
-    private Uri uri = MyProvider.TempLists.CONTENT_URI;
+    private Uri uri = MyProvider.PostsLists.CONTENT_URI;
     ;
 
     @Override
@@ -46,14 +48,27 @@ public class SubredditActivity extends BaseActivity implements SubredditFragment
 //        if (mTwoPane) {
 //            showDetailSubredditFragment(modal);
 //        } else {
-        Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(this, imageView, imageView.getTransitionName()).toBundle();
+        String mProjection[]={MyPostsColumn.KEY_POST_HINT};
+        String mSelectionArgs[]={id,"image"};
+        String mSelection = MyPostsColumn.KEY_ID+"= ? AND "+MyPostsColumn.KEY_POST_HINT+" =?";
+
+        Cursor cursor = getContentResolver().query(MyProvider.PostsLists.CONTENT_URI,mProjection,mSelection,mSelectionArgs,null);
         Intent intent = new Intent(this, DetailActivity.class);
         intent.putExtra("modal", modal);
-        intent.putExtra("id", id);
-        intent.putExtra("uri", uri);
-//            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent, bundle);
+        intent.putExtra("id",id);
+        intent.putExtra("uri", MyProvider.PostsLists.CONTENT_URI);
 
-//        }
+        if(cursor!=null)
+        {
+            if(cursor.moveToFirst()){
+                Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(this, imageView, imageView.getTransitionName()).toBundle();
+                cursor.close();
+                startActivity(intent,bundle);
+            }else {
+                cursor.close();
+                startActivity(intent);
+            }
+        }
+
     }
 }

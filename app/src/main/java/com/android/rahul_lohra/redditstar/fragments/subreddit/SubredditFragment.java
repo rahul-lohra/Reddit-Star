@@ -34,6 +34,7 @@ import com.android.rahul_lohra.redditstar.modal.t5_Subreddit.t5_Response;
 import com.android.rahul_lohra.redditstar.retrofit.ApiInterface;
 import com.android.rahul_lohra.redditstar.service.GetSubredditListService;
 import com.android.rahul_lohra.redditstar.storage.MyProvider;
+import com.android.rahul_lohra.redditstar.storage.column.MyPostsColumn;
 import com.android.rahul_lohra.redditstar.utility.Constants;
 import com.android.rahul_lohra.redditstar.utility.UserState;
 import com.varunest.sparkbutton.SparkButton;
@@ -318,10 +319,13 @@ public class SubredditFragment extends Fragment
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        Uri mUri = MyProvider.TempLists.CONTENT_URI;
+        Uri mUri = MyProvider.PostsLists.CONTENT_URI;
+        String mWhere = MyPostsColumn.TYPE_TEMP+" =?";
+        String mWhereArgs[] = {"1"};
+
         switch (id) {
             case LOADER_ID:
-                return new CursorLoader(getActivity(),mUri,null,null,null,null);
+                return new CursorLoader(getActivity(),mUri,null,mWhere,mWhereArgs,null);
         }
         return null;
     }

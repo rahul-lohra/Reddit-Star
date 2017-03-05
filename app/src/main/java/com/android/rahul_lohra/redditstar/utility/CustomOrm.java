@@ -8,13 +8,18 @@ import com.android.rahul_lohra.redditstar.modal.frontPage.Media;
 import com.android.rahul_lohra.redditstar.modal.frontPage.Preview;
 import com.android.rahul_lohra.redditstar.storage.column.MyPostsColumn;
 
+import static com.android.rahul_lohra.redditstar.utility.Constants.TYPE_POST;
+import static com.android.rahul_lohra.redditstar.utility.Constants.TYPE_SEARCH;
+import static com.android.rahul_lohra.redditstar.utility.Constants.TYPE_TEMP;
+import static com.android.rahul_lohra.redditstar.utility.Constants.TYPE_WIDGET;
+
 /**
  * Created by rkrde on 27-02-2017.
  */
 
 public class CustomOrm {
 
-    public static  ContentValues FrontPageChildDataToContentValues(FrontPageChildData data){
+    public static  ContentValues FrontPageChildDataToContentValues(FrontPageChildData data,@Constants.ArticleType int type){
         ContentValues cv = new ContentValues();
 
         cv.put(MyPostsColumn.KEY_ID,"t3_"+data.getId());
@@ -50,6 +55,21 @@ public class CustomOrm {
         cv.put(MyPostsColumn.KEY_MEDIA_OEMBED_TYPE,(media!=null)?data.getMedia().getType():null);
         Preview preview = data.getPreview();
         cv.put(MyPostsColumn.KEY_BIG_IMAGE_URL,(preview!=null)?preview.getImages().get(0).getSource().getUrl():null);
+
+        switch (type){
+            case TYPE_POST:
+                cv.put(MyPostsColumn.TYPE_POST,1);
+                break;
+            case TYPE_SEARCH:
+                cv.put(MyPostsColumn.TYPE_SEARCH,1);
+                break;
+            case TYPE_WIDGET:
+                cv.put(MyPostsColumn.TYPE_WIDGET,1);
+                break;
+            case TYPE_TEMP:
+                cv.put(MyPostsColumn.TYPE_TEMP,1);
+                break;
+        }
 
         return cv;
 

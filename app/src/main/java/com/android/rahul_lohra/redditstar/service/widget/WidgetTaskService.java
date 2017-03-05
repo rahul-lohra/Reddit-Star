@@ -130,7 +130,7 @@ public class WidgetTaskService extends GcmTaskService {
                         String after  = res.body().getData().getAfter();
                         sp.edit().putString(SpConstants.WIDGET_AFTER,after).apply();
                         getContentResolver().delete(widgetUri,null,null);
-                        Constants.insertPostsIntoTable(mContext,res.body(), widgetUri);
+                        Constants.insertPostsIntoTable(mContext,res.body(), Constants.TYPE_WIDGET);
                     /*
                     update App widget
                      */
@@ -155,9 +155,9 @@ public class WidgetTaskService extends GcmTaskService {
                 Response<FrontPageResponse> res = apiInterface.getFrontPage(token,map).execute();
                 if(res.code()==200)
                 {
-                    Constants.clearTable(getApplicationContext(),MyProvider.PostsLists.CONTENT_URI);
-                    Constants.clearTable(getApplicationContext(),MyProvider.CommentsLists.CONTENT_URI);
-                    Constants.insertPostsIntoTable(getApplicationContext(),res.body(), MyProvider.PostsLists.CONTENT_URI);
+                    Constants.clearPosts(getApplicationContext(),Constants.TYPE_POST);
+                    Constants.clearComments(getApplicationContext());
+                    Constants.insertPostsIntoTable(getApplicationContext(),res.body(), Constants.TYPE_POST);
                     for(FrontPageChild frontPageChild:res.body().getData().getChildren()){
                         String url = frontPageChild.getData().getThumbnail();
                         FutureTarget<File> future = Glide.with(getApplicationContext())
