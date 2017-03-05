@@ -26,9 +26,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_scrollFlags="scroll"
+            android:id="@+id/collapsing_toolbar"
             app:toolbarId="@+id/toolbar"
             app:contentScrim="?attr/colorPrimary">
-
 
             <com.android.rahul_lohra.redditstar.helper.AspectRatioImageView
             app:layout_collapseMode="parallax"
@@ -41,6 +41,13 @@
             app:aspectRatioEnabled="true"
             app:srcCompat="@mipmap/ic_launcher" />
 
+            <android.support.v7.widget.Toolbar
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/translucent_toolbar"
+                android:theme="?attr/actionBarTheme"
+                android:minHeight="?attr/actionBarSize"
+                android:id="@+id/toolbar" />
 
             <!--app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed"-->
             <!--app:layout_scrollInterpolator="@android:anim/decelerate_interpolator"-->

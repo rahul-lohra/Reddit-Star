@@ -151,8 +151,11 @@ public class HomeFragment extends Fragment implements
                     }
 
                     public void onFinish() {
-                        if(swipeRefresh.isRefreshing()){
-                            swipeRefresh.setRefreshing(false);
+                        if(swipeRefresh!=null)
+                        {
+                            if(swipeRefresh.isRefreshing()){
+                                swipeRefresh.setRefreshing(false);
+                            }
                         }
                     }
                 };

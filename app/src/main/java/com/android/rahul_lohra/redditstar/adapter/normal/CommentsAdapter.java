@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -79,7 +80,7 @@ public class CommentsAdapter extends CursorRecyclerViewAdapter<RecyclerView.View
             break;
             case COMMENTS_TYPE:
                 v =  new CommentsViewHolder(LayoutInflater.from(parent.getContext()).
-                        inflate(R.layout.list_item_comments, parent, false));
+                        inflate(R.layout.list_item_comments_new, parent, false));
                 break;
         }
         return v;
@@ -123,6 +124,10 @@ public class CommentsAdapter extends CursorRecyclerViewAdapter<RecyclerView.View
                 viewHolder.tvVote.setText(ups);
                 viewHolder.tvTitle.setText(title);
                 viewHolder.tvComments.setText(commentsCount);
+                viewHolder.tvVote.setTextColor(ContextCompat.getColor(context,R.color.white));
+                viewHolder.tvComments.setTextColor(ContextCompat.getColor(context,R.color.white));
+                viewHolder.tvShare.setTextColor(ContextCompat.getColor(context,R.color.white));
+
 
                 viewHolder.tvCategory.setText("r/" + subreddit + "-" + time);
                 viewHolder.tvUsername.setText(author);
@@ -130,7 +135,7 @@ public class CommentsAdapter extends CursorRecyclerViewAdapter<RecyclerView.View
 
             }break;
             case COMMENTS_TYPE:{
-                CommentsViewHolder viewHolder = (CommentsViewHolder)holder;
+                final CommentsViewHolder viewHolder = (CommentsViewHolder)holder;
                 int depth = cursor.getInt(cursor.getColumnIndex(CommentsColumn.KEY_DEPTH));
                 //set Margin and Color
                 switch (depth){
@@ -143,14 +148,13 @@ public class CommentsAdapter extends CursorRecyclerViewAdapter<RecyclerView.View
                 }
 
                 int margin = depth *20;
-                ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams)viewHolder.view_2.getLayoutParams();
+                RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)viewHolder.view_2.getLayoutParams();
                 params.setMarginStart(margin);
+//                params.addRule(RelativeLayout.ALIGN_BOTTOM,viewHolder.tvComment.getId());
                 viewHolder.view_2.setLayoutParams(params);
                 viewHolder.view_2.requestLayout();
 
                 //set Textual Data
-
-//        final Child child = list.get(position).getChild();
                 final String comment = cursor.getString(cursor.getColumnIndex(CommentsColumn.KEY_BODY));
                 final String author = cursor.getString(cursor.getColumnIndex(CommentsColumn.KEY_AUTHOR));
                 final int upvote = cursor.getInt(cursor.getColumnIndex(CommentsColumn.KEY_UPS));
@@ -160,6 +164,14 @@ public class CommentsAdapter extends CursorRecyclerViewAdapter<RecyclerView.View
                 viewHolder.tvUsername.setText(author);
                 viewHolder.tvUpvoteCount.setText(String.valueOf(upvote));
 
+                viewHolder.tvUsername.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        int w  = viewHolder.view_2.getWidth();
+                        int h = viewHolder.view_2.getHeight();
+                        System.out.println();
+                    }
+                });
 
                 viewHolder.tvReply.setOnClickListener(new View.OnClickListener() {
                     @Override

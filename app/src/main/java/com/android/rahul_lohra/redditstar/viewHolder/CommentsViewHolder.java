@@ -18,6 +18,8 @@ import lombok.Data;
 public class CommentsViewHolder extends RecyclerView.ViewHolder {
     @Bind(R.id.view_2)
     public View view_2;
+//    @Bind(R.id.view_3)
+//    public View view_3;
     @Bind(R.id.tv_username)
     public TextView tvUsername;
     @Bind(R.id.tv_comment)

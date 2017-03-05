@@ -1,32 +1,38 @@
 package com.android.rahul_lohra.redditstar.activity;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.support.v7.graphics.Palette;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.rahul_lohra.redditstar.R;
 import com.android.rahul_lohra.redditstar.adapter.normal.CommentsAdapter;
 import com.android.rahul_lohra.redditstar.application.Initializer;
-import com.android.rahul_lohra.redditstar.fragments.DetailSubredditFragment;
 import com.android.rahul_lohra.redditstar.helper.AspectRatioImageView;
-import com.android.rahul_lohra.redditstar.loader.CommentsLoader;
-import com.android.rahul_lohra.redditstar.modal.comments.CustomComment;
-import com.android.rahul_lohra.redditstar.modal.custom.DetailPostModal;
 import com.android.rahul_lohra.redditstar.retrofit.ApiInterface;
 import com.android.rahul_lohra.redditstar.service.CommentsService;
 import com.android.rahul_lohra.redditstar.storage.MyDatabase;
@@ -34,14 +40,15 @@ import com.android.rahul_lohra.redditstar.storage.MyProvider;
 import com.android.rahul_lohra.redditstar.storage.column.CommentsColumn;
 import com.android.rahul_lohra.redditstar.storage.column.MyPostsColumn;
 import com.android.rahul_lohra.redditstar.utility.CommonOperations;
-import com.android.rahul_lohra.redditstar.utility.Constants;
 import com.android.rahul_lohra.redditstar.utility.UserState;
 import com.android.rahul_lohra.redditstar.viewHolder.PostView;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.GlideBitmapDrawable;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -55,10 +62,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-
-import static com.android.rahul_lohra.redditstar.viewHolder.PostView.DIRECTION_DOWN;
-import static com.android.rahul_lohra.redditstar.viewHolder.PostView.DIRECTION_NULL;
-import static com.android.rahul_lohra.redditstar.viewHolder.PostView.DIRECTION_UP;
 
 /*
  Needs two item in intent
@@ -84,14 +87,18 @@ public class DetailActivity extends BaseActivity implements
 //    TextView tvVote;
 //    @Bind(R.id.image_up_vote)
 //    ImageView imageUpVote;
-//    @Bind(R.id.image_down_vote)
-//    ImageView imageDownVote;
-//    @Bind(R.id.tv_sort)
-//    TextView tvSort;
+    @Bind(R.id.fab)
+    FloatingActionButton fab;
+    @Bind(R.id.toolbar)
+    Toolbar toolbar;
     @Bind(R.id.rv)
     RecyclerView rv;
+    @Bind(R.id.collapsing_toolbar)
+    CollapsingToolbarLayout collapsingToolbarLayout;
     @Bind(R.id.coordinator_layout)
     CoordinatorLayout coordinatorLayout;
+
+    private int darkMutedColor = 0xFF333333;
 
     @Inject
     @Named("withoutToken")
@@ -111,11 +118,12 @@ public class DetailActivity extends BaseActivity implements
 
     CommentsAdapter commentsAdapter;
     //    List<CustomComment> list = new ArrayList<>();
-    private DetailPostModal subredditModal;
+//    private DetailPostModal subredditModal;
     private final String TAG = DetailActivity.class.getSimpleName();
     private Uri mUriReadTable;
     private String id;
     private boolean isUserLoggedIn = false;
+    private String subreddit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,19 +132,58 @@ public class DetailActivity extends BaseActivity implements
         ButterKnife.bind(this);
         ((Initializer) getApplicationContext()).getNetComponent().inject(this);
 
+        setToolbar();
         Intent intent = getIntent();
         id = intent.getStringExtra("id");
         mUriReadTable = intent.getParcelableExtra("uri");
-        subredditModal = (DetailPostModal) intent.getParcelableExtra("modal");
+//        subredditModal = (DetailPostModal) intent.getParcelableExtra("modal");
 
         isUserLoggedIn = UserState.isUserLoggedIn(getApplicationContext());
         apiInterface = (isUserLoggedIn)?retrofitWithToken.create(ApiInterface.class):retrofitWithoutToken.create(ApiInterface.class);
 //
-////        String mSeletion = MyPostsColumn.KEY_ID +"=?";
-////        String mSelectionArgs[] = {id};
-////        Cursor cursor = getContentResolver().query(mUriReadTable,null,mSeletion,mSelectionArgs,null);
-////        setDataInView(cursor);
-//
+        String mSeletion = MyPostsColumn.KEY_ID +"=?";
+        String mSelectionArgs[] = {id};
+        String mProj[]={MyPostsColumn.KEY_SUBREDDIT,MyPostsColumn.KEY_BIG_IMAGE_URL,MyPostsColumn.KEY_POST_HINT};
+        Cursor cursor = getContentResolver().query(MyProvider.PostsLists.CONTENT_URI,mProj,mSeletion,mSelectionArgs,null);
+
+        if(cursor!=null) {
+            if (cursor.moveToFirst()) {
+                subreddit = cursor.getString(cursor.getColumnIndex(MyPostsColumn.KEY_SUBREDDIT));
+                String bigImageUrl = cursor.getString(cursor.getColumnIndex(MyPostsColumn.KEY_BIG_IMAGE_URL));
+                String postHint = cursor.getString(cursor.getColumnIndex(MyPostsColumn.KEY_POST_HINT));
+                if (postHint != null) {
+                    if (postHint.equals("image")) {
+                        Glide.with(this).
+                                load(bigImageUrl)
+                                .centerCrop()
+                                .crossFade()
+                                .listener(new RequestListener<String, GlideDrawable>() {
+                                    @Override
+                                    public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                                        return false;
+                                    }
+
+                                    @Override
+                                    public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                                        imageView.setImageDrawable(resource);
+
+                                        updatePalete(imageView);
+                                        return false;
+                                    }
+                                })
+                                .into(imageView);
+                    } else {
+                        imageView.setVisibility(View.GONE);
+                    }
+                } else {
+//                    finish();
+                }
+                cursor.close();
+            }else {
+                finish();
+            }
+        }
+
         requestComments(id);
 //
         Bundle bundle = new Bundle();
@@ -145,9 +192,78 @@ public class DetailActivity extends BaseActivity implements
         getSupportLoaderManager().initLoader(LOADER_ID_COMMENTS_POSTS, bundle, this);
         getSupportLoaderManager().initLoader(LOADER_ID, bundle, this);
 
-
         setAdapter();
 
+
+        snackbar = Snackbar
+                .make(coordinatorLayout, getString(R.string.please_login), Snackbar.LENGTH_SHORT)
+                .setAction(getString(R.string.login), new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        CommonOperations.addNewAccount(DetailActivity.this);
+//                        Snackbar snackbar1 = Snackbar.make(coordinatorLayout, "Message is restored!", Snackbar.LENGTH_SHORT);
+//                        snackbar1.show();
+                    }
+                });
+
+    }
+
+
+    private void setToolbar(){
+        setSupportActionBar(toolbar);
+        if(getSupportActionBar()!=null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_action_back);
+        }
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
+
+    }
+
+    private void updatePalete(AspectRatioImageView imageView) {
+
+        Drawable dr = ((ImageView) imageView).getDrawable();
+        Bitmap bmap =  ((GlideBitmapDrawable)dr.getCurrent()).getBitmap();
+//        imageView.buildDrawingCache();
+//        Bitmap bmap = imageView.getDrawingCache();
+        // Asynchronous
+        Palette.from(bmap).generate(new Palette.PaletteAsyncListener() {
+            public void onGenerated(Palette p) {
+                // Use generated instance
+                darkMutedColor = p.getDarkMutedColor(0xFF333333);
+                int mutedLightColor = p.getLightMutedColor(ContextCompat.getColor(getApplicationContext(), R.color.colorAccent));
+                int mutedColor = p.getMutedColor(0xFF333333);
+//                tvBody.setTextColor(darkMutedColor);
+//                linearLayout.setBackgroundColor(darkMutedColor);
+                collapsingToolbarLayout.setContentScrimColor(darkMutedColor);
+                CardView cardView = (CardView) rv.getChildAt(0);
+                if (cardView != null) {
+//                    cardView.setCardBackgroundColor(darkMutedColor);
+                    LinearLayout linearLayout = ((LinearLayout) cardView.findViewById(R.id.linear_layout));
+                    if(linearLayout!=null){
+                        linearLayout.setBackgroundColor(darkMutedColor);
+//                        ((TextView)cardView.findViewById(R.id.tv_category)).setTextColor(darkMutedColor);
+//                        ((TextView)cardView.findViewById(R.id.tv_username)).setTextColor(darkMutedColor);
+                    }
+
+
+                }
+
+                fab.setBackgroundTintList(ColorStateList.valueOf(mutedLightColor));
+
+                if (android.os.Build.VERSION.SDK_INT >= 21) {
+                    Window window = getWindow();
+                    window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                    window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+                    window.setStatusBarColor(darkMutedColor);
+                }
+            }
+        });
     }
 
     private void requestComments(String linkId) {
@@ -164,24 +280,24 @@ public class DetailActivity extends BaseActivity implements
 
                 Toast.makeText(this, getString(R.string.loading_comments), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(this, CommentsService.class);
-                intent.putExtra(CommentsService.POST_ID, subredditModal.getId());
-                intent.putExtra(CommentsService.SUBREDDIT_NAME, subredditModal.getSubreddit());
+                intent.putExtra(CommentsService.POST_ID,id);
+                intent.putExtra(CommentsService.SUBREDDIT_NAME, subreddit);
                 startService(intent);
             }
             cursor.close();
         }
     }
 
-    private void getComments() {
-        String subredditName = subredditModal.getSubreddit();
-        String postId = subredditModal.getId();
-
-        Intent intent = new Intent(this, CommentsService.class);
-        intent.putExtra(CommentsService.POST_ID, postId);
-        intent.putExtra(CommentsService.SUBREDDIT_NAME, subredditName);
-        startService(intent);
-
-    }
+//    private void getComments() {
+//        String subredditName = subredditModal.getSubreddit();
+//        String postId = subredditModal.getId();
+//
+//        Intent intent = new Intent(this, CommentsService.class);
+//        intent.putExtra(CommentsService.POST_ID, postId);
+//        intent.putExtra(CommentsService.SUBREDDIT_NAME, subredditName);
+//        startService(intent);
+//
+//    }
 
     private void initData() {
 //        tvTitle.setText(subredditModal.getTitle());
@@ -209,16 +325,6 @@ public class DetailActivity extends BaseActivity implements
 //
 //        highlightVote(likes);
 
-        snackbar = Snackbar
-                .make(coordinatorLayout, getString(R.string.please_login), Snackbar.LENGTH_SHORT)
-                .setAction(getString(R.string.login), new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        CommonOperations.addNewAccount(DetailActivity.this);
-//                        Snackbar snackbar1 = Snackbar.make(coordinatorLayout, "Message is restored!", Snackbar.LENGTH_SHORT);
-//                        snackbar1.show();
-                    }
-                });
 
     }
 
@@ -246,14 +352,14 @@ public class DetailActivity extends BaseActivity implements
         String auth = "bearer " + token;
         Map<String, String> map = new HashMap<String, String>();
         map.put("dir", String.valueOf(mode));
-        map.put("id", subredditModal.getName());
+        map.put("id", subreddit);
         map.put("rank", String.valueOf(2));
         apiInterface.postVote(auth, map).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
 
                 Log.d(TAG, "UpVote onResponse:" + response.code());
-                Constants.updateLikes(getApplicationContext(), mode, subredditModal.getId());
+//                Constants.updateLikes(getApplicationContext(), mode, subredditModal.getId());
             }
 
             @Override
@@ -366,7 +472,7 @@ public class DetailActivity extends BaseActivity implements
         if (!isUserLoggedIn) {
             snackbar.show();
         } else {
-            String name = subredditModal.getName();
+            String name = id;
             openReplyActivity(name);
         }
     }
@@ -416,7 +522,7 @@ public class DetailActivity extends BaseActivity implements
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         switch (loader.getId()) {
             case LOADER_ID:
-                setDataInView(data);
+//                setDataInView(data);
                 break;
             case LOADER_ID_COMMENTS: {
                 commentsAdapter.swapCursor(data);
@@ -431,7 +537,7 @@ public class DetailActivity extends BaseActivity implements
     public void onLoaderReset(Loader<Cursor> loader) {
         switch (loader.getId()) {
             case LOADER_ID:
-                subredditModal = null;
+//                subredditModal = null;
                 break;
             case LOADER_ID_COMMENTS: {
                 commentsAdapter.swapCursor(null);
@@ -439,22 +545,7 @@ public class DetailActivity extends BaseActivity implements
         }
     }
 
-    private void setDataInView(Cursor cursor) {
-        if (cursor.moveToFirst()) {
-            String bigImageUrl = cursor.getString(cursor.getColumnIndex(MyPostsColumn.KEY_BIG_IMAGE_URL));
-            String postHint = cursor.getString(cursor.getColumnIndex(MyPostsColumn.KEY_POST_HINT));
-            if (postHint != null) {
-                if (postHint.equals("image")) {
-                    Glide.with(this).
-                            load(bigImageUrl)
-                            .centerCrop()
-                            .crossFade()
-                            .into(imageView);
-                } else {
-                    imageView.setVisibility(View.GONE);
-                }
-            }
-        }
-        cursor.close();
-    }
+//    private void setDataInView(Cursor cursor) {
+//
+//    }
 }

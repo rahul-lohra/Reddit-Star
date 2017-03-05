@@ -2,21 +2,24 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/parent"
-    android:background="@color/cardview_dark_background"
+    android:background="@color/grey_900"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:paddingBottom="4dp">
     <TextView
+        android:textColor="@color/colorAccent"
         android:id="@+id/tv_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:text="@string/sample_reddit_title" />
+        android:text="@string/sample_reddit_title"
+        android:fontFamily="sans-serif-light" />
 
     <TextView
+        android:textColor="@color/white"
         android:layout_toStartOf="@+id/image_view"
         android:maxLength="150"
         android:id="@+id/tv_detail"
@@ -26,11 +29,14 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:text="@string/sample_comment" />
+        android:text="@string/sample_comment"
+        android:fontFamily="sans-serif-medium" />
 
     <TextView
+        android:textSize="14sp"
+        android:textColor="@color/white"
         android:drawablePadding="8dp"
-        android:drawableEnd="@drawable/ic_arrow_upward"
+        android:drawableEnd="@drawable/ic_arrow_upward_small"
         android:id="@+id/tv_vote"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -41,6 +47,8 @@
         android:text="@string/upvote_counts" />
 
     <TextView
+        android:textSize="14sp"
+        android:textColor="@color/white"
         android:id="@+id/tv_comments"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -52,7 +60,7 @@
         android:drawablePadding="8dp"
         android:gravity="center"
         android:text="@string/comments_counts"
-        android:drawableEnd="@drawable/ic_chat_bubble" />
+        android:drawableEnd="@drawable/ic_chat_bubble_small" />
 
     <ImageView
         android:contentDescription="@string/thumbnail"

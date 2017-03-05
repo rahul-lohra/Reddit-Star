@@ -51,7 +51,7 @@ public class WidgetTaskService extends GcmTaskService {
     ApiInterface apiInterface;
 
     SharedPreferences sp;
-    Uri widgetUri = MyProvider.WidgetLists.CONTENT_URI;
+
 
     final String TAG = WidgetTaskService.class.getSimpleName();
     public  final static String INTENT_TAG = "com.android.rahul_lohra.redditstar.service.widget.WidgetTaskService";
@@ -129,7 +129,8 @@ public class WidgetTaskService extends GcmTaskService {
                         List<FrontPageChild> mList = res.body().getData().getChildren();
                         String after  = res.body().getData().getAfter();
                         sp.edit().putString(SpConstants.WIDGET_AFTER,after).apply();
-                        getContentResolver().delete(widgetUri,null,null);
+//                        getContentResolver().delete(widgetUri,null,null);
+                        Constants.clearPosts(mContext,Constants.TYPE_WIDGET);
                         Constants.insertPostsIntoTable(mContext,res.body(), Constants.TYPE_WIDGET);
                     /*
                     update App widget

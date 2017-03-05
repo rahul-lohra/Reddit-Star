@@ -44,9 +44,9 @@ public class ListWidgetService extends RemoteViewsService {
         private Context mContext;
         private int mAppWidgetId;
         String[] mProjection = null;
-        String mSelectionClause = null;
-        String mSelectionArgs[] = null;
-        Uri mUri = MyProvider.WidgetLists.CONTENT_URI;
+        String mSelectionClause = MyPostsColumn.TYPE_WIDGET+"=?";
+        String mSelectionArgs[] = {"1"};
+        Uri mUri = MyProvider.PostsLists.CONTENT_URI;
         private Cursor data = null;
         public ListRemoteViewsFactory(Context context, Intent intent) {
             mContext = context;
@@ -126,7 +126,6 @@ public class ListWidgetService extends RemoteViewsService {
 
 //            FutureTarget<Bitmap> ft = bitmapTypeRequest.into(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL);
             Intent fillInIntent = new Intent();
-//            fillInIntent.putExtra("modal", modal);
             fillInIntent.putExtra("id", id);
             fillInIntent.putExtra("uri",MyProvider.PostsLists.CONTENT_URI);
 

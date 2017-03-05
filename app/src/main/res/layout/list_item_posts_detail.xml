@@ -9,6 +9,8 @@
     android:layout_height="wrap_content">
 
     <LinearLayout
+        android:id="@+id/linear_layout"
+        android:background="@color/grey_700"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -21,12 +23,13 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-            android:textColor="@android:color/black"
+            android:textColor="@android:color/white"
             android:textSize="18sp"
             android:textStyle="normal|bold"
             tools:text="@string/comments_title" />
 
         <TextView
+            android:textColor="@color/white"
             android:padding="8dp"
             android:id="@+id/tv_category"
             android:layout_width="match_parent"
@@ -34,6 +37,7 @@
             tools:text="@string/sample_category" />
 
         <TextView
+            android:textColor="@color/white"
             android:padding="8dp"
             android:id="@+id/tv_username"
             android:layout_width="match_parent"

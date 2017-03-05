@@ -103,27 +103,6 @@ public class MyProvider {
         }
     }
 
-
-    @TableEndpoint(table = MyDatabase.WIDGET_TABLE)
-    public static class WidgetLists {
-
-        @ContentUri(
-                path = "widget_posts",
-                type = "vnd.android.cursor.dir/widget_posts_item"
-        )
-        public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/widget_posts");
-
-        @InexactContentUri(
-                path = "widget_posts/*",
-                name = "WIDGET_POSTS_ID",
-                type = "vnd.android.cursor.item/widget_posts_item",
-                whereColumn = MyPostsColumn.KEY_SQL_ID,
-                pathSegment = 1)
-        public static Uri withId(long id) {
-            return Uri.parse("content://" + AUTHORITY + "/widget_posts/" + id);
-        }
-    }
-
     @TableEndpoint(table = MyDatabase.COMMENTS_TABLE)
     public static class CommentsLists {
 
