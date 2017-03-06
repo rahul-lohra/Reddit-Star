@@ -11,24 +11,33 @@
         android:layout_height="192dp">
 
         <android.support.design.widget.CollapsingToolbarLayout
+            app:collapsedTitleTextAppearance="@style/TextViewCollapsed"
+            app:expandedTitleTextAppearance="@style/TextViewExpanded"
+            android:id="@+id/collapsing_toolbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:contentScrim="?attr/colorPrimary"
+            app:contentScrim="@color/white"
             app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed"
-            app:layout_scrollInterpolator="@android:anim/decelerate_interpolator"
+            app:titleEnabled="true"
             app:toolbarId="@+id/toolbar">
 
-            <ImageView
-                android:id="@+id/app_bar_image"
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="centerCrop"
-                android:src="@android:drawable/sym_def_app_icon" />
+                android:layout_height="wrap_content">
+
+                <include layout="@layout/card_view_subscribe_new" />
+
+            </FrameLayout>
 
             <android.support.v7.widget.Toolbar
+                app:layout_collapseMode="pin"
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"/>
+                android:layout_height="?attr/actionBarSize"
+                android:background="@drawable/translucent_toolbar"
+                app:navigationIcon="@drawable/ic_action_back_black"
+                app:subtitleTextColor="@color/white"
+                app:titleTextColor="@color/black" />
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
 
@@ -40,13 +49,19 @@
         app:layout_behavior="android.support.design.widget.AppBarLayout$ScrollingViewBehavior">
 
         <LinearLayout
+            android:descendantFocusability="blocksDescendants"
             android:gravity="center"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <include
-                layout="@layout/card_view_subscribe"/>
+            <!--<FrameLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content">-->
+                <!--<include-->
+                    <!--layout="@layout/card_view_subscribe_new"/>-->
+
+            <!--</FrameLayout>-->
             <TextView
                 android:padding="8dp"
                 android:text="@string/posts"

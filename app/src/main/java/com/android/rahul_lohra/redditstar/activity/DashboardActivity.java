@@ -104,6 +104,7 @@ public class DashboardActivity extends BaseActivity implements
     private GcmNetworkManager mGcmNetworkManager;
     private Snackbar snackbar;
     private AdRequest adRequest;
+    private Intent startActivityIntent = null;
     @OnClick(R.id.fab)
     public void onClick() {
         Snackbar.make(fab, "Replace with your own action", Snackbar.LENGTH_LONG)
@@ -300,9 +301,38 @@ public class DashboardActivity extends BaseActivity implements
 
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
+
         return true;
+    }
+    @Override
+    public void openActivity(Class<?> cls){
+        drawer.closeDrawers();
+        startActivityIntent = new Intent(this,cls);
+
+
+        drawer.addDrawerListener(new DrawerLayout.DrawerListener() {
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) {
+
+            }
+
+            @Override
+            public void onDrawerOpened(View drawerView) {
+
+            }
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                startActivity(startActivityIntent);
+                startActivityIntent = null;
+                drawer.removeDrawerListener(this);
+            }
+
+            @Override
+            public void onDrawerStateChanged(int newState) {
+
+            }
+        });
     }
 
 

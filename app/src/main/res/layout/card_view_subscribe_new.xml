@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@color/white"
+    android:layout_height="192dp">
+
+    <android.support.v7.widget.AppCompatTextView
+        android:layout_marginTop="30dp"
+        android:id="@+id/tv_subreddit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-light"
+        android:gravity="center"
+        android:textSize="28sp"
+        tools:text="r/Popular" />
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/tv_subs_count"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_subreddit"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:textSize="14sp"
+        tools:text="124546 subscribers . 14000 Online" />
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/tv_detail"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_subs_count"
+        android:layout_marginTop="8dp"
+        android:gravity="start"
+        android:paddingEnd="8dp"
+        android:paddingStart="8dp"
+        android:textSize="14sp"
+        tools:text="Enjoy this " />
+
+    <LinearLayout
+        android:layout_marginTop="8dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/tv_detail"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <com.varunest.sparkbutton.SparkButton
+            android:id="@+id/spark_fav"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginEnd="8dp"
+            app:sparkbutton_activeImage="@drawable/ic_favorite_pink"
+            app:sparkbutton_iconSize="20dp"
+            app:sparkbutton_inActiveImage="@drawable/ic_favorite_grey"
+            app:sparkbutton_primaryColor="@color/spark_primary_color"
+            app:sparkbutton_secondaryColor="@color/spark_secondary_color" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:layout_gravity="center"
+            android:text="@string/fav"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <android.support.v4.widget.Space
+            android:layout_width="200dp"
+            android:layout_height="match_parent" />
+
+        <com.varunest.sparkbutton.SparkButton
+            android:id="@+id/spark_subs"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginEnd="8dp"
+            app:sparkbutton_activeImage="@drawable/ic_star_orange"
+            app:sparkbutton_iconSize="20dp"
+            app:sparkbutton_inActiveImage="@drawable/ic_star_grey"
+            app:sparkbutton_primaryColor="@color/spark_primary_color"
+            app:sparkbutton_secondaryColor="@color/spark_secondary_color" />
+
+
+        <android.support.v7.widget.AppCompatTextView
+            android:layout_gravity="center"
+            android:text="@string/subs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+
+    </LinearLayout>
+
+
+</RelativeLayout>

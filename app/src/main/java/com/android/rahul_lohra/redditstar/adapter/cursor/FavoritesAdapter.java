@@ -34,10 +34,18 @@ public class FavoritesAdapter extends CursorRecyclerViewAdapter<RecyclerView.Vie
 
     private Context context;
     private final String TAG = FavoritesAdapter.class.getSimpleName();
+    public interface IFavoritesAdapter{
+        void showEmptyView(boolean val);
+        void insertIntoList(String subredditId);
+        void removeFromList(String subredditId);
 
-    public FavoritesAdapter(Context context, Cursor cursor) {
+    }
+    private IFavoritesAdapter mListener;
+
+    public FavoritesAdapter(Context context, Cursor cursor,IFavoritesAdapter mListener) {
         super(context, cursor);
         this.context = context;
+        this.mListener = mListener;
     }
 
     @Override
@@ -56,13 +64,15 @@ public class FavoritesAdapter extends CursorRecyclerViewAdapter<RecyclerView.Vie
                 Uri mUri = MyProvider.FavoritesLists.CONTENT_URI;
                 if(buttonState)
                 {
-                    //insert
+
+                    mListener.removeFromList(subredditId);
 //                    ContentValues contentValues = new ContentValues();
 //                    contentValues.put(MyFavouritesColumn.KEY_SUBREDDIT_ID,subredditId);
 //                    contentValues.put(MyFavouritesColumn.KEY_SUBREDDIT_NAME,displayName);
 //                    context.getContentResolver().insert(mUri,contentValues);
                 }else {
-                    //remove
+                    mListener.insertIntoList(subredditId);
+
 //                    String mWhere = MyFavouritesColumn.KEY_SUBREDDIT_ID +"=?";
 //                    String mSelectionArgs []={subredditId};
 //                    int rowsDeleted = context.getContentResolver().delete(mUri,mWhere,mSelectionArgs);
@@ -88,6 +98,14 @@ public class FavoritesAdapter extends CursorRecyclerViewAdapter<RecyclerView.Vie
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new DrawerSubreddit(context,LayoutInflater.from(parent.getContext()).inflate(R.layout.item_favorite, parent, false));
+    }
+
+    @Override
+    public int getItemCount() {
+        int c = super.getItemCount();
+        if(mListener!=null)
+            mListener.showEmptyView((c==0));
+        return c;
     }
 
     @Override

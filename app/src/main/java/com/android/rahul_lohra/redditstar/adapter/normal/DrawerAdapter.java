@@ -32,6 +32,7 @@ public class DrawerAdapter extends RecyclerView.Adapter {
     private ISubreddit iSubreddit;
     public interface ISubreddit{
         void getSubredditRecyclerView(RecyclerView recyclerView) ;
+        void openActivity(Class<?> cls);
     }
 
     public DrawerAdapter(Context context,List<DrawerItemModal> list,ISubreddit iSubreddit) {
@@ -76,7 +77,9 @@ public class DrawerAdapter extends RecyclerView.Adapter {
                     drawerNormal.tv.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            context.startActivity(new Intent(context, FavoriteActivity.class));
+                            iSubreddit.openActivity(FavoriteActivity.class);
+//                            context.startActivity(new Intent(context, FavoriteActivity.class));
+
                         }
                     });
 
@@ -86,7 +89,8 @@ public class DrawerAdapter extends RecyclerView.Adapter {
                     drawerNormal.tv.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            context.startActivity(new Intent(context, SettingsActivity.class));
+                            iSubreddit.openActivity(SettingsActivity.class);
+//                            context.startActivity(new Intent(context, SettingsActivity.class));
                         }
                     });
                 }

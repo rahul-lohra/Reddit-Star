@@ -5,12 +5,15 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -91,8 +94,8 @@ public class SubredditFragment extends Fragment
     private final int LOADER_ID = 1;
 
 
-    @Bind(R.id.app_bar_image)
-    ImageView appBarImage;
+    //    @Bind(R.id.app_bar_image)
+//    ImageView appBarImage;
     @Bind(R.id.toolbar)
     Toolbar toolbar;
     @Bind(R.id.rv)
@@ -105,18 +108,31 @@ public class SubredditFragment extends Fragment
     SparkButton sparkFav;
     @Bind(R.id.nested_sv)
     NestedScrollView nestedSV;
+    @Bind(R.id.collapsing_toolbar)
+    CollapsingToolbarLayout collapsingToolbar;
+    @Bind(R.id.appbar)
+    AppBarLayout appbar;
+    @Bind(R.id.tv_subreddit)
+    AppCompatTextView tvSubreddit;
+    @Bind(R.id.tv_subs_count)
+    AppCompatTextView tvSubsCount;
+    @Bind(R.id.tv_detail)
+    AppCompatTextView tvDetail;
+
+
+
 
 
     private String subredditName;
     private String subredditFullName;
     private String subredditId;
 
-//    private FrontPageAdapter adapter;
+    //    private FrontPageAdapter adapter;
     private HomeAdapter adapter;
     private FrontPageResponseData frontPageResponseData;
 
     public interface ISubredditFragment {
-        void sendModalAndImageView(DetailPostModal modal, ImageView imageView,String id);
+        void sendModalAndImageView(DetailPostModal modal, ImageView imageView, String id);
     }
 
     private ISubredditFragment mListener;
@@ -125,7 +141,7 @@ public class SubredditFragment extends Fragment
         // Required empty public constructor
     }
 
-    public static SubredditFragment newInstance(String subredditNameParam, String subredditFullName,String subredditId) {
+    public static SubredditFragment newInstance(String subredditNameParam, String subredditFullName, String subredditId) {
         SubredditFragment fragment = new SubredditFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, subredditNameParam);
@@ -148,7 +164,7 @@ public class SubredditFragment extends Fragment
         if (getArguments() != null) {
             subredditName = getArguments().getString(ARG_PARAM1);
             subredditFullName = getArguments().getString(ARG_PARAM2);
-            subredditId =  getArguments().getString(ARG_PARAM3);
+            subredditId = getArguments().getString(ARG_PARAM3);
         }
     }
 
@@ -172,7 +188,7 @@ public class SubredditFragment extends Fragment
                 // if diff is zero, then the bottom has been reached
                 if (diff <= 10) {
                     // do stuff
-                    Log.d(TAG,"last Position");
+                    Log.d(TAG, "last Position");
                     fetchNextItems();
                 }
             }
@@ -183,26 +199,26 @@ public class SubredditFragment extends Fragment
             @Override
             public void onEvent(ImageView button, boolean buttonState) {
 
-                if(buttonState){
+                if (buttonState) {
                     //insert
-                    FavoritesModal favoritesModal = new FavoritesModal(subredditName,subredditFullName,subredditId);
-                    Constants.insertIntoFavoritesDb(getContext(),favoritesModal);
-                }else {
+                    FavoritesModal favoritesModal = new FavoritesModal(subredditName, subredditFullName, subredditId);
+                    Constants.insertIntoFavoritesDb(getContext(), favoritesModal);
+                } else {
                     //remove
-                    Constants.deleteFromFavoritesDb(getContext(),subredditFullName);
+                    Constants.deleteFromFavoritesDb(getContext(), subredditFullName);
                 }
             }
         });
         sparkSubs.setEventListener(new SparkEventListener() {
             @Override
             public void onEvent(ImageView button, boolean buttonState) {
-                boolean isLggedIn =UserState.isUserLoggedIn(getActivity());
-                if(isLggedIn){
-                    String subVal = (buttonState)?"sub":"unsub";
+                boolean isLggedIn = UserState.isUserLoggedIn(getActivity());
+                if (isLggedIn) {
+                    String subVal = (buttonState) ? "sub" : "unsub";
                     updateSubscription(subVal);
-                }else {
+                } else {
                     sparkSubs.setChecked(isLggedIn);
-                    Toast.makeText(getActivity(),getString(R.string.please_login),Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), getString(R.string.please_login), Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -211,16 +227,15 @@ public class SubredditFragment extends Fragment
     }
 
 
-
-    private void updateSubscription(final String subVal){
+    private void updateSubscription(final String subVal) {
         ApiInterface mApiInterface = retrofitWithToken.create(ApiInterface.class);
         String token = "bearer " + UserState.getAuthToken(getContext());
-        mApiInterface.subscribeSubreddit_new(token,subVal,false,subredditFullName)
+        mApiInterface.subscribeSubreddit_new(token, subVal, false, subredditFullName)
                 .enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                        Log.d(TAG,"Success responseCode:"+response.code());
-                        if(response.code()==200){
+                        Log.d(TAG, "Success responseCode:" + response.code());
+                        if (response.code() == 200) {
                             sparkSubs.setChecked((subVal.equals("sub")));
                             //remove from db
                         }
@@ -228,13 +243,13 @@ public class SubredditFragment extends Fragment
 
                     @Override
                     public void onFailure(Call<ResponseBody> call, Throwable t) {
-                        Log.d(TAG,"fail:"+t.getMessage());
+                        Log.d(TAG, "fail:" + t.getMessage());
                     }
                 });
     }
 
     private void setAdapter() {
-        adapter = new HomeAdapter(getActivity(),null,this);
+        adapter = new HomeAdapter(getActivity(), null, this);
         rv.setLayoutManager(new LinearLayoutManager(getActivity()));
         rv.setAdapter(adapter);
     }
@@ -242,7 +257,49 @@ public class SubredditFragment extends Fragment
 
     private void setToolbar() {
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(subredditName);
+//        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        ((AppCompatActivity) getActivity()).getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_action_back_black);
+
+
+//        if (((AppCompatActivity) getActivity()).getSupportActionBar() != null) {
+            ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("r/"+subredditName);
+
+        tvSubreddit.setText("r/"+subredditName);
+//        String subsCount =
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getActivity().onBackPressed();
+            }
+        });
+//            toolbar.setTitle(subredditName);
+//            toolbar.setSubtitle("Hot");
+//                        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(subredditName);
+//            ((AppCompatActivity) getActivity()).getSupportActionBar().setSubtitle("Hot");
+//        }
+
+//        appbar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+//            boolean isShow = false;
+//            int scrollRange = -1;
+//
+//            @Override
+//            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+//                if (scrollRange == -1) {
+//                    scrollRange = appBarLayout.getTotalScrollRange();
+//                }
+//                if (scrollRange + verticalOffset == 0) {
+//                    collapsingToolbar.setTitle("Title");
+//                    toolbar.setTitle(subredditName);
+//                    ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("haha");
+//
+//                    isShow = true;
+//                } else if(isShow) {
+//                    collapsingToolbar.setTitle(" ");//carefull there should a space between double quote otherwise it wont work
+//                    isShow = false;
+//                }
+//            }
+//        });
     }
 
     private void getSubredditAbout() {
@@ -252,13 +309,16 @@ public class SubredditFragment extends Fragment
             @Override
             public void onResponse(Call<t5_Response> call, Response<t5_Response> response) {
                 Log.d(TAG, "getSubredditAbout onResponse");
-                if(response.code()==200)
-                {
+                if (response.code() == 200) {
                     T5_Data t5_data = response.body().getData();
                     String accountsActive = String.valueOf(t5_data.getAccountsActive());
                     String totalSubscriber = String.valueOf(t5_data.getSubscribers());
+                    String detail = String.valueOf(t5_data.getTitle());
 
-                    sparkSubs.setChecked((t5_data.getUserIsSubscriber()!=null)?(t5_data.getUserIsSubscriber()):(false));
+                    String str = String.valueOf(totalSubscriber)+" subscribers . "+String.valueOf(accountsActive)+" Online";
+                    tvSubsCount.setText(str);
+                    tvDetail.setText(detail);
+                    sparkSubs.setChecked((t5_data.getUserIsSubscriber() != null) ? (t5_data.getUserIsSubscriber()) : (false));
 
                 }
             }
@@ -320,12 +380,13 @@ public class SubredditFragment extends Fragment
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         Uri mUri = MyProvider.PostsLists.CONTENT_URI;
-        String mWhere = MyPostsColumn.TYPE_TEMP+" =?";
-        String mWhereArgs[] = {"1"};
+        String subredditId = args.getString(ARG_PARAM2);
+        String mWhere = MyPostsColumn.TYPE_TEMP + " =? "+" AND "+MyPostsColumn.KEY_SUBREDDIT_ID+" =? ";
+        String mWhereArgs[] = {"1",subredditId};
 
         switch (id) {
             case LOADER_ID:
-                return new CursorLoader(getActivity(),mUri,null,mWhere,mWhereArgs,null);
+                return new CursorLoader(getActivity(), mUri, null, mWhere, mWhereArgs, null);
         }
         return null;
     }
@@ -395,10 +456,13 @@ public class SubredditFragment extends Fragment
                     + " must implement OnFragmentInteractionListener");
         }
     }
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        getLoaderManager().initLoader(LOADER_ID, null, this);
+        Bundle args = new Bundle();
+        args.putString(ARG_PARAM2, subredditFullName);
+        getLoaderManager().initLoader(LOADER_ID, args, this);
     }
 
     @Override
@@ -408,8 +472,8 @@ public class SubredditFragment extends Fragment
     }
 
     @Override
-    public void sendData(DetailPostModal modal, ImageView imageView,String id) {
-        mListener.sendModalAndImageView(modal, imageView,id);
+    public void sendData(DetailPostModal modal, ImageView imageView, String id) {
+        mListener.sendModalAndImageView(modal, imageView, id);
     }
 
     @Override
@@ -417,12 +481,12 @@ public class SubredditFragment extends Fragment
 
     }
 
-    private void fetchNextItems(){
-            if (frontPageResponseData != null) {
-                if (!frontPageResponseData.getAfter().equalsIgnoreCase(GetSubredditListService.after)) {
-                    getSubredditList();
-                }
+    private void fetchNextItems() {
+        if (frontPageResponseData != null) {
+            if (!frontPageResponseData.getAfter().equalsIgnoreCase(GetSubredditListService.after)) {
+                getSubredditList();
             }
         }
+    }
 
 }

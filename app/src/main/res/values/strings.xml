@@ -204,5 +204,10 @@
     <string name="logout">Log out</string>
     <string name="user_logged_out">User Logged Out</string>
     <string name="loading_comments">Loading Comments</string>
+    <string name="fav">Fav</string>
+    <string name="subs">Subs</string>
+    <string name="empty" />
+    <string name="empty_fav">You have not selected any favorites yet</string>
+    <string name="save">Save</string>
 
 </resources>

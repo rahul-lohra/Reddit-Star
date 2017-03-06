@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.android.rahul_lohra.redditstar.R;
@@ -78,6 +79,13 @@ public class    SearchFragment extends BaseFragment implements
     AppCompatEditText et;
     @Bind(R.id.nested_sv)
     NestedScrollView nestedSV;
+    @Bind(R.id.progressBar2)
+    ProgressBar progressBar;
+    @Bind(R.id.tv_subreddit)
+    TextView tvSubreddit;
+    @Bind(R.id.tv_post)
+    TextView tvPost;
+
 
     HomeAdapter linkAdapter;
     T5_SubredditSearchAdapter t5SubredditSearchAdapter;
@@ -120,6 +128,14 @@ public class    SearchFragment extends BaseFragment implements
         // Inflate the layout for this fragment
         View v =  inflater.inflate(R.layout.fragment_search, container, false);
         ButterKnife.bind(this,v);
+
+        Log.d(TAG,"onCreateView");
+        if(null == t5SubredditSearchAdapter){
+            tvPost.setVisibility(View.GONE);
+            tvSubreddit.setVisibility(View.GONE);
+        }
+
+
         isUSerLoggedIn = UserState.isUserLoggedIn(getContext());
         apiInterface = (isUSerLoggedIn) ? retrofitWithToken.create(ApiInterface.class) : retrofitWithoutToken.create(ApiInterface.class);
         setAdapter();
@@ -187,6 +203,7 @@ public class    SearchFragment extends BaseFragment implements
         if (!query.isEmpty()) {
             getLinks(query,isFromStart);
             getSubreddits(query,isFromStart);
+            progressBar.setVisibility(View.VISIBLE);
         }
 
     }
@@ -244,11 +261,17 @@ public class    SearchFragment extends BaseFragment implements
         int lastPos = t5dataList.size();
         t5dataList.addAll(lastPos, t5_List_child.children);
         t5SubredditSearchAdapter.notifyItemRangeInserted(lastPos, t5_List_child.children.size());
+        progressBar.setVisibility(View.GONE);
+        tvSubreddit.setVisibility(View.VISIBLE);
+        tvPost.setVisibility(View.VISIBLE);
     }
 
     @Subscribe(threadMode = ThreadMode.BACKGROUND)
     public void onMessageEvent(AfterModal afterModal) {
         this.afterOfLink = afterModal.getmAfterLink();
+        progressBar.setVisibility(View.GONE);
+        tvSubreddit.setVisibility(View.VISIBLE);
+        tvPost.setVisibility(View.VISIBLE);
     }
 
 
@@ -259,6 +282,10 @@ public class    SearchFragment extends BaseFragment implements
 //        int lastPos = t3dataList.size();
 //        t3dataList.addAll(lastPos, t3_List_child.children);
 //        t3LinkSearchAdapter.notifyItemRangeInserted(lastPos, t3_List_child.children.size());
+        progressBar.setVisibility(View.GONE);
+
+        tvSubreddit.setVisibility(View.VISIBLE);
+        tvPost.setVisibility(View.VISIBLE);
     }
 
     @Subscribe(threadMode = ThreadMode.BACKGROUND)
@@ -269,12 +296,17 @@ public class    SearchFragment extends BaseFragment implements
 //                    getLinks(searchQuery,false);
 //                }
 //            }
+            progressBar.setVisibility(View.GONE);
         } else if (string.equals("getNextData") && type.equals("subreddit")) {
             if (t5_List_child != null) {
                 if (!t5_List_child.getAfter().equalsIgnoreCase(SearchSubredditsService.after)) {
                     getSubreddits(searchQuery,false);
                 }
             }
+            progressBar.setVisibility(View.GONE);
+
+            tvSubreddit.setVisibility(View.VISIBLE);
+            tvPost.setVisibility(View.VISIBLE);
         }
     }
 

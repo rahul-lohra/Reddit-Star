@@ -163,9 +163,10 @@
             android:label="@string/subreddits"
             android:theme="@style/AppTheme.NoToolBar" />
         <activity
+            android:theme="@style/AppTheme.NoToolBar"
             android:name=".activity.FavoriteActivity"
             android:label="@string/favorite"
-            android:theme="@style/AppTheme.NoToolBar" />
+             />
         <activity
             android:name=".activity.SearchActivity"
             android:launchMode="singleTop"
