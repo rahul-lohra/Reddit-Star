@@ -16,6 +16,9 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowContentTransitions">true</item>
     </style>
+    <style name="DetailActivityTheme" parent="AppTheme.NoToolBar">
+
+    </style>
 
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>

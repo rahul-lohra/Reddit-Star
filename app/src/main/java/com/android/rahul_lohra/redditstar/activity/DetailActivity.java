@@ -20,6 +20,8 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.transition.Fade;
+import android.transition.Slide;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -206,7 +208,23 @@ public class DetailActivity extends BaseActivity implements
                     }
                 });
 
+        //Animation Code
+//        supportPostponeEnterTransition();
+//        startPostponedEnterTransition();
+//        setWindowAnimation();
     }
+
+    private void setWindowAnimation(){
+        Fade fade = new Fade();
+        fade.setDuration(1000);
+        getWindow().setEnterTransition(fade);
+
+//        Slide slide = new Slide();
+//        slide.setDuration(1000);
+//        getWindow().setReturnTransition(slide);
+    }
+
+
 
 
     private void setToolbar(){
