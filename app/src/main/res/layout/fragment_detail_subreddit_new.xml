@@ -25,7 +25,7 @@
         <android.support.design.widget.CollapsingToolbarLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_scrollFlags="scroll"
+            app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed"
             android:id="@+id/collapsing_toolbar"
             app:toolbarId="@+id/toolbar"
             app:contentScrim="?attr/colorPrimary">
@@ -42,6 +42,7 @@
             app:srcCompat="@mipmap/ic_launcher" />
 
             <android.support.v7.widget.Toolbar
+                app:layout_collapseMode="pin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/translucent_toolbar"
@@ -121,10 +122,11 @@
     </android.support.design.widget.AppBarLayout>
 
             <FrameLayout
+                android:background="@color/white"
                 android:id="@+id/frame_layout_detail"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent">
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/rv"
                     android:layout_width="match_parent"

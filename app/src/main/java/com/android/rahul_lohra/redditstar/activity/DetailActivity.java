@@ -21,9 +21,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.transition.Fade;
+import android.transition.Scene;
 import android.transition.Slide;
+import android.transition.Transition;
+import android.transition.TransitionManager;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -64,6 +68,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
+
+import static android.view.Gravity.BOTTOM;
+import static android.view.Gravity.RIGHT;
 
 /*
  Needs two item in intent
@@ -486,6 +493,23 @@ public class DetailActivity extends BaseActivity implements
     @OnClick(R.id.fab)
     void onClickFab() {
         //open Reply Activity
+
+        if(true)
+        {
+//            Transition transition = new Slide(BOTTOM);
+//            transition.setDuration(250);
+//            transition.addTarget(imageView);
+//            Scene scene = Scene.getSceneForLayout(coordinatorLayout,R.layout.fragment_detail_subreddit_new,this);
+//            android.support.transition.Scene  scene1= coordinatorLayout;
+//            TransitionManager.go(scene, transition);
+
+//            Slide mSlide = new Slide(RIGHT);
+//            mSlide.setDuration(1000);
+//            mSlide.addTarget(imageView);
+//            TransitionManager.beginDelayedTransition(imageView);
+
+            return;
+        }
         boolean isUserLoggedIn = UserState.isUserLoggedIn(this);
         if (!isUserLoggedIn) {
             snackbar.show();
@@ -563,7 +587,12 @@ public class DetailActivity extends BaseActivity implements
         }
     }
 
-//    private void setDataInView(Cursor cursor) {
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+
+    //    private void etDataInView(Cursor cursor) {
 //
 //    }
 }

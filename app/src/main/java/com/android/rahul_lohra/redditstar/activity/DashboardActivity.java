@@ -10,6 +10,8 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.CursorLoader;
@@ -439,7 +441,9 @@ public class DashboardActivity extends BaseActivity implements
                     startActivity(intent,bundle);
                 }else {
                     cursor.close();
-                    startActivity(intent);
+                    ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(this);
+                    ActivityCompat.startActivity(this,intent,activityOptionsCompat.toBundle());
+//                    startActivity(intent);
                 }
             }
 
