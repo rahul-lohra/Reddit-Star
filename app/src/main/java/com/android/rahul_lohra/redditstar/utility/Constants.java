@@ -217,7 +217,7 @@ public class Constants {
         }
         int rowsUpdated = context.getContentResolver().update(mUriPosts,cv,mWhere,mSelectionArgs);
         context.getContentResolver().notifyChange(MyProvider.PostsComments.CONTENT_URI,null);
-        System.out.println("Rows updated:"+rowsUpdated);
+//        System.out.println("Rows updated:"+rowsUpdated);
 
     }
     public static void clearPosts(Context context, @ArticleType int type){

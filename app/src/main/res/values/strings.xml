@@ -209,5 +209,9 @@
     <string name="empty" />
     <string name="empty_fav">You have not selected any favorites yet</string>
     <string name="save">Save</string>
+    <string name="my_subreddits">My Subreddits</string>
+    <string name="credententials_updated">Credentials Updated</string>
+    <string name="cannot_retrieve_name">Cannot retreive name</string>
+    <string name="share_using">Share using</string>
 
 </resources>

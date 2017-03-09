@@ -198,8 +198,8 @@ public class DashboardActivity extends BaseActivity implements
     void setupDrawer() {
         drawerList = new ArrayList<>();
 //        drawerList.add(new DrawerItemModal("Search", ContextCompat.getDrawable(this, R.drawable.ic_home)));
-        drawerList.add(new DrawerItemModal("Home", ContextCompat.getDrawable(this, R.drawable.ic_home)));
-        drawerList.add(new DrawerItemModal("My Subreddits", ContextCompat.getDrawable(this, R.drawable.ic_list)));
+        drawerList.add(new DrawerItemModal(getString(R.string.home), ContextCompat.getDrawable(this, R.drawable.ic_home)));
+        drawerList.add(new DrawerItemModal(getString(R.string.my_subreddits), ContextCompat.getDrawable(this, R.drawable.ic_list)));
         drawerList.add(new DrawerItemModal(getString(R.string.my_favorites), ContextCompat.getDrawable(this, R.drawable.ic_star)));
 //        drawerList.add(new DrawerItemModal(getString(R.string.settings), ContextCompat.getDrawable(this, R.drawable.ic_settings)));
         drawerAdapter = new DrawerAdapter(this, drawerList, this,this);

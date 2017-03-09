@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.android.rahul_lohra.redditstar.R;
 import com.android.rahul_lohra.redditstar.application.Initializer;
 import com.android.rahul_lohra.redditstar.modal.AboutMe;
 import com.android.rahul_lohra.redditstar.retrofit.ApiInterface;
@@ -58,7 +59,7 @@ public class GetUserCredentialsService extends IntentService {
             }
             @Override
             public void onFailure(Call<AboutMe> call, Throwable t) {
-                Toast.makeText(getApplicationContext(),"getting name failed",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),getString(R.string.cannot_retrieve_name),Toast.LENGTH_SHORT).show();
                 Log.d(TAG,"getting name failed:"+t.getMessage());
             }
         });
@@ -88,7 +89,7 @@ public class GetUserCredentialsService extends IntentService {
         String mWhere = UserCredentialsColumn.ACCESS_TOKEN +"=?";
         String mSelectionArgs[] = {token};
         getContentResolver().update(mUri,cv,mWhere,mSelectionArgs);
-        Toast.makeText(getApplicationContext(),"Credentials updated",Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(),getString(R.string.credententials_updated),Toast.LENGTH_SHORT).show();
 
     }
 }
