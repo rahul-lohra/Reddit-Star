@@ -8,13 +8,13 @@
     <TextView
         android:drawableEnd="@drawable/ic_arrow_drop_down"
         android:padding="@dimen/drawer_item_padding"
-        android:drawableStart="@drawable/ic_list"
+        android:drawableStart="@drawable/ic_toc_black_24dp"
         android:id="@+id/tv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:drawablePadding="24dp"
         android:gravity="center_vertical"
-        android:textSize="18sp"
+        android:textSize="@dimen/drawer_item"
         tools:text="@string/home"
         android:fontFamily="sans-serif-medium" />
 

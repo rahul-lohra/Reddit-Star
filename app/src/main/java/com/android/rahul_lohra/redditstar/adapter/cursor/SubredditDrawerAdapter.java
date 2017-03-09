@@ -14,7 +14,9 @@ import android.widget.ImageView;
 
 import com.android.rahul_lohra.redditstar.R;
 import com.android.rahul_lohra.redditstar.activity.SubredditActivity;
+import com.android.rahul_lohra.redditstar.contract.IActivity;
 import com.android.rahul_lohra.redditstar.modal.FavoritesModal;
+import com.android.rahul_lohra.redditstar.storage.MyDatabase;
 import com.android.rahul_lohra.redditstar.storage.MyProvider;
 import com.android.rahul_lohra.redditstar.storage.column.MyFavouritesColumn;
 import com.android.rahul_lohra.redditstar.storage.column.MySubredditColumn;
@@ -32,19 +34,26 @@ public class SubredditDrawerAdapter extends CursorRecyclerViewAdapter<RecyclerVi
 
     private Context context;
     private final String TAG = SubredditDrawerAdapter.class.getSimpleName();
-
-    public SubredditDrawerAdapter(Context context, Cursor cursor) {
+    private IActivity iActivity;
+    public SubredditDrawerAdapter(Context context, Cursor cursor,IActivity iActivity) {
         super(context, cursor);
         this.context = context;
+        this.iActivity = iActivity;
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, final Cursor cursor) {
-        final String displayName = cursor.getString(cursor.getColumnIndex(MySubredditColumn.KEY_DISPLAY_NAME));
+        final String displayName = cursor.getString(cursor.getColumnIndex(MyDatabase.MY_SUBREDDIT_TABLE+"."+MySubredditColumn.KEY_DISPLAY_NAME));
         final String subredditId = cursor.getString(cursor.getColumnIndex(MySubredditColumn.KEY_ID));
         final String fullName = cursor.getString(cursor.getColumnIndex(MySubredditColumn.KEY_NAME));
+        final String nameFromFav = cursor.getString(cursor.getColumnIndex(MyDatabase.USER_FAVORITES_TABLE+"."+MyFavouritesColumn.KEY_DISPLAY_NAME));
+
 
         DrawerSubreddit drawerSubreddit = (DrawerSubreddit)viewHolder;
+
+        if(nameFromFav!=null){
+            drawerSubreddit.sparkButton.setChecked(true);
+        }
         drawerSubreddit.tv.setText(displayName);
         drawerSubreddit.sparkButton.setEventListener(new SparkEventListener() {
             @Override
@@ -68,8 +77,9 @@ public class SubredditDrawerAdapter extends CursorRecyclerViewAdapter<RecyclerVi
                 Intent intent = new Intent(context, SubredditActivity.class);
                 intent.putExtra("name",displayName);
                 intent.putExtra("fullName",fullName);
+                intent.putExtra("subredditId",subredditId);
+                iActivity.openActivity(intent);
 
-                context.startActivity(intent);
             }
         });
 

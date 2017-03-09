@@ -70,6 +70,9 @@ public class GetFrontPageService extends IntentService {
 
             apiInterface = (isUserLoggedIn)?retrofitWithToken.create(ApiInterface.class):retrofitWithoutToken.create(ApiInterface.class);
             after = intent.getStringExtra("after");
+            if(null ==after){
+                return;
+            }
             Map<String,String> map = new HashMap<>();
             map.put("limit","10");
             map.put("after",after);

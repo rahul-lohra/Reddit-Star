@@ -128,6 +128,7 @@ public class Constants {
         cv.put(MyFavouritesColumn.KEY_FULL_NAME,modal.getFullName());
         cv.put(MyFavouritesColumn.KEY_DISPLAY_NAME,modal.getDisplayName());
         context.getContentResolver().insert(mUri,cv);
+        context.getContentResolver().notifyChange(MyProvider.UserSubredditsWithFav.CONTENT_URI,null);
     }
 
     public static void deleteFromFavoritesDb(Context context,String fullName){
@@ -135,6 +136,7 @@ public class Constants {
         String mWhere = MyFavouritesColumn.KEY_FULL_NAME +"=?";
         String mSelectionArgs[]={fullName};
         context.getContentResolver().delete(mUri,mWhere,mSelectionArgs);
+        context.getContentResolver().notifyChange(MyProvider.UserSubredditsWithFav.CONTENT_URI,null);
     }
 
     public static void insertPostsIntoTable(Context context, FrontPageResponse modal, @ArticleType int type ){

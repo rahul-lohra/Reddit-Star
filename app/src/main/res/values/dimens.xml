@@ -12,5 +12,6 @@
     <dimen name="search_view_inset">5dp</dimen>
     <dimen name="spark_button_dimen">56dp</dimen>
     <dimen name="widget_margin">8dp</dimen>
+    <dimen name="drawer_item">14sp</dimen>
 
 </resources>

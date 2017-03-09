@@ -158,4 +158,25 @@ public class MyProvider {
         };
 
     }
+
+    @TableEndpoint(table = MyDatabase.MY_SUBREDDIT_TABLE)
+    public static class UserSubredditsWithFav{
+        @ContentUri(
+                path = "subreddit_fav",
+                type = "vnd.android.cursor.dir/subreddit_fav_item",
+                join = "LEFT JOIN "+MyDatabase.USER_FAVORITES_TABLE+ " ON "+ MyDatabase.USER_FAVORITES_TABLE+"."+MyFavouritesColumn.KEY_SUBREDDIT_ID+ " = "+MyDatabase.MY_SUBREDDIT_TABLE+"."+MySubredditColumn.KEY_ID
+        )
+        public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/subreddit_fav");
+        public static final String mProjection[]={
+                MyDatabase.MY_SUBREDDIT_TABLE+"."+MySubredditColumn.KEY_SQL_ID,
+                MyDatabase.MY_SUBREDDIT_TABLE+"."+MySubredditColumn.KEY_NAME,
+                MyDatabase.MY_SUBREDDIT_TABLE+"."+MySubredditColumn.KEY_DISPLAY_NAME,
+                MyDatabase.MY_SUBREDDIT_TABLE+"."+MySubredditColumn.KEY_ID,
+                MyDatabase.MY_SUBREDDIT_TABLE+"."+MySubredditColumn.KEY_NAME,
+                MyDatabase.MY_SUBREDDIT_TABLE+"."+MySubredditColumn.KEY_TITLE,
+                MyDatabase.MY_SUBREDDIT_TABLE+"."+MySubredditColumn.KEY_URL,
+                MyDatabase.USER_FAVORITES_TABLE+"."+MyFavouritesColumn.KEY_DISPLAY_NAME
+        };
+
+    }
 }

@@ -129,7 +129,7 @@ public class GetSubscribedSubredditsService extends IntentService {
 
         for (int i= 0;i<contentValues.length;++i){
             contentValues[i] = new ContentValues();
-            contentValues[i].put(MySubredditColumn.KEY_ID,list.get(i).getData().getId());
+            contentValues[i].put(MySubredditColumn.KEY_ID,"t5_"+list.get(i).getData().getId());
             contentValues[i].put(MySubredditColumn.KEY_DISPLAY_NAME,list.get(i).getData().getDisplayName());
             contentValues[i].put(MySubredditColumn.KEY_HEADER_IMAGE,list.get(i).getData().getHeaderImg());
             contentValues[i].put(MySubredditColumn.KEY_TITLE,list.get(i).getData().getTitle());
@@ -148,6 +148,7 @@ public class GetSubscribedSubredditsService extends IntentService {
 
         }
         int rowsInserted  = getContentResolver().bulkInsert(mUri,contentValues);
+        getContentResolver().notifyChange(MyProvider.UserSubredditsWithFav.CONTENT_URI,null);
         Log.d(TAG,"saveSubreddit:Rows Inserted:"+rowsInserted);
     }
 }

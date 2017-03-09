@@ -7,16 +7,16 @@
     android:orientation="vertical">
 
     <TextView
-        android:padding="@dimen/drawer_item_padding"
-        android:drawableStart="@drawable/ic_home"
         android:id="@+id/tv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:drawablePadding="24dp"
+        android:drawableStart="@drawable/ic_home"
+        android:fontFamily="sans-serif"
         android:gravity="center_vertical"
-        android:textSize="18sp"
-        tools:text="@string/home"
-        android:fontFamily="sans-serif-medium" />
+        android:padding="@dimen/drawer_item_padding"
+        android:textSize="@dimen/drawer_item"
+        tools:text="@string/home" />
 
 </LinearLayout>
 

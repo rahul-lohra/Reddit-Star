@@ -64,7 +64,7 @@ public class DrawerDropDown extends RecyclerView.ViewHolder {
         this.context = context;
         rvSub.setLayoutManager(new LinearLayoutManager(context));
         rvSub.setVisibility(View.GONE);
-        icon = ContextCompat.getDrawable(context,R.drawable.ic_list);
+        icon = ContextCompat.getDrawable(context,R.drawable.ic_toc_black_24dp);
     }
 
 }

@@ -29,7 +29,7 @@ public interface MyFavouritesColumn {
 
     @DataType(TEXT)
     @NotNull
-    String KEY_DISPLAY_NAME = "display_name";
+    String KEY_DISPLAY_NAME = "fav_display_name";
 
 
     @DataType(INTEGER)

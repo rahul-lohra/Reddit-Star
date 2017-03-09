@@ -38,6 +38,7 @@ import com.android.rahul_lohra.redditstar.modal.t5_Subreddit.t5_Response;
 import com.android.rahul_lohra.redditstar.retrofit.ApiInterface;
 import com.android.rahul_lohra.redditstar.service.GetSubredditListService;
 import com.android.rahul_lohra.redditstar.storage.MyProvider;
+import com.android.rahul_lohra.redditstar.storage.column.MyFavouritesColumn;
 import com.android.rahul_lohra.redditstar.storage.column.MyPostsColumn;
 import com.android.rahul_lohra.redditstar.utility.Constants;
 import com.android.rahul_lohra.redditstar.utility.UserState;
@@ -56,6 +57,7 @@ import javax.inject.Named;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -93,6 +95,8 @@ public class SubredditFragment extends Fragment
 
     private static final String TAG = SubredditFragment.class.getSimpleName();
     private final int LOADER_ID = 1;
+    private final int LOADER_ID_FAV = 2;
+
 
 
     //    @Bind(R.id.app_bar_image)
@@ -120,15 +124,9 @@ public class SubredditFragment extends Fragment
     @Bind(R.id.tv_detail)
     AppCompatTextView tvDetail;
 
-
-
-
-
     private String subredditName;
     private String subredditFullName;
     private String subredditId;
-
-    //    private FrontPageAdapter adapter;
     private HomeAdapter adapter;
     private FrontPageResponseData frontPageResponseData;
 
@@ -137,6 +135,7 @@ public class SubredditFragment extends Fragment
     }
 
     private ISubredditFragment mListener;
+
 
     public SubredditFragment() {
         // Required empty public constructor
@@ -365,29 +364,27 @@ public class SubredditFragment extends Fragment
         ButterKnife.unbind(this);
     }
 
-//    @Override
-//    public Loader<FrontPageResponse> onCreateLoader(int id, Bundle args) {
-//        switch (id) {
-//            case LOADER_ID:
-//                return new SubredditLoader(
-//                        getContext(),
-//                        subredditName,
-//                        args.getString("after")
-//                );
-//        }
-//        return null;
-//    }
-
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        Uri mUri = MyProvider.PostsLists.CONTENT_URI;
-        String subredditId = args.getString(ARG_PARAM2);
-        String mWhere = MyPostsColumn.TYPE_TEMP + " =? "+" AND "+MyPostsColumn.KEY_SUBREDDIT_ID+" =? ";
-        String mWhereArgs[] = {"1",subredditId};
+
 
         switch (id) {
             case LOADER_ID:
+                String subredditId = args.getString(ARG_PARAM2);
+                Uri mUri = MyProvider.PostsLists.CONTENT_URI;
+                String mWhere = MyPostsColumn.TYPE_TEMP + " =? "+" AND "+MyPostsColumn.KEY_SUBREDDIT_ID+" =? ";
+                String mWhereArgs[] = {"1",subredditId};
                 return new CursorLoader(getActivity(), mUri, null, mWhere, mWhereArgs, null);
+
+            case LOADER_ID_FAV:
+                String subredditIdFav = args.getString(ARG_PARAM2);
+                Uri mUriFav = MyProvider.FavoritesLists.CONTENT_URI;
+                String mWhereFav = MyFavouritesColumn.KEY_SUBREDDIT_ID +" =?";
+                        if(null ==subredditIdFav)
+                            return null;
+                String mWhereArgsFav[] = {subredditIdFav};
+                return new CursorLoader(getActivity(), mUriFav, null, mWhereFav, mWhereArgsFav, null);
+
         }
         return null;
     }
@@ -398,6 +395,11 @@ public class SubredditFragment extends Fragment
             case LOADER_ID:
                 this.adapter.swapCursor(data);
                 break;
+            case LOADER_ID_FAV:
+                if(data!=null && data.moveToFirst()){
+                    sparkFav.setChecked(true);
+                    data.close();
+                }
         }
 
     }
@@ -410,30 +412,6 @@ public class SubredditFragment extends Fragment
                 break;
         }
     }
-
-//    @Override
-//    public void onLoadFinished(Loader<FrontPageResponse> loader, FrontPageResponse data) {
-//        switch (loader.getId()) {
-//            case LOADER_ID:
-//                this.frontPageResponseData = data.getData();
-//                if (data != null) {
-//                    int lastPos = list.size();
-//                    list.addAll(lastPos, data.getData().getChildren());
-//                    adapter.notifyItemRangeInserted(lastPos, data.getData().getChildren().size());
-//                }
-//                break;
-//        }
-//    }
-//
-//    @Override
-//    public void onLoaderReset(Loader<FrontPageResponse> loader) {
-//        switch (loader.getId()) {
-//            case LOADER_ID:
-//                list.clear();
-//                adapter.notifyDataSetChanged();
-//                break;
-//        }
-//    }
 
     @Override
     public void onStart() {
@@ -464,6 +442,8 @@ public class SubredditFragment extends Fragment
         Bundle args = new Bundle();
         args.putString(ARG_PARAM2, subredditFullName);
         getLoaderManager().initLoader(LOADER_ID, args, this);
+        getLoaderManager().initLoader(LOADER_ID_FAV, args, this);
+
     }
 
     @Override

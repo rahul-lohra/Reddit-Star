@@ -10,9 +10,12 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.NestedScrollView;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatEditText;
+import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -54,9 +57,10 @@ import javax.inject.Named;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import retrofit2.Retrofit;
 
-public class    SearchFragment extends BaseFragment implements
+public class SearchFragment extends BaseFragment implements
         T5_SubredditSearchAdapter.IT5_SubredditSearchAdapter,
         LoaderManager.LoaderCallbacks<Cursor>,
         IFrontPageAdapter {
@@ -86,6 +90,13 @@ public class    SearchFragment extends BaseFragment implements
     TextView tvSubreddit;
     @Bind(R.id.tv_post)
     TextView tvPost;
+    @Bind(R.id.image_back)
+    AppCompatImageView imageBack;
+
+    @OnClick(R.id.image_back)
+            void onClickImageBack(){
+        getActivity().onBackPressed();
+    }
 
 
     HomeAdapter linkAdapter;
@@ -95,11 +106,19 @@ public class    SearchFragment extends BaseFragment implements
     T5_ListChild t5_List_child;//Subreddit
     String searchQuery;
     String afterOfLink = "";
-//    String afterOfSubreddit;
+//    @Bind(R.id.toolbar)
+//    Toolbar toolbar;
+    //    String afterOfSubreddit;
     private Uri mUri = MyProvider.PostsLists.CONTENT_URI;
 
-    public interface ISearchFragment{
-        void openDetailScreen(DetailPostModal modal,ImageView imageView,String id);
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
+    }
+
+    public interface ISearchFragment {
+        void openDetailScreen(DetailPostModal modal, ImageView imageView, String id);
     }
 
     private ISearchFragment mListener;
@@ -120,18 +139,22 @@ public class    SearchFragment extends BaseFragment implements
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
         ((Initializer) getContext().getApplicationContext()).getNetComponent().inject(this);
-        Constants.clearPosts(getContext(),Constants.TYPE_SEARCH);
+        Constants.clearPosts(getContext(), Constants.TYPE_SEARCH);
+    }
+
+    private void setToolbar() {
+//        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v =  inflater.inflate(R.layout.fragment_search, container, false);
-        ButterKnife.bind(this,v);
-
-        Log.d(TAG,"onCreateView");
-        if(null == t5SubredditSearchAdapter){
+        View v = inflater.inflate(R.layout.fragment_search, container, false);
+        ButterKnife.bind(this, v);
+//        setToolbar();
+        Log.d(TAG, "onCreateView");
+        if (null == t5SubredditSearchAdapter) {
             tvPost.setVisibility(View.GONE);
             tvSubreddit.setVisibility(View.GONE);
         }
@@ -145,7 +168,7 @@ public class    SearchFragment extends BaseFragment implements
             public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
                 switch (actionId) {
                     case EditorInfo.IME_ACTION_SEARCH: {
-                        doMySearch(et.getText().toString(),true);
+                        doMySearch(et.getText().toString(), true);
                         searchQuery = et.getText().toString();
                     }
                     return true;
@@ -167,8 +190,8 @@ public class    SearchFragment extends BaseFragment implements
                 // if diff is zero, then the bottom has been reached
                 if (diff <= 10) {
                     // do stuff
-                    Log.d(TAG,"last Position");
-                    getLinks(searchQuery,false);
+                    Log.d(TAG, "last Position");
+                    getLinks(searchQuery, false);
                 }
             }
         });
@@ -177,9 +200,8 @@ public class    SearchFragment extends BaseFragment implements
     }
 
 
-
     private void setAdapter() {
-        linkAdapter = new HomeAdapter(getActivity(),null,this,(SearchActivity)getActivity());
+        linkAdapter = new HomeAdapter(getActivity(), null, this, (SearchActivity) getActivity());
 //        t3LinkSearchAdapter = new T3_LinkSearchAdapter(getActivity(), t3dataList, retrofitWithToken,this);
         t5SubredditSearchAdapter = new T5_SubredditSearchAdapter(getActivity(), t5dataList, this);
 
@@ -191,28 +213,27 @@ public class    SearchFragment extends BaseFragment implements
         rvSubreddits.setAdapter(t5SubredditSearchAdapter);
     }
 
-    private void doMySearch(String query,boolean isFromStart) {
+    private void doMySearch(String query, boolean isFromStart) {
         /*
          TODO://isFromStart is true only from search Bar else isFromStart is false(for getting next items)
          */
-        if(isFromStart)
-        {
+        if (isFromStart) {
             t5dataList.clear();
-            Constants.clearPosts(getContext(),Constants.TYPE_SEARCH);
+            Constants.clearPosts(getContext(), Constants.TYPE_SEARCH);
             t5SubredditSearchAdapter.notifyDataSetChanged();
         }
         if (!query.isEmpty()) {
-            getLinks(query,isFromStart);
-            getSubreddits(query,isFromStart);
+            getLinks(query, isFromStart);
+            getSubreddits(query, isFromStart);
             progressBar.setVisibility(View.VISIBLE);
         }
 
     }
 
-    private void getLinks(String query,boolean isFromStart) {
-        if(afterOfLink!=null){
+    private void getLinks(String query, boolean isFromStart) {
+        if (afterOfLink != null) {
             Intent intentLinkService = new Intent(getActivity(), SearchLinksService.class);
-            String mAfter = isFromStart?"":afterOfLink;
+            String mAfter = isFromStart ? "" : afterOfLink;
             intentLinkService.putExtra("after", mAfter);
             intentLinkService.putExtra("query", query);
             getActivity().startService(intentLinkService);
@@ -221,18 +242,18 @@ public class    SearchFragment extends BaseFragment implements
 
     private void getSubreddits(@NonNull String query, boolean isFromStart) {
         Intent intentSubredditService = new Intent(getActivity(), SearchSubredditsService.class);
-        String after = isFromStart?"":(t5_List_child.getAfter()!=null)?t5_List_child.getAfter():"";
+        String after = isFromStart ? "" : (t5_List_child.getAfter() != null) ? t5_List_child.getAfter() : "";
         intentSubredditService.putExtra("after", after);
         intentSubredditService.putExtra("query", query);
         getActivity().startService(intentSubredditService);
     }
 
     @Override
-    public void sendData(String name,String fullName,String subredditId) {
+    public void sendData(String name, String fullName, String subredditId) {
         Intent intent = new Intent(getActivity(), SubredditActivity.class);
         intent.putExtra("name", name);
-        intent.putExtra("fullName",fullName);
-        intent.putExtra("subredditId",subredditId);
+        intent.putExtra("fullName", fullName);
+        intent.putExtra("subredditId", subredditId);
 
         startActivity(intent);
     }
@@ -241,7 +262,7 @@ public class    SearchFragment extends BaseFragment implements
     public void getNextSubreddit() {
         if (t5_List_child != null) {
             if (!t5_List_child.getAfter().equalsIgnoreCase(SearchSubredditsService.after)) {
-                getSubreddits(searchQuery,false);
+                getSubreddits(searchQuery, false);
             }
         }
     }
@@ -260,11 +281,11 @@ public class    SearchFragment extends BaseFragment implements
     public void onMessageEvent(T5_ListChild Argt5_List_child) {
         this.t5_List_child = Argt5_List_child;
         List<T5_Kind> list = t5_List_child.children;
-        for(int i=0;i<list.size();){
+        for (int i = 0; i < list.size(); ) {
             boolean over18 = list.get(i).data.getOver18();
-            if(over18){
+            if (over18) {
                 list.remove(i);
-            }else {
+            } else {
                 ++i;
             }
         }
@@ -283,7 +304,6 @@ public class    SearchFragment extends BaseFragment implements
         tvSubreddit.setVisibility(View.VISIBLE);
         tvPost.setVisibility(View.VISIBLE);
     }
-
 
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -310,7 +330,7 @@ public class    SearchFragment extends BaseFragment implements
         } else if (string.equals("getNextData") && type.equals("subreddit")) {
             if (t5_List_child != null) {
                 if (!t5_List_child.getAfter().equalsIgnoreCase(SearchSubredditsService.after)) {
-                    getSubreddits(searchQuery,false);
+                    getSubreddits(searchQuery, false);
                 }
             }
             progressBar.setVisibility(View.GONE);
@@ -321,14 +341,13 @@ public class    SearchFragment extends BaseFragment implements
     }
 
 
-
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         switch (id) {
-            case LOADER_ID:{
-                String mWhere = MyPostsColumn.TYPE_SEARCH+"=?";
-                String mWhereArgs[]={"1"};
-                return new CursorLoader(getActivity(),mUri,null,mWhere,mWhereArgs,null);
+            case LOADER_ID: {
+                String mWhere = MyPostsColumn.TYPE_SEARCH + "=?";
+                String mWhereArgs[] = {"1"};
+                return new CursorLoader(getActivity(), mUri, null, mWhere, mWhereArgs, null);
             }
 
         }
@@ -356,8 +375,8 @@ public class    SearchFragment extends BaseFragment implements
 
 
     @Override
-    public void sendData(DetailPostModal modal,ImageView imageView,String id) {
-        mListener.openDetailScreen(modal,imageView,id);
+    public void sendData(DetailPostModal modal, ImageView imageView, String id) {
+        mListener.openDetailScreen(modal, imageView, id);
     }
 
 
@@ -366,6 +385,7 @@ public class    SearchFragment extends BaseFragment implements
         super.onActivityCreated(savedInstanceState);
         getLoaderManager().initLoader(LOADER_ID, null, this);
     }
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);

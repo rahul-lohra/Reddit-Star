@@ -109,7 +109,7 @@ public class PostView extends RecyclerView.ViewHolder {
         }
     }
 
-    public void performVoteAndUpdateLikesE(@DirectionMode int mode, String thingId){
+    public void performVoteAndUpdateLikes(@DirectionMode int mode, String thingId){
 
         String token = UserState.getAuthToken(context);
         String auth = "bearer " + token;

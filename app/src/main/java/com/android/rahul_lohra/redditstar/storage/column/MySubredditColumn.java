@@ -28,7 +28,7 @@ public interface MySubredditColumn {
 
     @DataType(TEXT)
     @NotNull
-    String KEY_DISPLAY_NAME = "display_name";
+    String KEY_DISPLAY_NAME = "subreddit_display_name";
 
     @DataType(TEXT)
     String KEY_HEADER_IMAGE = "headerImg";

@@ -98,12 +98,12 @@ public class HomeAdapter extends CursorRecyclerViewAdapter<RecyclerView.ViewHold
                 Integer mLikes = postView.getLikes();
                     if(mLikes == -1)
                     {
-                        postView.performVoteAndUpdateLikesE(DIRECTION_NULL,thingId);
+                        postView.performVoteAndUpdateLikes(DIRECTION_NULL,thingId);
                         updateLikes(activity.getApplicationContext(),DIRECTION_NULL,id,ups,mLikes);
 
                 }else if(mLikes == 0) {
                     //upvote
-                    postView.performVoteAndUpdateLikesE(PostView.DIRECTION_UP,thingId);
+                    postView.performVoteAndUpdateLikes(PostView.DIRECTION_UP,thingId);
                     updateLikes(activity.getApplicationContext(),PostView.DIRECTION_UP,id,ups,mLikes);
                 }
 
@@ -126,10 +126,10 @@ public class HomeAdapter extends CursorRecyclerViewAdapter<RecyclerView.ViewHold
                 Integer mLikes = postView.getLikes();
                     if(mLikes==1)
                     {
-                        postView.performVoteAndUpdateLikesE(DIRECTION_NULL,thingId);
+                        postView.performVoteAndUpdateLikes(DIRECTION_NULL,thingId);
                         updateLikes(activity.getApplicationContext(), DIRECTION_NULL,id,ups,mLikes);
                 }else if(mLikes==0){
-                    postView.performVoteAndUpdateLikesE(PostView.DIRECTION_DOWN,thingId);
+                    postView.performVoteAndUpdateLikes(PostView.DIRECTION_DOWN,thingId);
                     updateLikes(activity.getApplicationContext(),PostView.DIRECTION_DOWN,id,ups,mLikes);
                 }
             }

@@ -34,6 +34,7 @@ import android.widget.TextView;
 import com.android.rahul_lohra.redditstar.R;
 import com.android.rahul_lohra.redditstar.adapter.cursor.SubredditDrawerAdapter;
 import com.android.rahul_lohra.redditstar.adapter.normal.DrawerAdapter;
+import com.android.rahul_lohra.redditstar.contract.IActivity;
 import com.android.rahul_lohra.redditstar.contract.IDashboard;
 import com.android.rahul_lohra.redditstar.contract.ILogin;
 import com.android.rahul_lohra.redditstar.dialog.AddAccountDialog;
@@ -69,7 +70,8 @@ public class DashboardActivity extends BaseActivity implements
         LoaderManager.LoaderCallbacks<Cursor>,
         DrawerAdapter.ISubreddit,
         HomeFragment.IHomeFragment,
-        ILogin
+        ILogin,
+        IActivity
 
 {
 
@@ -195,12 +197,12 @@ public class DashboardActivity extends BaseActivity implements
 
     void setupDrawer() {
         drawerList = new ArrayList<>();
-        drawerList.add(new DrawerItemModal("Search", ContextCompat.getDrawable(this, R.drawable.ic_home)));
+//        drawerList.add(new DrawerItemModal("Search", ContextCompat.getDrawable(this, R.drawable.ic_home)));
         drawerList.add(new DrawerItemModal("Home", ContextCompat.getDrawable(this, R.drawable.ic_home)));
         drawerList.add(new DrawerItemModal("My Subreddits", ContextCompat.getDrawable(this, R.drawable.ic_list)));
         drawerList.add(new DrawerItemModal(getString(R.string.my_favorites), ContextCompat.getDrawable(this, R.drawable.ic_star)));
-        drawerList.add(new DrawerItemModal(getString(R.string.settings), ContextCompat.getDrawable(this, R.drawable.ic_settings)));
-        drawerAdapter = new DrawerAdapter(this, drawerList, this);
+//        drawerList.add(new DrawerItemModal(getString(R.string.settings), ContextCompat.getDrawable(this, R.drawable.ic_settings)));
+        drawerAdapter = new DrawerAdapter(this, drawerList, this,this);
         rv.setLayoutManager(new LinearLayoutManager(this));
         rv.setAdapter(drawerAdapter);
     }
@@ -222,7 +224,7 @@ public class DashboardActivity extends BaseActivity implements
         navigationView.setNavigationItemSelectedListener(this);
         addAccountDialog = new AddAccountDialog();
 
-        subredditDrawerAdapter = new SubredditDrawerAdapter(this, null);
+        subredditDrawerAdapter = new SubredditDrawerAdapter(this, null,this);
         getSupportLoaderManager().initLoader(LOADER_ID, null, this);
         getSupportLoaderManager().initLoader(LOADER_ID_NAME, null, this);
 
@@ -322,66 +324,41 @@ public class DashboardActivity extends BaseActivity implements
     }
 
     @Override
-    public void openActivity(Class<?> cls) {
+    public void openActivity(final Intent intent) {
         drawer.closeDrawers();
-        startActivityIntent = new Intent(this, cls);
-
-
         drawer.addDrawerListener(new DrawerLayout.DrawerListener() {
             @Override
-            public void onDrawerSlide(View drawerView, float slideOffset) {
-
-            }
+            public void onDrawerSlide(View drawerView, float slideOffset) {}
 
             @Override
-            public void onDrawerOpened(View drawerView) {
-
-            }
+            public void onDrawerOpened(View drawerView) {}
 
             @Override
             public void onDrawerClosed(View drawerView) {
-                startActivity(startActivityIntent);
-                startActivityIntent = null;
+                startActivity(intent);
                 drawer.removeDrawerListener(this);
             }
-
             @Override
-            public void onDrawerStateChanged(int newState) {
-
-            }
+            public void onDrawerStateChanged(int newState) {}
         });
     }
 
-
     @Override
-    public void loadMySubreddits() {
-
-    }
+    public void loadMySubreddits() {}
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-
         switch (id) {
             case LOADER_ID:
-                Uri uri = MyProvider.SubredditLists.CONTENT_URI;
-                String mProjection[] = {
-                        MySubredditColumn.KEY_SQL_ID,
-                        MySubredditColumn.KEY_NAME,
-                        MySubredditColumn.KEY_DISPLAY_NAME,
-                        MySubredditColumn.KEY_ID,
-                        MySubredditColumn.KEY_TITLE,
-                        MySubredditColumn.KEY_URL
-                };
-                return new CursorLoader(this, uri, mProjection, null, null, null);
+                Uri uri = MyProvider.UserSubredditsWithFav.CONTENT_URI;
+                return new CursorLoader(this, uri, MyProvider.UserSubredditsWithFav.mProjection, null, null, null);
             case LOADER_ID_NAME: {
                 Uri uri_2 = MyProvider.UserCredentialsLists.CONTENT_URI;
                 String proj_2[] = {UserCredentialsColumn.NAME};
                 String mSelection_2 = UserCredentialsColumn.ACTIVE_STATE + "=?";
                 String mSelectionArgs_2[] = {"1"};
-
                 return new CursorLoader(this, uri_2, proj_2, mSelection_2, mSelectionArgs_2, null);
             }
-
         }
         return null;
     }
@@ -410,7 +387,6 @@ public class DashboardActivity extends BaseActivity implements
             }
         }
     }
-
 
     @Override
     public void getSubredditRecyclerView(RecyclerView recyclerView) {

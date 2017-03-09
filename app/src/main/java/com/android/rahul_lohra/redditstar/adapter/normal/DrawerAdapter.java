@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import com.android.rahul_lohra.redditstar.R;
 import com.android.rahul_lohra.redditstar.activity.FavoriteActivity;
 import com.android.rahul_lohra.redditstar.activity.SettingsActivity;
+import com.android.rahul_lohra.redditstar.contract.IActivity;
 import com.android.rahul_lohra.redditstar.modal.DrawerItemModal;
 import com.android.rahul_lohra.redditstar.viewHolder.DrawerDropDown;
 import com.android.rahul_lohra.redditstar.viewHolder.DrawerNormal;
@@ -30,12 +31,13 @@ public class DrawerAdapter extends RecyclerView.Adapter {
 
     private List<DrawerItemModal> list;
     private ISubreddit iSubreddit;
+    private IActivity iActivity;
     public interface ISubreddit{
         void getSubredditRecyclerView(RecyclerView recyclerView) ;
-        void openActivity(Class<?> cls);
+//        void openActivity(Class<?> cls);
     }
 
-    public DrawerAdapter(Context context,List<DrawerItemModal> list,ISubreddit iSubreddit) {
+    public DrawerAdapter(Context context,List<DrawerItemModal> list,ISubreddit iSubreddit,IActivity iActivity) {
         this.context = context;
         this.list = list;
         this.iSubreddit = iSubreddit;
@@ -77,19 +79,16 @@ public class DrawerAdapter extends RecyclerView.Adapter {
                     drawerNormal.tv.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            iSubreddit.openActivity(FavoriteActivity.class);
+                            iActivity.openActivity(new Intent(context,FavoriteActivity.class));
 //                            context.startActivity(new Intent(context, FavoriteActivity.class));
-
                         }
                     });
-
                 }
-
                 if(text.equals(context.getString(R.string.settings))) {
                     drawerNormal.tv.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            iSubreddit.openActivity(SettingsActivity.class);
+                            iActivity.openActivity(new Intent(context,FavoriteActivity.class));
 //                            context.startActivity(new Intent(context, SettingsActivity.class));
                         }
                     });
@@ -116,9 +115,9 @@ public class DrawerAdapter extends RecyclerView.Adapter {
     public int getItemViewType(int position) {
         int val = -1;
         switch (position){
-            case 0: val = SEARCH_TYPE;
-            break;
-            case 2: val = EXPANDABLE_TYPE;
+//            case 0: val = SEARCH_TYPE;
+//            break;
+            case 1: val = EXPANDABLE_TYPE;
                 break;
             default: val = NORMAL_TYPE;
         }
