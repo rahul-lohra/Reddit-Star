@@ -3,8 +3,10 @@ package com.android.rahul_lohra.redditstar.utility;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.support.annotation.IntDef;
 import android.support.annotation.IntegerRes;
 import android.support.annotation.NonNull;
@@ -93,7 +95,7 @@ public class Constants {
         Uri mUri = MyProvider.UserCredentialsLists.CONTENT_URI;
 
         int rowsUpdated = context.getContentResolver().update(mUri,cv,mSelection,mSelectionArgs);
-        Log.d(TAG,"rowsUpdated:"+rowsUpdated);
+//        Log.d(TAG,"rowsUpdated:"+rowsUpdated);
 
     }
 
@@ -135,24 +137,19 @@ public class Constants {
         String mProj[]={MyPostsColumn.KEY_ID};
         Uri mUri = MyProvider.PostsLists.CONTENT_URI;
         List<FrontPageChild> mList = modal.getData().getChildren();
-
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        boolean over18 = sp.getBoolean(SpConstants.OVER_18,false);
         for(FrontPageChild frontPageChild :mList){
             FrontPageChildData data = frontPageChild.getData();
             String id  = data.getId();
             String subredditName = data.getSubreddit();
             String mSelectionArgs[]={"t3_"+id};
-//             int rowsDeleted = context.getContentResolver().delete(mUri,mWhere,mSelectionArgs);
-
-//            if (rowsDeleted == 0) {
 //
-//                //Insert Comments
-//                Intent intentCommentService = new Intent(context, CommentsService.class);
-//                intentCommentService.putExtra(CommentsService.POST_ID,id);
-//                intentCommentService.putExtra(CommentsService.SUBREDDIT_NAME,subredditName);
-//                context.startService(intentCommentService);
-//            }else {
-//                Log.wtf(TAG,"row deleted: with id:"+id);
-//            }
+            boolean mOver18 = data.getOver18();
+            if(over18){
+                continue;
+            }
+
             ContentValues cv = new ContentValues();
             switch (type){
 
@@ -174,11 +171,11 @@ public class Constants {
             Cursor cursor = context.getContentResolver().query(mUri,mProj,mWhere,mSelectionArgs,null);
             if(cursor!=null){
                 if(cursor.moveToFirst()){
-                    Log.wtf(TAG,"duplicate row found : with id:"+id+",subreddit:"+subredditName);
+//                    Log.wtf(TAG,"duplicate row found : with id:"+id+",subreddit:"+subredditName);
 
                     context.getContentResolver().update(mUri,cv,mWhere,mSelectionArgs);
                 }else {
-                    Log.wtf(TAG,"insert row : with id:"+id+",subreddit:"+subredditName);
+//                    Log.wtf(TAG,"insert row : with id:"+id+",subreddit:"+subredditName);
                     ContentValues contentValues = CustomOrm.FrontPageChildDataToContentValues(data,type);
                     context.getContentResolver().insert(mUri,contentValues);
                 }
@@ -238,7 +235,7 @@ public class Constants {
         if(list.size()<1){
             return;
         }
-        Log.wtf(TAG,"bulk insert row postId:,"+postId+",subredditName:"+subredditName);
+//        Log.wtf(TAG,"bulk insert row postId:,"+postId+",subredditName:"+subredditName);
             String linkId = list.get(0).getChild().t1data.getLink_id();
             String id = list.get(0).getChild().t1data.getId();
          deletePreviousComments(context,linkId);
@@ -277,7 +274,7 @@ public class Constants {
         String mWhere = CommentsColumn.KEY_LINK_ID + "=?";
         String mWhereArgs[]={linkId};
         int c = context.getContentResolver().delete(mUri,mWhere,mWhereArgs);
-        Log.wtf(TAG,"deleted row comments count: "+c+",linkId:"+linkId);
+//        Log.wtf(TAG,"deleted row comments count: "+c+",linkId:"+linkId);
     }
 
     public static void findSimilarComment(Context context,String id){
@@ -295,7 +292,7 @@ public class Constants {
                     String sqlId = cursor.getString(cursor.getColumnIndex(CommentsColumn.KEY_SQL_ID));
                     String body = cursor.getString(cursor.getColumnIndex(CommentsColumn.KEY_BODY));
                     String subreddit = cursor.getString(cursor.getColumnIndex(CommentsColumn.KEY_SUBREDDIT));
-                    Log.wtf(TAG,"duplicate Comments:"+"sqlId:"+sqlId+",body:"+body+",subreddit:"+subreddit);
+//                    Log.wtf(TAG,"duplicate Comments:"+"sqlId:"+sqlId+",body:"+body+",subreddit:"+subreddit);
                 }while (cursor.moveToNext());
             }
         cursor.close();

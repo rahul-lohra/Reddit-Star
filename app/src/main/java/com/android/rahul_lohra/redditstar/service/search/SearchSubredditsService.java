@@ -2,17 +2,22 @@ package com.android.rahul_lohra.redditstar.service.search;
 
 import android.app.IntentService;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.android.rahul_lohra.redditstar.application.Initializer;
+import com.android.rahul_lohra.redditstar.modal.T5_Kind;
 import com.android.rahul_lohra.redditstar.modal.search.T5_SearchResponse;
 import com.android.rahul_lohra.redditstar.retrofit.ApiInterface;
+import com.android.rahul_lohra.redditstar.utility.SpConstants;
 import com.android.rahul_lohra.redditstar.utility.UserState;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -39,7 +44,7 @@ public class SearchSubredditsService extends IntentService {
 
     public static String after = null;
     private static final String TAG = SearchSubredditsService.class.getSimpleName();
-
+    private SharedPreferences sp;
     public SearchSubredditsService() {
         super(TAG);
     }
@@ -49,6 +54,8 @@ public class SearchSubredditsService extends IntentService {
         super.onCreate();
         ((Initializer) getApplication()).getNetComponent().inject(this);
         apiInterface = (UserState.isUserLoggedIn(getApplicationContext())) ? retrofitWithToken.create(ApiInterface.class) : retrofitWithoutToken.create(ApiInterface.class);
+        sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
     }
 
     @Override
@@ -59,14 +66,17 @@ public class SearchSubredditsService extends IntentService {
             String token = (isUserLoggedIn) ? "bearer " + UserState.getAuthToken(getApplicationContext()) : "";
             String subredditName = intent.getStringExtra("query");
             after = intent.getStringExtra("after");
-            Map<String, String> map = new HashMap<>();
+            Map<String, Object> map = new HashMap<>();
             map.put("after", after);
             map.put("limit", "7");
             map.put("q", subredditName);
+            map.put(SpConstants.OVER_18,sp.getBoolean(SpConstants.OVER_18,false));
+
             try {
                 Response<T5_SearchResponse> res = apiInterface.searchSubreddits(token,map).execute();
                 Log.d(TAG,"resCode:"+res.code());
                 if (res.code() == 200) {
+
                     EventBus.getDefault().post(res.body().data);
                 }
             } catch (IOException e) {

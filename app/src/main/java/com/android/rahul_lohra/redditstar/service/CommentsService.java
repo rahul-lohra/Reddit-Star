@@ -1,15 +1,21 @@
 package com.android.rahul_lohra.redditstar.service;
 
 import android.app.IntentService;
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.android.rahul_lohra.redditstar.R;
 import com.android.rahul_lohra.redditstar.application.Initializer;
 import com.android.rahul_lohra.redditstar.helper.CommentsGsonTypeAdapter;
 import com.android.rahul_lohra.redditstar.modal.comments.Child;
 import com.android.rahul_lohra.redditstar.modal.comments.CustomComment;
 import com.android.rahul_lohra.redditstar.modal.comments.Example;
 import com.android.rahul_lohra.redditstar.retrofit.ApiInterface;
+import com.android.rahul_lohra.redditstar.storage.MyProvider;
+import com.android.rahul_lohra.redditstar.storage.column.CommentsColumn;
 import com.android.rahul_lohra.redditstar.utility.Constants;
 import com.android.rahul_lohra.redditstar.utility.UserState;
 import com.google.gson.Gson;
@@ -103,6 +109,25 @@ public class CommentsService extends IntentService {
                 customCommentList.add(new CustomComment(depth, child));
                 traverse(child.t1data.replies, depth);
             }
+        }
+    }
+
+    public static void requestComments(Context context,String id,String subreddit){
+        String mProj[] = {CommentsColumn.KEY_SQL_ID};
+        String mWhere = CommentsColumn.KEY_LINK_ID + "=?";
+        String mWhereArgs[] = {id};
+        Cursor cursor = context.getContentResolver().query(MyProvider.CommentsLists.CONTENT_URI, mProj, mWhere, mWhereArgs, null);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+
+                System.out.println("haha");
+            } else {
+                Intent intent = new Intent(context, CommentsService.class);
+                intent.putExtra(CommentsService.POST_ID,id);
+                intent.putExtra(CommentsService.SUBREDDIT_NAME, subreddit);
+                context.startService(intent);
+            }
+            cursor.close();
         }
     }
 

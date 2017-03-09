@@ -2,16 +2,22 @@ package com.android.rahul_lohra.redditstar.service;
 
 import android.app.IntentService;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.android.rahul_lohra.redditstar.application.Initializer;
 import com.android.rahul_lohra.redditstar.modal.custom.AfterModal;
 import com.android.rahul_lohra.redditstar.modal.frontPage.FrontPageChild;
 import com.android.rahul_lohra.redditstar.modal.frontPage.FrontPageResponse;
+import com.android.rahul_lohra.redditstar.modal.frontPage.Media;
+import com.android.rahul_lohra.redditstar.modal.frontPage.Preview;
 import com.android.rahul_lohra.redditstar.retrofit.ApiInterface;
 import com.android.rahul_lohra.redditstar.storage.MyProvider;
+import com.android.rahul_lohra.redditstar.storage.column.MyPostsColumn;
 import com.android.rahul_lohra.redditstar.utility.Constants;
+import com.android.rahul_lohra.redditstar.utility.SpConstants;
 import com.android.rahul_lohra.redditstar.utility.UserState;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.FutureTarget;
@@ -47,6 +53,7 @@ public class GetFrontPageService extends IntentService {
     public static String after = null;
     public boolean isUserLoggedIn = false;
     private final  String TAG = GetFrontPageService.class.getSimpleName();
+    SharedPreferences sp;
     public GetFrontPageService() {
         super(GetFrontPageService.class.getSimpleName());
     }
@@ -55,6 +62,7 @@ public class GetFrontPageService extends IntentService {
         super.onCreate();
         ((Initializer) getApplication()).getNetComponent().inject(this);
         isUserLoggedIn = UserState.isUserLoggedIn(getApplicationContext());
+        sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
     }
     @Override
     protected void onHandleIntent(Intent intent) {
@@ -65,6 +73,7 @@ public class GetFrontPageService extends IntentService {
             Map<String,String> map = new HashMap<>();
             map.put("limit","10");
             map.put("after",after);
+            map.put(SpConstants.OVER_18,String.valueOf(sp.getBoolean(SpConstants.OVER_18,false)));
             String token = (isUserLoggedIn) ? "bearer " + UserState.getAuthToken(getApplicationContext()) : "";
 
             try {
@@ -79,7 +88,16 @@ public class GetFrontPageService extends IntentService {
                         FutureTarget<File> future = Glide.with(getApplicationContext())
                                 .load(url)
                                 .downloadOnly(100, 100);
-//                        File cache = future.get();
+//                        String url = frontPageChild.getData();
+//                        Preview preview = frontPageChild.getData().getPreview();
+//                        String bigUrl = (preview!=null)?preview.getImages().get(0).getSource().getUrl():null;
+//                        if(bigUrl!=null){
+//                            FutureTarget<File> future_2 = Glide.with(getApplicationContext())
+//                                    .load(url)
+//                                    .downloadOnly(250,250);
+//                        }
+
+
                     }
                 }
                 Log.d(TAG,"response:"+res.code());

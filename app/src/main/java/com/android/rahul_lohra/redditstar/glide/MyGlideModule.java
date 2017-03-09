@@ -15,8 +15,8 @@ import com.bumptech.glide.module.GlideModule;
 public class MyGlideModule implements GlideModule {
     @Override public void applyOptions(Context context, GlideBuilder builder) {
         // Apply options to the builder here.
-        builder.setBitmapPool(new LruBitmapPool(1024*1024*8));
-        builder.setMemoryCache(new LruResourceCache(1024*1024*8));
+        builder.setBitmapPool(new LruBitmapPool(1024*1024*15));
+        builder.setMemoryCache(new LruResourceCache(1024*1024*15));
     }
 
     @Override public void registerComponents(Context context, Glide glide) {

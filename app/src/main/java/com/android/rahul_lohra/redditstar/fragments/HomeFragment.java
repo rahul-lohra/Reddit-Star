@@ -22,6 +22,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.android.rahul_lohra.redditstar.R;
+import com.android.rahul_lohra.redditstar.activity.DashboardActivity;
 import com.android.rahul_lohra.redditstar.activity.SearchActivity;
 import com.android.rahul_lohra.redditstar.adapter.cursor.HomeAdapter;
 import com.android.rahul_lohra.redditstar.application.Initializer;
@@ -172,10 +173,9 @@ public class HomeFragment extends Fragment implements
     }
 
     private void setAdapter() {
-        adapter = new HomeAdapter(getActivity(), null, this);
+        adapter = new HomeAdapter(getActivity(), null, this,(DashboardActivity)getActivity());
         rv.setLayoutManager(new LinearLayoutManager(getActivity()));
         rv.setAdapter(adapter);
-//        rv.nested
     }
 
 
@@ -268,10 +268,10 @@ public class HomeFragment extends Fragment implements
         mListener.sendModalAndImageView(modal, imageView, id);
     }
 
-    @Override
-    public void pleaseLogin() {
-        mListener.showLoginSnackBar();
-    }
+//    @Override
+//    public void pleaseLogin() {
+//        mListener.showLoginSnackBar();
+//    }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {

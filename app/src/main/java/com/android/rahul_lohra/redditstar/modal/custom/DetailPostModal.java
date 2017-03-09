@@ -11,20 +11,19 @@ import java.util.List;
  */
 
 public class DetailPostModal implements Parcelable {
-    String id;          //
-    String subreddit;   //
-    String postHint;//
+    private String id;          //
+    private String subreddit;   //
+    private String postHint;//
 //    Boolean locked;
-    String ups;         //
-    String title;       //
-    String commentsCount;//
-    String thumbnail;
-    String time;        //
-    String author;      //
-    Integer likes;      //
-    String name;        //
-    String bigImageUrl;
-
+private String ups;         //
+    private String title;       //
+    private String commentsCount;//
+    private String thumbnail;
+    private String time;        //
+    private String author;      //
+    private Integer likes;      //
+    private String name;        //
+    private String bigImageUrl;
     public DetailPostModal(String id, String subreddit, String ups, String title, String commentsCount, String thumbnail, String time, String author,String bigImageUrl,Integer likes,String name,String postHint) {
         this.id = id;
         this.subreddit = subreddit;

@@ -24,6 +24,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.android.rahul_lohra.redditstar.R;
+import com.android.rahul_lohra.redditstar.activity.SearchActivity;
 import com.android.rahul_lohra.redditstar.activity.SubredditActivity;
 import com.android.rahul_lohra.redditstar.adapter.cursor.HomeAdapter;
 import com.android.rahul_lohra.redditstar.adapter.normal.T5_SubredditSearchAdapter;
@@ -178,7 +179,7 @@ public class    SearchFragment extends BaseFragment implements
 
 
     private void setAdapter() {
-        linkAdapter = new HomeAdapter(getActivity(),null,this);
+        linkAdapter = new HomeAdapter(getActivity(),null,this,(SearchActivity)getActivity());
 //        t3LinkSearchAdapter = new T3_LinkSearchAdapter(getActivity(), t3dataList, retrofitWithToken,this);
         t5SubredditSearchAdapter = new T5_SubredditSearchAdapter(getActivity(), t5dataList, this);
 
@@ -256,11 +257,20 @@ public class    SearchFragment extends BaseFragment implements
 //    }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(T5_ListChild t5_List_child) {
-        this.t5_List_child = t5_List_child;
+    public void onMessageEvent(T5_ListChild Argt5_List_child) {
+        this.t5_List_child = Argt5_List_child;
+        List<T5_Kind> list = t5_List_child.children;
+        for(int i=0;i<list.size();){
+            boolean over18 = list.get(i).data.getOver18();
+            if(over18){
+                list.remove(i);
+            }else {
+                ++i;
+            }
+        }
         int lastPos = t5dataList.size();
-        t5dataList.addAll(lastPos, t5_List_child.children);
-        t5SubredditSearchAdapter.notifyItemRangeInserted(lastPos, t5_List_child.children.size());
+        t5dataList.addAll(lastPos, list);
+        t5SubredditSearchAdapter.notifyItemRangeInserted(lastPos, list.size());
         progressBar.setVisibility(View.GONE);
         tvSubreddit.setVisibility(View.VISIBLE);
         tvPost.setVisibility(View.VISIBLE);
@@ -350,10 +360,6 @@ public class    SearchFragment extends BaseFragment implements
         mListener.openDetailScreen(modal,imageView,id);
     }
 
-    @Override
-    public void pleaseLogin() {
-
-    }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {

@@ -146,6 +146,8 @@ public class MyProvider {
                 MyDatabase.USER_POSTS_TABLE+"."+MyPostsColumn.KEY_BIG_IMAGE_URL,
                 MyDatabase.USER_POSTS_TABLE+"."+MyPostsColumn.KEY_POST_HINT,
                 MyDatabase.USER_POSTS_TABLE+"."+MyPostsColumn.KEY_COMMENTS_COUNT,
+                MyDatabase.USER_POSTS_TABLE+"."+MyPostsColumn.KEY_DOMAIN,
+                MyDatabase.USER_POSTS_TABLE+"."+MyPostsColumn.KEY_SCORE,
                 MyDatabase.COMMENTS_TABLE+"."+CommentsColumn.KEY_SQL_ID,
                 MyDatabase.COMMENTS_TABLE+"."+CommentsColumn.KEY_BODY,
                 MyDatabase.COMMENTS_TABLE+"."+CommentsColumn.KEY_AUTHOR,

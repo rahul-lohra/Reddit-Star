@@ -70,11 +70,11 @@ public interface ApiInterface {
 
     @GET("/subreddits/search.json")
     Call<T5_SearchResponse> searchSubreddits(@Header(Constants.AUTHORIZATION) String authorization,
-                                             @QueryMap Map<String, String> map);
+                                             @QueryMap Map<String, Object> map);
 
     @GET("search.json")
     Call<FrontPageResponse> searchLinks(@Header(Constants.AUTHORIZATION) String authorization,
-                                        @QueryMap Map<String, String> map);
+                                        @QueryMap Map<String, Object> map);
 
     @FormUrlEncoded
     @POST("/api/comment")

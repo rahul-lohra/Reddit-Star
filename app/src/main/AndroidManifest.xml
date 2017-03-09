@@ -60,9 +60,6 @@
             android:exported="false" />
         <service android:name=".service.GetSubscribedSubredditsService" />
         <service
-            android:name=".service.GetDashboardSubredditsService"
-            android:exported="false" />
-        <service
             android:name=".service.search.SearchLinksService"
             android:exported="false" />
         <service
@@ -102,7 +99,6 @@
         <activity android:name=".dummy.DummyMainActivity" />
         <activity
             android:name=".activity.DashboardActivity"
-            android:label="@string/title_activity_dashboard"
             android:theme="@style/AppTheme.NoToolBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -112,9 +108,9 @@
         </activity>
         <activity android:name=".activity.LoginActivity" />
         <activity
-            android:theme="@style/DetailActivityTheme"
             android:name=".activity.DetailActivity"
-            android:parentActivityName=".activity.DashboardActivity">
+            android:parentActivityName=".activity.DashboardActivity"
+            android:theme="@style/DetailActivityTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.DashboardActivity" />
@@ -126,7 +122,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.DashboardActivity" />
         </activity>
-
         <activity
             android:name=".dummy.DummyDashboardActivity"
             android:label="@string/home" />
@@ -163,10 +158,9 @@
             android:label="@string/subreddits"
             android:theme="@style/AppTheme.NoToolBar" />
         <activity
-            android:theme="@style/AppTheme.NoToolBar"
             android:name=".activity.FavoriteActivity"
             android:label="@string/favorite"
-             />
+            android:theme="@style/AppTheme.NoToolBar" />
         <activity
             android:name=".activity.SearchActivity"
             android:launchMode="singleTop"
@@ -199,7 +193,8 @@
 
         <service
             android:name=".service.CommentsService"
-            android:exported="false"></service>
+            android:exported="false" />
+
     </application>
 
 </manifest>

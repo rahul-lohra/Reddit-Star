@@ -4,8 +4,10 @@ import android.app.IntentService;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.android.rahul_lohra.redditstar.application.Initializer;
@@ -16,6 +18,8 @@ import com.android.rahul_lohra.redditstar.retrofit.ApiInterface;
 import com.android.rahul_lohra.redditstar.storage.MyProvider;
 import com.android.rahul_lohra.redditstar.storage.column.MySubredditColumn;
 import com.android.rahul_lohra.redditstar.storage.column.UserCredentialsColumn;
+import com.android.rahul_lohra.redditstar.utility.Share;
+import com.android.rahul_lohra.redditstar.utility.SpConstants;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -45,12 +49,14 @@ public class GetSubscribedSubredditsService extends IntentService {
     public GetSubscribedSubredditsService() {
         super(TAG);
     }
-
+    private SharedPreferences sp;
     @Override
     public void onCreate() {
         super.onCreate();
         ((Initializer)getApplication()).getNetComponent().inject(this);
     apiInterface =retrofit.create(ApiInterface.class);
+        sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
     }
 
     @Override
@@ -92,6 +98,8 @@ public class GetSubscribedSubredditsService extends IntentService {
         String token = "bearer "+accessToken;
         Map<String,String> map = new HashMap<>();
         map.put("after",array[1]);
+        map.put(SpConstants.OVER_18,String.valueOf(sp.getBoolean(SpConstants.OVER_18,false)));
+
         try {
             Response<SubredditResponse> response = apiInterface.getMySubscribedSubreddits(token,map).execute();
             if(response.code()==200){

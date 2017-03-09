@@ -25,6 +25,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.rahul_lohra.redditstar.R;
+import com.android.rahul_lohra.redditstar.activity.SubredditActivity;
 import com.android.rahul_lohra.redditstar.adapter.cursor.HomeAdapter;
 import com.android.rahul_lohra.redditstar.application.Initializer;
 import com.android.rahul_lohra.redditstar.contract.IFrontPageAdapter;
@@ -249,7 +250,7 @@ public class SubredditFragment extends Fragment
     }
 
     private void setAdapter() {
-        adapter = new HomeAdapter(getActivity(), null, this);
+        adapter = new HomeAdapter(getActivity(), null, this,(SubredditActivity)getActivity());
         rv.setLayoutManager(new LinearLayoutManager(getActivity()));
         rv.setAdapter(adapter);
     }
@@ -476,10 +477,6 @@ public class SubredditFragment extends Fragment
         mListener.sendModalAndImageView(modal, imageView, id);
     }
 
-    @Override
-    public void pleaseLogin() {
-
-    }
 
     private void fetchNextItems() {
         if (frontPageResponseData != null) {

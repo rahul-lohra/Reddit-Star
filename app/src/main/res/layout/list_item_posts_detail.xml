@@ -19,30 +19,63 @@
             android:id="@+id/tv_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:paddingEnd="8dp"
+            android:paddingStart="8dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="2dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Display1"
             android:textColor="@android:color/white"
             android:textSize="18sp"
             android:textStyle="normal|bold"
             tools:text="@string/comments_title" />
 
-        <TextView
-            android:textColor="@color/white"
-            android:padding="8dp"
-            android:id="@+id/tv_category"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:text="@string/sample_category" />
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_toStartOf="@+id/image_url"
+                android:textColor="@color/white"
+                android:padding="8dp"
+                android:id="@+id/tv_category"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="asdasdsadsadasdsadasdsadasdsadasdsadsada" />
 
-        <TextView
-            android:textColor="@color/white"
-            android:padding="8dp"
-            android:id="@+id/tv_username"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:text="u/Auggernaut88" />
+            <android.support.v7.widget.AppCompatImageView
+                android:layout_marginEnd="4dp"
+                android:padding="4dp"
+                android:id="@+id/image_url"
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="center"
+                app:srcCompat="@drawable/ic_open_in_browser"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_toStartOf="@+id/tv_domain"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/tv_category"
+                android:textColor="@color/white"
+                android:padding="8dp"
+                android:id="@+id/tv_username"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="u/Auggernaut88" />
+
+            <TextView
+                android:layout_alignParentEnd="true"
+                android:layout_below="@+id/tv_category"
+                android:textColor="@color/white"
+                android:padding="8dp"
+                android:id="@+id/tv_domain"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="imgur.com" />
+
+
+        </RelativeLayout>
+
+
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -55,6 +88,7 @@
         </FrameLayout>
 
         <TextView
+            android:textColor="@color/white"
             android:id="@+id/tv_sort"
             android:layout_height="wrap_content"
             android:drawablePadding="16dp"

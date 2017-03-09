@@ -2,7 +2,9 @@ package com.android.rahul_lohra.redditstar.service;
 
 import android.app.IntentService;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.android.rahul_lohra.redditstar.application.Initializer;
@@ -10,6 +12,7 @@ import com.android.rahul_lohra.redditstar.modal.frontPage.FrontPageResponse;
 import com.android.rahul_lohra.redditstar.retrofit.ApiInterface;
 import com.android.rahul_lohra.redditstar.storage.MyProvider;
 import com.android.rahul_lohra.redditstar.utility.Constants;
+import com.android.rahul_lohra.redditstar.utility.SpConstants;
 import com.android.rahul_lohra.redditstar.utility.UserState;
 
 import java.io.IOException;
@@ -39,7 +42,7 @@ public class GetSubredditListService extends IntentService {
     public static String after = null;
 
     private final String TAG = GetSubredditListService.class.getSimpleName();
-
+    SharedPreferences sp;
     public GetSubredditListService() {
         super(GetSubredditListService.class.getSimpleName());
     }
@@ -49,6 +52,7 @@ public class GetSubredditListService extends IntentService {
         super.onCreate();
         ((Initializer) getApplication()).getNetComponent().inject(this);
         apiInterface = (UserState.isUserLoggedIn(getApplicationContext())) ? retrofitWithToken.create(ApiInterface.class) : retrofitWithoutToken.create(ApiInterface.class);
+        sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
     }
 
     @Override
@@ -62,6 +66,8 @@ public class GetSubredditListService extends IntentService {
             Map<String, String> map = new HashMap<>();
             map.put("after", after);
             map.put("limit", "15");
+            map.put(SpConstants.OVER_18,String.valueOf(sp.getBoolean(SpConstants.OVER_18,false)));
+
             try {
                 Response<FrontPageResponse> res = apiInterface.getSubredditList(token,subredditName,map).execute();
                 Log.d(TAG,"resCode:"+res.code());

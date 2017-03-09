@@ -11,12 +11,14 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.rahul_lohra.redditstar.R;
+import com.android.rahul_lohra.redditstar.contract.ILogin;
 import com.android.rahul_lohra.redditstar.fragments.subreddit.SubredditFragment;
 import com.android.rahul_lohra.redditstar.modal.custom.DetailPostModal;
 import com.android.rahul_lohra.redditstar.storage.MyProvider;
 import com.android.rahul_lohra.redditstar.storage.column.MyPostsColumn;
 
-public class SubredditActivity extends BaseActivity implements SubredditFragment.ISubredditFragment {
+public class SubredditActivity extends BaseActivity implements
+        SubredditFragment.ISubredditFragment,ILogin {
 
     private Uri uri = MyProvider.PostsLists.CONTENT_URI;
     ;
@@ -69,6 +71,11 @@ public class SubredditActivity extends BaseActivity implements SubredditFragment
                 startActivity(intent);
             }
         }
+
+    }
+
+    @Override
+    public void pleaseLogin() {
 
     }
 }

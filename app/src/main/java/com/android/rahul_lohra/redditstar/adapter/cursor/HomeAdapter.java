@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.android.rahul_lohra.redditstar.R;
 import com.android.rahul_lohra.redditstar.activity.SubredditActivity;
 import com.android.rahul_lohra.redditstar.contract.IFrontPageAdapter;
+import com.android.rahul_lohra.redditstar.contract.ILogin;
 import com.android.rahul_lohra.redditstar.fragments.SearchFragment;
 import com.android.rahul_lohra.redditstar.helper.ItemTouchHelperAdapter;
 import com.android.rahul_lohra.redditstar.modal.custom.DetailPostModal;
@@ -52,11 +53,12 @@ public class HomeAdapter extends CursorRecyclerViewAdapter<RecyclerView.ViewHold
     private Activity activity;
     private final String TAG = HomeAdapter.class.getSimpleName();
     private IFrontPageAdapter iFrontPageAdapter;
-
-    public HomeAdapter(Activity activity, Cursor cursor, IFrontPageAdapter iFrontPageAdapter) {
+    private ILogin iLogin;
+    public HomeAdapter(Activity activity, Cursor cursor, IFrontPageAdapter iFrontPageAdapter,ILogin iLogin) {
         super(activity, cursor);
         this.activity = activity;
         this.iFrontPageAdapter = iFrontPageAdapter;
+        this.iLogin = iLogin;
     }
 
     @Override
@@ -112,8 +114,8 @@ public class HomeAdapter extends CursorRecyclerViewAdapter<RecyclerView.ViewHold
                 boolean loggedIn = UserState.isUserLoggedIn(activity);
 
                 if (!loggedIn) {
-                    iFrontPageAdapter.pleaseLogin();
-                    Toast.makeText(activity, activity.getString(R.string.please_login), Toast.LENGTH_SHORT).show();
+                    iLogin.pleaseLogin();
+//                    Toast.makeText(activity, activity.getString(R.string.please_login), Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -140,8 +142,8 @@ public class HomeAdapter extends CursorRecyclerViewAdapter<RecyclerView.ViewHold
                 boolean loggedIn = UserState.isUserLoggedIn(activity);
                 String thingId = name;
                 if (!loggedIn) {
-                    iFrontPageAdapter.pleaseLogin();
-                    Toast.makeText(activity, activity.getString(R.string.please_login), Toast.LENGTH_SHORT).show();
+                    iLogin.pleaseLogin();
+//                    Toast.makeText(activity, activity.getString(R.string.please_login), Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -168,11 +170,21 @@ public class HomeAdapter extends CursorRecyclerViewAdapter<RecyclerView.ViewHold
         //set Textual Data
 
         if (thumbnail != null) {
-            Glide.with(activity)
-                    .load(thumbnail)
-                    .centerCrop()
-                    .crossFade()
-                    .into(postView.imageView);
+            if(thumbnail.equals("default")){
+                Glide.with(activity)
+                        .load("")
+                        .centerCrop()
+                        .crossFade()
+                        .placeholder(R.drawable.ic_reddit)
+                        .into(postView.imageView);
+            }else {
+                Glide.with(activity)
+                        .load(thumbnail)
+                        .centerCrop()
+                        .crossFade()
+                        .into(postView.imageView);
+            }
+
         }else {
             postView.imageView.setVisibility(View.GONE);
         }

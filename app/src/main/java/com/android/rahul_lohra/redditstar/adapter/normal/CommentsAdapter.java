@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.android.rahul_lohra.redditstar.R;
 import com.android.rahul_lohra.redditstar.activity.ReplyActivity;
+import com.android.rahul_lohra.redditstar.contract.ILogin;
 import com.android.rahul_lohra.redditstar.modal.comments.Child;
 import com.android.rahul_lohra.redditstar.modal.comments.CustomComment;
 import com.android.rahul_lohra.redditstar.modal.comments.Example;
@@ -47,13 +48,14 @@ public class CommentsAdapter extends CursorRecyclerViewAdapter<RecyclerView.View
 
 
     private Context context;
-
+    private ILogin iLogin;
     private static final int POST_TYPE = 1;
     private static final int COMMENTS_TYPE = 2;
 
-    public CommentsAdapter(Context context, Cursor cursor) {
+    public CommentsAdapter(ILogin iLogin,Context context, Cursor cursor) {
         super(context, cursor);
         this.context = context;
+        this.iLogin = iLogin;
     }
 
     @Override
@@ -75,7 +77,7 @@ public class CommentsAdapter extends CursorRecyclerViewAdapter<RecyclerView.View
             case POST_TYPE:
             {
                 v = new PostViewDetail(context,LayoutInflater.from(parent.getContext()).
-                        inflate(R.layout.list_item_posts_detail, parent, false));
+                        inflate(R.layout.list_item_posts_detail, parent, false),iLogin);
             }
             break;
             case COMMENTS_TYPE:
@@ -112,8 +114,15 @@ public class CommentsAdapter extends CursorRecyclerViewAdapter<RecyclerView.View
                 final Integer likes = cursor.getInt(cursor.getColumnIndex(MyPostsColumn.KEY_LIKES));
                 final String bigImageUrl = cursor.getString(cursor.getColumnIndex(MyPostsColumn.KEY_BIG_IMAGE_URL));
                 final String postHint =  cursor.getString(cursor.getColumnIndex(MyPostsColumn.KEY_POST_HINT));
+                final String domain =  cursor.getString(cursor.getColumnIndex(MyPostsColumn.KEY_DOMAIN));
+                final String score =  cursor.getString(cursor.getColumnIndex(MyPostsColumn.KEY_SCORE));
+
+
 
                 viewHolder.setLikes(likes);
+                viewHolder.setUrl(url);
+                viewHolder.setScores(score);
+                viewHolder.setId(id);
                 viewHolder.tvShare.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -121,9 +130,12 @@ public class CommentsAdapter extends CursorRecyclerViewAdapter<RecyclerView.View
 //                        share.shareUrl(activity,url);
                     }
                 });
-                viewHolder.tvVote.setText(ups);
+
+
+                viewHolder.tvVote.setText(score);
                 viewHolder.tvTitle.setText(title);
                 viewHolder.tvComments.setText(commentsCount);
+                viewHolder.tvDomain.setText(domain);
                 viewHolder.tvVote.setTextColor(ContextCompat.getColor(context,R.color.white));
                 viewHolder.tvComments.setTextColor(ContextCompat.getColor(context,R.color.white));
                 viewHolder.tvShare.setTextColor(ContextCompat.getColor(context,R.color.white));

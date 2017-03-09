@@ -2,7 +2,9 @@ package com.android.rahul_lohra.redditstar.service.search;
 
 import android.app.IntentService;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.android.rahul_lohra.redditstar.application.Initializer;
@@ -11,6 +13,7 @@ import com.android.rahul_lohra.redditstar.modal.frontPage.FrontPageResponse;
 import com.android.rahul_lohra.redditstar.retrofit.ApiInterface;
 import com.android.rahul_lohra.redditstar.storage.MyProvider;
 import com.android.rahul_lohra.redditstar.utility.Constants;
+import com.android.rahul_lohra.redditstar.utility.SpConstants;
 import com.android.rahul_lohra.redditstar.utility.UserState;
 
 import org.greenrobot.eventbus.EventBus;
@@ -44,12 +47,14 @@ public class SearchLinksService extends IntentService {
     public SearchLinksService() {
         super(TAG);
     }
-
+    private SharedPreferences sp;
     @Override
     public void onCreate() {
         super.onCreate();
         ((Initializer) getApplication()).getNetComponent().inject(this);
         apiInterface = (UserState.isUserLoggedIn(getApplicationContext())) ? retrofitWithToken.create(ApiInterface.class) : retrofitWithoutToken.create(ApiInterface.class);
+        sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
     }
 
     @Override
@@ -60,10 +65,12 @@ public class SearchLinksService extends IntentService {
             String token = (isUserLoggedIn) ? "bearer " + UserState.getAuthToken(getApplicationContext()) : "";
             String subredditName = intent.getStringExtra("query");
             after = intent.getStringExtra("after");
-            Map<String, String> map = new HashMap<>();
+            Map<String, Object> map = new HashMap<>();
             map.put("after", after);
             map.put("limit", "7");
             map.put("q",subredditName);
+            map.put(SpConstants.OVER_18,sp.getBoolean(SpConstants.OVER_18,false));
+
             try {
                 Response<FrontPageResponse> res = apiInterface.searchLinks(token,map).execute();
                 Log.d(TAG,"resCode:"+res.code());

@@ -24,6 +24,8 @@ public class SpConstants {
 
     public final static String SORT = "sort";
     public final static String TIME = "time";
+    public final static String OVER_18 = "over18";
+
 
 
 }

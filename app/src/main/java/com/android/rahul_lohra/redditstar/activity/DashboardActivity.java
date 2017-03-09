@@ -2,9 +2,11 @@ package com.android.rahul_lohra.redditstar.activity;
 
 import android.app.ActivityOptions;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.IdRes;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -33,6 +35,7 @@ import com.android.rahul_lohra.redditstar.R;
 import com.android.rahul_lohra.redditstar.adapter.cursor.SubredditDrawerAdapter;
 import com.android.rahul_lohra.redditstar.adapter.normal.DrawerAdapter;
 import com.android.rahul_lohra.redditstar.contract.IDashboard;
+import com.android.rahul_lohra.redditstar.contract.ILogin;
 import com.android.rahul_lohra.redditstar.dialog.AddAccountDialog;
 import com.android.rahul_lohra.redditstar.fragments.DetailSubredditFragment;
 import com.android.rahul_lohra.redditstar.fragments.HomeFragment;
@@ -45,6 +48,7 @@ import com.android.rahul_lohra.redditstar.storage.column.MyPostsColumn;
 import com.android.rahul_lohra.redditstar.storage.column.MySubredditColumn;
 import com.android.rahul_lohra.redditstar.storage.column.UserCredentialsColumn;
 import com.android.rahul_lohra.redditstar.utility.CommonOperations;
+import com.android.rahul_lohra.redditstar.utility.SpConstants;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.gcm.GcmNetworkManager;
@@ -53,6 +57,7 @@ import com.google.android.gms.gcm.Task;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.prefs.Preferences;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -63,7 +68,8 @@ public class DashboardActivity extends BaseActivity implements
         IDashboard,
         LoaderManager.LoaderCallbacks<Cursor>,
         DrawerAdapter.ISubreddit,
-        HomeFragment.IHomeFragment
+        HomeFragment.IHomeFragment,
+        ILogin
 
 {
 
@@ -107,6 +113,7 @@ public class DashboardActivity extends BaseActivity implements
     private Snackbar snackbar;
     private AdRequest adRequest;
     private Intent startActivityIntent = null;
+
     @OnClick(R.id.fab)
     public void onClick() {
         Snackbar.make(fab, "Replace with your own action", Snackbar.LENGTH_LONG)
@@ -134,10 +141,10 @@ public class DashboardActivity extends BaseActivity implements
 //        dashboardPresenter.getMySubredditsAndDeletePreviousOnes();
 
 
-        if ((findViewById(R.id.frame_layout_right) != null)) {
+        if (null!=(findViewById(R.id.frame_layout_right))) {
             mTwoPane = true;
             if (savedInstanceState == null) {
-                showDetailSubredditFragment(null,null,null);
+//                showDetailSubredditFragment(null, null, null);
                 showHomeFragment(R.id.frame_layout_left);
             }
         } else {
@@ -150,9 +157,9 @@ public class DashboardActivity extends BaseActivity implements
 
     }
 
-    void showDetailSubredditFragment(DetailPostModal modal,String id, Uri uri) {
+    void showDetailSubredditFragment(DetailPostModal modal, String id, Uri uri) {
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.frame_layout_right, DetailSubredditFragment.newInstance(modal,id,uri), DetailSubredditFragment.class.getSimpleName())
+                .replace(R.id.frame_layout_right, DetailSubredditFragment.newInstance(id), DetailSubredditFragment.class.getSimpleName())
                 .commit();
     }
 
@@ -162,11 +169,11 @@ public class DashboardActivity extends BaseActivity implements
                 .commit();
     }
 
-    void startPeriodicTask(){
+    void startPeriodicTask() {
         mGcmNetworkManager = GcmNetworkManager.getInstance(this);
         Task widgetTask = new PeriodicTask.Builder()
                 .setService(WidgetTaskService.class)
-                .setPeriod(60*31)
+                .setPeriod(60 * 31)
                 .setFlex(10)
                 .setTag(WidgetTaskService.TAG_PERIODIC_WIDGET)
                 .setPersisted(true)
@@ -207,6 +214,7 @@ public class DashboardActivity extends BaseActivity implements
 
     void init() {
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle(getString(R.string.dashboard));
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
@@ -231,6 +239,9 @@ public class DashboardActivity extends BaseActivity implements
                 });
         adRequest = new AdRequest.Builder().build();
         adView.loadAd(adRequest);
+
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        sp.edit().putBoolean(SpConstants.OVER_18,false).apply();
     }
 
     void setAdapter() {
@@ -262,22 +273,21 @@ public class DashboardActivity extends BaseActivity implements
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        switch (id){
-            case R.id.action_logout:
-            {
+        switch (id) {
+            case R.id.action_logout: {
                 performLogout();
             }
             return true;
-            case R.id.action_settings:{
+            case R.id.action_settings: {
                 return true;
             }
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private void performLogout(){
+    private void performLogout() {
         Uri delUri = MyProvider.UserCredentialsLists.CONTENT_URI;
-        getContentResolver().delete(delUri,null,null);
+        getContentResolver().delete(delUri, null, null);
         Snackbar snackbarLogOut = Snackbar
                 .make(coordinatorLayout, getString(R.string.user_logged_out), Snackbar.LENGTH_SHORT);
         snackbarLogOut.show();
@@ -306,10 +316,11 @@ public class DashboardActivity extends BaseActivity implements
 
         return true;
     }
+
     @Override
-    public void openActivity(Class<?> cls){
+    public void openActivity(Class<?> cls) {
         drawer.closeDrawers();
-        startActivityIntent = new Intent(this,cls);
+        startActivityIntent = new Intent(this, cls);
 
 
         drawer.addDrawerListener(new DrawerLayout.DrawerListener() {
@@ -361,10 +372,10 @@ public class DashboardActivity extends BaseActivity implements
             case LOADER_ID_NAME: {
                 Uri uri_2 = MyProvider.UserCredentialsLists.CONTENT_URI;
                 String proj_2[] = {UserCredentialsColumn.NAME};
-                String mSelection_2 = UserCredentialsColumn.ACTIVE_STATE +"=?";
+                String mSelection_2 = UserCredentialsColumn.ACTIVE_STATE + "=?";
                 String mSelectionArgs_2[] = {"1"};
 
-                return new CursorLoader(this, uri_2, proj_2, mSelection_2,mSelectionArgs_2, null);
+                return new CursorLoader(this, uri_2, proj_2, mSelection_2, mSelectionArgs_2, null);
             }
 
         }
@@ -377,8 +388,7 @@ public class DashboardActivity extends BaseActivity implements
             case LOADER_ID:
                 this.subredditDrawerAdapter.swapCursor(data);
                 break;
-            case LOADER_ID_NAME:
-            {
+            case LOADER_ID_NAME: {
                 updateName(data);
             }
             break;
@@ -391,8 +401,7 @@ public class DashboardActivity extends BaseActivity implements
             case LOADER_ID:
                 subredditDrawerAdapter.swapCursor(null);
                 break;
-            case LOADER_ID_NAME:
-            {
+            case LOADER_ID_NAME: {
                 resetName();
             }
         }
@@ -418,37 +427,40 @@ public class DashboardActivity extends BaseActivity implements
 //        super.onStop();
 //    }
 
-    @Override
-    public void sendModalAndImageView(DetailPostModal modal, ImageView imageView,String id) {
-        if (mTwoPane) {
-            showDetailSubredditFragment(modal,id,MyProvider.PostsLists.CONTENT_URI);
-        } else {
-            String mProjection[]={MyPostsColumn.KEY_POST_HINT};
-            String mSelectionArgs[]={id,"image"};
-            String mSelection = MyPostsColumn.KEY_ID+"= ? AND "+MyPostsColumn.KEY_POST_HINT+" =?";
+    private void startActivityWithSharedElement(Intent intent, ImageView imageView) {
+        Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(this, imageView, imageView.getTransitionName()).toBundle();
+        ActivityCompat.startActivity(this, intent, bundle);
 
-            Cursor cursor = getContentResolver().query(MyProvider.PostsLists.CONTENT_URI,mProjection,mSelection,mSelectionArgs,null);
+    }
+
+    private void startActivityNoSharedElement(Intent intent) {
+        ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(this);
+        ActivityCompat.startActivity(this, intent, activityOptionsCompat.toBundle());
+    }
+
+    @Override
+    public void sendModalAndImageView(DetailPostModal modal, ImageView imageView, String id) {
+        if (mTwoPane) {
+            showDetailSubredditFragment(modal, id, MyProvider.PostsLists.CONTENT_URI);
+        } else {
+            String mProjection[] = {MyPostsColumn.KEY_POST_HINT, MyPostsColumn.KEY_THUMBNAIL};
+            String mSelectionArgs[] = {id};
+            String mSelection = MyPostsColumn.KEY_ID + "= ? AND " + MyPostsColumn.KEY_POST_HINT + " IS NOT NULL";
+
+            Cursor cursor = getContentResolver().query(MyProvider.PostsLists.CONTENT_URI, mProjection, mSelection, mSelectionArgs, null);
             Intent intent = new Intent(this, DetailActivity.class);
             intent.putExtra("modal", modal);
-            intent.putExtra("id",id);
+            intent.putExtra("id", id);
             intent.putExtra("uri", MyProvider.PostsLists.CONTENT_URI);
 
-            if(cursor!=null)
-            {
-                if(cursor.moveToFirst()){
-                    Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(this, imageView, imageView.getTransitionName()).toBundle();
-                    cursor.close();
-                    startActivity(intent,bundle);
-                }else {
-                    cursor.close();
-                    ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(this);
-                    ActivityCompat.startActivity(this,intent,activityOptionsCompat.toBundle());
-//                    startActivity(intent);
+            if (cursor != null) {
+                if (cursor.moveToFirst()) {
+                    startActivityWithSharedElement(intent, imageView);
+                } else {
+                    startActivityNoSharedElement(intent);
                 }
+                cursor.close();
             }
-
-//            startActivity(intent);
-
         }
     }
 
@@ -457,18 +469,22 @@ public class DashboardActivity extends BaseActivity implements
         snackbar.show();
     }
 
-    private void updateName(Cursor cursor){
-        if(cursor!=null){
+    private void updateName(Cursor cursor) {
+        if (cursor != null) {
 
-            if(cursor.moveToFirst()){
+            if (cursor.moveToFirst()) {
                 String name = cursor.getString(cursor.getColumnIndex(UserCredentialsColumn.NAME));
                 tv_name.setText(name);
             }
         }
     }
 
-    private void resetName(){
+    private void resetName() {
         tv_name.setText(getString(R.string.no_name));
     }
 
+    @Override
+    public void pleaseLogin() {
+        snackbar.show();
+    }
 }

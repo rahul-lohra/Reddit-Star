@@ -66,7 +66,7 @@ public class CommentsFragment extends Fragment  implements
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_comments, container, false);
         ButterKnife.bind(this, v);
-        commentsAdapter = new CommentsAdapter(getActivity(), null);
+//        commentsAdapter = new CommentsAdapter(getActivity(), null);
         rv.setLayoutManager(new LinearLayoutManager(getActivity()));
         rv.setAdapter(commentsAdapter);
         return v;
