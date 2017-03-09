@@ -1,44 +1,27 @@
 package com.android.rahul_lohra.redditstar.adapter.cursor;
 
 import android.app.Activity;
-import android.content.ContentValues;
-import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
-import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.android.rahul_lohra.redditstar.R;
-import com.android.rahul_lohra.redditstar.activity.SubredditActivity;
 import com.android.rahul_lohra.redditstar.contract.IFrontPageAdapter;
 import com.android.rahul_lohra.redditstar.contract.ILogin;
-import com.android.rahul_lohra.redditstar.fragments.SearchFragment;
 import com.android.rahul_lohra.redditstar.helper.ItemTouchHelperAdapter;
 import com.android.rahul_lohra.redditstar.modal.custom.DetailPostModal;
-import com.android.rahul_lohra.redditstar.modal.frontPage.FrontPageChildData;
-import com.android.rahul_lohra.redditstar.modal.frontPage.Preview;
-import com.android.rahul_lohra.redditstar.storage.MyProvider;
-import com.android.rahul_lohra.redditstar.storage.column.MyFavouritesColumn;
 import com.android.rahul_lohra.redditstar.storage.column.MyPostsColumn;
 import com.android.rahul_lohra.redditstar.utility.Constants;
 import com.android.rahul_lohra.redditstar.utility.Share;
 import com.android.rahul_lohra.redditstar.utility.UserState;
 import com.android.rahul_lohra.redditstar.viewHolder.CursorRecyclerViewAdapter;
-import com.android.rahul_lohra.redditstar.viewHolder.DrawerSubreddit;
 import com.android.rahul_lohra.redditstar.viewHolder.PostView;
 import com.bumptech.glide.Glide;
-import com.varunest.sparkbutton.SparkEventListener;
 
 import org.greenrobot.eventbus.EventBus;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static com.android.rahul_lohra.redditstar.utility.Constants.updateLikes;
 import static com.android.rahul_lohra.redditstar.viewHolder.PostView.DIRECTION_NULL;
@@ -86,17 +69,11 @@ public class HomeAdapter extends CursorRecyclerViewAdapter<RecyclerView.ViewHold
         final String postHint =  cursor.getString(cursor.getColumnIndex(MyPostsColumn.KEY_POST_HINT));
 
         postView.setLikes(likes);
-
-//        if(!(fragment instanceof SearchFragment)){
-
         if(cursor.isLast()){
             EventBus.getDefault().post("getNextData");
         }
 
-//            if (position == list.size() - 1 && list.size()>4) {
-//                EventBus.getDefault().post("getNextData");
-//            }
-//        }
+
 
         postView.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,20 +92,19 @@ public class HomeAdapter extends CursorRecyclerViewAdapter<RecyclerView.ViewHold
 
                 if (!loggedIn) {
                     iLogin.pleaseLogin();
-//                    Toast.makeText(activity, activity.getString(R.string.please_login), Toast.LENGTH_SHORT).show();
                     return;
                 }
 
                 Integer mLikes = postView.getLikes();
                     if(mLikes == -1)
                     {
-                        postView.performVote(DIRECTION_NULL,thingId);
-                        updateLikes(activity.getApplicationContext(),DIRECTION_NULL,id);
+                        postView.performVoteAndUpdateLikesE(DIRECTION_NULL,thingId);
+                        updateLikes(activity.getApplicationContext(),DIRECTION_NULL,id,ups,mLikes);
 
                 }else if(mLikes == 0) {
                     //upvote
-                    postView.performVote(PostView.DIRECTION_UP,thingId);
-                    updateLikes(activity.getApplicationContext(),PostView.DIRECTION_UP,id);
+                    postView.performVoteAndUpdateLikesE(PostView.DIRECTION_UP,thingId);
+                    updateLikes(activity.getApplicationContext(),PostView.DIRECTION_UP,id,ups,mLikes);
                 }
 
             }
@@ -150,11 +126,11 @@ public class HomeAdapter extends CursorRecyclerViewAdapter<RecyclerView.ViewHold
                 Integer mLikes = postView.getLikes();
                     if(mLikes==1)
                     {
-                        postView.performVote(DIRECTION_NULL,thingId);
-                        updateLikes(activity.getApplicationContext(), DIRECTION_NULL,id);
+                        postView.performVoteAndUpdateLikesE(DIRECTION_NULL,thingId);
+                        updateLikes(activity.getApplicationContext(), DIRECTION_NULL,id,ups,mLikes);
                 }else if(mLikes==0){
-                    postView.performVote(PostView.DIRECTION_DOWN,thingId);
-                    updateLikes(activity.getApplicationContext(),PostView.DIRECTION_DOWN,id);
+                    postView.performVoteAndUpdateLikesE(PostView.DIRECTION_DOWN,thingId);
+                    updateLikes(activity.getApplicationContext(),PostView.DIRECTION_DOWN,id,ups,mLikes);
                 }
             }
         });

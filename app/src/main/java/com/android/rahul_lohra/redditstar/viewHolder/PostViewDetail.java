@@ -3,7 +3,6 @@ package com.android.rahul_lohra.redditstar.viewHolder;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.annotation.IntDef;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -20,7 +19,6 @@ import com.android.rahul_lohra.redditstar.retrofit.ApiInterface;
 import com.android.rahul_lohra.redditstar.utility.UserState;
 import com.bumptech.glide.Glide;
 
-import java.lang.annotation.Retention;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,7 +38,6 @@ import static com.android.rahul_lohra.redditstar.utility.Constants.updateLikes;
 import static com.android.rahul_lohra.redditstar.viewHolder.PostView.DIRECTION_DOWN;
 import static com.android.rahul_lohra.redditstar.viewHolder.PostView.DIRECTION_NULL;
 import static com.android.rahul_lohra.redditstar.viewHolder.PostView.DIRECTION_UP;
-import static java.lang.annotation.RetentionPolicy.SOURCE;
 
 /**
  * Created by rkrde on 22-01-2017.
@@ -87,47 +84,7 @@ public class PostViewDetail extends RecyclerView.ViewHolder {
 
     private final String TAG = PostViewDetail.class.getSimpleName();
 
-    @OnClick(R.id.image_url)
-    void OnCLickImageUrl(){
-        openLinkInBrowser();
-    }
 
-    @OnClick(R.id.image_up_vote)
-    void OnCLickUpVote(){
-        boolean loggedIn = UserState.isUserLoggedIn(context);
-        if (!loggedIn) {
-            mListener.pleaseLogin();
-        }else {
-            if(likes == -1)
-            {
-                performVote(DIRECTION_NULL,id);
-                updateLikes(context,DIRECTION_NULL,id);
-
-            }else if(likes == 0) {
-                //upvote
-                performVote(PostView.DIRECTION_UP,id);
-                updateLikes(context,PostView.DIRECTION_UP,id);
-            }
-        }
-    }
-
-    @OnClick(R.id.image_down_vote)
-    void OnCLickDownVote(){
-        boolean loggedIn = UserState.isUserLoggedIn(context);
-        if (!loggedIn) {
-            mListener.pleaseLogin();
-        }else {
-            if(likes == 1)
-            {
-                performVote(DIRECTION_NULL,id);
-                updateLikes(context,DIRECTION_NULL,id);
-
-            }else if(likes == 0) {
-                //upvote
-                performVote(PostView.DIRECTION_DOWN,id);
-                updateLikes(context,PostView.DIRECTION_DOWN,id);
-            }
-        }    }
 
 
     @Inject
@@ -176,7 +133,7 @@ public class PostViewDetail extends RecyclerView.ViewHolder {
         this.scores = scores;
     }
 
-    public void performVote(@PostView.DirectionMode int mode, String thingId){
+    public void performVoteAndUpdateLikes(@PostView.DirectionMode int mode, String thingId){
 
         String token = UserState.getAuthToken(context);
         String auth = "bearer " + token;
@@ -207,14 +164,14 @@ public class PostViewDetail extends RecyclerView.ViewHolder {
             }
                 break;
             case DIRECTION_DOWN:{
-                likes=0;
+                likes=-1;
                 updateVoteBackground(imageUpVote,R.drawable.ic_arrow_upward);
                 updateVoteBackground(imageDownVote,R.drawable.ic_arrow_downward_true);
 
             }
                 break;
             case DIRECTION_NULL:{
-                likes = null;
+                likes = 0;
                 updateVoteBackground(imageUpVote,R.drawable.ic_arrow_upward);
                 updateVoteBackground(imageDownVote,R.drawable.ic_arrow_downward);
             }
@@ -251,4 +208,48 @@ public class PostViewDetail extends RecyclerView.ViewHolder {
             }
         }
     }
+
+    @OnClick(R.id.image_url)
+    void OnCLickImageUrl(){
+        openLinkInBrowser();
+    }
+
+    @OnClick(R.id.image_up_vote)
+    void OnCLickUpVote(){
+        boolean loggedIn = UserState.isUserLoggedIn(context);
+        if (!loggedIn) {
+            mListener.pleaseLogin();
+        }else {
+            int previousLikes = likes;
+            if(likes == -1)
+            {
+                performVoteAndUpdateLikes(DIRECTION_NULL,id);
+                updateLikes(context,DIRECTION_NULL,id,scores,previousLikes);
+
+            }else if(likes == 0) {
+                //upvote
+                performVoteAndUpdateLikes(PostView.DIRECTION_UP,id);
+                updateLikes(context,PostView.DIRECTION_UP,id,scores,previousLikes);
+            }
+        }
+    }
+
+    @OnClick(R.id.image_down_vote)
+    void OnCLickDownVote(){
+        boolean loggedIn = UserState.isUserLoggedIn(context);
+        if (!loggedIn) {
+            mListener.pleaseLogin();
+        }else {
+            int previousLikes = likes;
+            if(likes == 1)
+            {
+                performVoteAndUpdateLikes(DIRECTION_NULL,id);
+                updateLikes(context,DIRECTION_NULL,id,scores,previousLikes);
+
+            }else if(likes == 0) {
+                //upvote
+                performVoteAndUpdateLikes(PostView.DIRECTION_DOWN,id);
+                updateLikes(context,PostView.DIRECTION_DOWN,id,scores,previousLikes);
+            }
+        }    }
 }

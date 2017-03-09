@@ -228,27 +228,27 @@ public class DetailActivityNew extends BaseActivity implements
 //        rv.setAdapter(commentsAdapter);
     }
 
-    private void performVote(@PostView.DirectionMode final int mode) {
-        String token = UserState.getAuthToken(this);
-        String auth = "bearer " + token;
-        Map<String, String> map = new HashMap<String, String>();
-        map.put("dir", String.valueOf(mode));
-        map.put("id", subredditModal.getName());
-        map.put("rank", String.valueOf(2));
-        apiInterface.postVote(auth, map).enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-
-                Log.d(TAG, "UpVote onResponse:" + response.code());
-                Constants.updateLikes(getApplicationContext(),mode,subredditModal.getId());
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Log.d(TAG, "UpVote onFail:" + t.getMessage());
-            }
-        });
-    }
+//    private void performVoteAndUpdateLikes(@PostView.DirectionMode final int mode) {
+//        String token = UserState.getAuthToken(this);
+//        String auth = "bearer " + token;
+//        Map<String, String> map = new HashMap<String, String>();
+//        map.put("dir", String.valueOf(mode));
+//        map.put("id", subredditModal.getName());
+//        map.put("rank", String.valueOf(2));
+//        apiInterface.postVote(auth, map).enqueue(new Callback<ResponseBody>() {
+//            @Override
+//            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+//
+//                Log.d(TAG, "UpVote onResponse:" + response.code());
+//                Constants.updateLikes(getApplicationContext(),mode,subredditModal.getId());
+//            }
+//
+//            @Override
+//            public void onFailure(Call<ResponseBody> call, Throwable t) {
+//                Log.d(TAG, "UpVote onFail:" + t.getMessage());
+//            }
+//        });
+//    }
 
 
     private void updateVote(@PostView.DirectionMode Integer mode)
@@ -293,56 +293,56 @@ public class DetailActivityNew extends BaseActivity implements
 
     }
 
-    @OnClick(R.id.image_up_vote)
-    void onClickUpVote() {
-        boolean isUserLoggedIn = UserState.isUserLoggedIn(this);
-
-        if (!isUserLoggedIn) {
-            snackbar.show();
-        } else {
-
-            Integer mLikes = subredditModal.getLikes();
-            if(mLikes== -1)
-            {
-                performVote(DIRECTION_NULL);
-                updateVote(DIRECTION_NULL);
-                tvVote.setTextColor(ContextCompat.getColor(this,R.color.grey_700));
-                updateVoteCount(1);
-            }
-            else if(mLikes==0){
-                performVote(DIRECTION_UP);
-                updateVote(DIRECTION_UP);
-                tvVote.setTextColor(ContextCompat.getColor(this,R.color.light_blue_500));
-                updateVoteCount(1);
-            }
-
-        }
-    }
-
-    @OnClick(R.id.image_down_vote)
-    void onClickDownVote() {
-        boolean isUserLoggedIn = UserState.isUserLoggedIn(this);
-
-        if (!isUserLoggedIn) {
-            snackbar.show();
-        } else {
-
-            Integer mLikes = subredditModal.getLikes();
-            if(mLikes==1)
-            {
-                performVote(DIRECTION_NULL);
-                updateVote(DIRECTION_NULL);
-                tvVote.setTextColor(ContextCompat.getColor(this,R.color.grey_700));
-                updateVoteCount(-1);
-            }
-            else if(mLikes==0){
-                performVote(DIRECTION_DOWN);
-                updateVote(DIRECTION_DOWN);
-                tvVote.setTextColor(ContextCompat.getColor(this,R.color.green_500));
-                updateVoteCount(-1);
-            }
-        }
-    }
+//    @OnClick(R.id.image_up_vote)
+//    void onClickUpVote() {
+//        boolean isUserLoggedIn = UserState.isUserLoggedIn(this);
+//
+//        if (!isUserLoggedIn) {
+//            snackbar.show();
+//        } else {
+//
+//            Integer mLikes = subredditModal.getLikes();
+//            if(mLikes== -1)
+//            {
+//                performVoteAndUpdateLikes(DIRECTION_NULL);
+//                updateVote(DIRECTION_NULL);
+//                tvVote.setTextColor(ContextCompat.getColor(this,R.color.grey_700));
+//                updateVoteCount(1);
+//            }
+//            else if(mLikes==0){
+//                performVoteAndUpdateLikes(DIRECTION_UP);
+//                updateVote(DIRECTION_UP);
+//                tvVote.setTextColor(ContextCompat.getColor(this,R.color.light_blue_500));
+//                updateVoteCount(1);
+//            }
+//
+//        }
+//    }
+//
+//    @OnClick(R.id.image_down_vote)
+//    void onClickDownVote() {
+//        boolean isUserLoggedIn = UserState.isUserLoggedIn(this);
+//
+//        if (!isUserLoggedIn) {
+//            snackbar.show();
+//        } else {
+//
+//            Integer mLikes = subredditModal.getLikes();
+//            if(mLikes==1)
+//            {
+//                performVoteAndUpdateLikes(DIRECTION_NULL);
+//                updateVote(DIRECTION_NULL);
+//                tvVote.setTextColor(ContextCompat.getColor(this,R.color.grey_700));
+//                updateVoteCount(-1);
+//            }
+//            else if(mLikes==0){
+//                performVoteAndUpdateLikes(DIRECTION_DOWN);
+//                updateVote(DIRECTION_DOWN);
+//                tvVote.setTextColor(ContextCompat.getColor(this,R.color.green_500));
+//                updateVoteCount(-1);
+//            }
+//        }
+//    }
 
     @OnClick(R.id.fab)
     void onClickFab(){

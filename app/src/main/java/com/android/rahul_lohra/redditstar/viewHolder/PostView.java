@@ -109,7 +109,7 @@ public class PostView extends RecyclerView.ViewHolder {
         }
     }
 
-    public void performVote(@DirectionMode int mode,String thingId){
+    public void performVoteAndUpdateLikesE(@DirectionMode int mode, String thingId){
 
         String token = UserState.getAuthToken(context);
         String auth = "bearer " + token;
@@ -147,7 +147,7 @@ public class PostView extends RecyclerView.ViewHolder {
             }
                 break;
             case DIRECTION_NULL:{
-                likes = null;
+                likes = -1;
                 updateVoteBackground(imageUpVote,R.drawable.ic_arrow_upward);
                 updateVoteBackground(imageDownVote,R.drawable.ic_arrow_downward);
             }

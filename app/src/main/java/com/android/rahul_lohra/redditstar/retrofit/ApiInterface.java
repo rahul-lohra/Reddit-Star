@@ -22,6 +22,7 @@ import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
@@ -33,51 +34,63 @@ import retrofit2.http.QueryMap;
 
 public interface ApiInterface {
 
+    @Headers("User-Agent: android:com.android.rahul_lohra.redditstar:v1.0 (by /u/rahul_lohra)")
     @GET("/subreddits/mine/subscriber")
     Call<SubredditResponse> getMySubscribedSubreddits(@Header(Constants.AUTHORIZATION) String authorization,
                                                       @QueryMap Map<String, String> options);
 
     @GET("/api/v1/me")
+    @Headers("User-Agent: android:com.android.rahul_lohra.redditstar:v1.0 (by /u/rahul_lohra)")
     Call<AboutMe> getAboutMe(@Header(Constants.AUTHORIZATION) String authorization);
 
     @FormUrlEncoded
     @POST("/api/v1/access_token")
+    @Headers("User-Agent: android:com.android.rahul_lohra.redditstar:v1.0 (by /u/rahul_lohra)")
     Call<RefreshTokenResponse> refreshToken(@Header(Constants.AUTHORIZATION) String authorization,
                                     @Field("grant_type") String grant_type,
                                     @Field("refresh_token") String refresh_token);
 
     @GET("/.json")
+    @Headers("User-Agent: android:com.android.rahul_lohra.redditstar:v1.0 (by /u/rahul_lohra)")
     Call<FrontPageResponse> getFrontPage(@Header(Constants.AUTHORIZATION) String authorization,@QueryMap Map<String, String> options);
 
     @GET("/r/{subbreddit_name}/.json")
+    @Headers("User-Agent: android:com.android.rahul_lohra.redditstar:v1.0 (by /u/rahul_lohra)")
     Call<FrontPageResponse> getSubredditList(@Header(Constants.AUTHORIZATION) String authorization,
                                              @Path(value = "subbreddit_name", encoded = true) String subbreddit_name,
                                              @QueryMap Map<String, String> map);
 
     @GET("/r/{subbreddit_name}/about/.json")
+    @Headers("User-Agent: android:com.android.rahul_lohra.redditstar:v1.0 (by /u/rahul_lohra)")
     Call<t5_Response> getAboutSubreddit(@Header(Constants.AUTHORIZATION) String authorization,
                                         @Path(value = "subbreddit_name", encoded = true) String subbreddit_name
     );
 
     @GET("/r/{subbreddit_name}/comments/{postId}.json")
-    Call<ResponseBody> getComments(@Path(value = "postId", encoded = true) String postId,
+    @Headers("User-Agent: android:com.android.rahul_lohra.redditstar:v1.0 (by /u/rahul_lohra)")
+    Call<ResponseBody> getComments(@Header(Constants.AUTHORIZATION) String authorization,
+                                   @Path(value = "postId", encoded = true) String postId,
                                    @Path(value = "subbreddit_name", encoded = true) String subbreddit_name,
                                    @QueryMap Map<String, String> map);
 
     @POST("/api/vote")
+    @Headers("User-Agent: android:com.android.rahul_lohra.redditstar:v1.0 (by /u/rahul_lohra)")
     Call<ResponseBody> postVote(@Header(Constants.AUTHORIZATION) String authorization,
                                 @QueryMap Map<String, String> map);
 
     @GET("/subreddits/search.json")
+    @Headers("User-Agent: android:com.android.rahul_lohra.redditstar:v1.0 (by /u/rahul_lohra)")
     Call<T5_SearchResponse> searchSubreddits(@Header(Constants.AUTHORIZATION) String authorization,
                                              @QueryMap Map<String, Object> map);
 
     @GET("search.json")
+    @Headers("User-Agent: android:com.android.rahul_lohra.redditstar:v1.0 (by /u/rahul_lohra)")
     Call<FrontPageResponse> searchLinks(@Header(Constants.AUTHORIZATION) String authorization,
                                         @QueryMap Map<String, Object> map);
 
     @FormUrlEncoded
     @POST("/api/comment")
+    @Headers("User-Agent: android:com.android.rahul_lohra.redditstar:v1.0 (by /u/rahul_lohra)")
     Call<ReplyResponse> postComment(@Header(Constants.AUTHORIZATION) String authorization,
                                     @Field("api_type")String api_type,
                                     @Field("text")String text,
@@ -85,6 +98,7 @@ public interface ApiInterface {
 
     @FormUrlEncoded
     @POST("/api/subscribe")
+    @Headers("User-Agent: android:com.android.rahul_lohra.redditstar:v1.0 (by /u/rahul_lohra)")
     Call<ResponseBody> subscribeSubreddit_new(@Header(Constants.AUTHORIZATION) String authorization,
                                               @Field("action") String action,
                                               @Field("skip_initial_defaults") boolean skip_initial_defaults,
@@ -92,10 +106,9 @@ public interface ApiInterface {
                                               );
 //    https://www.reddit.com/r/all/controversial/?sort=controversial&t=month
     @GET("/r/{subbreddit_name}/{sort}/.json")
+    @Headers("User-Agent: android:com.android.rahul_lohra.redditstar:v1.0 (by /u/rahul_lohra)")
     Call<FrontPageResponse> getSubredditPosts(@Header(Constants.AUTHORIZATION) String authorization,
                                               @Path(value = "subbreddit_name", encoded = true) String subreddit_name,
                                               @Path(value = "sort", encoded = true) String sort,
                                               @QueryMap Map<String, String> options);
-
-
 }

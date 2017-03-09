@@ -3,11 +3,9 @@ package com.android.rahul_lohra.redditstar.adapter.normal;
 import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.rahul_lohra.redditstar.R;
@@ -15,9 +13,7 @@ import com.android.rahul_lohra.redditstar.contract.IFrontPageAdapter;
 import com.android.rahul_lohra.redditstar.fragments.SearchFragment;
 import com.android.rahul_lohra.redditstar.modal.frontPage.FrontPageChild;
 import com.android.rahul_lohra.redditstar.modal.frontPage.FrontPageChildData;
-import com.android.rahul_lohra.redditstar.modal.frontPage.Image;
 import com.android.rahul_lohra.redditstar.modal.frontPage.Preview;
-import com.android.rahul_lohra.redditstar.modal.custom.DetailPostModal;
 import com.android.rahul_lohra.redditstar.retrofit.ApiInterface;
 import com.android.rahul_lohra.redditstar.utility.Constants;
 import com.android.rahul_lohra.redditstar.utility.Share;
@@ -28,14 +24,8 @@ import com.bumptech.glide.Glide;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import retrofit2.Retrofit;
 
 /**
@@ -139,12 +129,12 @@ public class FrontPageAdapter extends RecyclerView.Adapter {
                 if(mLikes!=null){
                     if(mLikes!=1)
                     {
-                        postView.performVote(PostView.DIRECTION_NULL,thingId);
+                        postView.performVoteAndUpdateLikes(PostView.DIRECTION_NULL,thingId);
                         frontPageChildData.setLikes(null);
                     }
                 }else {
                     //upvote
-                    postView.performVote(PostView.DIRECTION_UP,thingId);
+                    postView.performVoteAndUpdateLikes(PostView.DIRECTION_UP,thingId);
                     frontPageChildData.setLikes(true);
                 }
 
@@ -167,12 +157,12 @@ public class FrontPageAdapter extends RecyclerView.Adapter {
                 if(mLikes!=null){
                     if(mLikes==1)
                     {
-                        postView.performVote(PostView.DIRECTION_NULL,thingId);
+                        postView.performVoteAndUpdateLikes(PostView.DIRECTION_NULL,thingId);
                         frontPageChildData.setLikes(null);
                     }
                 }else {
                     //upvote
-                    postView.performVote(PostView.DIRECTION_DOWN,thingId);
+                    postView.performVoteAndUpdateLikes(PostView.DIRECTION_DOWN,thingId);
                     frontPageChildData.setLikes(false);
                 }
             }

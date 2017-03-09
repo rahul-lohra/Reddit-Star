@@ -33,6 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
         <RadioButton
+            android:visibility="gone"
             android:id="@+id/rb_fav"
             android:padding="8dp"
             android:text="@string/favorite"

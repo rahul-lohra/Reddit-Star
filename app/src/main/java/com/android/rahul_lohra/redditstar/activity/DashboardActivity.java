@@ -286,8 +286,12 @@ public class DashboardActivity extends BaseActivity implements
     }
 
     private void performLogout() {
-        Uri delUri = MyProvider.UserCredentialsLists.CONTENT_URI;
-        getContentResolver().delete(delUri, null, null);
+        Uri credentialsUri = MyProvider.UserCredentialsLists.CONTENT_URI;
+        Uri delUriSubreddit = MyProvider.SubredditLists.CONTENT_URI;
+
+        getContentResolver().delete(credentialsUri, null, null);
+        getContentResolver().delete(delUriSubreddit, null, null);
+
         Snackbar snackbarLogOut = Snackbar
                 .make(coordinatorLayout, getString(R.string.user_logged_out), Snackbar.LENGTH_SHORT);
         snackbarLogOut.show();

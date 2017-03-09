@@ -42,7 +42,6 @@ import com.android.rahul_lohra.redditstar.adapter.normal.CommentsAdapter;
 import com.android.rahul_lohra.redditstar.application.Initializer;
 import com.android.rahul_lohra.redditstar.contract.ILogin;
 import com.android.rahul_lohra.redditstar.helper.AspectRatioImageView;
-import com.android.rahul_lohra.redditstar.loader.CommentsLoader;
 import com.android.rahul_lohra.redditstar.modal.comments.CustomComment;
 import com.android.rahul_lohra.redditstar.modal.custom.DetailPostModal;
 import com.android.rahul_lohra.redditstar.retrofit.ApiInterface;
@@ -210,9 +209,9 @@ public class DetailSubredditFragment extends Fragment implements
 
     private void setAdapter() {
         if( getActivity() instanceof DetailActivity){
-            commentsAdapter = new CommentsAdapter((DetailActivity)getActivity(), getContext(), null);
+            commentsAdapter = new CommentsAdapter(getActivity(),(DetailActivity)getActivity(), getContext(), null);
         }else if( getActivity() instanceof DashboardActivity){
-            commentsAdapter = new CommentsAdapter((DashboardActivity)getActivity(), getContext(), null);
+            commentsAdapter = new CommentsAdapter(getActivity(),(DashboardActivity)getActivity(), getContext(), null);
         }
         rv.setLayoutManager(new LinearLayoutManager(getActivity()));
         rv.setAdapter(commentsAdapter);
@@ -390,7 +389,7 @@ public class DetailSubredditFragment extends Fragment implements
                 .centerCrop()
                 .crossFade()
                 .placeholder(glideDrawable)
-                .diskCacheStrategy(DiskCacheStrategy.RESULT)
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .listener(new RequestListener<String, GlideDrawable>() {
                     @Override
                     public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {

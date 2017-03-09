@@ -71,6 +71,7 @@ public class CommentsService extends IntentService {
         if (intent != null) {
             isUserLoggedIn = UserState.isUserLoggedIn(getApplicationContext());
             apiInterface = (isUserLoggedIn)?retrofitWithToken.create(ApiInterface.class):retrofitWithoutToken.create(ApiInterface.class);
+            String token = (isUserLoggedIn) ? "bearer " + UserState.getAuthToken(getApplicationContext()) : "";
             String subbreditName = intent.getStringExtra(SUBREDDIT_NAME);
             String postId = intent.getStringExtra(POST_ID).substring(3);
             List<List<Example>> exampleList = new ArrayList<>();
@@ -81,7 +82,7 @@ public class CommentsService extends IntentService {
             map.put("limit", "30");
 
             try {
-                Response<ResponseBody> res = apiInterface.getComments(postId, subbreditName, map).execute();
+                Response<ResponseBody> res = apiInterface.getComments(token,postId, subbreditName, map).execute();
 
                 if (res.code() == 200) {
                     GsonBuilder builder = new GsonBuilder();

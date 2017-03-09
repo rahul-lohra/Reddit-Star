@@ -143,7 +143,7 @@ public class DetailActivity extends AppCompatActivity implements
     }
 
     private void setAdapter() {
-        commentsAdapter = new CommentsAdapter(this, this, null);
+        commentsAdapter = new CommentsAdapter(this,this, this, null);
 
         rv.setLayoutManager(new LinearLayoutManager(this));
         rv.setAdapter(commentsAdapter);

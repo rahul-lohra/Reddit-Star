@@ -1,5 +1,6 @@
 package com.android.rahul_lohra.redditstar.adapter.normal;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -45,17 +46,17 @@ import butterknife.Bind;
  */
 
 public class CommentsAdapter extends CursorRecyclerViewAdapter<RecyclerView.ViewHolder> {
-
-
     private Context context;
     private ILogin iLogin;
     private static final int POST_TYPE = 1;
     private static final int COMMENTS_TYPE = 2;
+    private Activity mActivity;
 
-    public CommentsAdapter(ILogin iLogin,Context context, Cursor cursor) {
+    public CommentsAdapter(Activity activity,ILogin iLogin, Context context, Cursor cursor) {
         super(context, cursor);
         this.context = context;
         this.iLogin = iLogin;
+        this.mActivity = activity;
     }
 
     @Override
@@ -68,8 +69,6 @@ public class CommentsAdapter extends CursorRecyclerViewAdapter<RecyclerView.View
         }
         return val;
     }
-
-
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         RecyclerView.ViewHolder v = null;
@@ -86,9 +85,7 @@ public class CommentsAdapter extends CursorRecyclerViewAdapter<RecyclerView.View
                 break;
         }
         return v;
-
     }
-
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, Cursor cursor) {
@@ -117,20 +114,18 @@ public class CommentsAdapter extends CursorRecyclerViewAdapter<RecyclerView.View
                 final String domain =  cursor.getString(cursor.getColumnIndex(MyPostsColumn.KEY_DOMAIN));
                 final String score =  cursor.getString(cursor.getColumnIndex(MyPostsColumn.KEY_SCORE));
 
-
-
                 viewHolder.setLikes(likes);
                 viewHolder.setUrl(url);
                 viewHolder.setScores(score);
                 viewHolder.setId(id);
+//                viewHolder.setUps(ups);
                 viewHolder.tvShare.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-//                        Share share = new Share();
-//                        share.shareUrl(activity,url);
+                        Share share = new Share();
+                        share.shareUrl(mActivity,url);
                     }
                 });
-
 
                 viewHolder.tvVote.setText(score);
                 viewHolder.tvTitle.setText(title);
@@ -139,11 +134,8 @@ public class CommentsAdapter extends CursorRecyclerViewAdapter<RecyclerView.View
                 viewHolder.tvVote.setTextColor(ContextCompat.getColor(context,R.color.white));
                 viewHolder.tvComments.setTextColor(ContextCompat.getColor(context,R.color.white));
                 viewHolder.tvShare.setTextColor(ContextCompat.getColor(context,R.color.white));
-
-
                 viewHolder.tvCategory.setText("r/" + subreddit + "-" + time);
                 viewHolder.tvUsername.setText(author);
-
 
             }break;
             case COMMENTS_TYPE:{
@@ -190,7 +182,6 @@ public class CommentsAdapter extends CursorRecyclerViewAdapter<RecyclerView.View
                     public void onClick(View view) {
                         //Check if user is logged in or not
                         boolean mTwoPane = false;
-
                         boolean loggedIn = UserState.isUserLoggedIn(context);
                         if(loggedIn){
                             //TODO:check for two Pane

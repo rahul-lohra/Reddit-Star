@@ -61,27 +61,27 @@ public class CommentsLoader extends AsyncTaskLoader<List<CustomComment>> {
     public List<CustomComment> loadInBackground() {
         //determine whether you are logged in or not
         customCommentList = new ArrayList<>();
-        List<List<Example>> exampleList = new ArrayList<>();
-        Map<String, String> map = new HashMap<>();
-        map.put("depth", "3");
-        map.put("showedits", "false");
-        map.put("showmore", "false");
-        map.put("limit", "15");
-        try {
-            Response<ResponseBody> res = apiInterface.getComments(commentId, subbreditName, map).execute();
-
-            if (res.code() == 200) {
-                GsonBuilder builder = new GsonBuilder();
-                builder.registerTypeAdapter(Example.class, new CommentsGsonTypeAdapter().nullSafe());
-                Gson gson = builder.create();
-                exampleList = gson.fromJson(res.body().string(), new TypeToken<ArrayList<Example>>() {}.getType());
-                traverse(exampleList.get(1).get(0), depth);
-                Log.d(TAG, "Custom List Size->" + customCommentList.size());
-
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        List<List<Example>> exampleList = new ArrayList<>();
+//        Map<String, String> map = new HashMap<>();
+//        map.put("depth", "3");
+//        map.put("showedits", "false");
+//        map.put("showmore", "false");
+//        map.put("limit", "15");
+//        try {
+//            Response<ResponseBody> res = apiInterface.getComments(commentId, subbreditName, map).execute();
+//
+//            if (res.code() == 200) {
+//                GsonBuilder builder = new GsonBuilder();
+//                builder.registerTypeAdapter(Example.class, new CommentsGsonTypeAdapter().nullSafe());
+//                Gson gson = builder.create();
+//                exampleList = gson.fromJson(res.body().string(), new TypeToken<ArrayList<Example>>() {}.getType());
+//                traverse(exampleList.get(1).get(0), depth);
+//                Log.d(TAG, "Custom List Size->" + customCommentList.size());
+//
+//            }
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
         return customCommentList;
     }
 

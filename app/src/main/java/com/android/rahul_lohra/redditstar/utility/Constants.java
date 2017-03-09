@@ -45,6 +45,11 @@ public class Constants {
     public static final String CONTENT_TYPE = "Content-Type";
     public static final String CONTENT_TYPE_FORM_URL_ENCODED = "application/x-www-form-urlencoded";
 
+    public static String getUserAgent(Context context){
+         return  "android:"+context.getPackageName()+"v1.0"+"by (/u/rahul_lohra)";
+    }
+
+
     public static class Subs{
 
         public static final String POPULAR = "popular";
@@ -190,18 +195,27 @@ public class Constants {
         }
     }
 
-    public static void updateLikes(Context context, @PostView.DirectionMode Integer dir, String id){
+    public static void updateLikes(Context context, @PostView.DirectionMode Integer dir, String id,String ups,int previousLikeValue){
         Uri mUriPosts = MyProvider.PostsLists.CONTENT_URI;
-//        Uri mUriTemp = MyProvider.TempLists.CONTENT_URI;
-//        Uri mUriSearch = MyProvider.SearchLinkLists.CONTENT_URI;
 
         ContentValues cv = new ContentValues();
         cv.put(MyPostsColumn.KEY_LIKES,dir);
         String mWhere = MyPostsColumn.KEY_ID +"=?";
         String mSelectionArgs[]={id};
-        context.getContentResolver().update(mUriPosts,cv,mWhere,mSelectionArgs);
-//        context.getContentResolver().update(mUriTemp,cv,mWhere,mSelectionArgs);
-//        context.getContentResolver().update(mUriSearch,cv,mWhere,mSelectionArgs);
+        long mUps = Long.parseLong(ups)+ dir;
+
+        if((int)dir==1||(int)dir==-1){
+            cv.put(MyPostsColumn.KEY_LIKES,dir);
+            cv.put(MyPostsColumn.KEY_UPS,mUps);
+            cv.put(MyPostsColumn.KEY_SCORE,mUps);
+
+        }else {
+            cv.put(MyPostsColumn.KEY_UPS,Long.parseLong(ups)+((previousLikeValue==1)?-1:1));
+            cv.put(MyPostsColumn.KEY_SCORE,Long.parseLong(ups)+((previousLikeValue==1)?-1:1));
+        }
+        int rowsUpdated = context.getContentResolver().update(mUriPosts,cv,mWhere,mSelectionArgs);
+        context.getContentResolver().notifyChange(MyProvider.PostsComments.CONTENT_URI,null);
+        System.out.println("Rows updated:"+rowsUpdated);
 
     }
     public static void clearPosts(Context context, @ArticleType int type){
