@@ -33,7 +33,7 @@ import com.android.rahul_lohra.redditstar.modal.FavoritesModal;
 import com.android.rahul_lohra.redditstar.modal.custom.DetailPostModal;
 import com.android.rahul_lohra.redditstar.modal.frontPage.FrontPageChild;
 import com.android.rahul_lohra.redditstar.modal.frontPage.FrontPageResponseData;
-import com.android.rahul_lohra.redditstar.modal.t5_Subreddit.Elephant;
+import com.android.rahul_lohra.redditstar.modal.t5_Subreddit.T5_Data;
 import com.android.rahul_lohra.redditstar.modal.t5_Subreddit.t5_Response;
 import com.android.rahul_lohra.redditstar.retrofit.ApiInterface;
 import com.android.rahul_lohra.redditstar.service.GetSubredditListService;
@@ -272,7 +272,7 @@ public class SubredditFragment extends Fragment
             public void onResponse(Call<t5_Response> call, Response<t5_Response> response) {
                 Log.d(TAG, "getSubredditAbout onResponse");
                 if (response.code() == 200) {
-                    Elephant t5_data = response.body().getData();
+                    T5_Data t5_data = response.body().getData();
                     String accountsActive = String.valueOf(t5_data.getAccountsActive());
                     String totalSubscriber = String.valueOf(t5_data.getSubscribers());
                     String detail = String.valueOf(t5_data.getTitle());

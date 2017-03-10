@@ -9,7 +9,7 @@ import lombok.Data;
  * Created by rkrde on 15-02-2017.
  */
 @Data
-public class Elephant {
+public class T5_Data {
     @SerializedName("banner_img")
     @Expose
     private String bannerImg;
