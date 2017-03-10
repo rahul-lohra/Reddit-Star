@@ -12,10 +12,10 @@ keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 android {
     signingConfigs {
         config {
-            keyAlias keystoreProperties['keyAlias']
-            keyPassword keystoreProperties['keyPassword']
-            storeFile file(keystoreProperties['storeFile'])
-            storePassword keystoreProperties['storePassword']
+            keyAlias 'MyAndroidKey'
+            keyPassword 'rahul1994'
+            storeFile file("$rootDir/android.jks")
+            storePassword 'rahul1994'
         }
     }
     packagingOptions {
