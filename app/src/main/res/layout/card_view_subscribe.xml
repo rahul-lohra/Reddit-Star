@@ -28,7 +28,7 @@
                 />
 
             <TextView
-                android:text="12345 "
+                tools:text="@string/online_number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 />

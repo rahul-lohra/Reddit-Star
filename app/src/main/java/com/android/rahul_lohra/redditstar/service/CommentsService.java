@@ -4,10 +4,7 @@ import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.util.Log;
-import android.widget.Toast;
 
-import com.android.rahul_lohra.redditstar.R;
 import com.android.rahul_lohra.redditstar.application.Initializer;
 import com.android.rahul_lohra.redditstar.helper.CommentsGsonTypeAdapter;
 import com.android.rahul_lohra.redditstar.modal.comments.Child;
@@ -36,6 +33,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 
 
+@SuppressWarnings("HardCodedStringLiteral")
 public class CommentsService extends IntentService {
 
 
@@ -56,7 +54,7 @@ public class CommentsService extends IntentService {
     private final  String TAG = CommentsService.class.getSimpleName();
     int depth = 0;
     public CommentsService() {
-        super("CommentsService");
+        super(CommentsService.class.getSimpleName());
 
     }
 
@@ -90,7 +88,7 @@ public class CommentsService extends IntentService {
                     Gson gson = builder.create();
                     exampleList = gson.fromJson(res.body().string(), new TypeToken<ArrayList<Example>>() {}.getType());
                     traverse(exampleList.get(1).get(0), depth);
-                    Log.d(TAG, "Custom List Size->" + customCommentList.size());
+//                    Log.d(TAG, "Custom List Size->" + customCommentList.size());
 
                     Constants.bulkInsertIntoCommentsTable(getApplicationContext(),customCommentList,postId, subbreditName);
                     customCommentList.clear();
@@ -121,7 +119,6 @@ public class CommentsService extends IntentService {
         if (cursor != null) {
             if (cursor.moveToFirst()) {
 
-                System.out.println("haha");
             } else {
                 Intent intent = new Intent(context, CommentsService.class);
                 intent.putExtra(CommentsService.POST_ID,id);

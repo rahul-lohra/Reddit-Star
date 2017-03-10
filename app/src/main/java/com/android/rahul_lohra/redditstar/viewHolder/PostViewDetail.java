@@ -79,7 +79,7 @@ public class PostViewDetail extends RecyclerView.ViewHolder {
     private String id;
 
     public interface IPostViewDetail{
-        public void showLogin();
+        void showLogin();
     }
 
     private final String TAG = PostViewDetail.class.getSimpleName();

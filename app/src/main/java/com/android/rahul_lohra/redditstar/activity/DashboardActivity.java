@@ -46,7 +46,6 @@ import com.android.rahul_lohra.redditstar.presenter.activity.DashboardPresenter;
 import com.android.rahul_lohra.redditstar.service.widget.WidgetTaskService;
 import com.android.rahul_lohra.redditstar.storage.MyProvider;
 import com.android.rahul_lohra.redditstar.storage.column.MyPostsColumn;
-import com.android.rahul_lohra.redditstar.storage.column.MySubredditColumn;
 import com.android.rahul_lohra.redditstar.storage.column.UserCredentialsColumn;
 import com.android.rahul_lohra.redditstar.utility.CommonOperations;
 import com.android.rahul_lohra.redditstar.utility.SpConstants;
@@ -58,12 +57,12 @@ import com.google.android.gms.gcm.Task;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.prefs.Preferences;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+@SuppressWarnings("HardCodedStringLiteral")
 public class DashboardActivity extends BaseActivity implements
         NavigationView.OnNavigationItemSelectedListener,
         IDashboard,
@@ -114,14 +113,6 @@ public class DashboardActivity extends BaseActivity implements
     private GcmNetworkManager mGcmNetworkManager;
     private Snackbar snackbar;
     private AdRequest adRequest;
-    private Intent startActivityIntent = null;
-
-    @OnClick(R.id.fab)
-    public void onClick() {
-        Snackbar.make(fab, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show();
-//        dashboardPresenter.getMySubredditsAndDeletePreviousOnes();
-    }
 
     @OnClick(R.id.image_view_add)
     public void onClickAddAccount() {
@@ -136,14 +127,12 @@ public class DashboardActivity extends BaseActivity implements
         setContentView(R.layout.activity_dashboard);
         ButterKnife.bind(this);
         init();
-//        setAdapter();
         setupDrawer();
         setupPresenter();
         startPeriodicTask();
-//        dashboardPresenter.getMySubredditsAndDeletePreviousOnes();
 
 
-        if (null!=(findViewById(R.id.frame_layout_right))) {
+        if ((findViewById(R.id.frame_layout_right))!=null) {
             mTwoPane = true;
             if (savedInstanceState == null) {
 //                showDetailSubredditFragment(null, null, null);
@@ -216,7 +205,8 @@ public class DashboardActivity extends BaseActivity implements
 
     void init() {
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(getString(R.string.dashboard));
+        if(getSupportActionBar()!=null)
+            getSupportActionBar().setTitle(getString(R.string.dashboard));
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
@@ -235,8 +225,6 @@ public class DashboardActivity extends BaseActivity implements
                     @Override
                     public void onClick(View view) {
                         CommonOperations.addNewAccount(DashboardActivity.this);
-//                        Snackbar snackbar1 = Snackbar.make(coordinatorLayout, "Message is restored!", Snackbar.LENGTH_SHORT);
-//                        snackbar1.show();
                     }
                 });
         adRequest = new AdRequest.Builder().build();
@@ -244,15 +232,6 @@ public class DashboardActivity extends BaseActivity implements
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         sp.edit().putBoolean(SpConstants.OVER_18,false).apply();
-    }
-
-    void setAdapter() {
-//        rv.setLayoutManager(new LinearLayoutManager(this));
-//        rv.setAdapter(subredditDrawerAdapter);
-//        LinearLayoutManager layoutManager = new LinearLayoutManager(ChatActivity.this,LinearLayoutManager.VERTICAL,false);
-//        layoutManager.setStackFromEnd(true);
-//        recyclerView.setLayoutManager(layoutManager);
-//        recyclerView.setAdapter(mCursorAdapter);
     }
 
     @Override
@@ -394,18 +373,6 @@ public class DashboardActivity extends BaseActivity implements
             recyclerView.setAdapter(subredditDrawerAdapter);
         }
     }
-
-//    @Override
-//    public void onStart() {
-//        super.onStart();
-//        EventBus.getDefault().register(this);
-//    }
-//
-//    @Override
-//    public void onStop() {
-//        EventBus.getDefault().unregister(this);
-//        super.onStop();
-//    }
 
     private void startActivityWithSharedElement(Intent intent, ImageView imageView) {
         Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(this, imageView, imageView.getTransitionName()).toBundle();

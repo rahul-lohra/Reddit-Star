@@ -1,7 +1,6 @@
 package com.android.rahul_lohra.redditstar.utility;
 
 import android.content.ContentValues;
-import android.database.Cursor;
 
 import com.android.rahul_lohra.redditstar.modal.frontPage.FrontPageChildData;
 import com.android.rahul_lohra.redditstar.modal.frontPage.Media;
@@ -17,6 +16,7 @@ import static com.android.rahul_lohra.redditstar.utility.Constants.TYPE_WIDGET;
  * Created by rkrde on 27-02-2017.
  */
 
+@SuppressWarnings("HardCodedStringLiteral")
 public class CustomOrm {
 
     public static  ContentValues FrontPageChildDataToContentValues(FrontPageChildData data,@Constants.ArticleType int type){

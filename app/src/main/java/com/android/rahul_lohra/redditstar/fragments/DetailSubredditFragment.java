@@ -24,7 +24,6 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +31,6 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.android.rahul_lohra.redditstar.R;
 import com.android.rahul_lohra.redditstar.activity.DashboardActivity;
@@ -51,10 +49,7 @@ import com.android.rahul_lohra.redditstar.storage.MyProvider;
 import com.android.rahul_lohra.redditstar.storage.column.CommentsColumn;
 import com.android.rahul_lohra.redditstar.storage.column.MyPostsColumn;
 import com.android.rahul_lohra.redditstar.utility.CommonOperations;
-import com.android.rahul_lohra.redditstar.utility.Constants;
 import com.android.rahul_lohra.redditstar.utility.UserState;
-import com.android.rahul_lohra.redditstar.viewHolder.PostView;
-import com.android.rahul_lohra.redditstar.viewHolder.PostViewDetail;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.bitmap.GlideBitmapDrawable;
@@ -63,9 +58,7 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -73,15 +66,7 @@ import javax.inject.Named;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import retrofit2.Retrofit;
-
-import static com.android.rahul_lohra.redditstar.viewHolder.PostView.DIRECTION_DOWN;
-import static com.android.rahul_lohra.redditstar.viewHolder.PostView.DIRECTION_NULL;
-import static com.android.rahul_lohra.redditstar.viewHolder.PostView.DIRECTION_UP;
 
 public class DetailSubredditFragment extends Fragment implements
         LoaderManager.LoaderCallbacks<Cursor> {

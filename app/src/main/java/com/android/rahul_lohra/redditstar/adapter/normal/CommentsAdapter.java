@@ -4,42 +4,25 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.net.Uri;
-import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.RecyclerView;
-import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.rahul_lohra.redditstar.R;
 import com.android.rahul_lohra.redditstar.activity.ReplyActivity;
 import com.android.rahul_lohra.redditstar.contract.ILogin;
-import com.android.rahul_lohra.redditstar.modal.comments.Child;
-import com.android.rahul_lohra.redditstar.modal.comments.CustomComment;
-import com.android.rahul_lohra.redditstar.modal.comments.Example;
-import com.android.rahul_lohra.redditstar.storage.MyProvider;
 import com.android.rahul_lohra.redditstar.storage.column.CommentsColumn;
 import com.android.rahul_lohra.redditstar.storage.column.MyPostsColumn;
-import com.android.rahul_lohra.redditstar.storage.column.UserCredentialsColumn;
 import com.android.rahul_lohra.redditstar.utility.Constants;
 import com.android.rahul_lohra.redditstar.utility.Share;
 import com.android.rahul_lohra.redditstar.utility.UserState;
 import com.android.rahul_lohra.redditstar.viewHolder.CommentsViewHolder;
 import com.android.rahul_lohra.redditstar.viewHolder.CursorRecyclerViewAdapter;
-import com.android.rahul_lohra.redditstar.viewHolder.PostView;
 import com.android.rahul_lohra.redditstar.viewHolder.PostViewDetail;
-
-
-import java.util.List;
-
-import butterknife.Bind;
 
 /**
  * Created by rkrde on 22-01-2017.

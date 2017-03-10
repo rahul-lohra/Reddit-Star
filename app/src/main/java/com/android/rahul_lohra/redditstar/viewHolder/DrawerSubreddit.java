@@ -1,7 +1,6 @@
 package com.android.rahul_lohra.redditstar.viewHolder;
 
 import android.content.Context;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;

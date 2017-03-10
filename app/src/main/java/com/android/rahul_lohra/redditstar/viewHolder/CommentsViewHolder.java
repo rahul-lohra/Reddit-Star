@@ -1,16 +1,13 @@
 package com.android.rahul_lohra.redditstar.viewHolder;
 
-import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.android.rahul_lohra.redditstar.R;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import lombok.Data;
 
 /**
  * Created by rkrde on 22-01-2017.

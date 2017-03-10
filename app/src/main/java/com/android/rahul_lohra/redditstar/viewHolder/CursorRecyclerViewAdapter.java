@@ -4,11 +4,6 @@ package com.android.rahul_lohra.redditstar.viewHolder;
  * Created by rkrde on 29-01-2017.
  */
 
-import android.content.Context;
-import android.database.Cursor;
-import android.database.DataSetObserver;
-import android.support.v7.widget.RecyclerView;
-
 
 import android.content.Context;
 import android.database.Cursor;

@@ -11,11 +11,8 @@ import com.android.rahul_lohra.redditstar.application.Initializer;
 import com.android.rahul_lohra.redditstar.modal.custom.AfterModal;
 import com.android.rahul_lohra.redditstar.modal.frontPage.FrontPageChild;
 import com.android.rahul_lohra.redditstar.modal.frontPage.FrontPageResponse;
-import com.android.rahul_lohra.redditstar.modal.frontPage.Media;
-import com.android.rahul_lohra.redditstar.modal.frontPage.Preview;
 import com.android.rahul_lohra.redditstar.retrofit.ApiInterface;
 import com.android.rahul_lohra.redditstar.storage.MyProvider;
-import com.android.rahul_lohra.redditstar.storage.column.MyPostsColumn;
 import com.android.rahul_lohra.redditstar.utility.Constants;
 import com.android.rahul_lohra.redditstar.utility.SpConstants;
 import com.android.rahul_lohra.redditstar.utility.UserState;
@@ -28,7 +25,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -37,6 +33,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 
 
+@SuppressWarnings("HardCodedStringLiteral")
 public class GetFrontPageService extends IntentService {
 
     @Inject

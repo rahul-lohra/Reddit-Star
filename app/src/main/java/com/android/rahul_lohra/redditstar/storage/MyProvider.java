@@ -21,6 +21,7 @@ import net.simonvt.schematic.annotation.TableEndpoint;
 public class MyProvider {
     public static final String AUTHORITY = "com.android.rahul_lohra.redditstar.storage.MyProvider";
 
+    @SuppressWarnings("HardCodedStringLiteral")
     @TableEndpoint(table = MyDatabase.MY_SUBREDDIT_TABLE)
     public static class SubredditLists {
 
@@ -42,6 +43,7 @@ public class MyProvider {
         }
     }
 
+    @SuppressWarnings("HardCodedStringLiteral")
     @TableEndpoint(table = MyDatabase.USER_CREDENTIAL_TABLE)
     public static class UserCredentialsLists {
 
@@ -62,6 +64,7 @@ public class MyProvider {
         }
     }
 
+    @SuppressWarnings("HardCodedStringLiteral")
     @TableEndpoint(table = MyDatabase.USER_FAVORITES_TABLE)
     public static class FavoritesLists {
 
@@ -82,6 +85,7 @@ public class MyProvider {
         }
     }
 
+    @SuppressWarnings("HardCodedStringLiteral")
     @TableEndpoint(table = MyDatabase.USER_POSTS_TABLE)
     public static class PostsLists {
 
@@ -103,6 +107,7 @@ public class MyProvider {
         }
     }
 
+    @SuppressWarnings("HardCodedStringLiteral")
     @TableEndpoint(table = MyDatabase.COMMENTS_TABLE)
     public static class CommentsLists {
 
@@ -122,6 +127,7 @@ public class MyProvider {
             return Uri.parse("content://" + AUTHORITY + "/comments/" + id);
         }
     }
+    @SuppressWarnings("HardCodedStringLiteral")
     @TableEndpoint(table = MyDatabase.USER_POSTS_TABLE)
     public static class PostsComments{
         @ContentUri(
@@ -159,6 +165,7 @@ public class MyProvider {
 
     }
 
+    @SuppressWarnings("HardCodedStringLiteral")
     @TableEndpoint(table = MyDatabase.MY_SUBREDDIT_TABLE)
     public static class UserSubredditsWithFav{
         @ContentUri(

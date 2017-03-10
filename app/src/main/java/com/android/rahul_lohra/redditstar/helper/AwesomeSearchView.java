@@ -2,9 +2,7 @@ package com.android.rahul_lohra.redditstar.helper;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import android.app.SearchableInfo;
 import android.content.Context;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.SearchView;
 import android.util.AttributeSet;
 import android.view.View;
@@ -36,14 +34,14 @@ public class AwesomeSearchView extends SearchView {
     @Override
     public void onActionViewCollapsed() {
         super.onActionViewCollapsed();
-        Toast.makeText(getContext(),"Close",Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(),getContext().getString(R.string.close),Toast.LENGTH_SHORT).show();
 //        exitReveal();
     }
 
     @Override
     public void onActionViewExpanded() {
         super.onActionViewExpanded();
-        Toast.makeText(getContext(),"Open",Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(),getContext().getString(R.string.open),Toast.LENGTH_SHORT).show();
 //        setBackgroundColor(ContextCompat.getColor(getContext(),R.color.colorAccent));
 //        enterReveal();
     }

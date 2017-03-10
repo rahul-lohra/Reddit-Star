@@ -13,22 +13,17 @@ import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
 import com.android.rahul_lohra.redditstar.R;
 import com.android.rahul_lohra.redditstar.adapter.cursor.FavoritesAdapter;
-import com.android.rahul_lohra.redditstar.helper.SimpleItemTouchHelperCallback;
 import com.android.rahul_lohra.redditstar.storage.MyProvider;
 import com.android.rahul_lohra.redditstar.storage.column.MyFavouritesColumn;
-import com.android.rahul_lohra.redditstar.storage.column.MySubredditColumn;
-import com.varunest.sparkbutton.SparkButton;
 
 import java.util.ArrayList;
 import java.util.List;

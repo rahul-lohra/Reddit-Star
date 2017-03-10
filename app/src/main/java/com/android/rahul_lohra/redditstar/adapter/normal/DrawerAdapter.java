@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 
 import com.android.rahul_lohra.redditstar.R;
 import com.android.rahul_lohra.redditstar.activity.FavoriteActivity;
-import com.android.rahul_lohra.redditstar.activity.SettingsActivity;
 import com.android.rahul_lohra.redditstar.contract.IActivity;
 import com.android.rahul_lohra.redditstar.modal.DrawerItemModal;
 import com.android.rahul_lohra.redditstar.viewHolder.DrawerDropDown;

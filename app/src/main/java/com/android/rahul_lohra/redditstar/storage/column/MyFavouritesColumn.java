@@ -7,13 +7,13 @@ import net.simonvt.schematic.annotation.PrimaryKey;
 import net.simonvt.schematic.annotation.Unique;
 
 import static net.simonvt.schematic.annotation.DataType.Type.INTEGER;
-import static net.simonvt.schematic.annotation.DataType.Type.REAL;
 import static net.simonvt.schematic.annotation.DataType.Type.TEXT;
 
 /**
  * Created by rkrde on 05-02-2017.
  */
 
+@SuppressWarnings("HardCodedStringLiteral")
 public interface MyFavouritesColumn {
     @DataType(INTEGER)
     @PrimaryKey

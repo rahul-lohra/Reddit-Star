@@ -14,6 +14,7 @@
         android:orientation="vertical">
 
         <ImageView
+            android:contentDescription="@string/subreddit_icon"
             android:layout_gravity="center_horizontal"
             android:id="@+id/image_view"
             android:layout_height="56dp"

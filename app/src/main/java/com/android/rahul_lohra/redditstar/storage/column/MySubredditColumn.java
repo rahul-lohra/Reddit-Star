@@ -1,13 +1,8 @@
 package com.android.rahul_lohra.redditstar.storage.column;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
-
 import net.simonvt.schematic.annotation.DataType;
 import net.simonvt.schematic.annotation.NotNull;
 import net.simonvt.schematic.annotation.PrimaryKey;
-
-import java.util.List;
 
 import static net.simonvt.schematic.annotation.DataType.Type.INTEGER;
 import static net.simonvt.schematic.annotation.DataType.Type.REAL;
@@ -17,6 +12,7 @@ import static net.simonvt.schematic.annotation.DataType.Type.TEXT;
  * Created by rkrde on 23-01-2017.
  */
 
+@SuppressWarnings("HardCodedStringLiteral")
 public interface MySubredditColumn {
     @DataType(INTEGER)
     @PrimaryKey

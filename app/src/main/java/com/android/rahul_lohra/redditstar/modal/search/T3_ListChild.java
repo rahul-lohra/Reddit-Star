@@ -2,7 +2,6 @@ package com.android.rahul_lohra.redditstar.modal.search;
 
 import com.android.rahul_lohra.redditstar.modal.ListingDS;
 import com.android.rahul_lohra.redditstar.modal.T3_Kind;
-import com.android.rahul_lohra.redditstar.modal.t3_Link.T3_Data;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 

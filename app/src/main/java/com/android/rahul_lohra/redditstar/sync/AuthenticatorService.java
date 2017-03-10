@@ -8,8 +8,6 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 
-import java.net.Authenticator;
-
 /**
  * A bound Service that instantiates the authenticator
  * when started.

@@ -8,27 +8,21 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.TaskStackBuilder;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.widget.RemoteViews;
 
 import com.android.rahul_lohra.redditstar.R;
-import com.android.rahul_lohra.redditstar.activity.DashboardActivity;
 import com.android.rahul_lohra.redditstar.activity.DetailActivity;
 import com.android.rahul_lohra.redditstar.activity.WidgetConfigureActivity;
 import com.android.rahul_lohra.redditstar.service.widget.ListWidgetService;
 import com.android.rahul_lohra.redditstar.service.widget.WidgetTaskService;
-import com.bumptech.glide.load.resource.bitmap.BitmapResource;
 import com.google.android.gms.gcm.GcmNetworkManager;
 import com.google.android.gms.gcm.OneoffTask;
 import com.google.android.gms.gcm.Task;
-import com.google.android.gms.gcm.TaskParams;
 
 /**
  * Created by rkrde on 01-03-2017.

@@ -1,6 +1,5 @@
 package com.android.rahul_lohra.redditstar.adapter.cursor;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -20,10 +19,6 @@ import com.android.rahul_lohra.redditstar.storage.column.MyFavouritesColumn;
 import com.android.rahul_lohra.redditstar.viewHolder.CursorRecyclerViewAdapter;
 import com.android.rahul_lohra.redditstar.viewHolder.DrawerSubreddit;
 import com.varunest.sparkbutton.SparkEventListener;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 /**
  * Created by rkrde on 29-01-2017.

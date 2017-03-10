@@ -5,10 +5,8 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.android.rahul_lohra.redditstar.R;
 import com.android.rahul_lohra.redditstar.contract.ILogin;
@@ -21,7 +19,6 @@ public class SubredditActivity extends BaseActivity implements
         SubredditFragment.ISubredditFragment,ILogin {
 
     private Uri uri = MyProvider.PostsLists.CONTENT_URI;
-    ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

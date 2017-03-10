@@ -1,8 +1,5 @@
 package com.android.rahul_lohra.redditstar.storage;
 
-import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
-
 import com.android.rahul_lohra.redditstar.storage.column.CommentsColumn;
 import com.android.rahul_lohra.redditstar.storage.column.MyFavouritesColumn;
 import com.android.rahul_lohra.redditstar.storage.column.MyPostsColumn;
@@ -10,12 +7,12 @@ import com.android.rahul_lohra.redditstar.storage.column.MySubredditColumn;
 import com.android.rahul_lohra.redditstar.storage.column.UserCredentialsColumn;
 
 import net.simonvt.schematic.annotation.Database;
-import net.simonvt.schematic.annotation.OnUpgrade;
 import net.simonvt.schematic.annotation.Table;
 
 /**
  * Created by rkrde on 23-01-2017.
  */
+@SuppressWarnings("HardCodedStringLiteral")
 @Database(version = MyDatabase.VERSION)
 public class MyDatabase {
     public static final int VERSION = 1;

@@ -1,6 +1,5 @@
 package com.android.rahul_lohra.redditstar.modal.reply;
 
-import com.android.rahul_lohra.redditstar.modal.frontPage.FrontPageResponseData;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 

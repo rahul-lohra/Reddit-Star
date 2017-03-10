@@ -6,7 +6,6 @@ import com.android.rahul_lohra.redditstar.activity.SearchActivity;
 import com.android.rahul_lohra.redditstar.dagger.Module.AppModule;
 import com.android.rahul_lohra.redditstar.dagger.Module.NetModule;
 import com.android.rahul_lohra.redditstar.activity.MainActivity;
-import com.android.rahul_lohra.redditstar.dagger.extras.TokenAuthenticator;
 import com.android.rahul_lohra.redditstar.fragments.DetailSubredditFragment;
 import com.android.rahul_lohra.redditstar.fragments.HomeFragment;
 import com.android.rahul_lohra.redditstar.fragments.ReplyFragment;

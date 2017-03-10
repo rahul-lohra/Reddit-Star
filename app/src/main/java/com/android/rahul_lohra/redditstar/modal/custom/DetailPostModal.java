@@ -3,9 +3,6 @@ package com.android.rahul_lohra.redditstar.modal.custom;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Created by rkrde on 22-02-2017.
  */

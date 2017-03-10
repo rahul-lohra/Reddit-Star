@@ -98,7 +98,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="get_data">Get Data</string>
     <string name="enter_your_reply">Enter your reply</string>
-    <string name="send">SEND</string>
+    <string name="send">Send</string>
 
     <string name="write_something">Write Something</string>
     <string name="please_login">Please Login</string>
@@ -120,7 +120,7 @@
     <string name="thumbnail">Thumbnail</string>
     <string name="popular">Popular</string>
     <string name="front_page">Front Page</string>
-    <string name="subreddit">Subreddit</string>
+    <string name="subreddit" >Subreddit</string>
 
     <string name="subreddit_name">Subreddit Name</string>
     <string name="apply">Apply</string>
@@ -211,7 +211,21 @@
     <string name="save">Save</string>
     <string name="my_subreddits">My Subreddits</string>
     <string name="credententials_updated">Credentials Updated</string>
-    <string name="cannot_retrieve_name">Cannot retreive name</string>
+    <string name="cannot_retrieve_name">Cannot retrieve name</string>
     <string name="share_using">Share using</string>
+    <string name="close">Close</string>
+    <string name="open">Open</string>
+    <string name="sample_name">android.studio@android.com</string>
+    <string name="subreddit_icon">Subreddit icon</string>
+    <string name="article_thumbnail">Article thumbnail</string>
+    <string name="refresh_icon">Refresh icon</string>
+    <string name="refresh_widget">Refresh widget</string>
+    <string name="icon">Icon</string>
+    <string name="camera">Camera</string>
+    <string name="gallery">Gallery</string>
+    <string name="tools_text">Tools</string>
+    <string name="communicate">Communicate</string>
+    <string name="online_number">123456</string>
+    <string name="sample_number">444</string>
 
 </resources>

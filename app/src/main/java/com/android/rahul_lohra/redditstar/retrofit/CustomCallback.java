@@ -3,7 +3,7 @@ package com.android.rahul_lohra.redditstar.retrofit;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-;
+
 
 /**
  * Created by rkrde on 27-01-2017.

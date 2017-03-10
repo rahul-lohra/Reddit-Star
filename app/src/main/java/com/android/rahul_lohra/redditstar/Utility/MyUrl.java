@@ -4,6 +4,7 @@ package com.android.rahul_lohra.redditstar.utility;
  * Created by rkrde on 23-12-2016.
  */
 
+@SuppressWarnings("HardCodedStringLiteral")
 public class MyUrl {
 
     public static String abc = "https://www.reddit.com/api/v1/authorize?client_id=CLIENT_ID&response_type=TYPE&\n" +

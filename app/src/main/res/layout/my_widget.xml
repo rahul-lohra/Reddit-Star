@@ -18,6 +18,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <ImageView
+            android:contentDescription="@string/refresh_widget"
             android:layout_marginEnd="10dp"
             android:id="@+id/image_refresh"
             android:layout_toStartOf="@+id/image_configure"
@@ -26,6 +27,7 @@
             android:layout_height="24dp"
             app:srcCompat="@drawable/ic_refresh_white_24dp_small" />
         <ImageView
+            android:contentDescription="@string/configure_widget"
             android:id="@+id/image_configure"
             android:layout_centerVertical="true"
             android:layout_alignParentEnd="true"

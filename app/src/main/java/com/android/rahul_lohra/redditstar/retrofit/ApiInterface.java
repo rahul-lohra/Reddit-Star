@@ -3,21 +3,16 @@ package com.android.rahul_lohra.redditstar.retrofit;
 import com.android.rahul_lohra.redditstar.modal.AboutMe;
 import com.android.rahul_lohra.redditstar.modal.RefreshTokenResponse;
 import com.android.rahul_lohra.redditstar.modal.SubredditResponse;
-import com.android.rahul_lohra.redditstar.modal.SubscribeSubreddit;
 import com.android.rahul_lohra.redditstar.modal.frontPage.FrontPageResponse;
-import com.android.rahul_lohra.redditstar.modal.reply.ReplyModal;
 import com.android.rahul_lohra.redditstar.modal.reply.ReplyResponse;
-import com.android.rahul_lohra.redditstar.modal.search.T3_SearchResponse;
 import com.android.rahul_lohra.redditstar.modal.search.T5_SearchResponse;
 import com.android.rahul_lohra.redditstar.modal.t5_Subreddit.t5_Response;
 import com.android.rahul_lohra.redditstar.utility.Constants;
 
-import java.util.ArrayList;
 import java.util.Map;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
-import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -25,7 +20,6 @@ import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
-import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
 
 /**

@@ -1,9 +1,6 @@
 package com.android.rahul_lohra.redditstar.adapter.normal;
 
 import android.content.Context;
-import android.content.Intent;
-import android.support.constraint.ConstraintLayout;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,25 +10,17 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.rahul_lohra.redditstar.R;
-import com.android.rahul_lohra.redditstar.activity.DetailActivity;
-import com.android.rahul_lohra.redditstar.activity.ReplyActivity;
 import com.android.rahul_lohra.redditstar.modal.T3_Kind;
-import com.android.rahul_lohra.redditstar.modal.comments.Child;
-import com.android.rahul_lohra.redditstar.modal.comments.CustomComment;
 import com.android.rahul_lohra.redditstar.modal.custom.DetailPostModal;
-import com.android.rahul_lohra.redditstar.modal.frontPage.FrontPageChildData;
-import com.android.rahul_lohra.redditstar.modal.frontPage.Image;
 import com.android.rahul_lohra.redditstar.modal.frontPage.Preview;
 import com.android.rahul_lohra.redditstar.modal.t3_Link.T3_Data;
 import com.android.rahul_lohra.redditstar.retrofit.ApiInterface;
 import com.android.rahul_lohra.redditstar.utility.UserState;
-import com.android.rahul_lohra.redditstar.viewHolder.CommentsViewHolder;
 import com.android.rahul_lohra.redditstar.viewHolder.PostView;
 import com.bumptech.glide.Glide;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

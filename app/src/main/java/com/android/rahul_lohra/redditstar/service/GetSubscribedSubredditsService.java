@@ -12,13 +12,11 @@ import android.util.Log;
 
 import com.android.rahul_lohra.redditstar.application.Initializer;
 import com.android.rahul_lohra.redditstar.modal.ListingChild;
-import com.android.rahul_lohra.redditstar.modal.SubredditDataStructure;
 import com.android.rahul_lohra.redditstar.modal.SubredditResponse;
 import com.android.rahul_lohra.redditstar.retrofit.ApiInterface;
 import com.android.rahul_lohra.redditstar.storage.MyProvider;
 import com.android.rahul_lohra.redditstar.storage.column.MySubredditColumn;
 import com.android.rahul_lohra.redditstar.storage.column.UserCredentialsColumn;
-import com.android.rahul_lohra.redditstar.utility.Share;
 import com.android.rahul_lohra.redditstar.utility.SpConstants;
 
 import java.io.IOException;
@@ -29,8 +27,6 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 

@@ -1,7 +1,5 @@
 package com.android.rahul_lohra.redditstar.fragments.subreddit;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;

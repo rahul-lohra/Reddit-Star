@@ -8,7 +8,6 @@ import com.android.rahul_lohra.redditstar.dagger.Component.NetComponent;
 import com.android.rahul_lohra.redditstar.dagger.Module.AppModule;
 import com.android.rahul_lohra.redditstar.dagger.Module.NetModule;
 import com.facebook.stetho.Stetho;
-import com.squareup.leakcanary.LeakCanary;
 
 
 /**

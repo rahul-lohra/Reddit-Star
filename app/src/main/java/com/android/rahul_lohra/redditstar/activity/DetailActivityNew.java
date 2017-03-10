@@ -11,9 +11,6 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -24,7 +21,6 @@ import com.android.rahul_lohra.redditstar.R;
 import com.android.rahul_lohra.redditstar.adapter.normal.CommentsAdapter;
 import com.android.rahul_lohra.redditstar.application.Initializer;
 import com.android.rahul_lohra.redditstar.fragments.CommentsFragment;
-import com.android.rahul_lohra.redditstar.fragments.HomeFragment;
 import com.android.rahul_lohra.redditstar.helper.AspectRatioImageView;
 import com.android.rahul_lohra.redditstar.modal.comments.CustomComment;
 import com.android.rahul_lohra.redditstar.modal.custom.DetailPostModal;
@@ -32,17 +28,13 @@ import com.android.rahul_lohra.redditstar.retrofit.ApiInterface;
 import com.android.rahul_lohra.redditstar.service.CommentsService;
 import com.android.rahul_lohra.redditstar.storage.MyProvider;
 import com.android.rahul_lohra.redditstar.storage.column.CommentsColumn;
-import com.android.rahul_lohra.redditstar.storage.column.MyPostsColumn;
 import com.android.rahul_lohra.redditstar.utility.CommonOperations;
-import com.android.rahul_lohra.redditstar.utility.Constants;
 import com.android.rahul_lohra.redditstar.utility.UserState;
 import com.android.rahul_lohra.redditstar.viewHolder.PostView;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -50,10 +42,6 @@ import javax.inject.Named;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import retrofit2.Retrofit;
 
 import static com.android.rahul_lohra.redditstar.viewHolder.PostView.DIRECTION_DOWN;
@@ -178,7 +166,7 @@ public class DetailActivityNew extends BaseActivity implements
         tvVote.setText(subredditModal.getUps());
         tvCategory.setText("r/" + subredditModal.getSubreddit() + "-" + subredditModal.getTime());
         tvUsername.setText(subredditModal.getAuthor());
-        tvSort.setText("new");
+        tvSort.setText(getString(R.string.new_text));
         String bigImageUrl = subredditModal.getBigImageUrl();
         String postHint = subredditModal.getPostHint();
         if(postHint!=null){

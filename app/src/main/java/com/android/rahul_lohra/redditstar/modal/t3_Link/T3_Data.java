@@ -6,8 +6,6 @@ import com.android.rahul_lohra.redditstar.modal.frontPage.Preview;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.List;
-
 public class T3_Data {
 
     @SerializedName("created_utc")

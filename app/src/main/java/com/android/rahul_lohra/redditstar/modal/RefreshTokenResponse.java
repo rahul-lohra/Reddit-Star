@@ -3,8 +3,6 @@ package com.android.rahul_lohra.redditstar.modal;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import lombok.Data;
-
 /**
  * Created by rkrde on 28-01-2017.
  */

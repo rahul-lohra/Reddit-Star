@@ -5,8 +5,6 @@ import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import lombok.Data;
-
 public class ListingDataStructure extends ListingDS{
 
     @SerializedName("children")

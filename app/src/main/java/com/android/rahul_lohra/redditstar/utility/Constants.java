@@ -2,15 +2,11 @@ package com.android.rahul_lohra.redditstar.utility;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.support.annotation.IntDef;
-import android.support.annotation.IntegerRes;
-import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.android.rahul_lohra.redditstar.modal.FavoritesModal;
 import com.android.rahul_lohra.redditstar.modal.comments.Child;
@@ -19,7 +15,6 @@ import com.android.rahul_lohra.redditstar.modal.comments.T1data;
 import com.android.rahul_lohra.redditstar.modal.frontPage.FrontPageChild;
 import com.android.rahul_lohra.redditstar.modal.frontPage.FrontPageChildData;
 import com.android.rahul_lohra.redditstar.modal.frontPage.FrontPageResponse;
-import com.android.rahul_lohra.redditstar.service.CommentsService;
 import com.android.rahul_lohra.redditstar.storage.MyProvider;
 import com.android.rahul_lohra.redditstar.storage.column.CommentsColumn;
 import com.android.rahul_lohra.redditstar.storage.column.MyFavouritesColumn;
@@ -28,11 +23,8 @@ import com.android.rahul_lohra.redditstar.storage.column.UserCredentialsColumn;
 import com.android.rahul_lohra.redditstar.viewHolder.PostView;
 
 import java.lang.annotation.Retention;
-import java.security.PublicKey;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
-import java.util.TimeZone;
 
 import static java.lang.annotation.RetentionPolicy.SOURCE;
 

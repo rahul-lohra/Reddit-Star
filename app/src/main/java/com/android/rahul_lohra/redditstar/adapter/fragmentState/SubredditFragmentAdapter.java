@@ -3,7 +3,6 @@ package com.android.rahul_lohra.redditstar.adapter.fragmentState;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.util.Log;
 
 import com.android.rahul_lohra.redditstar.fragments.subreddit.HotFragment;
 

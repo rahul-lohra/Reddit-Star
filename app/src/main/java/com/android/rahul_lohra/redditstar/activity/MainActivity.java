@@ -3,26 +3,15 @@ package com.android.rahul_lohra.redditstar.activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import com.android.rahul_lohra.redditstar.R;
 import com.android.rahul_lohra.redditstar.service.GetNewTokenService;
 import com.android.rahul_lohra.redditstar.utility.MyUrl;
 
-import java.io.IOException;
-
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.FormBody;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
 
-import static com.android.rahul_lohra.redditstar.utility.MyUrl.ACCESS_TOKEN_URL;
 import static com.android.rahul_lohra.redditstar.utility.MyUrl.AUTH_URL;
 import static com.android.rahul_lohra.redditstar.utility.MyUrl.CLIENT_ID;
 import static com.android.rahul_lohra.redditstar.utility.MyUrl.REDIRECT_URI;

@@ -5,17 +5,13 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.annotation.IntDef;
-import android.support.annotation.IntegerRes;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.RemoteViews;
 
 import com.android.rahul_lohra.redditstar.R;
 import com.android.rahul_lohra.redditstar.service.widget.WidgetTaskService;
@@ -25,9 +21,6 @@ import com.android.rahul_lohra.redditstar.widget.MyWidgetProvider;
 import com.google.android.gms.gcm.GcmNetworkManager;
 import com.google.android.gms.gcm.OneoffTask;
 import com.google.android.gms.gcm.Task;
-import com.google.android.gms.gcm.TaskParams;
-
-import java.lang.annotation.Retention;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -37,7 +30,6 @@ import static com.android.rahul_lohra.redditstar.utility.SpConstants.FAV;
 import static com.android.rahul_lohra.redditstar.utility.SpConstants.FRONT_PAGE;
 import static com.android.rahul_lohra.redditstar.utility.SpConstants.POPULAR;
 import static com.android.rahul_lohra.redditstar.utility.SpConstants.SUBREDDIT;
-import static java.lang.annotation.RetentionPolicy.SOURCE;
 
 public class WidgetConfigureActivity extends AppCompatActivity {
 
@@ -58,7 +50,7 @@ public class WidgetConfigureActivity extends AppCompatActivity {
     @Bind(R.id.btn_apply)
     Button btnApply;
 
-    int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;;
+    int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

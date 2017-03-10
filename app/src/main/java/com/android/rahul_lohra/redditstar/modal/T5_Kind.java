@@ -1,6 +1,5 @@
 package com.android.rahul_lohra.redditstar.modal;
 
-import com.android.rahul_lohra.redditstar.modal.t3_Link.T3_Data;
 import com.android.rahul_lohra.redditstar.modal.t5_Subreddit.T5_Data;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

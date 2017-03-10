@@ -18,6 +18,7 @@ import java.util.List;
  * Created by rkrde on 08-02-2017.
  */
 
+@SuppressWarnings("HardCodedStringLiteral")
 public class CommentsGsonTypeAdapter extends TypeAdapter<List<Example>> {
 
     @Override

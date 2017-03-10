@@ -96,7 +96,6 @@
             android:exported="false"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
 
-        <activity android:name=".dummy.DummyMainActivity" />
         <activity
             android:name=".activity.DashboardActivity"
             android:theme="@style/AppTheme.NoToolBar">
@@ -122,16 +121,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.DashboardActivity" />
         </activity>
-        <activity
-            android:name=".dummy.DummyDashboardActivity"
-            android:label="@string/home" />
-        <activity
-            android:name=".dummy.DummyDetailActivity"
-            android:label="@string/detail_reddit" />
-        <activity
-            android:name=".dummy.NavActivity"
-            android:label="@string/title_activity_nav"
-            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.WebViewActivity"
             android:label="@string/reddit_login"
@@ -161,6 +150,7 @@
             android:name=".activity.FavoriteActivity"
             android:label="@string/favorite"
             android:theme="@style/AppTheme.NoToolBar" />
+        <activity android:name=".activity.MainActivity"/>
         <activity
             android:name=".activity.SearchActivity"
             android:launchMode="singleTop"

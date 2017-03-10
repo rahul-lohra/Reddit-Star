@@ -56,7 +56,7 @@ public class SubredditLoader extends AsyncTaskLoader<FrontPageResponse> {
         apiInterface = (isUserLoggedIn)?retrofitWithToken.create(ApiInterface.class):retrofitWithoutToken.create(ApiInterface.class);
         String token = (isUserLoggedIn) ? "bearer " + UserState.getAuthToken(getContext()) : "";
 
-        this.after = (after!=null)?after:"";
+        after = (after!=null)?after:"";
         Map<String, String> map = new HashMap<>();
         map.put("after", after);
         map.put("limit", "15");

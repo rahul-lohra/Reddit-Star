@@ -8,12 +8,9 @@ import android.view.ViewGroup;
 
 import com.android.rahul_lohra.redditstar.R;
 import com.android.rahul_lohra.redditstar.modal.T5_Kind;
-import com.android.rahul_lohra.redditstar.modal.frontPage.Preview;
 import com.android.rahul_lohra.redditstar.modal.t5_Subreddit.T5_Data;
 import com.android.rahul_lohra.redditstar.viewHolder.SubredditsSmallCard;
 import com.bumptech.glide.Glide;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 

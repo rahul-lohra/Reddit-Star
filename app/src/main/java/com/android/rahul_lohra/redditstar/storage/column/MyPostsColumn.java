@@ -1,18 +1,11 @@
 package com.android.rahul_lohra.redditstar.storage.column;
 
-import android.support.annotation.IntDef;
-import android.support.annotation.IntRange;
-import android.support.annotation.IntegerRes;
-
 import net.simonvt.schematic.annotation.DataType;
 import net.simonvt.schematic.annotation.DefaultValue;
 import net.simonvt.schematic.annotation.NotNull;
 import net.simonvt.schematic.annotation.PrimaryKey;
 import net.simonvt.schematic.annotation.Unique;
 
-import java.lang.annotation.Retention;
-
-import static java.lang.annotation.RetentionPolicy.SOURCE;
 import static net.simonvt.schematic.annotation.DataType.Type.INTEGER;
 import static net.simonvt.schematic.annotation.DataType.Type.TEXT;
 
@@ -20,6 +13,7 @@ import static net.simonvt.schematic.annotation.DataType.Type.TEXT;
  * Created by rkrde on 27-02-2017.
  */
 
+@SuppressWarnings("HardCodedStringLiteral")
 public interface MyPostsColumn {
     @DataType(INTEGER)
     @PrimaryKey

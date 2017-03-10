@@ -30,7 +30,6 @@ import android.widget.LinearLayout;
 import com.android.rahul_lohra.redditstar.R;
 import com.android.rahul_lohra.redditstar.adapter.normal.CommentsAdapter;
 import com.android.rahul_lohra.redditstar.contract.ILogin;
-import com.android.rahul_lohra.redditstar.fragments.DetailSubredditFragment;
 import com.android.rahul_lohra.redditstar.helper.AspectRatioImageView;
 import com.android.rahul_lohra.redditstar.service.CommentsService;
 import com.android.rahul_lohra.redditstar.storage.MyDatabase;
