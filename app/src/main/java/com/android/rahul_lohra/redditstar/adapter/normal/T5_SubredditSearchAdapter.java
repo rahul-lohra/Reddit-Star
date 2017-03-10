@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 
 import com.android.rahul_lohra.redditstar.R;
 import com.android.rahul_lohra.redditstar.modal.T5_Kind;
-import com.android.rahul_lohra.redditstar.modal.t5_Subreddit.T5_Data;
+import com.android.rahul_lohra.redditstar.modal.t5_Subreddit.Elephant;
 import com.android.rahul_lohra.redditstar.viewHolder.SubredditsSmallCard;
 import com.bumptech.glide.Glide;
 
@@ -48,7 +48,7 @@ public class T5_SubredditSearchAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         SubredditsSmallCard viewHolder = (SubredditsSmallCard) holder;
-        final T5_Data t5_data = list.get(position).data;
+        final Elephant t5_data = list.get(position).data;
 //        final String name = t5_data.getName();
 //        final String subreddit = t5_data.getSubreddit();
 //        final String thingId = t5_data.getName();

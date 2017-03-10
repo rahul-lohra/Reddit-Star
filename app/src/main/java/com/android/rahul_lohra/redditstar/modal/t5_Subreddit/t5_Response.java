@@ -16,5 +16,5 @@ public class t5_Response {
     private String kind;
     @SerializedName("data")
     @Expose
-    private T5_Data data;
+    private Elephant data;
 }

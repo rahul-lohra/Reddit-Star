@@ -33,7 +33,7 @@ import com.android.rahul_lohra.redditstar.modal.FavoritesModal;
 import com.android.rahul_lohra.redditstar.modal.custom.DetailPostModal;
 import com.android.rahul_lohra.redditstar.modal.frontPage.FrontPageChild;
 import com.android.rahul_lohra.redditstar.modal.frontPage.FrontPageResponseData;
-import com.android.rahul_lohra.redditstar.modal.t5_Subreddit.T5_Data;
+import com.android.rahul_lohra.redditstar.modal.t5_Subreddit.Elephant;
 import com.android.rahul_lohra.redditstar.modal.t5_Subreddit.t5_Response;
 import com.android.rahul_lohra.redditstar.retrofit.ApiInterface;
 import com.android.rahul_lohra.redditstar.service.GetSubredditListService;
@@ -183,7 +183,6 @@ public class SubredditFragment extends Fragment
             public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
 //                View view = (View) scrollView.getChildAt(scrollView.getChildCount() - 1);
                 int diff = (rv.getBottom() - (v.getHeight() + v.getScrollY()));
-
                 // if diff is zero, then the bottom has been reached
                 if (diff <= 10) {
                     // do stuff
@@ -221,7 +220,6 @@ public class SubredditFragment extends Fragment
                 }
             }
         });
-//        getLoaderManager().initLoader(LOADER_ID, savedInstanceState, this);
         return v;
     }
 
@@ -256,49 +254,14 @@ public class SubredditFragment extends Fragment
 
     private void setToolbar() {
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
-//        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-//        ((AppCompatActivity) getActivity()).getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_action_back_black);
-
-
-//        if (((AppCompatActivity) getActivity()).getSupportActionBar() != null) {
-            ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("r/"+subredditName);
-
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("r/"+subredditName);
         tvSubreddit.setText("r/"+subredditName);
-//        String subsCount =
-
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 getActivity().onBackPressed();
             }
         });
-//            toolbar.setTitle(subredditName);
-//            toolbar.setSubtitle("Hot");
-//                        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(subredditName);
-//            ((AppCompatActivity) getActivity()).getSupportActionBar().setSubtitle("Hot");
-//        }
-
-//        appbar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-//            boolean isShow = false;
-//            int scrollRange = -1;
-//
-//            @Override
-//            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-//                if (scrollRange == -1) {
-//                    scrollRange = appBarLayout.getTotalScrollRange();
-//                }
-//                if (scrollRange + verticalOffset == 0) {
-//                    collapsingToolbar.setTitle("Title");
-//                    toolbar.setTitle(subredditName);
-//                    ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("haha");
-//
-//                    isShow = true;
-//                } else if(isShow) {
-//                    collapsingToolbar.setTitle(" ");//carefull there should a space between double quote otherwise it wont work
-//                    isShow = false;
-//                }
-//            }
-//        });
     }
 
     private void getSubredditAbout() {
@@ -309,7 +272,7 @@ public class SubredditFragment extends Fragment
             public void onResponse(Call<t5_Response> call, Response<t5_Response> response) {
                 Log.d(TAG, "getSubredditAbout onResponse");
                 if (response.code() == 200) {
-                    T5_Data t5_data = response.body().getData();
+                    Elephant t5_data = response.body().getData();
                     String accountsActive = String.valueOf(t5_data.getAccountsActive());
                     String totalSubscriber = String.valueOf(t5_data.getSubscribers());
                     String detail = String.valueOf(t5_data.getTitle());
