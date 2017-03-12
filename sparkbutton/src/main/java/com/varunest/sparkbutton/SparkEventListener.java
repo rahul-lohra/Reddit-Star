@@ -7,7 +7,7 @@ import android.widget.ImageView;
  */
 public interface SparkEventListener {
     void onEvent(ImageView button, boolean buttonState);
-    void onEventAnimationEnd(boolean buttonState);
-    void onEventAnimationStart(boolean buttonState);
+    void onEventAnimationEnd(ImageView button,boolean buttonState);
+    void onEventAnimationStart(ImageView button,boolean buttonState);
 
 }

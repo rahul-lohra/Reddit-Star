@@ -208,12 +208,12 @@ public class SubredditFragment extends Fragment
             }
 
             @Override
-            public void onEventAnimationEnd(boolean buttonState) {
+            public void onEventAnimationEnd(ImageView button,boolean buttonState) {
 
             }
 
             @Override
-            public void onEventAnimationStart(boolean buttonState) {
+            public void onEventAnimationStart(ImageView button,boolean buttonState) {
 
             }
         });
@@ -230,10 +230,10 @@ public class SubredditFragment extends Fragment
                 }
             }
             @Override
-            public void onEventAnimationEnd(boolean buttonState) {}
+            public void onEventAnimationEnd(ImageView button,boolean buttonState) {}
 
             @Override
-            public void onEventAnimationStart(boolean buttonState) {}
+            public void onEventAnimationStart(ImageView button,boolean buttonState) {}
         });
         return v;
     }

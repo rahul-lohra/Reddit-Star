@@ -48,7 +48,7 @@ public class SubredditDrawerAdapter extends CursorRecyclerViewAdapter<RecyclerVi
         final String fullName = cursor.getString(cursor.getColumnIndex(MySubredditColumn.KEY_NAME));
         final String nameFromFav = cursor.getString(cursor.getColumnIndex(MyFavouritesColumn.KEY_DISPLAY_NAME));
 
-        DrawerSubreddit drawerSubreddit = (DrawerSubreddit)viewHolder;
+        final DrawerSubreddit drawerSubreddit = (DrawerSubreddit)viewHolder;
 
         if(nameFromFav!=null){
             drawerSubreddit.sparkButton.setChecked(true);
@@ -56,10 +56,12 @@ public class SubredditDrawerAdapter extends CursorRecyclerViewAdapter<RecyclerVi
         drawerSubreddit.tv.setText(displayName);
         drawerSubreddit.sparkButton.setEventListener(new SparkEventListener() {
             @Override
-            public void onEvent(ImageView button, boolean buttonState) {}
+            public void onEvent(ImageView button, boolean buttonState) {
+                button.setClickable(false);
+            }
 
             @Override
-            public void onEventAnimationEnd(boolean buttonState) {
+            public void onEventAnimationEnd(ImageView button,boolean buttonState) {
                 if(buttonState)
                 {
                     //insert
@@ -68,9 +70,12 @@ public class SubredditDrawerAdapter extends CursorRecyclerViewAdapter<RecyclerVi
                     //remove
                     Constants.deleteFromFavoritesDb(context,fullName);
                 }
+                button.setClickable(true);
             }
             @Override
-            public void onEventAnimationStart(boolean buttonState) {}
+            public void onEventAnimationStart(ImageView button,boolean buttonState) {
+                button.setClickable(false);
+            }
         });
 
         drawerSubreddit.tv.setOnClickListener(new View.OnClickListener() {
