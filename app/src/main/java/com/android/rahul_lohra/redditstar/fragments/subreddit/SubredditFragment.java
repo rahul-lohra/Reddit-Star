@@ -206,6 +206,16 @@ public class SubredditFragment extends Fragment
                     Constants.deleteFromFavoritesDb(getContext(), subredditFullName);
                 }
             }
+
+            @Override
+            public void onEventAnimationEnd(boolean buttonState) {
+
+            }
+
+            @Override
+            public void onEventAnimationStart(boolean buttonState) {
+
+            }
         });
         sparkSubs.setEventListener(new SparkEventListener() {
             @Override
@@ -219,6 +229,11 @@ public class SubredditFragment extends Fragment
                     Toast.makeText(getActivity(), getString(R.string.please_login), Toast.LENGTH_SHORT).show();
                 }
             }
+            @Override
+            public void onEventAnimationEnd(boolean buttonState) {}
+
+            @Override
+            public void onEventAnimationStart(boolean buttonState) {}
         });
         return v;
     }

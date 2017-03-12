@@ -31,9 +31,10 @@ public class DrawerSubreddit extends RecyclerView.ViewHolder implements SparkEve
         this.context = context;
         sparkButton.setEventListener(this);
     }
-
     @Override
-    public void onEvent(ImageView button, boolean buttonState) {
-
-    }
+    public void onEvent(ImageView button, boolean buttonState) {}
+    @Override
+    public void onEventAnimationEnd(boolean buttonState) {}
+    @Override
+    public void onEventAnimationStart(boolean buttonState) {}
 }

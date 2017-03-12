@@ -59,21 +59,15 @@ public class FavoritesAdapter extends CursorRecyclerViewAdapter<RecyclerView.Vie
                 Uri mUri = MyProvider.FavoritesLists.CONTENT_URI;
                 if(buttonState)
                 {
-
                     mListener.removeFromList(subredditId);
-//                    ContentValues contentValues = new ContentValues();
-//                    contentValues.put(MyFavouritesColumn.KEY_SUBREDDIT_ID,subredditId);
-//                    contentValues.put(MyFavouritesColumn.KEY_SUBREDDIT_NAME,displayName);
-//                    context.getContentResolver().insert(mUri,contentValues);
                 }else {
                     mListener.insertIntoList(subredditId);
-
-//                    String mWhere = MyFavouritesColumn.KEY_SUBREDDIT_ID +"=?";
-//                    String mSelectionArgs []={subredditId};
-//                    int rowsDeleted = context.getContentResolver().delete(mUri,mWhere,mSelectionArgs);
-//                    Log.d(TAG,"rowsDeleted:"+rowsDeleted);
                 }
             }
+            @Override
+            public void onEventAnimationEnd(boolean buttonState) {}
+            @Override
+            public void onEventAnimationStart(boolean buttonState) {}
         });
 
         drawerSubreddit.tv.setOnClickListener(new View.OnClickListener() {

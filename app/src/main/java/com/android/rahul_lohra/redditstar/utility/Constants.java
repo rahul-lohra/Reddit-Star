@@ -113,22 +113,35 @@ public class Constants {
     }
 
 
-    public static void insertIntoFavoritesDb(Context context,FavoritesModal modal){
-        Uri mUri = MyProvider.FavoritesLists.CONTENT_URI;
-        ContentValues cv = new ContentValues();
-        cv.put(MyFavouritesColumn.KEY_SUBREDDIT_ID,modal.getSubredditId());
-        cv.put(MyFavouritesColumn.KEY_FULL_NAME,modal.getFullName());
-        cv.put(MyFavouritesColumn.KEY_DISPLAY_NAME,modal.getDisplayName());
-        context.getContentResolver().insert(mUri,cv);
-        context.getContentResolver().notifyChange(MyProvider.UserSubredditsWithFav.CONTENT_URI,null);
+    public static void insertIntoFavoritesDb(final Context context,final FavoritesModal modal){
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Uri mUri = MyProvider.FavoritesLists.CONTENT_URI;
+                ContentValues cv = new ContentValues();
+                cv.put(MyFavouritesColumn.KEY_SUBREDDIT_ID,modal.getFullName());// As modal.getSubredditId() does not contain t5_ prefix
+                cv.put(MyFavouritesColumn.KEY_FULL_NAME,modal.getFullName());
+                cv.put(MyFavouritesColumn.KEY_DISPLAY_NAME,modal.getDisplayName());
+                context.getContentResolver().insert(mUri,cv);
+                context.getContentResolver().notifyChange(MyProvider.UserSubredditsWithFav.CONTENT_URI,null);
+            }
+        });
+        thread.start();
     }
 
-    public static void deleteFromFavoritesDb(Context context,String fullName){
-        Uri mUri = MyProvider.FavoritesLists.CONTENT_URI;
-        String mWhere = MyFavouritesColumn.KEY_FULL_NAME +"=?";
-        String mSelectionArgs[]={fullName};
-        context.getContentResolver().delete(mUri,mWhere,mSelectionArgs);
-        context.getContentResolver().notifyChange(MyProvider.UserSubredditsWithFav.CONTENT_URI,null);
+    public static void deleteFromFavoritesDb(final Context context,final String fullName){
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Uri mUri = MyProvider.FavoritesLists.CONTENT_URI;
+                String mWhere = MyFavouritesColumn.KEY_FULL_NAME +"=?";
+                String mSelectionArgs[]={fullName};
+                context.getContentResolver().delete(mUri,mWhere,mSelectionArgs);
+                context.getContentResolver().notifyChange(MyProvider.UserSubredditsWithFav.CONTENT_URI,null);
+            }
+        });
+        thread.start();
+
     }
 
     public static void insertPostsIntoTable(Context context, FrontPageResponse modal, @ArticleType int type ){

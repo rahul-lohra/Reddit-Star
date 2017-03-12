@@ -40,6 +40,7 @@ public class DrawerAdapter extends RecyclerView.Adapter {
         this.context = context;
         this.list = list;
         this.iSubreddit = iSubreddit;
+        this.iActivity = iActivity;
     }
 
     @Override
