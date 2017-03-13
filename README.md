@@ -14,4 +14,8 @@ Reddit is an entertainment and social networking site where community members ca
 * Filter subreddits by hot/new/popular....(Coming soon!)
 
 # Screens
-![screen](../master/pics/widget.png)
+![screen](../master/pics/pic_1.png) ![screen](../master/pics/pic_2.png)
+
+![screen](../master/pics/widget.png) ![screen](../master/pics/search_1.png)
+
+![screen](../master/pics/subreddit_1.png) ![screen](../master/pics/tablet.png)
