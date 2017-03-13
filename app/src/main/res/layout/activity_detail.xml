@@ -30,7 +30,7 @@
             app:toolbarId="@+id/toolbar"
             app:contentScrim="?attr/colorPrimary">
 
-            <com.android.rahul_lohra.redditstar.helper.AspectRatioImageView
+            <com.rahul_lohra.redditstar.helper.AspectRatioImageView
                 app:layout_collapseMode="parallax"
                 android:id="@+id/imageView"
                 android:layout_width="match_parent"

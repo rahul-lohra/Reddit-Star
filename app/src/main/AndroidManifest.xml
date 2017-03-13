@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.android.rahul_lohra.redditstar">
+    package="com.rahul_lohra.redditstar">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
-        android:name=".application.Initializer"
+        android:name=".Application.Initializer"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher_stars"
         android:label="@string/app_name"
@@ -17,19 +17,19 @@
         <!-- Search Activity -->
         <meta-data
             android:name="android.app.default_searchable"
-            android:value="com.android.rahul_lohra.redditstar.activity.SearchActivity" />
+            android:value="com.rahul_lohra.redditstar.activity.SearchActivity" />
 
         <!-- Glide -->
         <meta-data
-            android:name="com.android.rahul_lohra.redditstar.glide.MyGlideModule"
+            android:name="com.rahul_lohra.redditstar.glide.MyGlideModule"
             android:value="GlideModule" />
 
         <!-- widget -->
-        <receiver android:name=".widget.MyWidgetProvider">
+        <receiver android:name="com.rahul_lohra.redditstar.widget.MyWidgetProvider">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-                <action android:name="com.android.rahul_lohra.redditstar.service.widget.WidgetTaskService" />
+                <action android:name="com.rahul_lohra.redditstar.service.widget.WidgetTaskService" />
                 <action android:name="REFRESH_DATA" />
                 <action android:name="CONFIGURE_ACTIVITY" />
             </intent-filter>
@@ -53,27 +53,27 @@
 
         <!-- service -->
         <service
-            android:name=".service.GetNewTokenService"
+            android:name="com.rahul_lohra.redditstar.service.GetNewTokenService"
             android:exported="false" />
         <service
-            android:name=".service.GetUserCredentialsService"
+            android:name="com.rahul_lohra.redditstar.service.GetUserCredentialsService"
             android:exported="false" />
-        <service android:name=".service.GetSubscribedSubredditsService" />
+        <service android:name="com.rahul_lohra.redditstar.service.GetSubscribedSubredditsService" />
         <service
-            android:name=".service.search.SearchLinksService"
-            android:exported="false" />
-        <service
-            android:name=".service.search.SearchSubredditsService"
+            android:name="com.rahul_lohra.redditstar.service.search.SearchLinksService"
             android:exported="false" />
         <service
-            android:name=".service.GetFrontPageService"
+            android:name="com.rahul_lohra.redditstar.service.search.SearchSubredditsService"
             android:exported="false" />
         <service
-            android:name=".service.GetSubredditListService"
+            android:name="com.rahul_lohra.redditstar.service.GetFrontPageService"
+            android:exported="false" />
+        <service
+            android:name="com.rahul_lohra.redditstar.service.GetSubredditListService"
             android:exported="false" />
 
         <!-- Authenticator -->
-        <service android:name=".sync.AuthenticatorService">
+        <service android:name="com.rahul_lohra.redditstar.sync.AuthenticatorService">
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator" />
             </intent-filter>
@@ -83,7 +83,7 @@
                 android:resource="@xml/authenticator" />
         </service>
         <service
-            android:name=".service.widget.WidgetTaskService"
+            android:name="com.rahul_lohra.redditstar.service.widget.WidgetTaskService"
             android:exported="true"
             android:permission="com.google.android.gms.permission.BIND_NETWORK_TASK_SERVICE">
             <intent-filter>
@@ -92,12 +92,12 @@
         </service>
         <!-- widget service -->
         <service
-            android:name=".service.widget.ListWidgetService"
+            android:name="com.rahul_lohra.redditstar.service.widget.ListWidgetService"
             android:exported="false"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
 
         <activity
-            android:name=".activity.DashboardActivity"
+            android:name="com.rahul_lohra.redditstar.activity.DashboardActivity"
             android:theme="@style/AppTheme.NoToolBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -105,54 +105,54 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.LoginActivity" />
+        <activity android:name="com.rahul_lohra.redditstar.activity.LoginActivity" />
         <activity
-            android:name=".activity.DetailActivity"
-            android:parentActivityName=".activity.DashboardActivity"
+            android:name="com.rahul_lohra.redditstar.activity.DetailActivity"
+            android:parentActivityName="com.rahul_lohra.redditstar.activity.DashboardActivity"
             android:theme="@style/DetailActivityTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.DashboardActivity" />
+                android:value="com.rahul_lohra.redditstar.activity.DashboardActivity" />
         </activity>
         <activity
-            android:name=".activity.DetailActivityNew"
-            android:parentActivityName=".activity.DashboardActivity">
+            android:name="com.rahul_lohra.redditstar.activity.DetailActivityNew"
+            android:parentActivityName="com.rahul_lohra.redditstar.activity.DashboardActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.DashboardActivity" />
+                android:value="com.rahul_lohra.redditstar.activity.DashboardActivity" />
         </activity>
         <activity
-            android:name=".activity.WebViewActivity"
+            android:name="com.rahul_lohra.redditstar.activity.WebViewActivity"
             android:label="@string/reddit_login"
             android:theme="@style/AppTheme.NoToolBar" />
 
         <!-- Generated Provider -->
         <provider
             android:name=".storage.generated.MyProvider"
-            android:authorities="com.android.rahul_lohra.redditstar.storage.MyProvider"
+            android:authorities="com.rahul_lohra.redditstar.storage.MyProvider"
             android:exported="false"
             android:syncable="true" />
 
         <!-- Search Provider -->
         <provider
-            android:name=".storage.MySuggestionProvider"
-            android:authorities="com.android.rahul_lohra.redditstar.MySuggestionProvider" />
+            android:name="com.rahul_lohra.redditstar.storage.MySuggestionProvider"
+            android:authorities="com.rahul_lohra.redditstar.MySuggestionProvider" />
 
         <activity
-            android:name=".activity.ReplyActivity"
+            android:name="com.rahul_lohra.redditstar.activity.ReplyActivity"
             android:label="@string/reply"
             android:theme="@style/AppTheme.NoToolBar" />
         <activity
-            android:name=".activity.SubredditActivity"
+            android:name="com.rahul_lohra.redditstar.activity.SubredditActivity"
             android:label="@string/subreddits"
             android:theme="@style/AppTheme.NoToolBar" />
         <activity
-            android:name=".activity.FavoriteActivity"
+            android:name="com.rahul_lohra.redditstar.activity.FavoriteActivity"
             android:label="@string/favorite"
             android:theme="@style/AppTheme.NoToolBar" />
-        <activity android:name=".activity.MainActivity"/>
+        <activity android:name="com.rahul_lohra.redditstar.activity.MainActivity"/>
         <activity
-            android:name=".activity.SearchActivity"
+            android:name="com.rahul_lohra.redditstar.activity.SearchActivity"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoToolBar">
             <intent-filter>
@@ -163,9 +163,9 @@
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
-        <activity android:name=".activity.BaseActivity" />
+        <activity android:name="com.rahul_lohra.redditstar.activity.BaseActivity" />
         <activity
-            android:name=".activity.WidgetConfigureActivity"
+            android:name="com.rahul_lohra.redditstar.activity.WidgetConfigureActivity"
             android:label="@string/configure_widget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
@@ -173,16 +173,16 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.SettingsActivity"
+            android:name="com.rahul_lohra.redditstar.activity.SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:parentActivityName=".activity.DashboardActivity">
+            android:parentActivityName="com.rahul_lohra.redditstar.activity.DashboardActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.android.rahul_lohra.redditstar.activity.DashboardActivity" />
+                android:value="com.rahul_lohra.redditstar.activity.DashboardActivity" />
         </activity>
 
         <service
-            android:name=".service.CommentsService"
+            android:name="com.rahul_lohra.redditstar.service.CommentsService"
             android:exported="false" />
 
     </application>

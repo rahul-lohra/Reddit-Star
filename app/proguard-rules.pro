@@ -25,4 +25,4 @@
 -keepresourcexmlelements manifest/application/meta-data@value=GlideModule
 
 -keep class android.support.v7.widget.SearchView { *; }
--keep com.android.rahul_lohra.redditstar.helper.AwesomeSearchView { *; }
+-keep AwesomeSearchView { *; }

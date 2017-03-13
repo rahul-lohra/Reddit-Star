@@ -8,26 +8,18 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1002042983541:android:7ab47136134ea05c",
+        "mobilesdk_app_id": "1:1002042983541:android:41149c04586bed4f",
         "android_client_info": {
-          "package_name": "com.android.rahul_lohra.redditstar"
+          "package_name": "com.rahul_lohra.redditstar"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1002042983541-aro3hlpdf4l6t4t51bmmq33kvmisnb1c.apps.googleusercontent.com",
+          "client_id": "1002042983541-65skqd5s5t70gdguf8q9tb9sue8t85g3.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.android.rahul_lohra.redditstar",
+            "package_name": "com.rahul_lohra.redditstar",
             "certificate_hash": "d3c56a9a9e3bbe931a4013d241fe1a7783e6f796"
-          }
-        },
-        {
-          "client_id": "1002042983541-lchcdmbi5o2cron086d71c61c5datfnd.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.android.rahul_lohra.redditstar",
-            "certificate_hash": "b4d29f8de6ed5a9b9521229d8813f353a68b8a33"
           }
         },
         {

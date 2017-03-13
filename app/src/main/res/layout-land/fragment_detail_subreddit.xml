@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.android.rahul_lohra.redditstar.fragments.DetailSubredditFragment">
+    tools:context="com.android.rahul_lohra.redditstar.com.rahul_lohra.redditstar.fragments.DetailSubredditFragment">
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
@@ -28,7 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-            <com.android.rahul_lohra.redditstar.helper.AspectRatioImageView
+            <com.rahul_lohra.redditstar.helper.AspectRatioImageView
                 android:id="@+id/imageView"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"

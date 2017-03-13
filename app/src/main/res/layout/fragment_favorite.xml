@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.android.rahul_lohra.redditstar.fragments.FavouriteFragment">
+    tools:context="com.android.rahul_lohra.redditstar.com.rahul_lohra.redditstar.fragments.FavouriteFragment">
 
     <android.support.v7.widget.Toolbar
         app:navigationIcon="@drawable/ic_action_back"
