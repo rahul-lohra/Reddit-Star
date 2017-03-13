@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
-    android:minHeight="102dp"
-    android:minWidth="176dp"
+    android:minHeight="202dp"
+    android:minWidth="276dp"
     android:updatePeriodMillis="200000"
-    android:previewImage="@mipmap/ic_launcher"
+    android:previewImage="@drawable/widget_preview_1"
     android:resizeMode="vertical|horizontal"
     android:initialLayout="@layout/my_widget"
     android:configure="com.android.rahul_lohra.redditstar.activity.WidgetConfigureActivity"
