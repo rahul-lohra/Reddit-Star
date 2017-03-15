@@ -5,7 +5,6 @@ import com.rahul_lohra.redditstar.activity.DetailActivityNew;
 import com.rahul_lohra.redditstar.activity.SearchActivity;
 import com.rahul_lohra.redditstar.Dagger.Module.AppModule;
 import com.rahul_lohra.redditstar.Dagger.Module.NetModule;
-import com.rahul_lohra.redditstar.activity.MainActivity;
 import com.rahul_lohra.redditstar.fragments.DetailSubredditFragment;
 import com.rahul_lohra.redditstar.fragments.HomeFragment;
 import com.rahul_lohra.redditstar.fragments.ReplyFragment;
@@ -36,7 +35,6 @@ import dagger.Component;
 @Component(modules = {NetModule.class, AppModule.class})
 public interface NetComponent {
     //Activity
-    void inject(MainActivity activity);
     void inject(SearchActivity activity);
     void inject(DetailActivity activity);
     void inject(DetailActivityNew activity);

@@ -31,7 +31,7 @@ import static com.rahul_lohra.redditstar.Utility.SpConstants.FRONT_PAGE;
 import static com.rahul_lohra.redditstar.Utility.SpConstants.POPULAR;
 import static com.rahul_lohra.redditstar.Utility.SpConstants.SUBREDDIT;
 
-public class WidgetConfigureActivity extends AppCompatActivity {
+public class WidgetConfigureActivity extends BaseActivity {
 
     @Bind(R.id.rb_popular)
     RadioButton rbPopular;

@@ -49,7 +49,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class DetailActivity extends AppCompatActivity implements
+public class DetailActivity extends BaseActivity implements
         ILogin,
         LoaderManager.LoaderCallbacks<Cursor> {
 

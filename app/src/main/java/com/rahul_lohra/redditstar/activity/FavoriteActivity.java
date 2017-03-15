@@ -6,7 +6,7 @@ import android.os.Bundle;
 import com.rahul_lohra.redditstar.R;
 import com.rahul_lohra.redditstar.fragments.FavouriteFragment;
 
-public class FavoriteActivity extends AppCompatActivity {
+public class FavoriteActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

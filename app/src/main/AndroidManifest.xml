@@ -150,7 +150,6 @@
             android:name="com.rahul_lohra.redditstar.activity.FavoriteActivity"
             android:label="@string/favorite"
             android:theme="@style/AppTheme.NoToolBar" />
-        <activity android:name="com.rahul_lohra.redditstar.activity.MainActivity"/>
         <activity
             android:name="com.rahul_lohra.redditstar.activity.SearchActivity"
             android:launchMode="singleTop"
