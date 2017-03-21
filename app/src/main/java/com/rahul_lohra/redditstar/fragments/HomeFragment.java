@@ -222,6 +222,8 @@ public class HomeFragment extends Fragment implements
 //                getActivity().onSearchRequested();
                 startActivity(new Intent(getActivity(), SearchActivity.class));
                 return true;
+            case R.id.action_change_view:
+                return true;
             default:
                 return false;
         }

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:id="@+id/coordinator_layout"
-    tools:context="com.android.rahul_lohra.redditstar.com.rahul_lohra.redditstar.activity.DashboardActivity">
+    tools:context="com.rahul_lohra.redditstar.activity.DashboardActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -14,6 +14,7 @@
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <android.support.v7.widget.Toolbar
+            app:layout_scrollFlags="scroll|enterAlways"
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
@@ -22,7 +23,12 @@
 
     </android.support.design.widget.AppBarLayout>
 
+    <FrameLayout
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
         <include layout="@layout/content_dashboard" />
+    </FrameLayout>
 
 
     <android.support.design.widget.FloatingActionButton

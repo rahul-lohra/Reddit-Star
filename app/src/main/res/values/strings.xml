@@ -228,5 +228,8 @@
     <string name="communicate">Communicate</string>
     <string name="online_number">123456</string>
     <string name="sample_number">444</string>
+    <string name="change_view">Change view</string>
+    <string name="card_view">Card</string>
+    <string name="list_view">List</string>
 
 </resources>

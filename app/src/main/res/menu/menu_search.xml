@@ -1,13 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
-
     <item
         android:icon="@drawable/ic_search"
         android:id="@+id/action_search"
-        android:orderInCategory="100"
+        android:orderInCategory="200"
         android:title="@string/search_hint"
-        app:showAsAction="ifRoom|collapseActionView"
+        app:showAsAction="ifRoom"
         />
+
+    <item
+        app:showAsAction="always"
+        android:id="@+id/action_change_view"
+        android:orderInCategory="300"
+        android:title="@string/change_view"
+        android:icon="@drawable/ic_albums">
+        <group
+            android:id="@+id/action_view_group"
+            android:checkableBehavior="single"
+            >
+            <!--<item-->
+                <!--android:id="@+id/action_list_view"-->
+                <!--android:title="@string/list_view"-->
+                <!--/>-->
+            <!--<item-->
+                <!--android:id="@+id/action_cards_view"-->
+                <!--android:title="@string/card_view"-->
+                <!--/>-->
+            <!--<item-->
+                <!--android:id="@+id/action_gallery_view"-->
+                <!--android:title="@string/gallery"-->
+                <!--/>-->
+
+        </group>
+
+    </item>
+
+
 </menu>
     <!--app:actionViewClass="android.support.v7.widget.SearchView"-->
