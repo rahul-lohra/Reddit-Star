@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.neenbedankt.android-apt'
 
-def googleSupportVersion = '25.0.1'
+def googleSupportVersion = '25.2.0'
 def playServiceVersion = '9.0.0'
 def jrawVersion = '0.9.0'
 def schematicVersion = '0.7.0'
@@ -31,7 +31,7 @@ android {
         exclude 'META-INF/LGPL2.1'
     }
     compileSdkVersion 25
-    buildToolsVersion "25.0.1"
+    buildToolsVersion "25.0.2"
     defaultConfig {
         applicationId "com.rahul_lohra.redditstar"
         minSdkVersion 21
@@ -98,7 +98,7 @@ dependencies {
 
 
     compile 'com.google.android.gms:play-services-gcm:10.0.1'
-    compile 'com.android.support.constraint:constraint-layout:1.0.0-beta5'
+    compile 'com.android.support.constraint:constraint-layout:1.0.1'
     compile 'com.github.bumptech.glide:glide:3.5.2'
     compile 'com.jakewharton:butterknife:7.0.1'
     compile 'com.google.dagger:dagger:2.2'

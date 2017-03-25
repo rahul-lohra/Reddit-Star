@@ -9,6 +9,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.DataSetObserver;
 import android.support.v7.widget.RecyclerView;
+import android.view.ViewGroup;
 
 /**
  * Created by rkrde on 14-11-2016.
@@ -63,6 +64,7 @@ public abstract class CursorRecyclerViewAdapter<VH extends RecyclerView.ViewHold
     }
 
     public abstract void onBindViewHolder(VH viewHolder, Cursor cursor);
+
 
     @Override
     public void onBindViewHolder(VH viewHolder, int position) {

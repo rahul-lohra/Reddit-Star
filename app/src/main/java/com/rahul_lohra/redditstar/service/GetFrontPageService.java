@@ -67,17 +67,21 @@ public class GetFrontPageService extends IntentService {
 
             apiInterface = (isUserLoggedIn)?retrofitWithToken.create(ApiInterface.class):retrofitWithoutToken.create(ApiInterface.class);
             after = intent.getStringExtra("after");
+            String filterParam_1 = intent.getStringExtra("filterParam_1");
+            String filterParam_2 = intent.getStringExtra("filterParam_2");
+
             if(null ==after){
                 return;
             }
             Map<String,String> map = new HashMap<>();
             map.put("limit","10");
             map.put("after",after);
+            map.put("t",filterParam_2);
             map.put(SpConstants.OVER_18,String.valueOf(sp.getBoolean(SpConstants.OVER_18,false)));
             String token = (isUserLoggedIn) ? "bearer " + UserState.getAuthToken(getApplicationContext()) : "";
 
             try {
-                Response<FrontPageResponse> res = apiInterface.getFrontPage(token,map).execute();
+                Response<FrontPageResponse> res = apiInterface.getFrontPage(token,filterParam_1,map).execute();
                 if(res.code()==200)
                 {
 //                    EventBus.getDefault().post(res.body().getData());

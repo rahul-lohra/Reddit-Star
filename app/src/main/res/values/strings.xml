@@ -103,9 +103,9 @@
 
     <string name="write_something">Write Something</string>
     <string name="please_login">Please Login</string>
-    <string name="hot">HOT</string>
+    <string name="hot">Hot</string>
     <string name="new_text">NEW</string>
-    <string name="top">TOP</string>
+    <string name="top">Top</string>
     <string name="favorite">Favourites</string>
     <string name="my_favorites">My Favourites</string>
     <string name="no_items">No Items</string>
@@ -231,5 +231,18 @@
     <string name="change_view">Change view</string>
     <string name="card_view">Card</string>
     <string name="list_view">List</string>
+    <string name="filter">Filter</string>
+    <string name="_new">New</string>
+    <string name="controversial">Controversial</string>
+    <string name="hour">Hour</string>
+    <string name="day">Day</string>
+    <string name="week">Week</string>
+    <string name="month">Month</string>
+    <string name="year">Year</string>
+    <string name="all_time">All Time</string>
+    <string name="rising">Rising</string>
+    <string name="gif">GIF</string>
+    <string name="youtube">Youtube</string>
+    <string name="domain">domain</string>
 
 </resources>

@@ -2,10 +2,13 @@ package com.rahul_lohra.redditstar.fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.preference.PreferenceManager;
+import android.support.annotation.StringDef;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -13,6 +16,7 @@ import android.support.v4.content.Loader;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -22,6 +26,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.rahul_lohra.redditstar.R;
+import com.rahul_lohra.redditstar.Utility.MyUrl;
+import com.rahul_lohra.redditstar.Utility.SpConstants;
 import com.rahul_lohra.redditstar.activity.DashboardActivity;
 import com.rahul_lohra.redditstar.activity.SearchActivity;
 import com.rahul_lohra.redditstar.adapter.cursor.HomeAdapter;
@@ -50,7 +56,7 @@ import retrofit2.Retrofit;
  * Created by rkrde on 05-02-2017.
  */
 
-public class HomeFragment extends Fragment implements
+public class HomeFragment extends BaseFragment implements
         IFrontPageAdapter,
         LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -62,30 +68,33 @@ public class HomeFragment extends Fragment implements
     Retrofit retrofitWithToken;
     @Bind(R.id.swipe_refresh)
     SwipeRefreshLayout swipeRefresh;
-    //    FrontPageAdapter adapter;
-//    List<FrontPageChild> list;
+    SharedPreferences sp;
     private HomeAdapter adapter;
-    String afterOfLink = "";
+    String mAfterOfLink = "";
     private final int LOADER_ID = 1;
-
+    String filterParam_1 = MyUrl.Filter_Param_1.HOT,filterParam_2=MyUrl.Filter_Param_2.DEFAULT;
+    StaggeredGridLayoutManager staggeredGridLayoutManager;
+    LinearLayoutManager linearLayoutManager;
+    int layoutType;
 
     public interface IHomeFragment {
         void sendModalAndImageView(DetailPostModal modal, ImageView imageView, String id);
-
         void showLoginSnackBar();
+        void setSubTitle(String subtitle);
     }
 
     private IHomeFragment mListener;
 
 
-    void makeApiCall() {
+    void makeApiCall(@MyUrl.Filter_Param_1.FilterType String filterParam_1,
+                     @MyUrl.Filter_Param_2.FilterMore String filterParam_2,
+                     String afterOfLink
+    ) {
+        this.mAfterOfLink = afterOfLink;
         Intent intent = new Intent(getActivity(), GetFrontPageService.class);
-//        if(frontPageResponseData!=null){
-//            intent.putExtra("after",frontPageResponseData.getAfter());
-//        }else {
-//            intent.putExtra("after","");
-//        }
-        intent.putExtra("after", afterOfLink);
+        intent.putExtra("after", mAfterOfLink);
+        intent.putExtra("filterParam_1", filterParam_1);
+        intent.putExtra("filterParam_2", filterParam_2);
         getContext().startService(intent);
     }
 
@@ -115,13 +124,12 @@ public class HomeFragment extends Fragment implements
             } else {
                 Constants.clearPosts(getContext(),Constants.TYPE_POST);
                 Constants.clearComments(getContext());
-                makeApiCall();
+                makeApiCall(filterParam_1,filterParam_2,mAfterOfLink);
             }
             cursor.close();
         }
-//        list = new ArrayList<>();
-//        adapter = new FrontPageAdapter(HomeFragment.this,getActivity().getApplicationContext(), list,retrofitWithToken,this);
-
+        sp = PreferenceManager.getDefaultSharedPreferences(getContext());
+        layoutType = sp.getInt(SpConstants.LAYOUT_TYPE,HomeAdapter.DEFAULT);
     }
 
     @Override
@@ -139,11 +147,8 @@ public class HomeFragment extends Fragment implements
                 // Your code to refresh the list here.
                 // Make sure you call swipeContainer.setRefreshing(false)
                 // once the network request has completed successfully.
-                Constants.clearPosts(getContext(), Constants.TYPE_POST);
-                Constants.clearPosts(getContext(), Constants.TYPE_SEARCH);
-                Constants.clearPosts(getContext(), Constants.TYPE_TEMP);
-                Constants.clearComments(getContext());
-                makeApiCall();
+                deleteArticlesAndComments();
+                makeApiCall(filterParam_1,filterParam_2,"");
 
                 CountDownTimer countDownTimer = new CountDownTimer(7000, 1000) {
 
@@ -173,46 +178,48 @@ public class HomeFragment extends Fragment implements
     }
 
     private void setAdapter() {
+        staggeredGridLayoutManager = new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL);
+        staggeredGridLayoutManager.setGapStrategy(2);
+        linearLayoutManager = new LinearLayoutManager(getActivity());
         adapter = new HomeAdapter(getActivity(), null, this,(DashboardActivity)getActivity());
-        rv.setLayoutManager(new LinearLayoutManager(getActivity()));
+        switch (layoutType){
+            case HomeAdapter.GALLERY:
+                adapter.setLayoutManagerType(HomeAdapter.GALLERY);
+                rv.setLayoutManager(staggeredGridLayoutManager);
+                break;
+            case HomeAdapter.LIST:
+                adapter.setLayoutManagerType(HomeAdapter.LIST);
+                rv.setLayoutManager(linearLayoutManager);
+                break;
+            default:
+            case HomeAdapter.DEFAULT:
+                adapter.setLayoutManagerType(HomeAdapter.DEFAULT);
+                rv.setLayoutManager(linearLayoutManager);
+                break;
+
+        }
+
         rv.setAdapter(adapter);
+        rv.setHasFixedSize(false);
     }
 
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(FrontPageResponseData frontPageResponseData) {
-//        this.frontPageResponseData = frontPageResponseData;
-//        int lastPos = list.size();
-//        list.addAll(lastPos,frontPageResponseData.getChildren());
-//        adapter.notifyItemRangeInserted(lastPos,frontPageResponseData.getChildren().size());
-    }
 
     @Subscribe(threadMode = ThreadMode.BACKGROUND)
     public void onMessageEvent(String string) {
         if (string.equalsIgnoreCase("getNextData")) {
-//                if(!frontPageResponseData.getAfter().equalsIgnoreCase(GetFrontPageService.after))
-//                {
-            makeApiCall();
-//                }
+            makeApiCall(filterParam_1,filterParam_2,mAfterOfLink);
         }
     }
 
     @Subscribe(threadMode = ThreadMode.BACKGROUND)
     public void onMessageEvent(AfterModal afterModal) {
-        this.afterOfLink = afterModal.getmAfterLink();
+        this.mAfterOfLink = afterModal.getmAfterLink();
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-
         inflater.inflate(R.menu.menu_search, menu);
-//
-//        SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
-//        SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();//.getActionView();
-//        // Assumes current activity is the searchable activity
-//        searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
-//        searchView.setIconifiedByDefault(false);
     }
 
     @Override
@@ -224,9 +231,155 @@ public class HomeFragment extends Fragment implements
                 return true;
             case R.id.action_change_view:
                 return true;
+            case R.id.action_list:
+                sp.edit().putInt(SpConstants.LAYOUT_TYPE,HomeAdapter.LIST).apply();
+                adapter.setLayoutManagerType(HomeAdapter.LIST);
+                rv.setLayoutManager(linearLayoutManager);
+                rv.setAdapter(adapter);
+                getActivity().invalidateOptionsMenu();
+                return true;
+            case R.id.action_cards:
+                return true;
+            case R.id.action_gallery:
+                sp.edit().putInt(SpConstants.LAYOUT_TYPE,HomeAdapter.GALLERY).apply();
+                adapter.setLayoutManagerType(HomeAdapter.GALLERY);
+                rv.setLayoutManager(staggeredGridLayoutManager);
+                rv.setAdapter(adapter);
+                getActivity().invalidateOptionsMenu();
+                return true;
+            case R.id.action_hot:
+                mListener.setSubTitle(getString(R.string.hot));
+                filterParam_1 = MyUrl.Filter_Param_1.HOT;
+                filterParam_2 = MyUrl.Filter_Param_2.DEFAULT;
+                deleteArticlesAndComments();
+                makeApiCall(filterParam_1,filterParam_2,"");
+                return true;
+            case R.id.action_new:
+                mListener.setSubTitle(getString(R.string._new));
+                filterParam_1 = MyUrl.Filter_Param_1.NEW;
+                filterParam_2 = MyUrl.Filter_Param_2.DEFAULT;
+                deleteArticlesAndComments();
+                makeApiCall(filterParam_1,filterParam_2,"");
+                return true;
+            case R.id.action_rising:
+                mListener.setSubTitle(getString(R.string.rising));
+                filterParam_1 = MyUrl.Filter_Param_1.RISING;
+                filterParam_2 = MyUrl.Filter_Param_2.DEFAULT;
+                deleteArticlesAndComments();
+                makeApiCall(filterParam_1,filterParam_2,"");
+                return true;
+            case R.id.cont_action_hour:
+                mListener.setSubTitle(getString(R.string.hour));
+                filterParam_1 = MyUrl.Filter_Param_1.CONTROVERSIAL;
+                filterParam_2 = MyUrl.Filter_Param_2.HOUR;
+                deleteArticlesAndComments();
+                makeApiCall(filterParam_1,filterParam_2,"");
+                return true;
+            case R.id.cont_action_day:
+                mListener.setSubTitle(getString(R.string.day));
+                filterParam_1 = MyUrl.Filter_Param_1.CONTROVERSIAL;
+                filterParam_2 = MyUrl.Filter_Param_2.DAY;
+                deleteArticlesAndComments();
+                makeApiCall(filterParam_1,filterParam_2,"");
+                return true;
+            case R.id.cont_action_week:
+                mListener.setSubTitle(getString(R.string.week));
+                filterParam_1 = MyUrl.Filter_Param_1.CONTROVERSIAL;
+                filterParam_2 = MyUrl.Filter_Param_2.WEEK;
+                deleteArticlesAndComments();
+                makeApiCall(filterParam_1,filterParam_2,"");
+                return true;
+            case R.id.cont_action_month:
+                mListener.setSubTitle(getString(R.string.month));
+                filterParam_1 = MyUrl.Filter_Param_1.CONTROVERSIAL;
+                filterParam_2 = MyUrl.Filter_Param_2.MONTH;
+                deleteArticlesAndComments();
+                makeApiCall(filterParam_1,filterParam_2,"");
+                return true;
+            case R.id.cont_action_year:
+                mListener.setSubTitle(getString(R.string.year));
+                filterParam_1 = MyUrl.Filter_Param_1.CONTROVERSIAL;
+                filterParam_2 = MyUrl.Filter_Param_2.YEAR;
+                deleteArticlesAndComments();
+                makeApiCall(filterParam_1,filterParam_2,"");
+                return true;
+            case R.id.cont_action_all_time:
+                mListener.setSubTitle(getString(R.string.all_time));
+                filterParam_1 = MyUrl.Filter_Param_1.CONTROVERSIAL;
+                filterParam_2 = MyUrl.Filter_Param_2.ALL_TIME;
+                deleteArticlesAndComments();
+                makeApiCall(filterParam_1,filterParam_2,"");
+                return true;
+            case R.id.top_action_hour:
+                mListener.setSubTitle(getString(R.string.hour));
+                filterParam_1 = MyUrl.Filter_Param_1.TOP;
+                filterParam_2 = MyUrl.Filter_Param_2.HOUR;
+                deleteArticlesAndComments();
+                makeApiCall(filterParam_1,filterParam_2,"");
+                return true;
+            case R.id.top_action_day:
+                mListener.setSubTitle(getString(R.string.day));
+                filterParam_1 = MyUrl.Filter_Param_1.TOP;
+                filterParam_2 = MyUrl.Filter_Param_2.DAY;
+                deleteArticlesAndComments();
+                makeApiCall(filterParam_1,filterParam_2,"");
+                return true;
+            case R.id.top_action_week:
+                mListener.setSubTitle(getString(R.string.week));
+                filterParam_1 = MyUrl.Filter_Param_1.TOP;
+                filterParam_2 = MyUrl.Filter_Param_2.WEEK;
+                deleteArticlesAndComments();
+                makeApiCall(filterParam_1,filterParam_2,"");
+                return true;
+            case R.id.top_action_month:
+                mListener.setSubTitle(getString(R.string.month));
+                filterParam_1 = MyUrl.Filter_Param_1.TOP;
+                filterParam_2 = MyUrl.Filter_Param_2.MONTH;
+                deleteArticlesAndComments();
+                makeApiCall(filterParam_1,filterParam_2,"");
+                return true;
+            case R.id.top_action_year:
+                filterParam_1 = MyUrl.Filter_Param_1.TOP;
+                mListener.setSubTitle(getString(R.string.year));
+                filterParam_2 = MyUrl.Filter_Param_2.YEAR;
+                deleteArticlesAndComments();
+                makeApiCall(filterParam_1,filterParam_2,"");
+                return true;
+            case R.id.top_action_all_time:
+                filterParam_1 = MyUrl.Filter_Param_1.TOP;
+                mListener.setSubTitle(getString(R.string.all_time));
+                filterParam_2 = MyUrl.Filter_Param_2.ALL_TIME;
+                deleteArticlesAndComments();
+                makeApiCall(filterParam_1,filterParam_2,"");
+                return true;
+
+
             default:
                 return false;
         }
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+
+        layoutType = sp.getInt(SpConstants.LAYOUT_TYPE,HomeAdapter.DEFAULT);
+        switch (layoutType){
+            case HomeAdapter.GALLERY:
+                menu.findItem(R.id.action_gallery).setChecked(true);
+                break;
+            default:
+            case HomeAdapter.LIST:
+                menu.findItem(R.id.action_list).setChecked(true);
+                break;
+
+        }
+
+//        if(menu.findItem(R.id.action_change_view)!=null){
+//            System.out.println("f");
+//        }else {
+//            System.out.println("n");
+//        }
     }
 
     @Override
@@ -234,19 +387,6 @@ public class HomeFragment extends Fragment implements
         super.onDestroyView();
         ButterKnife.unbind(this);
     }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        EventBus.getDefault().register(this);
-    }
-
-    @Override
-    public void onStop() {
-        EventBus.getDefault().unregister(this);
-        super.onStop();
-    }
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);

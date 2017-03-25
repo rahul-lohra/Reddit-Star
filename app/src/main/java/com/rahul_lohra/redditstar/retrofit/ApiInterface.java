@@ -44,9 +44,11 @@ public interface ApiInterface {
                                             @Field("grant_type") String grant_type,
                                             @Field("refresh_token") String refresh_token);
 
-    @GET("/.json")
+    @GET("/{filter_param_1}/.json")
     @Headers("User-Agent: android:com.android.rahul_lohra.redditstar:v1.0 (by /u/rahul_lohra)")
-    Call<FrontPageResponse> getFrontPage(@Header(Constants.AUTHORIZATION) String authorization, @QueryMap Map<String, String> options);
+    Call<FrontPageResponse> getFrontPage(@Header(Constants.AUTHORIZATION) String authorization,
+                                         @Path(value = "filter_param_1", encoded = true) String filterParam_1,
+                                         @QueryMap Map<String, String> options);
 
     @GET("/r/{subbreddit_name}/.json")
     @Headers("User-Agent: android:com.android.rahul_lohra.redditstar:v1.0 (by /u/rahul_lohra)")

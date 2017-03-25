@@ -7,6 +7,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.rahul_lohra.redditstar.Application.Initializer;
+import com.rahul_lohra.redditstar.Utility.MyUrl;
 import com.rahul_lohra.redditstar.modal.frontPage.FrontPageChild;
 import com.rahul_lohra.redditstar.modal.frontPage.FrontPageResponse;
 import com.rahul_lohra.redditstar.retrofit.ApiInterface;
@@ -56,6 +57,7 @@ public class WidgetTaskService extends GcmTaskService {
     public final static String TAG_ONCE = "once";
     public final static String TAG_PERIODIC_WIDGET = "periodic_widget";
     public final static String TAG_PERIODIC_FRONT_PAGE = "periodic_front_page";
+    String filterParam_1 = MyUrl.Filter_Param_1.HOT;
 
     private Context mContext;
     @Override
@@ -109,7 +111,7 @@ public class WidgetTaskService extends GcmTaskService {
                         res = apiInterface.getSubredditPosts(token, Constants.Subs.POPULAR,RedditSort.HOT,map).execute();
                         break;
                     case SpConstants.FRONT_PAGE:
-                        res = apiInterface.getFrontPage(token,map).execute();
+                        res = apiInterface.getFrontPage(token,filterParam_1,map).execute();
                         break;
                     case SpConstants.SUBREDDIT:
                         String subredditName = sp.getString(Constants.Subs.SUBREDDIT,null);
@@ -151,7 +153,7 @@ public class WidgetTaskService extends GcmTaskService {
             String token = (isUserLoggedIn) ? "bearer " + UserState.getAuthToken(getApplicationContext()) : "";
 
             try {
-                Response<FrontPageResponse> res = apiInterface.getFrontPage(token,map).execute();
+                Response<FrontPageResponse> res = apiInterface.getFrontPage(token,filterParam_1,map).execute();
                 if(res.code()==200)
                 {
                     Constants.clearPosts(getApplicationContext(),Constants.TYPE_POST);

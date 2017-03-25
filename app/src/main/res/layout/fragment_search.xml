@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.android.rahul_lohra.redditstar.com.rahul_lohra.redditstar.activity.SearchActivity"
+    tools:context="com.rahul_lohra.redditstar.activity.SearchActivity"
     android:background="@android:color/white">
 
 
@@ -33,7 +33,6 @@
             android:layout_height="wrap_content" >
             <RelativeLayout
                 android:background="@drawable/rect"
-
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <android.support.v7.widget.AppCompatImageView

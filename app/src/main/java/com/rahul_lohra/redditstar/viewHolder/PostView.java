@@ -2,6 +2,7 @@ package com.rahul_lohra.redditstar.viewHolder;
 
 import android.content.Context;
 import android.support.annotation.IntDef;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 
 import com.rahul_lohra.redditstar.R;
 import com.rahul_lohra.redditstar.Application.Initializer;
+import com.rahul_lohra.redditstar.helper.CardViewZoom;
 import com.rahul_lohra.redditstar.retrofit.ApiInterface;
 import com.rahul_lohra.redditstar.Utility.UserState;
 import com.bumptech.glide.Glide;
@@ -53,7 +55,7 @@ public class PostView extends RecyclerView.ViewHolder {
     public ImageView imageUpVote;
     @Bind(R.id.image_down_vote)
     public ImageView imageDownVote;
-    @Bind(R.id.card_view)
+    @Nullable @Bind(R.id.card_view)
     public CardView cardView;
 
     private Integer likes;

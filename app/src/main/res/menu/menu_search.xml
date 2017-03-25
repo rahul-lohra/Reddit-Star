@@ -1,41 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:icon="@drawable/ic_search"
         android:id="@+id/action_search"
-        android:orderInCategory="200"
+        android:icon="@drawable/ic_search"
+        android:orderInCategory="1"
         android:title="@string/search_hint"
-        app:showAsAction="ifRoom"
-        />
+        app:showAsAction="always" />
 
     <item
-        app:showAsAction="always"
         android:id="@+id/action_change_view"
-        android:orderInCategory="300"
+        android:icon="@drawable/ic_albums"
+        android:orderInCategory="2"
         android:title="@string/change_view"
-        android:icon="@drawable/ic_albums">
-        <group
-            android:id="@+id/action_view_group"
-            android:checkableBehavior="single"
-            >
-            <!--<item-->
-                <!--android:id="@+id/action_list_view"-->
-                <!--android:title="@string/list_view"-->
-                <!--/>-->
-            <!--<item-->
-                <!--android:id="@+id/action_cards_view"-->
-                <!--android:title="@string/card_view"-->
-                <!--/>-->
-            <!--<item-->
-                <!--android:id="@+id/action_gallery_view"-->
-                <!--android:title="@string/gallery"-->
-                <!--/>-->
+        app:showAsAction="always">
 
-        </group>
-
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/action_list"
+                    android:title="@string/list_view" />
+                <item
+                    android:id="@+id/action_cards"
+                    android:title="@string/card_view" />
+                <item
+                    android:id="@+id/action_gallery"
+                    android:title="@string/gallery" />
+            </group>
+        </menu>
     </item>
 
+    <item
+        android:id="@+id/action_filter"
+        android:icon="@drawable/ic_filter_list_white"
+        android:orderInCategory="3"
+        android:title="@string/filter"
+        app:showAsAction="always">
+        <menu>
+            <group>
+                <item
+                    android:id="@+id/action_hot"
+                    android:title="@string/hot" />
+                <item
+                    android:id="@+id/action_new"
+                    android:title="@string/_new" />
+                <item
+                    android:id="@+id/action_rising"
+                    android:title="@string/rising" />
+                <item
+                    android:id="@+id/action_controversial"
+                    android:title="@string/controversial">
 
-</menu>
-    <!--app:actionViewClass="android.support.v7.widget.SearchView"-->
+                    <menu>
+                        <group>
+                            <item
+                                android:id="@+id/cont_action_hour"
+                                android:title="@string/hour" />
+                            <item
+                                android:id="@+id/cont_action_day"
+                                android:title="@string/day" />
+                            <item
+                                android:id="@+id/cont_action_week"
+                                android:title="@string/week" />
+                            <item
+                                android:id="@+id/cont_action_month"
+                                android:title="@string/month" />
+                            <item
+                                android:id="@+id/cont_action_year"
+                                android:title="@string/year" />
+                            <item
+                                android:id="@+id/cont_action_all_time"
+                                android:title="@string/all_time" />
+
+                        </group>
+                    </menu>
+
+                </item>
+                <item
+                    android:id="@+id/action_top"
+                    android:title="@string/top">
+                    <menu>
+                        <group>
+                            <item
+                                android:id="@+id/top_action_hour"
+                                android:title="@string/hour" />
+                            <item
+                                android:id="@+id/top_action_day"
+                                android:title="@string/day" />
+                            <item
+                                android:id="@+id/top_action_week"
+                                android:title="@string/week" />
+                            <item
+                                android:id="@+id/top_action_month"
+                                android:title="@string/month" />
+                            <item
+                                android:id="@+id/top_action_year"
+                                android:title="@string/year" />
+                            <item
+                                android:id="@+id/top_action_all_time"
+                                android:title="@string/all_time" />
+
+                        </group>
+                    </menu>
+
+                </item>
+            </group>
+        </menu>
+    </item>
+
+</menu><!--app:actionViewClass="android.support.v7.widget.SearchView"-->

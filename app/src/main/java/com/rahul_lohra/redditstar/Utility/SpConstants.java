@@ -27,5 +27,10 @@ public class SpConstants {
     public final static String OVER_18 = "over18";
 
 
+    public final static String LAYOUT_TYPE = "layout_type";
+
+
+
+
 
 }

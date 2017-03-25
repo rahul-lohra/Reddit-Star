@@ -416,6 +416,11 @@ public class DashboardActivity extends BaseActivity implements
         snackbar.show();
     }
 
+    @Override
+    public void setSubTitle(String subtitle) {
+        toolbar.setSubtitle(subtitle);
+    }
+
     private void updateName(Cursor cursor) {
         if (cursor != null) {
 

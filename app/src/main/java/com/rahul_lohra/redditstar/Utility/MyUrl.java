@@ -1,5 +1,12 @@
 package com.rahul_lohra.redditstar.Utility;
 
+import android.support.annotation.IntDef;
+import android.support.annotation.StringDef;
+
+import java.lang.annotation.Retention;
+
+import static java.lang.annotation.RetentionPolicy.SOURCE;
+
 /**
  * Created by rkrde on 23-12-2016.
  */
@@ -41,5 +48,34 @@ public class MyUrl {
         }
         return scope;
     }
+
+    public static class Filter_Param_1{
+
+        @Retention(SOURCE)
+        @StringDef({HOT,NEW, RISING,CONTROVERSIAL,TOP})
+        public @interface FilterType {}
+        public static final String HOT = "hot";
+        public static final String NEW = "new";
+        public static final String RISING = "rising";
+        public static final String CONTROVERSIAL = "controversial";
+        public static final String TOP = "top";
+
+    }
+    public static class Filter_Param_2{
+
+        @Retention(SOURCE)
+        @StringDef({HOUR,DAY,WEEK,MONTH,YEAR,ALL_TIME,DEFAULT})
+        public @interface FilterMore {}
+        public static final String HOUR = "hour";
+        public static final String DAY = "day";
+        public static final String WEEK = "week";
+        public static final String MONTH = "month";
+        public static final String YEAR = "year";
+        public static final String ALL_TIME = "all";
+        public static final String DEFAULT = " ";
+
+
+    }
+
 
 }
