@@ -76,7 +76,11 @@ public class CardViewZoom extends CardView implements Animator.AnimatorListener 
                 zoomOutAnimator.start();
                 zoomOutAnimator.addListener(this);
                 break;
-            default:
+            case MotionEvent.ACTION_MOVE:
+                zoomOutAnimator = new AnimatorSet();
+                zoomOutAnimator.play(scaleInX).with(scaleInY);
+                zoomOutAnimator.setDuration(200);
+                zoomOutAnimator.start();
         }
         return true;
     }

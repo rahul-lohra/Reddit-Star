@@ -12,7 +12,7 @@ import static net.simonvt.schematic.annotation.DataType.Type.TEXT;
 /**
  * Created by rkrde on 24-01-2017.
  */
-
+@SuppressWarnings("HardCodedStringLiteral")
 public interface UserCredentialsColumn {
     @DataType(INTEGER) @PrimaryKey
     String _ID = "_id";

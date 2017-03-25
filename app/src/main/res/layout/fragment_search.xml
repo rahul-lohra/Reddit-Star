@@ -25,41 +25,12 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-
-        <android.support.v7.widget.CardView
-            app:cardCornerRadius="4dp"
-            app:cardElevation="4dp"
+        <com.rahul_lohra.redditstar.helper.MySearchView
+            android:id="@+id/my_search_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
-            <RelativeLayout
-                android:background="@drawable/rect"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <android.support.v7.widget.AppCompatImageView
-                    android:paddingStart="8dp"
-                    android:paddingEnd="8dp"
-                    android:layout_centerVertical="true"
-                    app:srcCompat="@drawable/ic_action_back_black"
-                    android:id="@+id/image_back"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-                <android.support.v7.widget.AppCompatEditText
-                    android:backgroundTint="@color/white"
-                    android:layout_toEndOf="@+id/image_back"
-                    android:inputType="text"
-                    android:maxLines="1"
-                    android:imeOptions="actionSearch"
-                    android:hint="@string/search_hint"
-                    android:id="@+id/et"
-                    android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
-                    android:drawablePadding="@dimen/nav_header_vertical_spacing"
-                    />
+            android:layout_height="wrap_content">
 
-            </RelativeLayout>
-
-        </android.support.v7.widget.CardView>
-
+        </com.rahul_lohra.redditstar.helper.MySearchView>
 
         <android.support.v4.widget.NestedScrollView
             android:id="@+id/nested_sv"

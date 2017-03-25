@@ -6,6 +6,7 @@ import com.rahul_lohra.redditstar.storage.column.CommentsColumn;
 import com.rahul_lohra.redditstar.storage.column.MyFavouritesColumn;
 import com.rahul_lohra.redditstar.storage.column.MyPostsColumn;
 import com.rahul_lohra.redditstar.storage.column.MySubredditColumn;
+import com.rahul_lohra.redditstar.storage.column.SuggestionColumn;
 import com.rahul_lohra.redditstar.storage.column.UserCredentialsColumn;
 
 import net.simonvt.schematic.annotation.ContentProvider;
@@ -16,6 +17,7 @@ import net.simonvt.schematic.annotation.TableEndpoint;
 /**
  * Created by rkrde on 23-01-2017.
  */
+@SuppressWarnings("HardCodedStringLiteral")
 @ContentProvider(authority = MyProvider.AUTHORITY,
         database = MyDatabase.class)
 public class MyProvider {
@@ -43,7 +45,6 @@ public class MyProvider {
         }
     }
 
-    @SuppressWarnings("HardCodedStringLiteral")
     @TableEndpoint(table = MyDatabase.USER_CREDENTIAL_TABLE)
     public static class UserCredentialsLists {
 
@@ -64,7 +65,6 @@ public class MyProvider {
         }
     }
 
-    @SuppressWarnings("HardCodedStringLiteral")
     @TableEndpoint(table = MyDatabase.USER_FAVORITES_TABLE)
     public static class FavoritesLists {
 
@@ -85,7 +85,6 @@ public class MyProvider {
         }
     }
 
-    @SuppressWarnings("HardCodedStringLiteral")
     @TableEndpoint(table = MyDatabase.USER_POSTS_TABLE)
     public static class PostsLists {
 
@@ -107,7 +106,28 @@ public class MyProvider {
         }
     }
 
-    @SuppressWarnings("HardCodedStringLiteral")
+
+    @TableEndpoint(table = MyDatabase.SUGGESTION_TABLE)
+    public static class SuggestionLists {
+
+        @ContentUri(
+                path = "suggestions",
+                type = "vnd.android.cursor.dir/suggestions_item"
+        )
+        public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/suggestions");
+
+
+        @InexactContentUri(
+                path = "suggestions/*",
+                name = "SUGGESTIONS_ID",
+                type = "vnd.android.cursor.item/suggestions_item",
+                whereColumn = SuggestionColumn.KEY_SQL_ID,
+                pathSegment = 1)
+        public static Uri withId(long id) {
+            return Uri.parse("content://" + AUTHORITY + "/suggestions/" + id);
+        }
+    }
+
     @TableEndpoint(table = MyDatabase.COMMENTS_TABLE)
     public static class CommentsLists {
 
@@ -127,7 +147,6 @@ public class MyProvider {
             return Uri.parse("content://" + AUTHORITY + "/comments/" + id);
         }
     }
-    @SuppressWarnings("HardCodedStringLiteral")
     @TableEndpoint(table = MyDatabase.USER_POSTS_TABLE)
     public static class PostsComments{
         @ContentUri(
@@ -165,7 +184,6 @@ public class MyProvider {
 
     }
 
-    @SuppressWarnings("HardCodedStringLiteral")
     @TableEndpoint(table = MyDatabase.MY_SUBREDDIT_TABLE)
     public static class UserSubredditsWithFav{
         @ContentUri(
