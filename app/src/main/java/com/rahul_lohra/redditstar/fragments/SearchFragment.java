@@ -251,7 +251,7 @@ public class SearchFragment extends BaseFragment implements
 
     @Override
     public void getNextSubreddit() {
-        if (t5_List_child != null) {
+        if (t5_List_child != null && SearchSubredditsService.after !=null) {
             if (!t5_List_child.getAfter().equalsIgnoreCase(SearchSubredditsService.after)) {
                 getSubreddits(searchQuery, false);
             }
@@ -262,8 +262,13 @@ public class SearchFragment extends BaseFragment implements
     public void onMessageEvent(T5_ListChild Argt5_List_child) {
         this.t5_List_child = Argt5_List_child;
         List<T5_Kind> list = t5_List_child.children;
+        if(list.size()==0)
+        {
+            return;
+        }
         for (int i = 0; i < list.size(); ) {
-            boolean over18 = list.get(i).data.getOver18();
+//            System.out.println("i="+i);
+            boolean over18 = list.get(i).data.getOver18()!=null?list.get(i).data.getOver18():true;
             if (over18) {
                 list.remove(i);
             } else {
@@ -278,7 +283,7 @@ public class SearchFragment extends BaseFragment implements
         tvPost.setVisibility(View.VISIBLE);
     }
 
-    @Subscribe(threadMode = ThreadMode.BACKGROUND)
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(AfterModal afterModal) {
         this.afterOfLink = afterModal.getmAfterLink();
         progressBar.setVisibility(View.GONE);

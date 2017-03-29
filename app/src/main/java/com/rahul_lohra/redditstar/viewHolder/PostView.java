@@ -3,6 +3,7 @@ package com.rahul_lohra.redditstar.viewHolder;
 import android.content.Context;
 import android.support.annotation.IntDef;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -80,6 +81,8 @@ public class PostView extends RecyclerView.ViewHolder {
         this.context = context;
         ((Initializer)context.getApplicationContext()).getNetComponent().inject(this);
         apiInterface =retrofit.create(ApiInterface.class);
+
+        tvTitle.setTextColor(ContextCompat.getColor(context,R.color.red_youtube));
     }
 
     public Integer getLikes() {
@@ -164,5 +167,9 @@ public class PostView extends RecyclerView.ViewHolder {
                 .load("")
                 .placeholder(resId)
                 .into(imageView);
+    }
+
+    public void setTvTitle(String title){
+        tvTitle.setText("r/"+title);
     }
 }

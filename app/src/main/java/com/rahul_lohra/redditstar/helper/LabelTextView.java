@@ -3,6 +3,8 @@ package com.rahul_lohra.redditstar.helper;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Typeface;
+import android.support.annotation.ColorRes;
+import android.support.annotation.DrawableRes;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
@@ -26,15 +28,15 @@ public class LabelTextView extends AppCompatTextView {
         super(context, attrs, defStyleAttr);
     }
 
-    private void setFinalText(String text)
+    private void setFinalText(String text, @ColorRes int backgroundColor, @ColorRes int fontColor)
     {
         /*
         Determine if the text is domain or media type (eg: album,link)
          */
-        setTextColor(ContextCompat.getColor(getContext(),R.color.white));
+        setTextColor(ContextCompat.getColor(getContext(),fontColor));
         setTypeface(Typeface.SANS_SERIF, Typeface.BOLD);
         setBackgroundDrawable(ContextCompat.getDrawable(getContext(),R.drawable.rect_filled));
-        setSupportBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(getContext(),R.color.grey_500)));
+        setSupportBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(getContext(),backgroundColor)));
         setText(text);
         setPaddingRelative(4,2,4,2);
         setVisibility(VISIBLE);
@@ -53,7 +55,7 @@ public class LabelTextView extends AppCompatTextView {
                 if(link!=null && (link.endsWith(".gif")||link.endsWith(".gifv")))
                 {
                     String text = (link.endsWith(".gif")?"GIF":"GIFV");
-                    setFinalText(text);
+                    setFinalText(text,R.color.light_blue_500,R.color.white);
                 }
 
             }else {
@@ -61,12 +63,12 @@ public class LabelTextView extends AppCompatTextView {
                 {
                     if(domain.equals("youtube.com")){
                         String text = "YOUTUBE";
-                        setFinalText(text);
+                        setFinalText(text,R.color.red_youtube,R.color.white);
                     }else {
                         if(link.endsWith(".gif")||link.endsWith(".gifv"))
                         {
                             String text = (link.endsWith(".gif")?"GIF":"GIFV");
-                            setFinalText(text);
+                            setFinalText(text,R.color.light_blue_500,R.color.white);
                         }
                     }
                 }

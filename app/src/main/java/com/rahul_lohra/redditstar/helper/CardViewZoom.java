@@ -36,17 +36,14 @@ public class CardViewZoom extends CardView implements Animator.AnimatorListener 
 
     public CardViewZoom(Context context) {
         super(context);
-//        zoomOutAnimator.addListener(this);
     }
 
     public CardViewZoom(Context context, AttributeSet attrs) {
         super(context, attrs);
-//        zoomOutAnimator.addListener(this);
     }
 
     public CardViewZoom(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-//        zoomOutAnimator.addListener(this);
     }
 
     public void setCardData(DetailPostModal modal, ImageView imageView, String id, IFrontPageAdapter mListener) {
@@ -59,6 +56,7 @@ public class CardViewZoom extends CardView implements Animator.AnimatorListener 
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        System.out.println("Touch:"+event.getAction());
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
             case MotionEvent.ACTION_POINTER_DOWN:
@@ -77,6 +75,7 @@ public class CardViewZoom extends CardView implements Animator.AnimatorListener 
                 zoomOutAnimator.addListener(this);
                 break;
             case MotionEvent.ACTION_MOVE:
+            case MotionEvent.ACTION_CANCEL:
                 zoomOutAnimator = new AnimatorSet();
                 zoomOutAnimator.play(scaleInX).with(scaleInY);
                 zoomOutAnimator.setDuration(200);

@@ -89,6 +89,7 @@ public class HomeAdapter extends CursorRecyclerViewAdapter<RecyclerView.ViewHold
 
 
         postView.setLikes(likes);
+        postView.setTvTitle(subreddit);
         if(cursor.isLast()){
             EventBus.getDefault().post("getNextData");
         }
@@ -196,7 +197,6 @@ public class HomeAdapter extends CursorRecyclerViewAdapter<RecyclerView.ViewHold
         }
 
         postView.tvVote.setText(ups);
-        postView.tvTitle.setText(subreddit);
         postView.tvDetail.setText(title);
         postView.tvComments.setText(commentsCount);
 

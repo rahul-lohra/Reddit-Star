@@ -170,27 +170,16 @@ public class DashboardActivity extends BaseActivity implements
                 .setPersisted(true)
                 .build();
 
-//        Task frontPageTask = new PeriodicTask.Builder()
-//                .setService(WidgetTaskService.class)
-//                .setPeriod(60*31)
-//                .setFlex(10)
-//                .setTag(WidgetTaskService.TAG_PERIODIC_WIDGET)
-//                .setPersisted(true)
-//                .build();
-
         mGcmNetworkManager.schedule(widgetTask);
-//        mGcmNetworkManager.schedule(frontPageTask);
 
     }
 
 
     void setupDrawer() {
         drawerList = new ArrayList<>();
-//        drawerList.add(new DrawerItemModal("Search", ContextCompat.getDrawable(this, R.drawable.ic_home)));
         drawerList.add(new DrawerItemModal(getString(R.string.home), ContextCompat.getDrawable(this, R.drawable.ic_home)));
         drawerList.add(new DrawerItemModal(getString(R.string.my_subreddits), ContextCompat.getDrawable(this, R.drawable.ic_list)));
         drawerList.add(new DrawerItemModal(getString(R.string.my_favorites), ContextCompat.getDrawable(this, R.drawable.ic_star)));
-//        drawerList.add(new DrawerItemModal(getString(R.string.settings), ContextCompat.getDrawable(this, R.drawable.ic_settings)));
         drawerAdapter = new DrawerAdapter(this, drawerList, this,this);
         rv.setLayoutManager(new LinearLayoutManager(this));
         rv.setAdapter(drawerAdapter);
@@ -244,27 +233,27 @@ public class DashboardActivity extends BaseActivity implements
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.dashboard, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        switch (id) {
-            case R.id.action_logout: {
-                performLogout();
-            }
-            return true;
-            case R.id.action_settings: {
-                return true;
-            }
-        }
-        return super.onOptionsItemSelected(item);
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        // Inflate the menu; this adds items to the action bar if it is present.
+//        getMenuInflater().inflate(R.menu.dashboard, menu);
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        int id = item.getItemId();
+//        switch (id) {
+//            case R.id.action_logout: {
+//                performLogout();
+//            }
+//            return true;
+//            case R.id.action_settings: {
+//                return true;
+//            }
+//        }
+//        return super.onOptionsItemSelected(item);
+//    }
 
     private void performLogout() {
         Uri credentialsUri = MyProvider.UserCredentialsLists.CONTENT_URI;
