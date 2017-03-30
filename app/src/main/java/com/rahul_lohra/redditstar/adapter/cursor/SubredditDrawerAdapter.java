@@ -16,7 +16,7 @@ import com.rahul_lohra.redditstar.modal.FavoritesModal;
 import com.rahul_lohra.redditstar.storage.column.MyFavouritesColumn;
 import com.rahul_lohra.redditstar.storage.column.MySubredditColumn;
 import com.rahul_lohra.redditstar.Utility.Constants;
-import com.rahul_lohra.redditstar.viewHolder.CursorRecyclerViewAdapter;
+import com.rahul_lohra.redditstar.adapter.CursorRecyclerViewAdapter;
 import com.rahul_lohra.redditstar.viewHolder.DrawerSubreddit;
 import com.varunest.sparkbutton.SparkEventListener;
 

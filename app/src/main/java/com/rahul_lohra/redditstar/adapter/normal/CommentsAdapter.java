@@ -21,7 +21,7 @@ import com.rahul_lohra.redditstar.Utility.Constants;
 import com.rahul_lohra.redditstar.Utility.Share;
 import com.rahul_lohra.redditstar.Utility.UserState;
 import com.rahul_lohra.redditstar.viewHolder.CommentsViewHolder;
-import com.rahul_lohra.redditstar.viewHolder.CursorRecyclerViewAdapter;
+import com.rahul_lohra.redditstar.adapter.CursorRecyclerViewAdapter;
 import com.rahul_lohra.redditstar.viewHolder.PostViewDetail;
 
 /**

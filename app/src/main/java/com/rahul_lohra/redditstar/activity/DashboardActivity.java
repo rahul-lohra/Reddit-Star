@@ -21,6 +21,7 @@ import android.support.v4.content.Loader;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -29,9 +30,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.rahul_lohra.redditstar.R;
+import com.rahul_lohra.redditstar.adapter.cursor.AccountsAdapter;
 import com.rahul_lohra.redditstar.adapter.cursor.SubredditDrawerAdapter;
 import com.rahul_lohra.redditstar.adapter.normal.DrawerAdapter;
 import com.rahul_lohra.redditstar.contract.IActivity;
@@ -54,6 +57,8 @@ import com.google.android.gms.ads.AdView;
 import com.google.android.gms.gcm.GcmNetworkManager;
 import com.google.android.gms.gcm.PeriodicTask;
 import com.google.android.gms.gcm.Task;
+import com.varunest.sparkbutton.SparkButton;
+import com.varunest.sparkbutton.SparkButtonBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,13 +69,13 @@ import butterknife.OnClick;
 
 @SuppressWarnings("HardCodedStringLiteral")
 public class DashboardActivity extends BaseActivity implements
-        NavigationView.OnNavigationItemSelectedListener,
         IDashboard,
         LoaderManager.LoaderCallbacks<Cursor>,
         DrawerAdapter.ISubreddit,
         HomeFragment.IHomeFragment,
         ILogin,
-        IActivity
+        IActivity,
+        AccountsAdapter.IAccountsAdapter
 
 {
 
@@ -90,6 +95,7 @@ public class DashboardActivity extends BaseActivity implements
     //Adapters
     DrawerAdapter drawerAdapter;
     SubredditDrawerAdapter subredditDrawerAdapter;
+    AccountsAdapter accountsAdapter;
     List<DrawerItemModal> drawerList;
     DashboardPresenter dashboardPresenter;
     AddAccountDialog addAccountDialog;
@@ -103,11 +109,18 @@ public class DashboardActivity extends BaseActivity implements
     TextView tv_name;
     @Bind(R.id.image_view_add)
     ImageView imageViewAdd;
+    @Bind(R.id.add_new_account)
+    LinearLayout layoutAddNewAccount;
+    @Bind(R.id.sign_out)
+    LinearLayout layoutSignOut;
+
     private boolean mTwoPane;
     private final String TAG = DashboardActivity.class.getSimpleName();
 
     private final int LOADER_ID = 1;
     private final int LOADER_ID_NAME = 2;
+    private final int LOADER_ID_ACCOUNTS = 3;
+
 
     private static final String INTENT_TAG = "DashboardActivity";
     private GcmNetworkManager mGcmNetworkManager;
@@ -116,14 +129,28 @@ public class DashboardActivity extends BaseActivity implements
 
     @OnClick(R.id.image_view_add)
     public void onClickAddAccount() {
-        addAccountDialog.show(getFragmentManager(), AddAccountDialog.class.getSimpleName());
+//        addAccountDialog.show(getFragmentManager(), AddAccountDialog.class.getSimpleName());
+        setAccountsAdapter();
+    }
+
+    private void setAccountsAdapter() {
+        RecyclerView.Adapter adapter = rv.getAdapter();
+        if (adapter != null) {
+            if (adapter instanceof AccountsAdapter) {
+                rv.setAdapter(drawerAdapter);
+                hideSignOut();
+                hideAddAccount();
+            } else {
+                rv.setAdapter(accountsAdapter);
+                showAddAccount();
+            }
+        }
     }
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        Constants.clearPosts(this, MyProvider.PostsLists.CONTENT_URI);
         setContentView(R.layout.activity_dashboard);
         ButterKnife.bind(this);
         init();
@@ -132,10 +159,9 @@ public class DashboardActivity extends BaseActivity implements
         startPeriodicTask();
 
 
-        if ((findViewById(R.id.frame_layout_right))!=null) {
+        if ((findViewById(R.id.frame_layout_right)) != null) {
             mTwoPane = true;
             if (savedInstanceState == null) {
-//                showDetailSubredditFragment(null, null, null);
                 showHomeFragment(R.id.frame_layout_left);
             }
         } else {
@@ -180,7 +206,7 @@ public class DashboardActivity extends BaseActivity implements
         drawerList.add(new DrawerItemModal(getString(R.string.home), ContextCompat.getDrawable(this, R.drawable.ic_home)));
         drawerList.add(new DrawerItemModal(getString(R.string.my_subreddits), ContextCompat.getDrawable(this, R.drawable.ic_list)));
         drawerList.add(new DrawerItemModal(getString(R.string.my_favorites), ContextCompat.getDrawable(this, R.drawable.ic_star)));
-        drawerAdapter = new DrawerAdapter(this, drawerList, this,this);
+        drawerAdapter = new DrawerAdapter(this, drawerList, this, this);
         rv.setLayoutManager(new LinearLayoutManager(this));
         rv.setAdapter(drawerAdapter);
     }
@@ -194,19 +220,25 @@ public class DashboardActivity extends BaseActivity implements
 
     void init() {
         setSupportActionBar(toolbar);
-        if(getSupportActionBar()!=null)
+        if (getSupportActionBar() != null)
             getSupportActionBar().setTitle(getString(R.string.dashboard));
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
-        navigationView.setNavigationItemSelectedListener(this);
         addAccountDialog = new AddAccountDialog();
 
-        subredditDrawerAdapter = new SubredditDrawerAdapter(this, null,this);
+        subredditDrawerAdapter = new SubredditDrawerAdapter(this, null, this);
+        accountsAdapter = new AccountsAdapter(this, null, this);
         getSupportLoaderManager().initLoader(LOADER_ID, null, this);
         getSupportLoaderManager().initLoader(LOADER_ID_NAME, null, this);
+        getSupportLoaderManager().initLoader(LOADER_ID_ACCOUNTS, null, this);
 
+        ((TextView) layoutSignOut.findViewById(R.id.tv)).setText(getString(R.string.logout));
+        ((AppCompatImageView) layoutSignOut.findViewById(R.id.image_view)).setImageResource(R.drawable.ic_log_out);
+
+        ((TextView) layoutAddNewAccount.findViewById(R.id.tv)).setText(getString(R.string.add_new_account));
+        ((AppCompatImageView) layoutAddNewAccount.findViewById(R.id.image_view)).setImageResource(R.drawable.ic_add_3);
 
         snackbar = Snackbar
                 .make(coordinatorLayout, getString(R.string.please_login), Snackbar.LENGTH_SHORT)
@@ -220,7 +252,7 @@ public class DashboardActivity extends BaseActivity implements
         adView.loadAd(adRequest);
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-        sp.edit().putBoolean(SpConstants.OVER_18,false).apply();
+        sp.edit().putBoolean(SpConstants.OVER_18, false).apply();
     }
 
     @Override
@@ -233,27 +265,6 @@ public class DashboardActivity extends BaseActivity implements
         }
     }
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.dashboard, menu);
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        int id = item.getItemId();
-//        switch (id) {
-//            case R.id.action_logout: {
-//                performLogout();
-//            }
-//            return true;
-//            case R.id.action_settings: {
-//                return true;
-//            }
-//        }
-//        return super.onOptionsItemSelected(item);
-//    }
 
     private void performLogout() {
         Uri credentialsUri = MyProvider.UserCredentialsLists.CONTENT_URI;
@@ -267,52 +278,34 @@ public class DashboardActivity extends BaseActivity implements
         snackbarLogOut.show();
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
-        }
-
-
-        return true;
-    }
 
     @Override
     public void openActivity(final Intent intent) {
         drawer.closeDrawers();
         drawer.addDrawerListener(new DrawerLayout.DrawerListener() {
             @Override
-            public void onDrawerSlide(View drawerView, float slideOffset) {}
+            public void onDrawerSlide(View drawerView, float slideOffset) {
+            }
 
             @Override
-            public void onDrawerOpened(View drawerView) {}
+            public void onDrawerOpened(View drawerView) {
+            }
 
             @Override
             public void onDrawerClosed(View drawerView) {
                 startActivity(intent);
                 drawer.removeDrawerListener(this);
             }
+
             @Override
-            public void onDrawerStateChanged(int newState) {}
+            public void onDrawerStateChanged(int newState) {
+            }
         });
     }
 
     @Override
-    public void loadMySubreddits() {}
+    public void loadMySubreddits() {
+    }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
@@ -327,6 +320,9 @@ public class DashboardActivity extends BaseActivity implements
                 String mSelectionArgs_2[] = {"1"};
                 return new CursorLoader(this, uri_2, proj_2, mSelection_2, mSelectionArgs_2, null);
             }
+            case LOADER_ID_ACCOUNTS:
+                Uri uriAccounts = MyProvider.UserCredentialsLists.CONTENT_URI;
+                return new CursorLoader(this, uriAccounts, null, null, null, null);
         }
         return null;
     }
@@ -339,8 +335,13 @@ public class DashboardActivity extends BaseActivity implements
                 break;
             case LOADER_ID_NAME: {
                 updateName(data);
+                break;
             }
-            break;
+            case LOADER_ID_ACCOUNTS: {
+                accountsAdapter.swapCursor(data);
+                break;
+            }
+
         }
     }
 
@@ -352,6 +353,11 @@ public class DashboardActivity extends BaseActivity implements
                 break;
             case LOADER_ID_NAME: {
                 resetName();
+                break;
+            }
+            case LOADER_ID_ACCOUNTS: {
+                accountsAdapter.swapCursor(null);
+                break;
             }
         }
     }
@@ -427,5 +433,23 @@ public class DashboardActivity extends BaseActivity implements
     @Override
     public void pleaseLogin() {
         snackbar.show();
+    }
+
+    @Override
+    public void showSignOut() {
+        layoutSignOut.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideSignOut() {
+        layoutSignOut.setVisibility(View.GONE);
+    }
+
+    public void showAddAccount() {
+        layoutAddNewAccount.setVisibility(View.VISIBLE);
+    }
+
+    public void hideAddAccount() {
+        layoutAddNewAccount.setVisibility(View.GONE);
     }
 }

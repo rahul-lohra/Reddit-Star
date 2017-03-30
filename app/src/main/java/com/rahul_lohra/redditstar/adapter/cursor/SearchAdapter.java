@@ -1,25 +1,13 @@
 package com.rahul_lohra.redditstar.adapter.cursor;
 
 import android.content.Context;
-import android.content.Intent;
-import android.database.Cursor;
-import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import com.rahul_lohra.redditstar.R;
-import com.rahul_lohra.redditstar.activity.SubredditActivity;
-import com.rahul_lohra.redditstar.helper.ItemTouchHelperAdapter;
-import com.rahul_lohra.redditstar.storage.MyProvider;
-import com.rahul_lohra.redditstar.storage.column.MyFavouritesColumn;
-import com.rahul_lohra.redditstar.viewHolder.CursorRecyclerViewAdapter;
-import com.rahul_lohra.redditstar.viewHolder.DrawerSubreddit;
 import com.rahul_lohra.redditstar.viewHolder.SearchViewHolder;
-import com.varunest.sparkbutton.SparkEventListener;
 
 import java.util.List;
 

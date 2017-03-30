@@ -39,6 +39,16 @@
                     android:layout_height="wrap_content"
                     android:background="@android:color/white"
                     android:nestedScrollingEnabled="false" />
+                    <include
+                        tools:visibility="visible"
+                        android:visibility="gone"
+                        android:id="@+id/add_new_account"
+                        layout="@layout/item_signout"/>
+                    <include
+                        tools:visibility="visible"
+                        android:visibility="gone"
+                        android:id="@+id/sign_out"
+                        layout="@layout/item_signout"/>
 
             </LinearLayout>
         </android.support.v4.widget.NestedScrollView>

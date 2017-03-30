@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+
+    <android.support.v7.widget.AppCompatImageView
+        android:layout_gravity="center_vertical"
+        android:id="@+id/image_view"
+        android:layout_width="@dimen/spark_button_dimen"
+        android:layout_height="@dimen/spark_button_dimen"
+        android:scaleType="center"
+        tools:src="@drawable/ic_log_out"
+        />
+
+    <TextView
+        android:layout_gravity="center"
+        android:paddingTop="@dimen/drawer_item_padding"
+        android:paddingBottom="@dimen/drawer_item_padding"
+        android:paddingStart="@dimen/drawer_item_padding"
+        android:paddingEnd="@dimen/drawer_item_padding"
+        android:id="@+id/tv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:drawablePadding="24dp"
+        android:gravity="center_vertical"
+        android:textSize="18sp"
+        tools:text="@string/logout"
+        android:fontFamily="sans-serif-medium"
+        android:layout_weight="6"
+        />
+
+
+</LinearLayout>
+

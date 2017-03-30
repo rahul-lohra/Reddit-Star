@@ -1,4 +1,4 @@
-package com.rahul_lohra.redditstar.viewHolder;
+package com.rahul_lohra.redditstar.adapter;
 
 /**
  * Created by rkrde on 29-01-2017.

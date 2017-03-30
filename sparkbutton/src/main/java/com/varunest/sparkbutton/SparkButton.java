@@ -9,6 +9,8 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.PorterDuff;
 import android.os.Build;
+import android.support.annotation.ColorRes;
+import android.support.annotation.DrawableRes;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -310,4 +312,24 @@ public class SparkButton extends FrameLayout implements View.OnClickListener {
         // recycle typedArray
         a.recycle();
     }
+
+//    public SparkButton setImageResourceIdActive(@DrawableRes int imageResourceIdActive) {
+//        this.imageResourceIdActive = imageResourceIdActive;
+//        return this;
+//    }
+//
+//    public SparkButton setImageResourceIdInactive(@DrawableRes int imageResourceIdInactive) {
+//        this.imageResourceIdInactive = imageResourceIdInactive;
+//        return this;
+//    }
+//
+//    public SparkButton setSecondaryColor(@ColorRes int secondaryColor) {
+//        this.secondaryColor = secondaryColor;
+//        return this;
+//    }
+//
+//    public SparkButton setPrimaryColor(@ColorRes int primaryColor) {
+//        this.primaryColor = primaryColor;
+//        return this;
+//    }
 }

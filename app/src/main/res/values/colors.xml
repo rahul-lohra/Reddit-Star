@@ -17,6 +17,8 @@
     <color name="black_alpha_40">#66000000</color>
     <color name="red_youtube">#bb0000</color>
     <color name="red_700">#D50000</color>
+    <color name="orange_500">#FF9800</color>
+    <color name="brown_800">#4E342E</color>
 
 
 </resources>
