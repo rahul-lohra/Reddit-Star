@@ -1,6 +1,9 @@
 package com.rahul_lohra.redditstar.activity;
 
+import android.animation.Animator;
+import android.animation.AnimatorInflater;
 import android.app.ActivityOptions;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -26,14 +29,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.rahul_lohra.redditstar.R;
+import com.rahul_lohra.redditstar.Utility.MyUrl;
 import com.rahul_lohra.redditstar.adapter.cursor.AccountsAdapter;
 import com.rahul_lohra.redditstar.adapter.cursor.SubredditDrawerAdapter;
 import com.rahul_lohra.redditstar.adapter.normal.DrawerAdapter;
@@ -57,8 +59,7 @@ import com.google.android.gms.ads.AdView;
 import com.google.android.gms.gcm.GcmNetworkManager;
 import com.google.android.gms.gcm.PeriodicTask;
 import com.google.android.gms.gcm.Task;
-import com.varunest.sparkbutton.SparkButton;
-import com.varunest.sparkbutton.SparkButtonBuilder;
+import com.rahul_lohra.redditstar.viewHolder.AccountsViewHolder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,6 +67,11 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.rahul_lohra.redditstar.Utility.MyUrl.AUTH_URL;
+import static com.rahul_lohra.redditstar.Utility.MyUrl.CLIENT_ID;
+import static com.rahul_lohra.redditstar.Utility.MyUrl.REDIRECT_URI;
+import static com.rahul_lohra.redditstar.Utility.MyUrl.STATE;
 
 @SuppressWarnings("HardCodedStringLiteral")
 public class DashboardActivity extends BaseActivity implements
@@ -75,7 +81,8 @@ public class DashboardActivity extends BaseActivity implements
         HomeFragment.IHomeFragment,
         ILogin,
         IActivity,
-        AccountsAdapter.IAccountsAdapter
+        AccountsAdapter.IAccountsAdapter,
+        AccountsViewHolder.IAccountsViewHolder
 
 {
 
@@ -103,16 +110,19 @@ public class DashboardActivity extends BaseActivity implements
     AdView adView;
     @Bind(R.id.image_view)
     ImageView imageView;
+    @Bind(R.id.image_view_drop_down)
+    ImageView imageViewDropDown;
     @Bind(R.id.textView)
     TextView textView;
     @Bind(R.id.tv_name)
     TextView tv_name;
-    @Bind(R.id.image_view_add)
-    ImageView imageViewAdd;
     @Bind(R.id.add_new_account)
     LinearLayout layoutAddNewAccount;
     @Bind(R.id.sign_out)
     LinearLayout layoutSignOut;
+    @Bind(R.id.anonymous_user)
+    LinearLayout layoutAnonymous;
+
 
     private boolean mTwoPane;
     private final String TAG = DashboardActivity.class.getSimpleName();
@@ -126,12 +136,31 @@ public class DashboardActivity extends BaseActivity implements
     private GcmNetworkManager mGcmNetworkManager;
     private Snackbar snackbar;
     private AdRequest adRequest;
+    private Animator rotateDown,rotateUp;
 
-    @OnClick(R.id.image_view_add)
-    public void onClickAddAccount() {
-//        addAccountDialog.show(getFragmentManager(), AddAccountDialog.class.getSimpleName());
+
+    @OnClick(R.id.image_view_drop_down)
+    public void onClickDropDown() {
+        perfornAnimation();
         setAccountsAdapter();
     }
+    @OnClick(R.id.add_new_account)
+    public void onClickAddNewAccount(){
+//        addAccountDialog.show(getFragmentManager(), AddAccountDialog.class.getSimpleName());
+        addNewAccount();
+    }
+
+    @OnClick(R.id.sign_out)
+    public void onClickSignOut(){
+        performLogout();
+    }
+
+    @OnClick(R.id.anonymous_user)
+    public void onClickAnonymousUser(){
+       enableAnonymousUser();
+    }
+
+
 
     private void setAccountsAdapter() {
         RecyclerView.Adapter adapter = rv.getAdapter();
@@ -157,7 +186,6 @@ public class DashboardActivity extends BaseActivity implements
         setupDrawer();
         setupPresenter();
         startPeriodicTask();
-
 
         if ((findViewById(R.id.frame_layout_right)) != null) {
             mTwoPane = true;
@@ -229,7 +257,7 @@ public class DashboardActivity extends BaseActivity implements
         addAccountDialog = new AddAccountDialog();
 
         subredditDrawerAdapter = new SubredditDrawerAdapter(this, null, this);
-        accountsAdapter = new AccountsAdapter(this, null, this);
+        accountsAdapter = new AccountsAdapter(this, null, this,this);
         getSupportLoaderManager().initLoader(LOADER_ID, null, this);
         getSupportLoaderManager().initLoader(LOADER_ID_NAME, null, this);
         getSupportLoaderManager().initLoader(LOADER_ID_ACCOUNTS, null, this);
@@ -239,6 +267,9 @@ public class DashboardActivity extends BaseActivity implements
 
         ((TextView) layoutAddNewAccount.findViewById(R.id.tv)).setText(getString(R.string.add_new_account));
         ((AppCompatImageView) layoutAddNewAccount.findViewById(R.id.image_view)).setImageResource(R.drawable.ic_add_3);
+
+        ((TextView) layoutAnonymous.findViewById(R.id.tv)).setText(getString(R.string.anonymous_user));
+        ((AppCompatImageView) layoutAnonymous.findViewById(R.id.image_view)).setImageResource(R.drawable.ic_person_inactive);
 
         snackbar = Snackbar
                 .make(coordinatorLayout, getString(R.string.please_login), Snackbar.LENGTH_SHORT)
@@ -250,6 +281,13 @@ public class DashboardActivity extends BaseActivity implements
                 });
         adRequest = new AdRequest.Builder().build();
         adView.loadAd(adRequest);
+
+         rotateDown= AnimatorInflater.loadAnimator(this,
+                R.animator.rotate_down);
+        rotateDown.setTarget(imageViewDropDown);
+        rotateUp= AnimatorInflater.loadAnimator(this,
+                R.animator.rotate_up);
+        rotateUp.setTarget(imageViewDropDown);
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         sp.edit().putBoolean(SpConstants.OVER_18, false).apply();
@@ -422,12 +460,40 @@ public class DashboardActivity extends BaseActivity implements
             if (cursor.moveToFirst()) {
                 String name = cursor.getString(cursor.getColumnIndex(UserCredentialsColumn.NAME));
                 tv_name.setText(name);
+            }else {
+                resetName();
             }
         }
     }
 
     private void resetName() {
-        tv_name.setText(getString(R.string.no_name));
+        tv_name.setText(getString(R.string.anonymous_user));
+        ((AppCompatImageView) layoutAnonymous.findViewById(R.id.image_view)).setImageResource(R.drawable.ic_person_active);
+    }
+
+    void perfornAnimation(){
+        if(rv.getAdapter()!=null)
+        {
+            if (rv.getAdapter() instanceof AccountsAdapter) {
+                rotateDown.start();
+            }else {
+                rotateUp.start();
+            }
+        }
+
+    }
+
+    void enableAnonymousUser(){
+        ContentValues cvActive = new ContentValues();
+        cvActive.put(UserCredentialsColumn.ACTIVE_STATE,0);
+        Uri mUri = MyProvider.UserCredentialsLists.CONTENT_URI;
+        getContentResolver().update(mUri,cvActive,null,null);
+        ((AppCompatImageView) layoutAnonymous.findViewById(R.id.image_view)).setImageResource(R.drawable.ic_person_active);
+    }
+
+    @Override
+    public void disableAnonymousUser(){
+        ((AppCompatImageView) layoutAnonymous.findViewById(R.id.image_view)).setImageResource(R.drawable.ic_person_inactive);
     }
 
     @Override
@@ -447,9 +513,20 @@ public class DashboardActivity extends BaseActivity implements
 
     public void showAddAccount() {
         layoutAddNewAccount.setVisibility(View.VISIBLE);
+        layoutAnonymous.setVisibility(View.VISIBLE);
     }
 
     public void hideAddAccount() {
         layoutAddNewAccount.setVisibility(View.GONE);
+        layoutAnonymous.setVisibility(View.GONE);
     }
+
+    private void  addNewAccount(){
+    String scopeArray[] = getResources().getStringArray(R.array.scope);
+    String scope = MyUrl.getProperScope(scopeArray);
+    String url = String.format(AUTH_URL, CLIENT_ID, STATE, REDIRECT_URI, scope);
+    Intent intent = new Intent(this, WebViewActivity.class);
+    intent.setData(Uri.parse(url));
+    startActivity(intent);
+}
 }

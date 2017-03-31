@@ -98,6 +98,23 @@ public class Constants {
 
     }
 
+    public static void updateActiveUser(Context context,int sqlId){
+        //set Active
+        ContentValues cvActive = new ContentValues();
+        cvActive.put(UserCredentialsColumn.ACTIVE_STATE,1);
+        Uri mUri = MyProvider.UserCredentialsLists.CONTENT_URI;
+        String mSelection = UserCredentialsColumn._ID + "=?";
+        String mSelectionArgs[] = {String.valueOf(sqlId)};
+        context.getContentResolver().update(mUri,cvActive,mSelection,mSelectionArgs);
+
+        //set Inactive
+        ContentValues cvInActive = new ContentValues();
+        cvInActive.put(UserCredentialsColumn.ACTIVE_STATE,0);
+        String mSelectionInActive = UserCredentialsColumn._ID + "!= ?";
+        context.getContentResolver().update(mUri,cvInActive,mSelectionInActive,mSelectionArgs);
+
+    }
+
     public static String getTimeDiff(long utcTime) {
 
         Calendar c = Calendar.getInstance();

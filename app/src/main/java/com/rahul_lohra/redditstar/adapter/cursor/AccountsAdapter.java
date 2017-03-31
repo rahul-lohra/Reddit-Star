@@ -29,10 +29,12 @@ public class AccountsAdapter extends CursorRecyclerViewAdapter<RecyclerView.View
         void hideSignOut();
     }
     private IAccountsAdapter mListener;
-    public AccountsAdapter(Context context, Cursor cursor,IAccountsAdapter listener) {
+    private AccountsViewHolder.IAccountsViewHolder accountsViewHolder;
+    public AccountsAdapter(Context context, Cursor cursor, IAccountsAdapter listener, AccountsViewHolder.IAccountsViewHolder accountsViewHolder) {
         super(context, cursor);
         this.mListener = listener;
         this.mContext = context;
+        this.accountsViewHolder = accountsViewHolder;
     }
 
     @Override
@@ -40,13 +42,15 @@ public class AccountsAdapter extends CursorRecyclerViewAdapter<RecyclerView.View
         AccountsViewHolder accountsViewHolder = (AccountsViewHolder)viewHolder;
         String userName = cursor.getString(cursor.getColumnIndex(UserCredentialsColumn.NAME));
         int isActive = cursor.getInt(cursor.getColumnIndex(UserCredentialsColumn.ACTIVE_STATE));
-        accountsViewHolder.init(userName,isActive);
+        int sqlId = cursor.getInt(cursor.getColumnIndex(UserCredentialsColumn._ID));
+
+        accountsViewHolder.init(userName,isActive,sqlId);
 
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new AccountsViewHolder(mContext,LayoutInflater.from(parent.getContext()).inflate(R.layout.item_accounts, parent, false));
+        return new AccountsViewHolder(mContext,LayoutInflater.from(parent.getContext()).inflate(R.layout.item_accounts, parent, false),accountsViewHolder);
     }
     @Override
     public int getItemCount() {

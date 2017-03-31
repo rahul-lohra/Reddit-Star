@@ -14,11 +14,11 @@
         android:layout_height="match_parent" />
 
     <android.support.design.widget.NavigationView
-        android:background="@android:color/white"
         android:id="@+id/nav_view"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
+        android:background="@android:color/white"
         android:fitsSystemWindows="true">
         <!--app:headerLayout="@layout/nav_header_dashboard"-->
         <!--app:menu="@menu/activity_dashboard_drawer" >-->
@@ -39,16 +39,24 @@
                     android:layout_height="wrap_content"
                     android:background="@android:color/white"
                     android:nestedScrollingEnabled="false" />
-                    <include
-                        tools:visibility="visible"
-                        android:visibility="gone"
-                        android:id="@+id/add_new_account"
-                        layout="@layout/item_signout"/>
-                    <include
-                        tools:visibility="visible"
-                        android:visibility="gone"
-                        android:id="@+id/sign_out"
-                        layout="@layout/item_signout"/>
+
+                <include
+                    android:id="@+id/anonymous_user"
+                    layout="@layout/item_signout"
+                    android:visibility="gone"
+                    tools:visibility="visible" />
+
+                <include
+                    android:id="@+id/add_new_account"
+                    layout="@layout/item_signout"
+                    android:visibility="gone"
+                    tools:visibility="visible" />
+
+                <include
+                    android:id="@+id/sign_out"
+                    layout="@layout/item_signout"
+                    android:visibility="gone"
+                    tools:visibility="visible" />
 
             </LinearLayout>
         </android.support.v4.widget.NestedScrollView>

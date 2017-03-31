@@ -1,13 +1,20 @@
 package com.rahul_lohra.redditstar.activity;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.webkit.CookieManager;
+import android.webkit.ValueCallback;
+import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
@@ -35,10 +42,22 @@ public class WebViewActivity extends BaseActivity {
         setContentView(R.layout.activity_web_view);
         ButterKnife.bind(this);
         setToolbar();
+//        getWindow().requestFeature(Window.FEATURE_PROGRESS);
 
-        loadUrl();
+        webView.clearCache(true);
+        webView.getSettings().setSaveFormData(false);
+        webView.getSettings().setSavePassword(false);
+        webView.clearFormData();
+//        webView.clearHistory();
+//        webView.clearSslPreferences();
         webView.getSettings().setJavaScriptEnabled(true);
-        webView.setWebViewClient(new myWebClient());
+        webView.getSettings().setAppCacheEnabled(false);
+        webView.getSettings().setAppCacheMaxSize(1);
+        webView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
+        disableCache();
+        webView.setWebViewClient(new MyWebClient());
+        webView.setWebChromeClient(new MyChromeClient());
+        loadUrl();
     }
 
     void setToolbar(){
@@ -66,7 +85,7 @@ public class WebViewActivity extends BaseActivity {
         webView.loadUrl(uri.toString());
     }
 
-    public class myWebClient extends WebViewClient
+    private class MyWebClient extends WebViewClient
     {
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
@@ -86,7 +105,8 @@ public class WebViewActivity extends BaseActivity {
                     Log.e(TAG, "An error has occurred : " + error);
                 } else {
                     String state = uri.getQueryParameter("state");
-                    if (state.equals(MyUrl.STATE)) {
+
+                    if (state!=null && state.equals(MyUrl.STATE)) {
                         String code = uri.getQueryParameter("code");
                         getAccessToken(code);
                         finish();
@@ -102,10 +122,49 @@ public class WebViewActivity extends BaseActivity {
         }
     }
 
+    private class MyChromeClient extends WebChromeClient{
+        @Override
+        public void onProgressChanged(WebView view, int newProgress) {
+            super.onProgressChanged(view, newProgress);
+//            setProgress(newProgress * 1000);
+        }
+    }
+
     private void getAccessToken(String code) {
         Intent intent = new Intent(this, GetNewTokenService.class);
         intent.putExtra("code",code);
         startService(intent);
     }
 
+    private void disableCache(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            disableCacheForLolipop();
+        }else {
+            disableCacheForBelowLolipop();
+        }
+    }
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private void disableCacheForLolipop(){
+
+        ValueCallback<Boolean> mCookieDeleted = new ValueCallback<Boolean>() {
+            @Override
+            public void onReceiveValue(Boolean value) {
+                Log.d(TAG, "cookies deleted");
+                // do whatever you want to do after the cookie is deleted; eg : reload tew page etc.
+            }
+        };
+
+        CookieManager cm = CookieManager.getInstance();
+        cm.setAcceptCookie(true);
+        cm.setAcceptThirdPartyCookies(webView, true);
+        cm.removeAllCookies(mCookieDeleted);
+        cm.removeSessionCookies(mCookieDeleted);
+    }
+
+    private void disableCacheForBelowLolipop(){
+        CookieManager cm = CookieManager.getInstance();
+        cm.setAcceptCookie(false);
+        cm.removeAllCookie();
+        cm.removeSessionCookie();
+    }
 }

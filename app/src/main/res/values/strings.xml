@@ -244,5 +244,6 @@
     <string name="gif">GIF</string>
     <string name="youtube">Youtube</string>
     <string name="domain">domain</string>
+    <string name="anonymous_user">Anonymous User</string>
 
 </resources>

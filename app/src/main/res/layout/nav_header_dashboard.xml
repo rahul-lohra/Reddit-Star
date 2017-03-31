@@ -30,7 +30,7 @@
         tools:text="@string/sample_name"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:layout_toStartOf="@+id/image_view_add" />
+        android:layout_toStartOf="@+id/image_view_drop_down" />
 
     <TextView
         android:id="@+id/tv_name"
@@ -41,13 +41,14 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:layout_above="@+id/textView"
         android:layout_alignParentStart="true"
-        android:layout_toStartOf="@+id/image_view_add" />
+        android:layout_toStartOf="@+id/image_view_drop_down" />
 
     <ImageView
         android:contentDescription="@string/add_new_account"
         android:scaleType="center"
-        android:id="@+id/image_view_add"
-        app:srcCompat="@drawable/ic_add"
+        android:id="@+id/image_view_drop_down"
+        app:srcCompat="@drawable/ic_arrow_drop_down"
+        android:tint="@color/white"
         android:layout_width="44dp"
         android:layout_height="44dp"
         android:layout_alignParentBottom="true"
