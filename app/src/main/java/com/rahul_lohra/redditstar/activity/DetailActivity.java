@@ -161,8 +161,8 @@ public class DetailActivity extends BaseActivity implements
 
             case LOADER_ID_COMMENTS_POSTS: {
                 String linkId = args.getString(BUNDLE_LINK_ID);
-                String mWhere3 = MyDatabase.USER_POSTS_TABLE + "." + MyPostsColumn.KEY_ID + "=?";
-                String mWhereArgs3[] = {linkId};
+                String mWhere3 = MyDatabase.USER_POSTS_TABLE + "." + MyPostsColumn.KEY_ID + "=? AND "+MyDatabase.COMMENTS_TABLE+"."+CommentsColumn.KEY_IS_EXPANDED+" = ?";
+                String mWhereArgs3[] = {linkId,String.valueOf(1)};
                 String sortOrder = MyDatabase.COMMENTS_TABLE + "." + CommentsColumn.KEY_SQL_ID + " LIMIT 50";
                 return new CursorLoader(this, MyProvider.PostsComments.CONTENT_URI, MyProvider.PostsComments.mProjection, mWhere3, mWhereArgs3, sortOrder);
             }

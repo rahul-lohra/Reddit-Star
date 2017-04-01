@@ -74,10 +74,10 @@ public class CommentsService extends IntentService {
             String postId = intent.getStringExtra(POST_ID).substring(3);
             List<List<Example>> exampleList = new ArrayList<>();
             Map<String, String> map = new HashMap<>();
-            map.put("depth", "5");
+            map.put("depth", "7");
             map.put("showedits", "false");
             map.put("showmore", "false");
-            map.put("limit", "30");
+            map.put("limit", "50");
 
             try {
                 Response<ResponseBody> res = apiInterface.getComments(token,postId, subbreditName, map).execute();

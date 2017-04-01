@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.support.annotation.IntDef;
+import android.widget.Toast;
 
 import com.rahul_lohra.redditstar.modal.FavoritesModal;
 import com.rahul_lohra.redditstar.modal.comments.Child;
@@ -329,11 +330,14 @@ public class Constants {
                     String sqlId = cursor.getString(cursor.getColumnIndex(CommentsColumn.KEY_SQL_ID));
                     String body = cursor.getString(cursor.getColumnIndex(CommentsColumn.KEY_BODY));
                     String subreddit = cursor.getString(cursor.getColumnIndex(CommentsColumn.KEY_SUBREDDIT));
-//                    Log.wtf(TAG,"duplicate Comments:"+"sqlId:"+sqlId+",body:"+body+",subreddit:"+subreddit);
                 } while (cursor.moveToNext());
             }
             cursor.close();
         }
+    }
+
+    public static void showToast(Context context, String message){
+        Toast.makeText(context,message,Toast.LENGTH_SHORT).show();
     }
 
 

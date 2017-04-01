@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.rahul_lohra.redditstar.R;
 import com.rahul_lohra.redditstar.activity.ReplyActivity;
 import com.rahul_lohra.redditstar.contract.ILogin;
+import com.rahul_lohra.redditstar.dataModel.Comments;
 import com.rahul_lohra.redditstar.storage.column.CommentsColumn;
 import com.rahul_lohra.redditstar.storage.column.MyPostsColumn;
 import com.rahul_lohra.redditstar.Utility.Constants;
@@ -63,7 +64,7 @@ public class CommentsAdapter extends CursorRecyclerViewAdapter<RecyclerView.View
             }
             break;
             case COMMENTS_TYPE:
-                v =  new CommentsViewHolder(LayoutInflater.from(parent.getContext()).
+                v =  new CommentsViewHolder(context,LayoutInflater.from(parent.getContext()).
                         inflate(R.layout.list_item_comments_new, parent, false));
                 break;
         }
@@ -94,6 +95,8 @@ public class CommentsAdapter extends CursorRecyclerViewAdapter<RecyclerView.View
                 final String postHint =  cursor.getString(cursor.getColumnIndex(MyPostsColumn.KEY_POST_HINT));
                 final String domain =  cursor.getString(cursor.getColumnIndex(MyPostsColumn.KEY_DOMAIN));
                 final String score =  cursor.getString(cursor.getColumnIndex(MyPostsColumn.KEY_SCORE));
+
+
 
                 viewHolder.setLikes(likes);
                 viewHolder.setUrl(url);
@@ -144,25 +147,21 @@ public class CommentsAdapter extends CursorRecyclerViewAdapter<RecyclerView.View
                 viewHolder.view_2.requestLayout();
 
                 //set Textual Data
-                final String comment = cursor.getString(cursor.getColumnIndex(CommentsColumn.KEY_BODY));
+                final String sqlId = cursor.getString(cursor.getColumnIndex(CommentsColumn.KEY_SQL_ID));
+                final String body = cursor.getString(cursor.getColumnIndex(CommentsColumn.KEY_BODY));
                 final String author = cursor.getString(cursor.getColumnIndex(CommentsColumn.KEY_AUTHOR));
                 final int upvote = cursor.getInt(cursor.getColumnIndex(CommentsColumn.KEY_UPS));
                 final int thingId = cursor.getInt(cursor.getColumnIndex(CommentsColumn.KEY_LINK_ID));
-                final long createdUtc = cursor.getLong(cursor.getColumnIndex(MyPostsColumn.KEY_CREATED_UTC));
+                final long createdUtc = cursor.getLong(cursor.getColumnIndex(CommentsColumn.KEY_CREATED_UTC));
                 final String time = Constants.getTimeDiff(createdUtc);
+                final int isExpanded =  cursor.getInt(cursor.getColumnIndex(CommentsColumn.KEY_IS_EXPANDED));
+                final int hiddenChildCounts =  cursor.getInt(cursor.getColumnIndex(CommentsColumn.KEY_HIDDEN_CHILD_COUNTS));
+                final String hiddenBy =  cursor.getString(cursor.getColumnIndex(CommentsColumn.KEY_HIDDEN_BY));
+                final String cId =  cursor.getString(cursor.getColumnIndex(CommentsColumn.KEY_ID));
 
-                viewHolder.tvComment.setText(comment);
-                viewHolder.tvUsername.setText(author);
-                viewHolder.tvUpvoteCount.setText(String.valueOf(upvote));
-                viewHolder.tvTime.setText(time.substring(0,3));
-                viewHolder.tvUsername.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        int w  = viewHolder.view_2.getWidth();
-                        int h = viewHolder.view_2.getHeight();
-                        System.out.println();
-                    }
-                });
+                Comments comments = new Comments(sqlId,cId,body,author,upvote,thingId,createdUtc,time,isExpanded,hiddenChildCounts,hiddenBy,depth);
+                viewHolder.init(comments);
+
 
                 viewHolder.tvReply.setOnClickListener(new View.OnClickListener() {
                     @Override

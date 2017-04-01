@@ -16,8 +16,9 @@
         android:layout_marginStart="8dp" />
 
     <TextView
+        android:paddingEnd="8dp"
         android:textColor="@color/red_700"
-        android:layout_toStartOf="@+id/tv_upvote_count"
+        android:layout_toStartOf="@+id/tv_hidden_child_counts"
         android:layout_toEndOf="@+id/view_2"
         android:id="@+id/tv_username"
         android:layout_width="match_parent"
@@ -44,6 +45,20 @@
         android:layout_height="23dp"
         android:layout_marginEnd="8dp"
         tools:text="539" />
+
+    <TextView
+        android:textColor="@color/white"
+        android:backgroundTint="@color/green_500"
+        android:background="@drawable/rect_filled"
+        android:paddingEnd="4dp"
+        android:paddingStart="4dp"
+        android:layout_marginTop="8dp"
+        android:layout_toStartOf="@+id/tv_upvote_count"
+        android:id="@+id/tv_hidden_child_counts"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
+        tools:text="+5" />
 
     <TextView
         android:textColor="@color/black"
