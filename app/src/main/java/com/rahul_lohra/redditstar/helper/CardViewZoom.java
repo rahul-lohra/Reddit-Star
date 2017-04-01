@@ -56,7 +56,7 @@ public class CardViewZoom extends CardView implements Animator.AnimatorListener 
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        System.out.println("Touch:"+event.getAction());
+//        System.out.println("Touch:"+event.getAction());
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
             case MotionEvent.ACTION_POINTER_DOWN:

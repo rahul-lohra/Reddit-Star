@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.rahul_lohra.redditstar.R;
 import com.rahul_lohra.redditstar.contract.IFrontPageAdapter;
 import com.rahul_lohra.redditstar.contract.ILogin;
@@ -89,9 +90,13 @@ public class HomeAdapter extends CursorRecyclerViewAdapter<RecyclerView.ViewHold
 
         postView.setLikes(likes);
         postView.setTvTitle(subreddit);
-        if(cursor.isLast()){
+        postView.init(activity,thumbnail,url);
+        int total = cursor.getCount();
+        int curPos = cursor.getPosition();
+        if(curPos  == total-6 ){
             EventBus.getDefault().post("getNextData");
         }
+
 
 
         if(postView.cardView!=null){
@@ -175,25 +180,7 @@ public class HomeAdapter extends CursorRecyclerViewAdapter<RecyclerView.ViewHold
 
         //set Textual Data
 
-        if (thumbnail != null) {
-            if(thumbnail.equals("default")){
-                Glide.with(activity)
-                        .load("")
-                        .centerCrop()
-                        .crossFade()
-                        .placeholder(R.drawable.ic_reddit)
-                        .into(postView.imageView);
-            }else {
-                Glide.with(activity)
-                        .load(thumbnail)
-                        .centerCrop()
-                        .crossFade()
-                        .into(postView.imageView);
-            }
 
-        }else {
-            postView.imageView.setVisibility(View.GONE);
-        }
 
         postView.tvVote.setText(ups);
         postView.tvDetail.setText(title);
@@ -201,15 +188,6 @@ public class HomeAdapter extends CursorRecyclerViewAdapter<RecyclerView.ViewHold
 
         if(postView instanceof GalleryView){
             ((GalleryView)postView).labelTextView.writeLabel(domain,postHint,url);
-
-//            ((CardViewZoom)((GalleryView)postView).cardView).setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    DetailPostModal modal = new DetailPostModal(id,
-//                            subreddit,ups,title,commentsCount,thumbnail,time,author,bigImageUrl,likes,name,postHint);
-//                    iFrontPageAdapter.sendData(modal,postView.imageView,id);
-//                }
-//            });
         }
 
     }

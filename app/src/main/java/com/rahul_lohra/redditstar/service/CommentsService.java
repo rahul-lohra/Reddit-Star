@@ -88,8 +88,6 @@ public class CommentsService extends IntentService {
                     Gson gson = builder.create();
                     exampleList = gson.fromJson(res.body().string(), new TypeToken<ArrayList<Example>>() {}.getType());
                     traverse(exampleList.get(1).get(0), depth);
-//                    Log.d(TAG, "Custom List Size->" + customCommentList.size());
-
                     Constants.bulkInsertIntoCommentsTable(getApplicationContext(),customCommentList,postId, subbreditName);
                     customCommentList.clear();
                 }

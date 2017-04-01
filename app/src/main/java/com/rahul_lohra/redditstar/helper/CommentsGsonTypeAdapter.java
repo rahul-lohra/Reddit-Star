@@ -22,12 +22,7 @@ import java.util.List;
 public class CommentsGsonTypeAdapter extends TypeAdapter<List<Example>> {
 
     @Override
-    public void write(JsonWriter writer, List<Example> value) throws IOException {
-//        if (value == null) {
-//            writer.nullValue();
-//            return;
-//        }
-    }
+    public void write(JsonWriter writer, List<Example> value) throws IOException {}
 
     @Override
         public List<Example> read(JsonReader reader) {
@@ -258,7 +253,8 @@ public class CommentsGsonTypeAdapter extends TypeAdapter<List<Example>> {
         String name = null;
         Integer ups = null;
         String linkId = null;
-
+        Long created_utc = null;
+        Long created = null;
         reader.beginObject();
         while (reader.hasNext()) {
             String temp_name = reader.nextName();
@@ -301,7 +297,13 @@ public class CommentsGsonTypeAdapter extends TypeAdapter<List<Example>> {
                 ups = reader.nextInt();
             } else if (temp_name.equals("link_id")) {
                 linkId = reader.nextString();
-            } else {
+            } else if(temp_name.equals("created_utc")){
+                created_utc = reader.nextLong();
+            }
+            else if(temp_name.equals("created")){
+                created = reader.nextLong();
+            }
+            else {
                 reader.skipValue();
             }
         }
@@ -318,7 +320,9 @@ public class CommentsGsonTypeAdapter extends TypeAdapter<List<Example>> {
                 subreddit,
                 name,
                 ups,
-                linkId);
+                linkId,
+                created_utc,
+                created);
     }
 
     public Example readReplies(JsonReader reader) throws IOException{

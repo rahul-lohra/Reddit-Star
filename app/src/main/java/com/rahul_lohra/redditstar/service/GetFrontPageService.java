@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.rahul_lohra.redditstar.Application.Initializer;
 import com.rahul_lohra.redditstar.modal.custom.AfterModal;
 import com.rahul_lohra.redditstar.modal.frontPage.FrontPageChild;
@@ -74,7 +75,7 @@ public class GetFrontPageService extends IntentService {
                 return;
             }
             Map<String,String> map = new HashMap<>();
-            map.put("limit","10");
+            map.put("limit","20");
             map.put("after",after);
             map.put("t",filterParam_2);
             map.put(SpConstants.OVER_18,String.valueOf(sp.getBoolean(SpConstants.OVER_18,false)));
@@ -84,33 +85,18 @@ public class GetFrontPageService extends IntentService {
                 Response<FrontPageResponse> res = apiInterface.getFrontPage(token,filterParam_1,map).execute();
                 if(res.code()==200)
                 {
-//                    EventBus.getDefault().post(res.body().getData());
                     EventBus.getDefault().post(new AfterModal(res.body().getData().getAfter()));
                     Constants.insertPostsIntoTable(getApplicationContext(),res.body(),Constants.TYPE_POST);
                     for(FrontPageChild frontPageChild:res.body().getData().getChildren()){
                         String url = frontPageChild.getData().getThumbnail();
                         FutureTarget<File> future = Glide.with(getApplicationContext())
                                 .load(url)
-                                .downloadOnly(100, 100);
-//                        String url = frontPageChild.getData();
-//                        Preview preview = frontPageChild.getData().getPreview();
-//                        String bigUrl = (preview!=null)?preview.getImages().get(0).getSource().getUrl():null;
-//                        if(bigUrl!=null){
-//                            FutureTarget<File> future_2 = Glide.with(getApplicationContext())
-//                                    .load(url)
-//                                    .downloadOnly(250,250);
-//                        }
-
-
+                                .downloadOnly(2000, 2000);
                     }
                 }
                 Log.d(TAG,"response:"+res.code());
             } catch (IOException e) {
                 e.printStackTrace();
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            } catch (ExecutionException e) {
-//                e.printStackTrace();
             } finally {
                 after = null;
             }

@@ -179,7 +179,11 @@ public class MyProvider {
                 MyDatabase.COMMENTS_TABLE+"."+CommentsColumn.KEY_UPS,
                 MyDatabase.COMMENTS_TABLE+"."+CommentsColumn.KEY_LINK_ID,
                 MyDatabase.COMMENTS_TABLE+"."+CommentsColumn.KEY_SQL_ID,
-                MyDatabase.COMMENTS_TABLE+"."+CommentsColumn.KEY_DEPTH
+                MyDatabase.COMMENTS_TABLE+"."+CommentsColumn.KEY_DEPTH,
+                MyDatabase.COMMENTS_TABLE+"."+CommentsColumn.KEY_CREATED,
+                MyDatabase.COMMENTS_TABLE+"."+CommentsColumn.KEY_CREATED_UTC,
+
+
         };
 
     }

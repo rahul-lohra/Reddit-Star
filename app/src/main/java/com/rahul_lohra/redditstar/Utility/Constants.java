@@ -275,7 +275,6 @@ public class Constants {
         if (list.size() < 1) {
             return;
         }
-//        Log.wtf(TAG,"bulk insert row postId:,"+postId+",subredditName:"+subredditName);
         String linkId = list.get(0).getChild().t1data.getLink_id();
         String id = list.get(0).getChild().t1data.getId();
         deletePreviousComments(context, linkId);
@@ -283,8 +282,6 @@ public class Constants {
         Uri mUri = MyProvider.CommentsLists.CONTENT_URI;
         ContentValues cv[] = new ContentValues[list.size()];
         for (int i = 0; i < list.size(); ++i) {
-
-//            findSimilarComment(context,id);
 
             cv[i] = new ContentValues();
             CustomComment customComment = list.get(i);
@@ -303,7 +300,7 @@ public class Constants {
             cv[i].put(CommentsColumn.KEY_NAME, t1data.getName());
             cv[i].put(CommentsColumn.KEY_UPS, t1data.getUps());
             cv[i].put(CommentsColumn.KEY_LINK_ID, t1data.getLink_id());
-
+            cv[i].put(CommentsColumn.KEY_CREATED, t1data.getCreated_utc());
         }
         context.getContentResolver().bulkInsert(mUri, cv);
         context.getContentResolver().notifyChange(MyProvider.PostsComments.CONTENT_URI, null);

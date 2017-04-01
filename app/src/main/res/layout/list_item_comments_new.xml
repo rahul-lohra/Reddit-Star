@@ -15,17 +15,8 @@
         android:background="@color/colorPrimaryDark"
         android:layout_marginStart="8dp" />
 
-    <!--<View-->
-        <!--android:layout_alignParentTop="true"-->
-        <!--android:layout_toEndOf="@+id/view_2"-->
-        <!--android:layout_alignBottom="@id/tv_comment"-->
-        <!--android:id="@+id/view_3"-->
-        <!--android:layout_width="14dp"-->
-        <!--android:layout_height="0dp"-->
-        <!--android:background="@color/colorPrimaryDark"-->
-        <!--android:layout_marginStart="8dp" />-->
-
     <TextView
+        android:textColor="@color/red_700"
         android:layout_toStartOf="@+id/tv_upvote_count"
         android:layout_toEndOf="@+id/view_2"
         android:id="@+id/tv_username"
@@ -55,15 +46,17 @@
         tools:text="539" />
 
     <TextView
-        android:paddingBottom="8dp"
+        android:textColor="@color/black"
         android:layout_marginStart="12dp"
         android:layout_toEndOf="@+id/view_2"
         android:layout_below="@+id/tv_username"
         android:id="@+id/tv_comment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginTop="8dp"
+        android:paddingTop="4dp"
+        android:paddingEnd="8dp"
+        android:paddingStart="0dp"
+        android:paddingBottom="4dp"
         tools:text="kladjklasjdklasjdklsajdklasjdklasjdkalsjdlkasjdklasjdaslkdjakld"
          />
 

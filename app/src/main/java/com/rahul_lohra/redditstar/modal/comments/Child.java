@@ -13,7 +13,7 @@ public class Child {
     @SerializedName("t3data")
     @Expose
     public T3_Data t3data;
-    @SerializedName("t1data")
+    @SerializedName("t1data") //comments
     @Expose
     public T1data t1data;
 

@@ -192,13 +192,13 @@ public class DetailActivity extends BaseActivity implements
         }
     }
 
-    private void loadImage(String thumbnail, final String bigImageUrl) {
+    private synchronized void loadImage(String thumbnail, final String bigImageUrl) {
         Glide.with(this).
                 load(thumbnail)
                 .centerCrop()
                 .crossFade()
                 .placeholder(R.drawable.ic_reddit)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .listener(new RequestListener<String, GlideDrawable>() {
                     @Override
                     public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
@@ -212,7 +212,13 @@ public class DetailActivity extends BaseActivity implements
                         imageView.setImageDrawable(resource);
                         updatePalete(imageView);
                         if (bigImageUrl != null) {
-                            loadBigImage(bigImageUrl, glideDrawable);
+//                            loadBigImage(bigImageUrl, glideDrawable);
+                            Glide.with(DetailActivity.this)
+                                    .load(bigImageUrl)
+                                    .placeholder(glideDrawable)
+                                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                                    .into(imageView);
+
                         }
                         return false;
                     }
@@ -220,7 +226,7 @@ public class DetailActivity extends BaseActivity implements
                 .into(imageView);
     }
 
-    private void updatePalete(AspectRatioImageView imageView) {
+    private synchronized void updatePalete(AspectRatioImageView imageView) {
         final Drawable dr = ((ImageView) imageView).getDrawable();
         Bitmap bmap = ((GlideBitmapDrawable) dr.getCurrent()).getBitmap();
         Palette.from(bmap).generate(new Palette.PaletteAsyncListener() {
@@ -251,7 +257,7 @@ public class DetailActivity extends BaseActivity implements
         });
     }
 
-    private void perpareImage(Cursor cursor) {
+    private synchronized void perpareImage(Cursor cursor) {
         if (cursor != null) {
             if (cursor.moveToFirst()) {
                 String subreddit = cursor.getString(cursor.getColumnIndex(MyPostsColumn.KEY_SUBREDDIT));
@@ -277,8 +283,11 @@ public class DetailActivity extends BaseActivity implements
                                 loadImage(thumbnail, null);
                             } else if (url.endsWith("jpg") || url.endsWith("png") || url.endsWith("jpeg") || url.endsWith("webp")) {
                                 loadImage(thumbnail, bigImageUrl);
-                                loadBigImage(bigImageUrl,null);
-                            } else {
+//                                loadBigImage(bigImageUrl,null);
+                            } else if(bigImageUrl!=null && (bigImageUrl.startsWith("http"))){
+                                loadImage(thumbnail, bigImageUrl);
+//                                loadBigImage(bigImageUrl,null);
+                            }  else {
                                 loadImage(thumbnail, null);
                             }
                         } else {
@@ -296,13 +305,13 @@ public class DetailActivity extends BaseActivity implements
     }
 
 
-            private void loadBigImage (String bigImageUrl,final GlideDrawable glideDrawable){
+            private synchronized void loadBigImage (String bigImageUrl,final GlideDrawable glideDrawable){
                 Glide.with(this).
                         load(bigImageUrl)
                         .centerCrop()
                         .crossFade()
                         .placeholder(glideDrawable)
-                        .diskCacheStrategy(DiskCacheStrategy.RESULT)
+                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                         .listener(new RequestListener<String, GlideDrawable>() {
                             @Override
                             public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
@@ -325,7 +334,7 @@ public class DetailActivity extends BaseActivity implements
                 snackbar.show();
             }
 
-            private void loadPreview(){
+            private synchronized void loadPreview(){
                 Glide.with(this)
                         .load("")
                         .placeholder(R.drawable.ic_reddit)

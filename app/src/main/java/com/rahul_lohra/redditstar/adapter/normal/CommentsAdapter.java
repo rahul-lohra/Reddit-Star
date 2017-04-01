@@ -72,8 +72,6 @@ public class CommentsAdapter extends CursorRecyclerViewAdapter<RecyclerView.View
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, Cursor cursor) {
-
-
         switch (holder.getItemViewType()){
             case POST_TYPE:
             {
@@ -132,6 +130,10 @@ public class CommentsAdapter extends CursorRecyclerViewAdapter<RecyclerView.View
                         break;
                     case 3: viewHolder.view_2.setBackgroundColor(ContextCompat.getColor(context,R.color.grey_500));
                         break;
+                    case 4: viewHolder.view_2.setBackgroundColor(ContextCompat.getColor(context,R.color.green_500));
+                        break;
+                    case 5: viewHolder.view_2.setBackgroundColor(ContextCompat.getColor(context,R.color.light_blue_500));
+                        break;
                 }
 
                 int margin = depth *20;
@@ -146,11 +148,13 @@ public class CommentsAdapter extends CursorRecyclerViewAdapter<RecyclerView.View
                 final String author = cursor.getString(cursor.getColumnIndex(CommentsColumn.KEY_AUTHOR));
                 final int upvote = cursor.getInt(cursor.getColumnIndex(CommentsColumn.KEY_UPS));
                 final int thingId = cursor.getInt(cursor.getColumnIndex(CommentsColumn.KEY_LINK_ID));
+                final long createdUtc = cursor.getLong(cursor.getColumnIndex(MyPostsColumn.KEY_CREATED_UTC));
+                final String time = Constants.getTimeDiff(createdUtc);
 
                 viewHolder.tvComment.setText(comment);
                 viewHolder.tvUsername.setText(author);
                 viewHolder.tvUpvoteCount.setText(String.valueOf(upvote));
-
+                viewHolder.tvTime.setText(time.substring(0,3));
                 viewHolder.tvUsername.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {

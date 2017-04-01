@@ -46,8 +46,16 @@ public class T1data {
     @SerializedName("link_id")
     @Expose
     public String link_id;
+    @SerializedName("created_utc")
+    @Expose
+    public Long created_utc;
+    @SerializedName("created")
+    @Expose
+    public Long created;
 
-    public T1data(String subredditId, Boolean likes, Example replies, String id, String author, String parentId, Integer score, String body, Integer downs, String subreddit, String name, Integer ups, String link_id) {
+
+
+    public T1data(String subredditId, Boolean likes, Example replies, String id, String author, String parentId, Integer score, String body, Integer downs, String subreddit, String name, Integer ups, String link_id,Long created_utc,Long created) {
         this.subredditId = subredditId;
         this.likes = likes;
         this.replies = replies;
@@ -61,6 +69,16 @@ public class T1data {
         this.name = name;
         this.ups = ups;
         this.link_id = link_id;
+        this.created_utc = created_utc;
+        this.created = created;
+    }
+
+    public Long getCreated() {
+        return created;
+    }
+
+    public Long getCreated_utc() {
+        return created_utc;
     }
 
     public String getSubredditId() {

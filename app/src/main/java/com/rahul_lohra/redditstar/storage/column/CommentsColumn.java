@@ -12,8 +12,8 @@ import static net.simonvt.schematic.annotation.DataType.Type.TEXT;
  * Created by rkrde on 04-03-2017.
  */
 
- @SuppressWarnings("HardCodedStringLiteral")
- public interface CommentsColumn {
+@SuppressWarnings("HardCodedStringLiteral")
+public interface CommentsColumn {
     @DataType(INTEGER)
     @PrimaryKey
     String KEY_SQL_ID = "sql_id";
@@ -27,23 +27,24 @@ import static net.simonvt.schematic.annotation.DataType.Type.TEXT;
     String KEY_SUBREDDIT_ID = "subreddit_id";
 
     @DataType(INTEGER)
-    String KEY_LIKES =  "likes";
+    String KEY_LIKES = "likes";
 
     @DataType(TEXT)
-    @NotNull @Unique
+    @NotNull
+    @Unique
     String KEY_ID = "_id";
 
     @DataType(TEXT)
     String KEY_AUTHOR = "author";
 
     @DataType(TEXT)
-    String PARENT_ID  = "parentId";
+    String PARENT_ID = "parentId";
 
     @DataType(INTEGER)
     String KEY_SCORE = "score";
 
     @DataType(TEXT)
-    String KEY_BODY =  "body";
+    String KEY_BODY = "body";
 
     @DataType(INTEGER)
     String KEY_DOWNS = "downs";
@@ -55,9 +56,17 @@ import static net.simonvt.schematic.annotation.DataType.Type.TEXT;
     String KEY_NAME = "name";
 
     @DataType(INTEGER)
-    String KEY_UPS =  "ups";
+    String KEY_UPS = "ups";
 
     @DataType(TEXT)
     @NotNull
     String KEY_LINK_ID = "link_id";
+
+    @DataType(INTEGER)
+    String KEY_CREATED_UTC = "comments_created_utc";
+
+    @DataType(INTEGER)
+    String KEY_CREATED = "comments_created";
+
+
 }

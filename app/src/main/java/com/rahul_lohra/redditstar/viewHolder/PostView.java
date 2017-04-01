@@ -1,5 +1,6 @@
 package com.rahul_lohra.redditstar.viewHolder;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.IntDef;
 import android.support.annotation.Nullable;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.rahul_lohra.redditstar.R;
 import com.rahul_lohra.redditstar.Application.Initializer;
 import com.rahul_lohra.redditstar.helper.CardViewZoom;
@@ -83,6 +85,35 @@ public class PostView extends RecyclerView.ViewHolder {
         apiInterface =retrofit.create(ApiInterface.class);
 
         tvTitle.setTextColor(ContextCompat.getColor(context,R.color.red_youtube));
+    }
+
+    public void init(Activity activity,String thumbnail, String url){
+        if (thumbnail != null) {
+            if(thumbnail.equals("default")){
+                Glide.with(activity)
+                        .load("")
+                        .centerCrop()
+                        .crossFade()
+                        .placeholder(R.drawable.ic_reddit)
+                        .into(imageView);
+            }else if(thumbnail.startsWith("http")){
+                imageView.setTransitionName("profile");
+                imageView.setVisibility(View.VISIBLE);
+                Glide.with(activity)
+                        .load(thumbnail)
+                        .crossFade()
+                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                        .into(imageView);
+
+            }else {
+                imageView.setTransitionName("");
+                imageView.setVisibility(View.GONE);
+            }
+
+        }else {
+            imageView.setTransitionName("");
+            imageView.setVisibility(View.GONE);
+        }
     }
 
     public Integer getLikes() {
