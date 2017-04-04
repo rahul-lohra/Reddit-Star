@@ -29,6 +29,7 @@ import com.rahul_lohra.redditstar.activity.SubredditActivity;
 import com.rahul_lohra.redditstar.adapter.cursor.HomeAdapter;
 import com.rahul_lohra.redditstar.Application.Initializer;
 import com.rahul_lohra.redditstar.contract.IFrontPageAdapter;
+import com.rahul_lohra.redditstar.fragments.BaseFragment;
 import com.rahul_lohra.redditstar.modal.FavoritesModal;
 import com.rahul_lohra.redditstar.modal.custom.DetailPostModal;
 import com.rahul_lohra.redditstar.modal.frontPage.FrontPageChild;
@@ -63,7 +64,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class SubredditFragment extends Fragment
+public class SubredditFragment extends BaseFragment
         implements LoaderManager.LoaderCallbacks<Cursor>,
         IFrontPageAdapter
 
@@ -388,18 +389,6 @@ public class SubredditFragment extends Fragment
                 adapter.swapCursor(null);
                 break;
         }
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        EventBus.getDefault().register(this);
-    }
-
-    @Override
-    public void onStop() {
-        EventBus.getDefault().unregister(this);
-        super.onStop();
     }
 
     @Override

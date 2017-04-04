@@ -2,6 +2,7 @@ package com.rahul_lohra.redditstar.Dagger.Component;
 
 import com.rahul_lohra.redditstar.activity.DetailActivity;
 import com.rahul_lohra.redditstar.activity.DetailActivityNew;
+import com.rahul_lohra.redditstar.activity.MediaActivity;
 import com.rahul_lohra.redditstar.activity.SearchActivity;
 import com.rahul_lohra.redditstar.Dagger.Module.AppModule;
 import com.rahul_lohra.redditstar.Dagger.Module.NetModule;
@@ -45,6 +46,7 @@ public interface NetComponent {
     void inject(SubredditFragment fragment);
     void inject(SearchFragment fragment);
     void inject(DetailSubredditFragment fragment);
+    void inject(MediaActivity mediaActivity);
 
     //Service
     void inject(GetSubredditListService service);

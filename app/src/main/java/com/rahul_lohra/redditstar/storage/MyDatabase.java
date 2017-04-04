@@ -69,7 +69,7 @@ public class MyDatabase {
                         db.execSQL(migration);
                         db.setTransactionSuccessful();
                     } catch (Exception e) {
-                        Log.e("onUpgrade", "Data executing database migration: %s" + migration);
+                        Log.e("onUpgrade", "ImgurData executing database migration: %s" + migration);
 
                     } finally {
                         db.endTransaction();

@@ -1,13 +1,15 @@
 package com.rahul_lohra.redditstar.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
 import com.rahul_lohra.redditstar.Utility.Constants;
+import com.rahul_lohra.redditstar.contract.IActivity;
 
 import org.greenrobot.eventbus.EventBus;
 
-public class BaseFragment extends Fragment {
+public class BaseFragment extends Fragment implements IActivity{
 
 //    protected String after = null;
     public BaseFragment() {
@@ -38,4 +40,8 @@ public class BaseFragment extends Fragment {
     }
 
 
+    @Override
+    public void openActivity(Intent intent) {
+        startActivity(intent);
+    }
 }

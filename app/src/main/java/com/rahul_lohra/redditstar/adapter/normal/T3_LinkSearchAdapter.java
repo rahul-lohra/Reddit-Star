@@ -190,7 +190,7 @@ public class T3_LinkSearchAdapter extends RecyclerView.Adapter {
             }
         });
 
-        //set Textual Data
+        //set Textual ImgurData
 
         if (preview != null) {
             Glide.with(context)

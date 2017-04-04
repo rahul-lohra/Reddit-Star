@@ -146,7 +146,7 @@ public class CommentsAdapter extends CursorRecyclerViewAdapter<RecyclerView.View
                 viewHolder.view_2.setLayoutParams(params);
                 viewHolder.view_2.requestLayout();
 
-                //set Textual Data
+                //set Textual ImgurData
                 final String sqlId = cursor.getString(cursor.getColumnIndex(CommentsColumn.KEY_SQL_ID));
                 final String body = cursor.getString(cursor.getColumnIndex(CommentsColumn.KEY_BODY));
                 final String author = cursor.getString(cursor.getColumnIndex(CommentsColumn.KEY_AUTHOR));

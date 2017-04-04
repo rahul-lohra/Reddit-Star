@@ -25,7 +25,7 @@
             android:value="GlideModule" />
 
         <!-- widget -->
-        <receiver android:name="com.rahul_lohra.redditstar.widget.MyWidgetProvider">
+        <receiver android:name=".widget.MyWidgetProvider">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -53,27 +53,27 @@
 
         <!-- service -->
         <service
-            android:name="com.rahul_lohra.redditstar.service.GetNewTokenService"
+            android:name=".service.GetNewTokenService"
             android:exported="false" />
         <service
-            android:name="com.rahul_lohra.redditstar.service.GetUserCredentialsService"
+            android:name=".service.GetUserCredentialsService"
             android:exported="false" />
-        <service android:name="com.rahul_lohra.redditstar.service.GetSubscribedSubredditsService" />
+        <service android:name=".service.GetSubscribedSubredditsService" />
         <service
-            android:name="com.rahul_lohra.redditstar.service.search.SearchLinksService"
-            android:exported="false" />
-        <service
-            android:name="com.rahul_lohra.redditstar.service.search.SearchSubredditsService"
+            android:name=".service.search.SearchLinksService"
             android:exported="false" />
         <service
-            android:name="com.rahul_lohra.redditstar.service.GetFrontPageService"
+            android:name=".service.search.SearchSubredditsService"
             android:exported="false" />
         <service
-            android:name="com.rahul_lohra.redditstar.service.GetSubredditListService"
+            android:name=".service.GetFrontPageService"
+            android:exported="false" />
+        <service
+            android:name=".service.GetSubredditListService"
             android:exported="false" />
 
         <!-- Authenticator -->
-        <service android:name="com.rahul_lohra.redditstar.sync.AuthenticatorService">
+        <service android:name=".sync.AuthenticatorService">
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator" />
             </intent-filter>
@@ -83,7 +83,7 @@
                 android:resource="@xml/authenticator" />
         </service>
         <service
-            android:name="com.rahul_lohra.redditstar.service.widget.WidgetTaskService"
+            android:name=".service.widget.WidgetTaskService"
             android:exported="true"
             android:permission="com.google.android.gms.permission.BIND_NETWORK_TASK_SERVICE">
             <intent-filter>
@@ -92,12 +92,12 @@
         </service>
         <!-- widget service -->
         <service
-            android:name="com.rahul_lohra.redditstar.service.widget.ListWidgetService"
+            android:name=".service.widget.ListWidgetService"
             android:exported="false"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
 
         <activity
-            android:name="com.rahul_lohra.redditstar.activity.DashboardActivity"
+            android:name=".activity.DashboardActivity"
             android:theme="@style/AppTheme.NoToolBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -105,24 +105,24 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.rahul_lohra.redditstar.activity.LoginActivity" />
+        <activity android:name=".activity.LoginActivity" />
         <activity
-            android:name="com.rahul_lohra.redditstar.activity.DetailActivity"
-            android:parentActivityName="com.rahul_lohra.redditstar.activity.DashboardActivity"
+            android:name=".activity.DetailActivity"
+            android:parentActivityName=".activity.DashboardActivity"
             android:theme="@style/DetailActivityTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.rahul_lohra.redditstar.activity.DashboardActivity" />
         </activity>
         <activity
-            android:name="com.rahul_lohra.redditstar.activity.DetailActivityNew"
-            android:parentActivityName="com.rahul_lohra.redditstar.activity.DashboardActivity">
+            android:name=".activity.DetailActivityNew"
+            android:parentActivityName=".activity.DashboardActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.rahul_lohra.redditstar.activity.DashboardActivity" />
         </activity>
         <activity
-            android:name="com.rahul_lohra.redditstar.activity.WebViewActivity"
+            android:name=".activity.WebViewActivity"
             android:label="@string/reddit_login"
             android:theme="@style/AppTheme.NoToolBar" />
 
@@ -135,23 +135,23 @@
 
         <!-- Search Provider -->
         <provider
-            android:name="com.rahul_lohra.redditstar.storage.MySuggestionProvider"
+            android:name=".storage.MySuggestionProvider"
             android:authorities="com.rahul_lohra.redditstar.MySuggestionProvider" />
 
         <activity
-            android:name="com.rahul_lohra.redditstar.activity.ReplyActivity"
+            android:name=".activity.ReplyActivity"
             android:label="@string/reply"
             android:theme="@style/AppTheme.NoToolBar" />
         <activity
-            android:name="com.rahul_lohra.redditstar.activity.SubredditActivity"
+            android:name=".activity.SubredditActivity"
             android:label="@string/subreddits"
             android:theme="@style/AppTheme.NoToolBar" />
         <activity
-            android:name="com.rahul_lohra.redditstar.activity.FavoriteActivity"
+            android:name=".activity.FavoriteActivity"
             android:label="@string/favorite"
             android:theme="@style/AppTheme.NoToolBar" />
         <activity
-            android:name="com.rahul_lohra.redditstar.activity.SearchActivity"
+            android:name=".activity.SearchActivity"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoToolBar">
             <intent-filter>
@@ -162,9 +162,9 @@
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
-        <activity android:name="com.rahul_lohra.redditstar.activity.BaseActivity" />
+        <activity android:name=".activity.BaseActivity" />
         <activity
-            android:name="com.rahul_lohra.redditstar.activity.WidgetConfigureActivity"
+            android:name=".activity.WidgetConfigureActivity"
             android:label="@string/configure_widget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
@@ -172,18 +172,19 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.rahul_lohra.redditstar.activity.SettingsActivity"
+            android:name=".activity.SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:parentActivityName="com.rahul_lohra.redditstar.activity.DashboardActivity">
+            android:parentActivityName=".activity.DashboardActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.rahul_lohra.redditstar.activity.DashboardActivity" />
         </activity>
 
         <service
-            android:name="com.rahul_lohra.redditstar.service.CommentsService"
+            android:name=".service.CommentsService"
             android:exported="false" />
 
+        <activity android:name=".activity.MediaActivity"></activity>
     </application>
 
 </manifest>

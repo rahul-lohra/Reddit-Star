@@ -30,6 +30,7 @@ import com.rahul_lohra.redditstar.activity.SubredditActivity;
 import com.rahul_lohra.redditstar.adapter.cursor.HomeAdapter;
 import com.rahul_lohra.redditstar.adapter.normal.T5_SubredditSearchAdapter;
 import com.rahul_lohra.redditstar.Application.Initializer;
+import com.rahul_lohra.redditstar.contract.IActivity;
 import com.rahul_lohra.redditstar.contract.IFrontPageAdapter;
 import com.rahul_lohra.redditstar.helper.MySearchView;
 import com.rahul_lohra.redditstar.modal.T5_Kind;
@@ -63,7 +64,8 @@ public class SearchFragment extends BaseFragment implements
         T5_SubredditSearchAdapter.IT5_SubredditSearchAdapter,
         LoaderManager.LoaderCallbacks<Cursor>,
         IFrontPageAdapter,
-        MySearchView.ISearchView{
+        MySearchView.ISearchView
+{
 
     @Inject
     @Named("withToken")

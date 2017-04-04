@@ -2,6 +2,7 @@ package com.rahul_lohra.redditstar.viewHolder;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.IntDef;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
@@ -15,6 +16,8 @@ import android.widget.TextView;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.rahul_lohra.redditstar.R;
 import com.rahul_lohra.redditstar.Application.Initializer;
+import com.rahul_lohra.redditstar.activity.MediaActivity;
+import com.rahul_lohra.redditstar.contract.IActivity;
 import com.rahul_lohra.redditstar.helper.CardViewZoom;
 import com.rahul_lohra.redditstar.retrofit.ApiInterface;
 import com.rahul_lohra.redditstar.Utility.UserState;
@@ -29,12 +32,15 @@ import javax.inject.Named;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
+import static com.rahul_lohra.redditstar.factory.DomainFactory.DOMAIN_GFYCAT;
+import static com.rahul_lohra.redditstar.factory.DomainFactory.DOMAIN_IMGUR;
 import static java.lang.annotation.RetentionPolicy.SOURCE;
 
 /**
@@ -60,7 +66,7 @@ public class PostView extends RecyclerView.ViewHolder {
     public ImageView imageDownVote;
     @Nullable @Bind(R.id.card_view)
     public CardView cardView;
-
+    private String domain,url;
     private Integer likes;
     private Context context;
 
@@ -72,12 +78,25 @@ public class PostView extends RecyclerView.ViewHolder {
     public static final int DIRECTION_UP = 1;
 
     private final String TAG = PostView.class.getSimpleName();
-
+    private IActivity iActivity;
     @Inject
     @Named("withToken")
     Retrofit retrofit;
     private ApiInterface apiInterface;
-    public PostView(Context context,View itemView) {
+
+    @OnClick(R.id.imageView)
+    public void onClickImageView(){
+        if(domain.equals(DOMAIN_GFYCAT)||domain.equals(DOMAIN_IMGUR)){
+
+            Intent intent = new Intent(context,MediaActivity.class);
+            intent.putExtra("url",url);
+            intent.putExtra("domain",domain);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
+
+        }
+    }
+    public PostView(Context context, View itemView) {
         super(itemView);
         ButterKnife.bind(this, itemView);
         this.context = context;
@@ -87,7 +106,9 @@ public class PostView extends RecyclerView.ViewHolder {
         tvTitle.setTextColor(ContextCompat.getColor(context,R.color.red_youtube));
     }
 
-    public void init(Activity activity,String thumbnail, String url){
+    public void init(Activity activity,String thumbnail, String url,String domain){
+        this.url = url;
+        this.domain = domain;
         if (thumbnail != null) {
             if(thumbnail.equals("default")){
                 Glide.with(activity)

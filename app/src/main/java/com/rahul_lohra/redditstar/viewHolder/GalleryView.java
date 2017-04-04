@@ -6,6 +6,7 @@ import android.support.v7.widget.CardView;
 import android.view.View;
 
 import com.rahul_lohra.redditstar.R;
+import com.rahul_lohra.redditstar.contract.IActivity;
 import com.rahul_lohra.redditstar.helper.CardViewZoom;
 import com.rahul_lohra.redditstar.helper.LabelTextView;
 

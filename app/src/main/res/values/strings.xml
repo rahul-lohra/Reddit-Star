@@ -121,7 +121,7 @@
     <string name="thumbnail">Thumbnail</string>
     <string name="popular">Popular</string>
     <string name="front_page">Front Page</string>
-    <string name="subreddit" >Subreddit</string>
+    <string name="subreddit">Subreddit</string>
 
     <string name="subreddit_name">Subreddit Name</string>
     <string name="apply">Apply</string>
@@ -156,7 +156,7 @@
         <item>-1</item>
     </string-array>
 
-    <!-- Example settings for Data & Sync -->
+    <!-- Example settings for ImgurData & Sync -->
     <string name="pref_header_data_sync">Data &amp; sync</string>
 
     <string name="pref_title_sync_frequency">Sync frequency</string>

@@ -176,7 +176,7 @@ public class FrontPageAdapter extends RecyclerView.Adapter {
             }
         });
 
-        //set Textual Data
+        //set Textual ImgurData
 
         if (preview != null) {
             Glide.with(fragment)

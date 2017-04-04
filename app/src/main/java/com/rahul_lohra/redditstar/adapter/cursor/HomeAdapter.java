@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.rahul_lohra.redditstar.R;
+import com.rahul_lohra.redditstar.contract.IActivity;
 import com.rahul_lohra.redditstar.contract.IFrontPageAdapter;
 import com.rahul_lohra.redditstar.contract.ILogin;
 import com.rahul_lohra.redditstar.helper.ItemTouchHelperAdapter;
@@ -43,7 +44,6 @@ public class HomeAdapter extends CursorRecyclerViewAdapter<RecyclerView.ViewHold
     private final String TAG = HomeAdapter.class.getSimpleName();
     private IFrontPageAdapter iFrontPageAdapter;
     private ILogin iLogin;
-
     private int mLayoutManagerType = DEFAULT;
     @Retention(SOURCE)
     @IntDef({LIST,CARD, GALLERY,DEFAULT})
@@ -90,7 +90,7 @@ public class HomeAdapter extends CursorRecyclerViewAdapter<RecyclerView.ViewHold
 
         postView.setLikes(likes);
         postView.setTvTitle(subreddit);
-        postView.init(activity,thumbnail,url);
+        postView.init(activity,thumbnail,url,domain);
         int total = cursor.getCount();
         int curPos = cursor.getPosition();
         if(curPos  == total-6 ){
@@ -178,7 +178,7 @@ public class HomeAdapter extends CursorRecyclerViewAdapter<RecyclerView.ViewHold
             }
         });
 
-        //set Textual Data
+        //set Textual ImgurData
 
 
 

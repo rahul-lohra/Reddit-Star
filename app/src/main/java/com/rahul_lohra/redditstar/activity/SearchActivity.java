@@ -9,6 +9,7 @@ import android.widget.ImageView;
 
 import com.rahul_lohra.redditstar.BuildConfig;
 import com.rahul_lohra.redditstar.R;
+import com.rahul_lohra.redditstar.contract.IActivity;
 import com.rahul_lohra.redditstar.contract.ILogin;
 import com.rahul_lohra.redditstar.fragments.SearchFragment;
 import com.rahul_lohra.redditstar.modal.custom.DetailPostModal;
@@ -19,7 +20,8 @@ import static com.rahul_lohra.redditstar.storage.MyDatabase.SUGGESTION_TABLE;
 
 public class SearchActivity extends BaseActivity implements
         SearchFragment.ISearchFragment,
-        ILogin
+        ILogin,
+        IActivity
 
 {
     private Uri uri = MyProvider.PostsLists.CONTENT_URI;
@@ -78,6 +80,11 @@ public class SearchActivity extends BaseActivity implements
 
     @Override
     public void pleaseLogin() {
+
+    }
+
+    @Override
+    public void openActivity(Intent intent) {
 
     }
 }

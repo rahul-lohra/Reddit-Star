@@ -1,6 +1,7 @@
 package com.rahul_lohra.redditstar.retrofit;
 
 import com.rahul_lohra.redditstar.modal.AboutMe;
+import com.rahul_lohra.redditstar.modal.GifyCat.GifyCatResponse;
 import com.rahul_lohra.redditstar.modal.RefreshTokenResponse;
 import com.rahul_lohra.redditstar.modal.SubredditResponse;
 import com.rahul_lohra.redditstar.modal.frontPage.FrontPageResponse;
@@ -21,6 +22,7 @@ import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.QueryMap;
+import retrofit2.http.Url;
 
 /**
  * Created by rkrde on 24-01-2017.
@@ -107,4 +109,12 @@ public interface ApiInterface {
                                               @Path(value = "subbreddit_name", encoded = true) String subreddit_name,
                                               @Path(value = "sort", encoded = true) String sort,
                                               @QueryMap Map<String, String> options);
+
+    @GET
+    @Headers("User-Agent: android:com.android.rahul_lohra.redditstar:v1.0 (by /u/rahul_lohra)")
+    Call<ResponseBody> getDataFromGfyCat(@Url String url);
+
+    @GET
+    @Headers("User-Agent: android:com.android.rahul_lohra.redditstar:v1.0 (by /u/rahul_lohra)")
+    Call<ResponseBody> getDataFromImgur(@Header(Constants.AUTHORIZATION) String authorization,@Url String url);
 }
