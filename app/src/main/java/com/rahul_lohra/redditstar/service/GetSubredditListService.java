@@ -13,6 +13,8 @@ import com.rahul_lohra.redditstar.Utility.Constants;
 import com.rahul_lohra.redditstar.Utility.SpConstants;
 import com.rahul_lohra.redditstar.Utility.UserState;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -70,7 +72,7 @@ public class GetSubredditListService extends IntentService {
                 Response<FrontPageResponse> res = apiInterface.getSubredditList(token,subredditName,map).execute();
                 Log.d(TAG,"resCode:"+res.code());
                 if (res.code() == 200) {
-//                    EventBus.getDefault().post(res.body().getData());
+                    EventBus.getDefault().post(res.body().getData());
                     Constants.insertPostsIntoTable(getApplicationContext(),res.body(),Constants.TYPE_TEMP);
                 }
             } catch (IOException e) {

@@ -139,7 +139,7 @@ public class MyWidgetProvider extends AppWidgetProvider {
         }
         views.setEmptyView(R.id.list_view, R.id.empty_view);
 
-        //List Item intent
+        //List EroshareItem intent
         Intent listItemIntent = new Intent(context, DetailActivity.class);
         listItemIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,appWidgetId);
         PendingIntent pendingIntentListItem = TaskStackBuilder.create(context)

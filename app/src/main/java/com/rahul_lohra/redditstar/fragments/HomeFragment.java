@@ -25,6 +25,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.rahul_lohra.redditstar.R;
 import com.rahul_lohra.redditstar.Utility.MyUrl;
 import com.rahul_lohra.redditstar.Utility.SpConstants;
@@ -147,6 +148,14 @@ public class HomeFragment extends BaseFragment implements
                 // Your code to refresh the list here.
                 // Make sure you call swipeContainer.setRefreshing(false)
                 // once the network request has completed successfully.
+//                new Thread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        Glide.get(getActivity()).clearDiskCache();
+//                    }
+//                }).start();
+//                Glide.get(getActivity()).clearMemory();
+
                 deleteArticlesAndComments();
                 makeApiCall(filterParam_1,filterParam_2,"");
 
@@ -427,8 +436,6 @@ public class HomeFragment extends BaseFragment implements
         Uri mUri = MyProvider.PostsLists.CONTENT_URI;
         String mWhere = MyPostsColumn.TYPE_POST+"=?";
         String mWhereArgs[] ={"1"};
-
-//        String mProjection[]=null;
         switch (id) {
             case LOADER_ID:
                 return new CursorLoader(getActivity(), mUri, null, mWhere, mWhereArgs, null);

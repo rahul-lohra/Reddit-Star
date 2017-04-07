@@ -34,7 +34,6 @@ public class CommonOperations {
         final String id = cursor.getString(cursor.getColumnIndex(MyPostsColumn.KEY_ID));
         final String subreddit = cursor.getString(cursor.getColumnIndex(MyPostsColumn.KEY_SUBREDDIT));
         final String subredditId = cursor.getString(cursor.getColumnIndex(MyPostsColumn.KEY_SUBREDDIT_ID));
-
         final String name = cursor.getString(cursor.getColumnIndex(MyPostsColumn.KEY_NAME));
         final String author = cursor.getString(cursor.getColumnIndex(MyPostsColumn.KEY_AUTHOR));
         final long createdUtc = cursor.getLong(cursor.getColumnIndex(MyPostsColumn.KEY_CREATED_UTC));
@@ -48,9 +47,26 @@ public class CommonOperations {
         final Integer likes = cursor.getInt(cursor.getColumnIndex(MyPostsColumn.KEY_LIKES));
         final String bigImageUrl = cursor.getString(cursor.getColumnIndex(MyPostsColumn.KEY_BIG_IMAGE_URL));
         final String postHint = cursor.getString(cursor.getColumnIndex(MyPostsColumn.KEY_POST_HINT));
-
+        final String domain =  cursor.getString(cursor.getColumnIndex(MyPostsColumn.KEY_DOMAIN));
+        final int thumbnailHasIMage =  cursor.getInt(cursor.getColumnIndex(MyPostsColumn.KEY_IS_THUMBNAIL_HAS_IMAGE));
+        final int bigImageUrlHasImage =  cursor.getInt(cursor.getColumnIndex(MyPostsColumn.KEY_IS_BIG_IMAGE_URL_HAS_IMAGE));
 
         return new DetailPostModal(id,
-                subreddit,ups,title,commentsCount,thumbnail,time,author,bigImageUrl,likes,name,postHint);
+                subreddit,
+                postHint,
+                ups,
+                title,
+                commentsCount,
+                thumbnail,
+                time,
+                author,
+                likes,
+                name,
+                bigImageUrl,
+                url,
+                domain,
+                thumbnailHasIMage,
+                bigImageUrlHasImage);
+
     }
 }

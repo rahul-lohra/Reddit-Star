@@ -1,5 +1,6 @@
 package com.rahul_lohra.redditstar.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.database.Cursor;
@@ -17,20 +18,24 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
+import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.bumptech.glide.Priority;
 import com.rahul_lohra.redditstar.R;
 import com.rahul_lohra.redditstar.adapter.normal.CommentsAdapter;
 import com.rahul_lohra.redditstar.contract.ILogin;
 import com.rahul_lohra.redditstar.helper.AspectRatioImageView;
+import com.rahul_lohra.redditstar.helper.AspectRatioKenBurnsImageView;
 import com.rahul_lohra.redditstar.service.CommentsService;
 import com.rahul_lohra.redditstar.storage.MyDatabase;
 import com.rahul_lohra.redditstar.storage.MyProvider;
@@ -156,7 +161,7 @@ public class DetailActivity extends BaseActivity implements
                 String mSeletion = MyPostsColumn.KEY_ID + "=?";
                 String mSelectionArgs[] = {this.id};
                 Uri mUri_1 = MyProvider.PostsLists.CONTENT_URI;
-                String proj_1[] = {MyPostsColumn.KEY_SUBREDDIT, MyPostsColumn.KEY_BIG_IMAGE_URL, MyPostsColumn.KEY_POST_HINT, MyPostsColumn.KEY_THUMBNAIL, MyPostsColumn.KEY_URL};
+                String proj_1[] = {MyPostsColumn.KEY_SUBREDDIT, MyPostsColumn.KEY_BIG_IMAGE_URL, MyPostsColumn.KEY_POST_HINT, MyPostsColumn.KEY_THUMBNAIL, MyPostsColumn.KEY_URL,MyPostsColumn.KEY_IS_BIG_IMAGE_URL_HAS_IMAGE,MyPostsColumn.KEY_IS_THUMBNAIL_HAS_IMAGE};
                 return new CursorLoader(this, mUri_1, proj_1, mSeletion, mSelectionArgs, null);
 
             case LOADER_ID_COMMENTS_POSTS: {
@@ -193,49 +198,77 @@ public class DetailActivity extends BaseActivity implements
     }
 
     private synchronized void loadImage(String thumbnail, final String bigImageUrl) {
+
+        Glide.with(DetailActivity.this)
+                .load(bigImageUrl)
+//               .placeholder(glideDrawable)
+                .priority(Priority.IMMEDIATE)
+                .centerCrop()
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                .into(imageView);
+        if(true)
+            return;
+
         Glide.with(this).
                 load(thumbnail)
                 .centerCrop()
                 .crossFade()
-                .placeholder(R.drawable.ic_reddit)
+//                .placeholder(R.drawable.ic_reddit)
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .listener(new RequestListener<String, GlideDrawable>() {
                     @Override
                     public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
                         imageView.setVisibility(View.GONE);
-                        return false;
+                        return true;
                     }
 
                     @Override
                     public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                        System.out.println("Set Pallete Image");
                         glideDrawable = resource;
-                        imageView.setImageDrawable(resource);
-                        updatePalete(imageView);
+//                        imageView.setImageDrawable(resource);
+                        updatePalete(resource);
                         if (bigImageUrl != null) {
 //                            loadBigImage(bigImageUrl, glideDrawable);
                             Glide.with(DetailActivity.this)
                                     .load(bigImageUrl)
                                     .placeholder(glideDrawable)
-                                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                                    .centerCrop()
+                                    .priority(Priority.IMMEDIATE)
+                                    .diskCacheStrategy(DiskCacheStrategy.RESULT)
+                                    .listener(new RequestListener<String, GlideDrawable>() {
+                                        @Override
+                                        public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                                            return false;
+                                        }
+
+                                        @Override
+                                        public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                                            System.out.println("Set Big Image");
+                                            return false;
+                                        }
+                                    })
                                     .into(imageView);
 
                         }
-                        return false;
+                        return true;
                     }
                 })
                 .into(imageView);
+        System.out.println("Set small Image");
+
     }
 
-    private synchronized void updatePalete(AspectRatioImageView imageView) {
-        final Drawable dr = ((ImageView) imageView).getDrawable();
-        Bitmap bmap = ((GlideBitmapDrawable) dr.getCurrent()).getBitmap();
+    private synchronized void updatePalete(GlideDrawable glideDrawable) {
+//        final Drawable dr = glideDrawable;
+        Bitmap bmap = ((GlideBitmapDrawable) glideDrawable.getCurrent()).getBitmap();
         Palette.from(bmap).generate(new Palette.PaletteAsyncListener() {
             public void onGenerated(Palette p) {
                 // Use generated instance
                 darkMutedColor = p.getDarkMutedColor(0xFF333333);
                 int mutedLightColor = p.getLightMutedColor(ContextCompat.getColor(getApplicationContext(), R.color.colorAccent));
                 int mutedColor = p.getMutedColor(0xFF333333);
-                collapsingToolbarLayout.setContentScrimColor(darkMutedColor);
+//                collapsingToolbarLayout.setContentScrimColor(darkMutedColor);
                 if (rv.getChildAt(0) instanceof CardView) {
                     CardView cardView = (CardView) rv.getChildAt(0);
                     if (cardView != null) {
@@ -265,17 +298,17 @@ public class DetailActivity extends BaseActivity implements
                 String postHint = cursor.getString(cursor.getColumnIndex(MyPostsColumn.KEY_POST_HINT));
                 String thumbnail = cursor.getString(cursor.getColumnIndex(MyPostsColumn.KEY_THUMBNAIL));
                 String url = cursor.getString(cursor.getColumnIndex(MyPostsColumn.KEY_URL));
+                final int thumbnailHasIMage =  cursor.getInt(cursor.getColumnIndex(MyPostsColumn.KEY_IS_THUMBNAIL_HAS_IMAGE));
+                final int bigImageUrlHasImage =  cursor.getInt(cursor.getColumnIndex(MyPostsColumn.KEY_IS_BIG_IMAGE_URL_HAS_IMAGE));
 
                 CommentsService.requestComments(this, this.id, subreddit);
 
+                loadImageNew(bigImageUrl,bigImageUrlHasImage,thumbnail,thumbnailHasIMage);
+                if(true)
+                    return;
+
                 if (postHint != null) {
                     if (postHint.equals("image") || postHint.equals("link")|| postHint.equals("rich:video")) {
-
-                        if(thumbnail.equals("default")){
-//                            imageView.setVisibility(View.GONE);
-                            loadPreview();
-                            return;
-                        }
 
                         if (thumbnail.endsWith("jpg") || thumbnail.endsWith("png") || thumbnail.endsWith("jpeg") || thumbnail.endsWith("webp")) {
 
@@ -283,10 +316,8 @@ public class DetailActivity extends BaseActivity implements
                                 loadImage(thumbnail, null);
                             } else if (url.endsWith("jpg") || url.endsWith("png") || url.endsWith("jpeg") || url.endsWith("webp")) {
                                 loadImage(thumbnail, bigImageUrl);
-//                                loadBigImage(bigImageUrl,null);
                             } else if(bigImageUrl!=null && (bigImageUrl.startsWith("http"))){
                                 loadImage(thumbnail, bigImageUrl);
-//                                loadBigImage(bigImageUrl,null);
                             }  else {
                                 loadImage(thumbnail, null);
                             }
@@ -295,7 +326,7 @@ public class DetailActivity extends BaseActivity implements
 
                         }
                     }else {
-                        loadPreview();
+//                        loadPreview();
                     }
                 }else {
                     imageView.setVisibility(View.GONE);
@@ -304,6 +335,65 @@ public class DetailActivity extends BaseActivity implements
         }
     }
 
+    private void loadImageNew(final String bigImageUrl, int bigImageUrlHasImage, final String thumbnail, final int thumbnailHasImage) {
+        if(bigImageUrlHasImage ==1){
+            Glide.with(this)
+                    .load(bigImageUrl)
+                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                    .listener(new RequestListener<String, GlideDrawable>() {
+                        @Override
+                        public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                            Log.e("error:",bigImageUrl);
+                            e.printStackTrace();
+                            loadThumbnail(thumbnail,thumbnailHasImage);
+                            return true;
+                        }
+
+                        @Override
+                        public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                            updatePalete(resource);
+                            imageView.setImageDrawable(resource);
+                            return true;
+                        }
+                    })
+                    .into(imageView);
+            imageView.setTransitionName("profile");
+            imageView.setVisibility(View.VISIBLE);
+        }else {
+            loadThumbnail(thumbnail,thumbnailHasImage);
+        }
+
+
+}
+    private void loadThumbnail(String thumbnail,int thumbnailHasImage) {
+
+        if(thumbnailHasImage==1){
+            if (thumbnail != null) {
+                imageView.setTransitionName("profile");
+                imageView.setVisibility(View.VISIBLE);
+                Glide.with(this)
+                        .load(thumbnail)
+                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                        .listener(new RequestListener<String, GlideDrawable>() {
+                            @Override
+                            public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                                return false;
+                            }
+
+                            @Override
+                            public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                                updatePalete(resource);
+                                imageView.setImageDrawable(resource);
+                                return true;
+                            }
+                        })
+                        .into(imageView);
+            }
+        }else {
+            imageView.setTransitionName("");
+            imageView.setVisibility(View.GONE);
+        }
+    }
 
             private synchronized void loadBigImage (String bigImageUrl,final GlideDrawable glideDrawable){
                 Glide.with(this).
@@ -322,11 +412,11 @@ public class DetailActivity extends BaseActivity implements
                             @Override
                             public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
                                 imageView.setImageDrawable(resource);
-                                updatePalete(imageView);
+                                updatePalete(resource);
                                 return false;
                             }
-                        })
-                        .into(imageView);
+                        });
+//                        .into(imageView);
             }
 
             @Override

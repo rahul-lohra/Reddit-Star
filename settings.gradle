@@ -1,1 +1,1 @@
-include ':app', ':sparkbutton'
+include ':app', ':sparkbutton', ':kenburnslibrary'

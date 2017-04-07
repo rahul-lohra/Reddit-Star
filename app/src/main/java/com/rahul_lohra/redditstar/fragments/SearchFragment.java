@@ -2,9 +2,11 @@ package com.rahul_lohra.redditstar.fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -25,6 +27,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.rahul_lohra.redditstar.R;
+import com.rahul_lohra.redditstar.Utility.SpConstants;
 import com.rahul_lohra.redditstar.activity.SearchActivity;
 import com.rahul_lohra.redditstar.activity.SubredditActivity;
 import com.rahul_lohra.redditstar.adapter.cursor.HomeAdapter;
@@ -114,6 +117,7 @@ public class SearchFragment extends BaseFragment implements
 //    Toolbar toolbar;
     //    String afterOfSubreddit;
     private Uri mUri = MyProvider.PostsLists.CONTENT_URI;
+    SharedPreferences sp;
 
     @Override
     public void onDestroyView() {
@@ -154,6 +158,7 @@ public class SearchFragment extends BaseFragment implements
         View v = inflater.inflate(R.layout.fragment_search, container, false);
         ButterKnife.bind(this, v);
 //        setToolbar();
+        sp = PreferenceManager.getDefaultSharedPreferences(getContext());
         if (null == t5SubredditSearchAdapter) {
             tvPost.setVisibility(View.GONE);
             tvSubreddit.setVisibility(View.GONE);
@@ -268,15 +273,19 @@ public class SearchFragment extends BaseFragment implements
         {
             return;
         }
-        for (int i = 0; i < list.size(); ) {
+        boolean mOver18 = sp.getBoolean(SpConstants.OVER_18,false);
+        if(!mOver18){
+            for (int i = 0; i < list.size(); ) {
 //            System.out.println("i="+i);
-            boolean over18 = list.get(i).data.getOver18()!=null?list.get(i).data.getOver18():true;
-            if (over18) {
-                list.remove(i);
-            } else {
-                ++i;
+                boolean over18 = list.get(i).data.getOver18()!=null?list.get(i).data.getOver18():true;
+                if (over18) {
+                    list.remove(i);
+                } else {
+                    ++i;
+                }
             }
         }
+
         int lastPos = t5dataList.size();
         t5dataList.addAll(lastPos, list);
         t5SubredditSearchAdapter.notifyItemRangeInserted(lastPos, list.size());

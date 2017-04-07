@@ -13,6 +13,7 @@ import com.rahul_lohra.redditstar.factory.DomainFactory;
 import com.rahul_lohra.redditstar.retrofit.ApiInterface;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -68,8 +69,11 @@ public class MediaActivity extends AppCompatActivity {
                     //Do this is back ground thread!!
                     try {
                         Object obj = new Gson().fromJson(response.body().string(),domainResponse);
-                        String mediaUrl = DomainFactory.provideUrl((IMedia) obj);
-                        System.out.println("Media url:"+mediaUrl);
+                        List<String> mediaUrl = DomainFactory.provideUrl((IMedia) obj);
+                        for (String str: mediaUrl){
+                            System.out.println("Media url:"+str);
+                        }
+
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

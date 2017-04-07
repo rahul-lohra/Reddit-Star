@@ -28,19 +28,32 @@
             app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed"
             android:id="@+id/collapsing_toolbar"
             app:toolbarId="@+id/toolbar"
-            app:contentScrim="?attr/colorPrimary">
+            app:contentScrim="@android:color/transparent">
 
             <com.rahul_lohra.redditstar.helper.AspectRatioImageView
                 android:adjustViewBounds="true"
                 app:layout_collapseMode="parallax"
                 android:id="@+id/imageView"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
                 android:transitionName="profile"
                 app:dominantMeasurement="width"
                 app:aspectRatio="0.7"
                 app:aspectRatioEnabled="true"
                 tools:src="@mipmap/ic_launcher" />
+
+            <!--<com.rahul_lohra.redditstar.helper.AspectRatioKenBurnsImageView-->
+                <!--app:kenBurnsEnable="true"-->
+                <!--android:adjustViewBounds="true"-->
+                <!--app:layout_collapseMode="parallax"-->
+                <!--android:id="@+id/imageView"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:transitionName="profile"-->
+                <!--app:dominantMeasurement="width"-->
+                <!--app:aspectRatio="0.7"-->
+                <!--app:aspectRatioEnabled="true"-->
+                <!--tools:src="@mipmap/ic_launcher" />-->
 
             <android.support.v7.widget.Toolbar
                 app:layout_collapseMode="pin"
@@ -50,75 +63,6 @@
                 android:theme="?attr/actionBarTheme"
                 android:minHeight="?attr/actionBarSize"
                 android:id="@+id/toolbar" />
-
-            <!--app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed"-->
-            <!--app:layout_scrollInterpolator="@android:anim/decelerate_interpolator"-->
-            <!--<LinearLayout-->
-            <!--android:orientation="vertical"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content">-->
-
-
-            <!--<TextView-->
-            <!--android:id="@+id/tv_title"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginEnd="8dp"-->
-            <!--android:layout_marginStart="8dp"-->
-            <!--android:layout_marginTop="8dp"-->
-            <!--android:textAppearance="@style/TextAppearance.AppCompat.Display1"-->
-            <!--android:textColor="@android:color/black"-->
-            <!--android:textSize="18sp"-->
-            <!--android:textStyle="normal|bold"-->
-            <!--tools:text="@string/comments_title" />-->
-
-            <!--<TextView-->
-            <!--android:padding="8dp"-->
-            <!--android:id="@+id/tv_category"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginTop="8dp"-->
-            <!--tools:text="@string/sample_category" />-->
-
-            <!--<TextView-->
-            <!--android:padding="8dp"-->
-
-            <!--android:id="@+id/tv_username"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginTop="8dp"-->
-            <!--tools:text="u/Auggernaut88" />-->
-
-            <!--<FrameLayout-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginEnd="8dp"-->
-            <!--android:layout_marginStart="8dp"-->
-            <!--android:id="@+id/frameLayout2"-->
-            <!--android:layout_marginTop="8dp">-->
-
-            <!--<include layout="@layout/item_vote_commments_share" />-->
-            <!--</FrameLayout>-->
-
-            <!--<TextView-->
-            <!--android:id="@+id/tv_sort"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:drawablePadding="16dp"-->
-            <!--android:drawableStart="@drawable/ic_sort"-->
-            <!--tools:text="@string/sort_order"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_marginTop="8dp"-->
-            <!--android:layout_marginStart="8dp"-->
-            <!--android:layout_marginEnd="16dp" />-->
-
-            <!--</LinearLayout>-->
-
-            <!--<android.support.v7.widget.Toolbar-->
-            <!--android:id="@+id/toolbar"-->
-            <!--android:layout_height="?attr/actionBarSize"-->
-            <!--android:layout_width="match_parent">-->
-            <!---->
-            <!--</android.support.v7.widget.Toolbar>-->
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
 

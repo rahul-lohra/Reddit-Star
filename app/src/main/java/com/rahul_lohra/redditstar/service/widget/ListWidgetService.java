@@ -104,9 +104,6 @@ public class ListWidgetService extends RemoteViewsService {
             final String bigImageUrl = data.getString(data.getColumnIndex(MyPostsColumn.KEY_BIG_IMAGE_URL));
             final String postHint = data.getString(data.getColumnIndex(MyPostsColumn.KEY_POST_HINT));
 
-            DetailPostModal modal = new DetailPostModal(id,
-                    subreddit,ups,title,commentsCount,thumbnail,time,author,bigImageUrl,likes,name,postHint);
-
             rv.setTextViewText(R.id.tv_detail,title);
             rv.setTextViewText(R.id.tv_vote,ups);
             rv.setTextViewText(R.id.tv_comments,commentsCount);

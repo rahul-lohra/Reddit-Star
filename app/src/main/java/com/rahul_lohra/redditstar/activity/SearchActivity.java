@@ -32,33 +32,6 @@ public class SearchActivity extends BaseActivity implements
         if(savedInstanceState==null){
             showSearchFragment();
         }
-
-
-//        if(BuildConfig.DEBUG){
-//            if(BuildConfig.VERSION_CODE ==2){
-//                new Thread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//
-////                        Database db = new SQLiteDatabase();
-//
-//                        db.beginTransaction();
-//                        try {
-//                            String execSql = "CREATE TABLE IF NOT EXISTS"+SUGGESTION_TABLE+" ( "
-//                                    + SuggestionColumn.KEY_SUGGESTION+" TEXT NOT NULL UNIQUE "
-//                                    + SuggestionColumn.KEY_SQL_ID+" INTEGER PRIMARY KEY "
-//                                    +" )";
-//                            db.execSQL(execSql);
-//                            db.setTransactionSuccessful();
-//                        }catch (Exception e){}
-//                        finally {
-//                            db.endTransaction();
-//                        }
-//                        return;
-//                    }
-//                }).start();
-//            }
-//        }
     }
 
     private void showSearchFragment(){

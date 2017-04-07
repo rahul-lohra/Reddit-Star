@@ -12,6 +12,7 @@ import com.rahul_lohra.redditstar.Application.Initializer;
 import com.rahul_lohra.redditstar.modal.custom.AfterModal;
 import com.rahul_lohra.redditstar.modal.frontPage.FrontPageChild;
 import com.rahul_lohra.redditstar.modal.frontPage.FrontPageResponse;
+import com.rahul_lohra.redditstar.modal.frontPage.Preview;
 import com.rahul_lohra.redditstar.retrofit.ApiInterface;
 import com.rahul_lohra.redditstar.storage.MyProvider;
 import com.rahul_lohra.redditstar.Utility.Constants;
@@ -24,8 +25,10 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeoutException;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -88,16 +91,32 @@ public class GetFrontPageService extends IntentService {
                     EventBus.getDefault().post(new AfterModal(res.body().getData().getAfter()));
                     Constants.insertPostsIntoTable(getApplicationContext(),res.body(),Constants.TYPE_POST);
                     for(FrontPageChild frontPageChild:res.body().getData().getChildren()){
-                        String url = frontPageChild.getData().getThumbnail();
-                        FutureTarget<File> future = Glide.with(getApplicationContext())
-                                .load(url)
-                                .downloadOnly(2000, 2000);
+                        String thumbnail = frontPageChild.getData().getThumbnail();
+                        if(Constants.isBigImageUrlValid(thumbnail))
+                        {
+                            FutureTarget<File> futureThumbnail = Glide.with(getApplicationContext())
+                                    .load(thumbnail)
+                                    .downloadOnly(2000, 2000);
+                        }
+                        Preview preview = frontPageChild.getData().getPreview();
+                        String bigImageUrl = (preview!=null)?preview.getImages().get(0).getSource().getUrl():null;
+                        if(Constants.isBigImageUrlValid(bigImageUrl))
+                        {
+                            FutureTarget<File> futureBigImage = Glide.with(getApplicationContext())
+                                    .load(bigImageUrl)
+                                    .downloadOnly(2000, 2000);
+                        }
+
                     }
                 }
                 Log.d(TAG,"response:"+res.code());
-            } catch (IOException e) {
+            } catch (UnknownHostException e){
+
+            }
+            catch (IOException e) {
                 e.printStackTrace();
-            } finally {
+            }
+            finally{
                 after = null;
             }
         }

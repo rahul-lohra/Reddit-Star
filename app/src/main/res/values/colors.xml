@@ -19,6 +19,8 @@
     <color name="red_700">#D50000</color>
     <color name="orange_500">#FF9800</color>
     <color name="brown_800">#4E342E</color>
+    <color name="eroshare_background">#1B1B1B</color>
+    <color name="eroshare_pink">#F05F97</color>
 
 
 </resources>

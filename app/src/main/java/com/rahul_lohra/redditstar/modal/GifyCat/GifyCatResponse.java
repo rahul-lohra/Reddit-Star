@@ -5,6 +5,9 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.rahul_lohra.redditstar.contract.IMedia;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class GifyCatResponse implements IMedia {
 
     @SerializedName("gfyItem")
@@ -20,11 +23,12 @@ public class GifyCatResponse implements IMedia {
     }
 
     @Override
-    public String getMediaUrl() {
+    public List<String> getMediaUrlList() {
+        List<String> urlList = new ArrayList<>();
         if(gfyItem!=null)
         {
-            return gfyItem.getMp4Url();
+             urlList.add(gfyItem.getMp4Url());;
         }
-        return null;
+        return urlList;
     }
 }

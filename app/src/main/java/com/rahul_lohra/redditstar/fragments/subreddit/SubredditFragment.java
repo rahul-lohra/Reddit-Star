@@ -311,9 +311,9 @@ public class SubredditFragment extends BaseFragment
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(FrontPageResponseData frontPageResponseData) {
         this.frontPageResponseData = frontPageResponseData;
-        int lastPos = list.size();
-        list.addAll(lastPos, frontPageResponseData.getChildren());
-        adapter.notifyItemRangeInserted(lastPos, frontPageResponseData.getChildren().size());
+//        int lastPos = list.size();
+//        list.addAll(lastPos, frontPageResponseData.getChildren());
+//        adapter.notifyItemRangeInserted(lastPos, frontPageResponseData.getChildren().size());
     }
 
     @Subscribe(threadMode = ThreadMode.BACKGROUND)

@@ -50,6 +50,12 @@ public class LabelTextView extends AppCompatTextView {
         setVisibility(GONE);
         if(postHint!=null)
         {
+            if(domain!=null && domain.equals("eroshare.com")){
+                String text = "EROSHARE";
+                setFinalText(text,R.color.eroshare_background,R.color.eroshare_pink);
+                return;
+            }
+
             if(postHint.equals("image")||postHint.equals("link"))
             {
                 if(link!=null && (link.endsWith(".gif")||link.endsWith(".gifv")))

@@ -24,6 +24,7 @@ import com.rahul_lohra.redditstar.adapter.CursorRecyclerViewAdapter;
 import com.rahul_lohra.redditstar.viewHolder.GalleryView;
 import com.rahul_lohra.redditstar.viewHolder.PostView;
 import com.bumptech.glide.Glide;
+import com.rahul_lohra.redditstar.viewHolder.modal.PostViewData;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -52,8 +53,6 @@ public class HomeAdapter extends CursorRecyclerViewAdapter<RecyclerView.ViewHold
     public static final int CARD = 2;
     public static final int GALLERY = 3;
     public static final int DEFAULT = 4;
-
-
 
     public HomeAdapter(Activity activity, Cursor cursor, IFrontPageAdapter iFrontPageAdapter,ILogin iLogin) {
         super(activity, cursor);
@@ -86,11 +85,26 @@ public class HomeAdapter extends CursorRecyclerViewAdapter<RecyclerView.ViewHold
         final String bigImageUrl = cursor.getString(cursor.getColumnIndex(MyPostsColumn.KEY_BIG_IMAGE_URL));
         final String postHint =  cursor.getString(cursor.getColumnIndex(MyPostsColumn.KEY_POST_HINT));
         final String domain =  cursor.getString(cursor.getColumnIndex(MyPostsColumn.KEY_DOMAIN));
+        final int thumbnailHasIMage =  cursor.getInt(cursor.getColumnIndex(MyPostsColumn.KEY_IS_THUMBNAIL_HAS_IMAGE));
+        final int bigImageUrlHasImage =  cursor.getInt(cursor.getColumnIndex(MyPostsColumn.KEY_IS_BIG_IMAGE_URL_HAS_IMAGE));
 
-
-        postView.setLikes(likes);
-        postView.setTvTitle(subreddit);
-        postView.init(activity,thumbnail,url,domain);
+        final DetailPostModal modal = new DetailPostModal(id,
+                subreddit,
+                postHint,
+                ups,
+                title,
+                commentsCount,
+                thumbnail,
+                time,
+                author,
+                likes,
+                name,
+                bigImageUrl,
+                url,
+                domain,
+                thumbnailHasIMage,
+                bigImageUrlHasImage);
+        postView.init(activity,modal);
         int total = cursor.getCount();
         int curPos = cursor.getPosition();
         if(curPos  == total-6 ){
@@ -103,16 +117,12 @@ public class HomeAdapter extends CursorRecyclerViewAdapter<RecyclerView.ViewHold
             postView.cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    DetailPostModal modal = new DetailPostModal(id,
-                            subreddit,ups,title,commentsCount,thumbnail,time,author,bigImageUrl,likes,name,postHint);
                     iFrontPageAdapter.sendData(modal,postView.imageView,id);
                 }
             });
         }else {
             if(((GalleryView)postView).cardViewZoom!=null)
             {
-                DetailPostModal modal = new DetailPostModal(id,
-                        subreddit,ups,title,commentsCount,thumbnail,time,author,bigImageUrl,likes,name,postHint);
                 ((GalleryView)postView).cardViewZoom.setCardData(modal,postView.imageView,id,iFrontPageAdapter);
             }
 
@@ -145,8 +155,6 @@ public class HomeAdapter extends CursorRecyclerViewAdapter<RecyclerView.ViewHold
             }
         });
 
-//        postView.imageView.setOnClickListener((View v)->{});
-
         postView.imageDownVote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
@@ -154,7 +162,6 @@ public class HomeAdapter extends CursorRecyclerViewAdapter<RecyclerView.ViewHold
                 String thingId = name;
                 if (!loggedIn) {
                     iLogin.pleaseLogin();
-//                    Toast.makeText(activity, activity.getString(R.string.please_login), Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -179,8 +186,6 @@ public class HomeAdapter extends CursorRecyclerViewAdapter<RecyclerView.ViewHold
         });
 
         //set Textual ImgurData
-
-
 
         postView.tvVote.setText(ups);
         postView.tvDetail.setText(title);

@@ -178,7 +178,7 @@ public class Constants {
             String mSelectionArgs[] = {"t3_" + id};
 //
             boolean mOver18 = data.getOver18();
-            if (over18) {
+            if (!over18 && mOver18) {
                 continue;
             }
 
@@ -203,22 +203,13 @@ public class Constants {
             Cursor cursor = context.getContentResolver().query(mUri, mProj, mWhere, mSelectionArgs, null);
             if (cursor != null) {
                 if (cursor.moveToFirst()) {
-//                    Log.wtf(TAG,"duplicate row found : with id:"+id+",subreddit:"+subredditName);
-
                     context.getContentResolver().update(mUri, cv, mWhere, mSelectionArgs);
                 } else {
-//                    Log.wtf(TAG,"insert row : with id:"+id+",subreddit:"+subredditName);
                     ContentValues contentValues = CustomOrm.FrontPageChildDataToContentValues(data, type);
                     context.getContentResolver().insert(mUri, contentValues);
                 }
                 cursor.close();
             }
-
-//            Intent intentCommentService = new Intent(context, CommentsService.class);
-//                intentCommentService.putExtra(CommentsService.POST_ID,id);
-//                intentCommentService.putExtra(CommentsService.SUBREDDIT_NAME,subredditName);
-//                context.startService(intentCommentService);
-
         }
     }
 
@@ -340,5 +331,11 @@ public class Constants {
         Toast.makeText(context,message,Toast.LENGTH_SHORT).show();
     }
 
+    public static boolean isBigImageUrlValid(String bigImageUrl){
+        if(null ==bigImageUrl)
+            return false;
+        return(bigImageUrl.startsWith("http") &&( bigImageUrl.contains(".jpeg")||bigImageUrl.contains(".jpg")||bigImageUrl.contains(".png")||bigImageUrl.contains(".webP")));
+
+    }
 
 }

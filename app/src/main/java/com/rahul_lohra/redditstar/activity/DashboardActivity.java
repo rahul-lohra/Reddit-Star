@@ -290,7 +290,7 @@ public class DashboardActivity extends BaseActivity implements
         rotateUp.setTarget(imageViewDropDown);
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-        sp.edit().putBoolean(SpConstants.OVER_18, false).apply();
+        sp.edit().putBoolean(SpConstants.OVER_18, true).apply();
     }
 
     @Override

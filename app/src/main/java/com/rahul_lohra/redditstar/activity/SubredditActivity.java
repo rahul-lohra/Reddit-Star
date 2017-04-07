@@ -43,7 +43,7 @@ public class SubredditActivity extends BaseActivity implements
 
     @Override
     public void sendModalAndImageView(DetailPostModal modal, ImageView imageView, String id) {
-//        Toast.makeText(this,"Item clicked",Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this,"EroshareItem clicked",Toast.LENGTH_SHORT).show();
 //        if (mTwoPane) {
 //            showDetailSubredditFragment(modal);
 //        } else {

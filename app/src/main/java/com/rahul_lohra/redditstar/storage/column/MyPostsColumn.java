@@ -99,6 +99,17 @@ public interface MyPostsColumn {
 
     @DataType(INTEGER)
     @NotNull @DefaultValue("-1")
+    String KEY_IS_BIG_IMAGE_URL_HAS_IMAGE = "is_valid_big_image_url_has_image";
+
+    @DataType(INTEGER)
+    @NotNull @DefaultValue("-1")
+    String KEY_IS_THUMBNAIL_HAS_IMAGE = "is_thumbnail_has_image";
+
+
+
+
+    @DataType(INTEGER)
+    @NotNull @DefaultValue("-1")
     String TYPE_POST = "type_post";
     @DataType(INTEGER)
     @NotNull @DefaultValue("-1")

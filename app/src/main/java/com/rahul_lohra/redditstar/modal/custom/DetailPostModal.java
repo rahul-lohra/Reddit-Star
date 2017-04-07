@@ -8,32 +8,71 @@ import android.os.Parcelable;
  */
 
 public class DetailPostModal implements Parcelable {
-    private String id;          //
-    private String subreddit;   //
-    private String postHint;//
-//    Boolean locked;
-private String ups;         //
-    private String title;       //
-    private String commentsCount;//
+    private String id;          
+    private String subreddit;   
+    private String postHint;
+    private String ups;         
+    private String title;       
+    private String commentsCount;
     private String thumbnail;
-    private String time;        //
-    private String author;      //
-    private Integer likes;      //
-    private String name;        //
+    private String time;        
+    private String author;      
+    private Integer likes;      
+    private String name;        
     private String bigImageUrl;
-    public DetailPostModal(String id, String subreddit, String ups, String title, String commentsCount, String thumbnail, String time, String author,String bigImageUrl,Integer likes,String name,String postHint) {
+    private String url;
+    private String domain;
+    private int thumbnailHasImage;
+    private int BigImageUrlHasImage;
+
+    public DetailPostModal(String id,
+                           String subreddit,
+                           String postHint,
+                           String ups,
+                           String title,
+                           String commentsCount,
+                           String thumbnail,
+                           String time,
+                           String author,
+                           Integer likes,
+                           String name,
+                           String bigImageUrl,
+                           String url,
+                           String domain,
+                           int thumbnailHasImage,
+                           int bigImageUrlHasImage) {
         this.id = id;
         this.subreddit = subreddit;
+        this.postHint = postHint;
         this.ups = ups;
         this.title = title;
         this.commentsCount = commentsCount;
         this.thumbnail = thumbnail;
         this.time = time;
         this.author = author;
-        this.bigImageUrl = bigImageUrl;
         this.likes = likes;
         this.name = name;
-        this.postHint = postHint;
+        this.bigImageUrl = bigImageUrl;
+        this.url = url;
+        this.domain = domain;
+        this.thumbnailHasImage = thumbnailHasImage;
+        BigImageUrlHasImage = bigImageUrlHasImage;
+    }
+
+    public int getThumbnailHasImage() {
+        return thumbnailHasImage;
+    }
+
+    public int getBigImageUrlHasImage() {
+        return BigImageUrlHasImage;
+    }
+
+    public String getDomain() {
+        return domain;
+    }
+
+    public String getUrl() {
+        return url;
     }
 
     public String getPostHint() {
