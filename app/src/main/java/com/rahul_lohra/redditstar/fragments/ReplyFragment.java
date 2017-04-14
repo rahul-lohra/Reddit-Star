@@ -137,7 +137,7 @@ public class ReplyFragment extends Fragment {
             public void onResponse(Call<ReplyResponse> call, Response<ReplyResponse> response) {
                 Log.d(TAG,"onResponse");
                 if(response.code()==200){
-                    List<String> mErrorList = response.body().getJsonData().getMError();
+                    List<String> mErrorList = response.body().getJsonData().getmError();
                     if(mErrorList.size()>0){
                         showToast((mErrorList.get(1)!=null?mErrorList.get(1):mErrorList.get(0)));
                     }else {

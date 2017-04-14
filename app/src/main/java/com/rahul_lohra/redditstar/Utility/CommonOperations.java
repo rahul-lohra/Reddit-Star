@@ -50,6 +50,7 @@ public class CommonOperations {
         final String domain =  cursor.getString(cursor.getColumnIndex(MyPostsColumn.KEY_DOMAIN));
         final int thumbnailHasIMage =  cursor.getInt(cursor.getColumnIndex(MyPostsColumn.KEY_IS_THUMBNAIL_HAS_IMAGE));
         final int bigImageUrlHasImage =  cursor.getInt(cursor.getColumnIndex(MyPostsColumn.KEY_IS_BIG_IMAGE_URL_HAS_IMAGE));
+        final String score =  cursor.getString(cursor.getColumnIndex(MyPostsColumn.KEY_SCORE));
 
         return new DetailPostModal(id,
                 subreddit,
@@ -66,7 +67,8 @@ public class CommonOperations {
                 url,
                 domain,
                 thumbnailHasIMage,
-                bigImageUrlHasImage);
+                bigImageUrlHasImage,
+                score);
 
     }
 }

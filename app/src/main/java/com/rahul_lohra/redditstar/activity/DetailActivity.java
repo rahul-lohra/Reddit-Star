@@ -345,7 +345,10 @@ public class DetailActivity extends BaseActivity implements
                         public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
                             Log.e("error:",bigImageUrl);
                             e.printStackTrace();
-                            loadThumbnail(thumbnail,thumbnailHasImage);
+//                            loadThumbnail(thumbnail,thumbnailHasImage);
+//                            collapsingToolbarLayout.setVisibility(View.GONE);
+                            imageView.setVisibility(View.GONE);
+                            imageView.setTransitionName("");
                             return true;
                         }
 
@@ -360,7 +363,10 @@ public class DetailActivity extends BaseActivity implements
             imageView.setTransitionName("profile");
             imageView.setVisibility(View.VISIBLE);
         }else {
-            loadThumbnail(thumbnail,thumbnailHasImage);
+//            loadThumbnail(thumbnail,thumbnailHasImage);
+//            collapsingToolbarLayout.setVisibility(View.GONE);
+            imageView.setVisibility(View.GONE);
+            imageView.setTransitionName("");
         }
 
 

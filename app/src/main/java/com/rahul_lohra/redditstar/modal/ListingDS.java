@@ -8,7 +8,6 @@ import lombok.Data;
 /**
  * Created by rkrde on 05-02-2017.
  */
-@Data
 public class ListingDS {
 
     @SerializedName("modhash")
@@ -20,4 +19,16 @@ public class ListingDS {
     @SerializedName("before")
     @Expose
     protected Object before;
+
+    public Object getModhash() {
+        return modhash;
+    }
+
+    public String getAfter() {
+        return after;
+    }
+
+    public Object getBefore() {
+        return before;
+    }
 }

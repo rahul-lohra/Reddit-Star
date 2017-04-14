@@ -5,7 +5,7 @@ import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-@lombok.Data
+
 public class FrontPageChildData {
 
     @SerializedName("locked")
@@ -121,5 +121,151 @@ public class FrontPageChildData {
     private Integer ups;
 
 
+    public Boolean getLocked() {
+        return locked;
+    }
 
+    public String getDomain() {
+        return domain;
+    }
+
+    public String getSubreddit() {
+        return subreddit;
+    }
+
+    public Boolean getLikes() {
+        return likes;
+    }
+
+    public void setLikes(Boolean likes) {
+        this.likes = likes;
+    }
+
+    public Object getSecureMedia() {
+        return secureMedia;
+    }
+
+    public Boolean getSaved() {
+        return saved;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public SecureMediaEmbed getSecureMediaEmbed() {
+        return secureMediaEmbed;
+    }
+
+    public Boolean getClicked() {
+        return clicked;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public Media getMedia() {
+        return media;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Integer getScore() {
+        return score;
+    }
+
+    public Object getApprovedBy() {
+        return approvedBy;
+    }
+
+    public Boolean getOver18() {
+        return over18;
+    }
+
+    public Object getRemovalReason() {
+        return removalReason;
+    }
+
+    public Boolean getHidden() {
+        return hidden;
+    }
+
+    public Preview getPreview() {
+        return preview;
+    }
+
+    public String getThumbnail() {
+        return thumbnail;
+    }
+
+    public String getSubredditId() {
+        return subredditId;
+    }
+
+    public Integer getDowns() {
+        return downs;
+    }
+
+    public List<Object> getModReports() {
+        return modReports;
+    }
+
+    public Boolean getArchived() {
+        return archived;
+    }
+
+    public MediaEmbed getMediaEmbed() {
+        return mediaEmbed;
+    }
+
+    public String getPostHint() {
+        return postHint;
+    }
+
+    public Boolean getSelf() {
+        return isSelf;
+    }
+
+    public Boolean getHideScore() {
+        return hideScore;
+    }
+
+    public String getPermalink() {
+        return permalink;
+    }
+
+    public Integer getCreated() {
+        return created;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public Integer getCreatedUtc() {
+        return createdUtc;
+    }
+
+    public Integer getNumComments() {
+        return numComments;
+    }
+
+    public Boolean getVisited() {
+        return visited;
+    }
+
+    public Object getNumReports() {
+        return numReports;
+    }
+
+    public Integer getUps() {
+        return ups;
+    }
 }

@@ -6,7 +6,6 @@ import com.google.gson.annotations.SerializedName;
 
 import lombok.Data;
 
-@Data
 public class SubredditDataStructure {
 
     @SerializedName("id")
@@ -58,4 +57,67 @@ public class SubredditDataStructure {
     @Expose
     private Boolean userIsSubscriber;
 
-} 
+    public String getId() {
+        return id;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public String getHeaderImg() {
+        return headerImg;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public Boolean getOver18() {
+        return over18;
+    }
+
+    public String getIconImg() {
+        return iconImg;
+    }
+
+    public Integer getAccountsActive() {
+        return accountsActive;
+    }
+
+    public Integer getSubscribers() {
+        return subscribers;
+    }
+
+    public String getLang() {
+        return lang;
+    }
+
+    public String getKeyColor() {
+        return keyColor;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public Boolean getUserIsModerator() {
+        return userIsModerator;
+    }
+
+    public String getSubredditType() {
+        return subredditType;
+    }
+
+    public String getSubmissionType() {
+        return submissionType;
+    }
+
+    public Boolean getUserIsSubscriber() {
+        return userIsSubscriber;
+    }
+}

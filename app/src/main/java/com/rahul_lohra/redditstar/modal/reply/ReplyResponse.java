@@ -8,9 +8,12 @@ import lombok.Data;
 /**
  * Created by rkrde on 01-03-2017.
  */
-@Data
 public class ReplyResponse {
     @SerializedName("json")
     @Expose
     private JsonData jsonData;
+
+    public JsonData getJsonData() {
+        return jsonData;
+    }
 }

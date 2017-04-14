@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.rahul_lohra.redditstar.activity.SearchActivity"
-    android:background="@android:color/white">
+    android:background="@android:color/white"
+    tools:context="com.rahul_lohra.redditstar.activity.SearchActivity">
 
 
     <android.support.design.widget.FloatingActionButton
-        android:layout_gravity="bottom|end"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
         android:layout_marginBottom="16dp"
         android:layout_marginEnd="16dp"
         android:clickable="true"
@@ -20,9 +20,9 @@
         app:fabSize="mini" />
 
     <LinearLayout
-        android:layout_marginBottom="8dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginBottom="8dp"
         android:orientation="vertical">
 
         <com.rahul_lohra.redditstar.helper.MySearchView
@@ -38,54 +38,94 @@
             android:layout_height="match_parent">
 
             <LinearLayout
-                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-                <android.support.v7.widget.AppCompatTextView
-                    android:padding="8dp"
-                    android:id="@+id/tv_subreddit"
-                    android:text="@string/subreddits"
+                <RelativeLayout
+                    android:id="@+id/container_subreddit"
+                    android:background="@drawable/rect_light"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="18sp" />
+                    android:layout_height="wrap_content">
+                    <android.support.v7.widget.AppCompatTextView
+                        app:textAllCaps="true"
+                        android:layout_centerVertical="true"
+                        android:id="@+id/tv_subreddit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="8dp"
+                        android:text="@string/subreddits"
+                        android:textSize="18sp" />
+                    <android.support.v7.widget.AppCompatButton
+                        android:background="@android:color/transparent"
+                        android:textColor="@color/green_500"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentEnd="true"
+                        android:text="@string/see_more"
+                        app:textAllCaps="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </RelativeLayout>
 
                 <android.support.v7.widget.RecyclerView
-                    android:layout_marginTop="8dp"
                     android:id="@+id/rv_subreddits"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-
-                <android.support.v7.widget.AppCompatTextView
-                    android:padding="8dp"
-                    android:id="@+id/tv_post"
-                    android:text="@string/posts"
-                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="18sp" />
+                    android:layout_marginTop="8dp" />
+
+                <RelativeLayout
+                    android:id="@+id/container_posts"
+                    android:background="@drawable/rect_light"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:textAllCaps="true"
+                        android:layout_centerVertical="true"
+                        android:id="@+id/tv_post"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="8dp"
+                        android:text="@string/posts"
+                        android:textSize="18sp" />
+
+                    <android.support.v7.widget.AppCompatButton
+                        android:layout_centerVertical="true"
+                        android:drawableStart="@drawable/ic_sort"
+                        android:drawableTint="@color/black"
+                        android:drawablePadding="8dp"
+                        android:background="@android:color/transparent"
+                        android:textColor="@color/green_500"
+                        android:layout_alignParentEnd="true"
+                        android:id="@+id/btn_sort_post"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="8dp"
+                        android:textAllCaps="false"
+                        android:text="@string/relevance"
+                        android:textSize="14sp" />
+
+                </RelativeLayout>
 
                 <android.support.v7.widget.RecyclerView
-                    android:nestedScrollingEnabled="false"
-                    android:layout_marginTop="8dp"
                     android:id="@+id/rv_links"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:nestedScrollingEnabled="false" />
             </LinearLayout>
         </android.support.v4.widget.NestedScrollView>
-
-
 
 
     </LinearLayout>
 
 
     <ProgressBar
-        android:visibility="gone"
-        android:layout_gravity="center"
         android:id="@+id/progressBar2"
         style="?android:attr/progressBarStyle"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone" />
 
 </FrameLayout>

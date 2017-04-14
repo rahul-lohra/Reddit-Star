@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
 
 import lombok.Data;
 
-@Data
+
 public class AboutMe {
 
     @SerializedName("name")
@@ -19,4 +19,15 @@ public class AboutMe {
     @Expose
     private String redditId;
 
+    public String getName() {
+        return name;
+    }
+
+    public Boolean getOver18() {
+        return over18;
+    }
+
+    public String getRedditId() {
+        return redditId;
+    }
 }

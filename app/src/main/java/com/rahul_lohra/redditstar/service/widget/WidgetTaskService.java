@@ -53,7 +53,7 @@ public class WidgetTaskService extends GcmTaskService {
 
 
     final String TAG = WidgetTaskService.class.getSimpleName();
-    public  final static String INTENT_TAG = "WidgetTaskService";
+    public  final static String INTENT_TAG = "com.rahul_lohra.redditstar.service.widget.WidgetTaskService";
     public final static String TAG_ONCE = "once";
     public final static String TAG_PERIODIC_WIDGET = "periodic_widget";
     public final static String TAG_PERIODIC_FRONT_PAGE = "periodic_front_page";
@@ -63,7 +63,6 @@ public class WidgetTaskService extends GcmTaskService {
     @Override
     public void onCreate() {
         super.onCreate();
-        Log.wtf(TAG,"onCreate()");
         ((Initializer)getApplication()).getNetComponent().inject(this);
         mContext = getApplicationContext();
         sp = PreferenceManager.getDefaultSharedPreferences(mContext);

@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-apply plugin: 'com.neenbedankt.android-apt'
+//apply plugin: 'com.neenbedankt.android-apt'
 
 def googleSupportVersion = '25.2.0'
 def playServiceVersion = '9.0.0'
@@ -29,6 +29,8 @@ android {
         exclude 'META-INF/license.txt'
         exclude 'META-INF/dependencies.txt'
         exclude 'META-INF/LGPL2.1'
+        exclude 'META-INF/rxjava.properties'
+
     }
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
@@ -39,12 +41,11 @@ android {
         versionCode 2
         versionName "1.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
+//        multiDexEnabled true
 //        jackOptions {
 //            enabled true
 //        }
     }
-
 //    compileOptions {
 //        sourceCompatibility JavaVersion.VERSION_1_8
 //        targetCompatibility JavaVersion.VERSION_1_8
@@ -63,7 +64,7 @@ android {
 //    }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.config
             zipAlignEnabled true
@@ -74,6 +75,9 @@ android {
     }
     buildTypes.each {
         it.buildConfigField 'String', 'REDDIT_CLIENT', "\"gQx9XYxNhF7hsA\""
+    }
+    configurations.all {
+        resolutionStrategy.force 'com.google.code.findbugs:jsr305:3.0.1'
     }
 }
 
@@ -92,7 +96,7 @@ dependencies {
     compile "com.android.support:design:$googleSupportVersion"
 
     //Play Services
-    apt "net.simonvt.schematic:schematic-compiler:$schematicVersion"
+    annotationProcessor  "net.simonvt.schematic:schematic-compiler:$schematicVersion"
     compile "net.simonvt.schematic:schematic:$schematicVersion"
 
     //    compile 'com.github.varunest:sparkbutton:1.0.4'
@@ -102,13 +106,16 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.1'
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.jakewharton:butterknife:7.0.1'
-    compile 'com.google.dagger:dagger:2.2'
+    compile 'com.google.dagger:dagger:2.10'
+    compile 'com.google.dagger:dagger-android-support:2.10'
     compile 'com.google.code.gson:gson:2.6.2'
-    compile 'com.squareup.retrofit2:retrofit:2.1.0'
-    compile 'com.squareup.retrofit2:converter-gson:2.1.0'
+    compile 'com.squareup.retrofit2:retrofit:2.2.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.2.0'
     compile 'org.projectlombok:lombok:1.16.14'
     compile 'com.facebook.stetho:stetho:1.4.2'
     compile 'com.facebook.stetho:stetho-okhttp3:1.4.2'
+    compile 'com.squareup.okhttp3:okhttp:3.6.0'
+    compile 'com.squareup.okhttp3:logging-interceptor:3.6.0'
     compile 'org.greenrobot:eventbus:3.0.0'
     compile 'com.google.firebase:firebase-core:10.0.1'
     compile 'com.google.firebase:firebase-crash:10.0.1'
@@ -116,11 +123,18 @@ dependencies {
     compile 'com.google.firebase:firebase-messaging:10.0.1'
     testCompile 'junit:junit:4.12'
     testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
-    apt 'com.google.dagger:dagger-compiler:2.2'
+    annotationProcessor  'com.google.dagger:dagger-compiler:2.10'
+    annotationProcessor   'com.google.dagger:dagger-android-processor:2.10'
     debugCompile 'com.facebook.stetho:stetho-js-rhino:1.4.2'
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5'
     provided 'javax.annotation:jsr250-api:1.0'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
+    compile    'com.jakewharton.timber:timber:4.5.1'
+    compile    'io.reactivex.rxjava2:rxjava:2.0.8'
+    compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    compile 'com.jakewharton.rxbinding2:rxbinding:2.0.0'
+    compile 'com.squareup.retrofit2:adapter-rxjava2:2.2.0'
+
 }
 
 apply plugin: 'com.google.gms.google-services'

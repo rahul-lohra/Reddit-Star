@@ -3,6 +3,7 @@ package com.rahul_lohra.redditstar.viewHolder;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -69,6 +70,8 @@ public class PostViewDetail extends RecyclerView.ViewHolder {
     public TextView tvUsername;
     @Bind(R.id.linear_layout)
     public LinearLayout linearLayout;
+    @Bind(R.id.image_view)
+    public AppCompatImageView imageView;
 
 
     private Integer likes;
@@ -98,6 +101,16 @@ public class PostViewDetail extends RecyclerView.ViewHolder {
         ((Initializer)context.getApplicationContext()).getNetComponent().inject(this);
         apiInterface =retrofit.create(ApiInterface.class);
         this.mListener = mListener;
+    }
+
+    public void init(int hasBigImage,int hasThumbnail,String thumbnail){
+        if(hasBigImage!=1 && hasThumbnail ==1){
+            Glide.with(context)
+                    .load(thumbnail)
+                    .into(imageView);
+        }else {
+            imageView.setVisibility(View.GONE);
+        }
     }
 
     public Integer getLikes() {

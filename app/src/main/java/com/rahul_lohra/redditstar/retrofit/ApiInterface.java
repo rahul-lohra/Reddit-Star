@@ -12,6 +12,7 @@ import com.rahul_lohra.redditstar.Utility.Constants;
 
 import java.util.Map;
 
+import io.reactivex.Observable;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -81,9 +82,19 @@ public interface ApiInterface {
     Call<T5_SearchResponse> searchSubreddits(@Header(Constants.AUTHORIZATION) String authorization,
                                              @QueryMap Map<String, Object> map);
 
+    @GET("/subreddits/search.json")
+    @Headers("User-Agent: android:com.android.rahul_lohra.redditstar:v1.0 (by /u/rahul_lohra)")
+    Observable<T5_SearchResponse> searchSubredditsRx(@Header(Constants.AUTHORIZATION) String authorization,
+                                      @QueryMap Map<String, Object> map);
+
     @GET("search.json")
     @Headers("User-Agent: android:com.android.rahul_lohra.redditstar:v1.0 (by /u/rahul_lohra)")
     Call<FrontPageResponse> searchLinks(@Header(Constants.AUTHORIZATION) String authorization,
+                                        @QueryMap Map<String, Object> map);
+
+    @GET("search.json")
+    @Headers("User-Agent: android:com.android.rahul_lohra.redditstar:v1.0 (by /u/rahul_lohra)")
+    Observable<FrontPageResponse> searchLinksRx(@Header(Constants.AUTHORIZATION) String authorization,
                                         @QueryMap Map<String, Object> map);
 
     @FormUrlEncoded

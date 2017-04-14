@@ -95,9 +95,11 @@ public class CommentsAdapter extends CursorRecyclerViewAdapter<RecyclerView.View
                 final String postHint =  cursor.getString(cursor.getColumnIndex(MyPostsColumn.KEY_POST_HINT));
                 final String domain =  cursor.getString(cursor.getColumnIndex(MyPostsColumn.KEY_DOMAIN));
                 final String score =  cursor.getString(cursor.getColumnIndex(MyPostsColumn.KEY_SCORE));
+                final int hasBigImage =  cursor.getInt(cursor.getColumnIndex(MyPostsColumn.KEY_IS_BIG_IMAGE_URL_HAS_IMAGE));
+                final int hasThumbnail =  cursor.getInt(cursor.getColumnIndex(MyPostsColumn.KEY_IS_THUMBNAIL_HAS_IMAGE));
 
 
-
+                viewHolder.init(hasBigImage,hasThumbnail,thumbnail);
                 viewHolder.setLikes(likes);
                 viewHolder.setUrl(url);
                 viewHolder.setScores(score);

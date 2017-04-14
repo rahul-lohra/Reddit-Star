@@ -6,7 +6,6 @@ import com.google.gson.annotations.SerializedName;
 
 import lombok.Data;
 
-@Data
 public class SubredditResponse {
 
     @SerializedName("kind")
@@ -16,4 +15,11 @@ public class SubredditResponse {
     @Expose
     private ListingDataStructure data;
 
-} 
+    public String getKind() {
+        return kind;
+    }
+
+    public ListingDataStructure getData() {
+        return data;
+    }
+}

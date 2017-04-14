@@ -10,7 +10,7 @@ import dagger.Provides;
 /**
  * Created by rkrde on 15-12-2016.
  */
-@Module
+//@Module
 public class AppModule {
     Application mApplication;
 
@@ -18,8 +18,8 @@ public class AppModule {
         mApplication = application;
     }
 
-    @Provides
-    @Singleton
+//    @Provides
+//    @Singleton
     Application providesApplication() {
         return mApplication;
     }

@@ -2,13 +2,17 @@ package com.rahul_lohra.redditstar.Application;
 
 import android.app.Application;
 
+import com.rahul_lohra.redditstar.Application.timber.ReleaseTree;
 import com.rahul_lohra.redditstar.BuildConfig;
 //import com.rahul_lohra.redditstar.dagger.Component.DaggerNetComponent;
 import com.rahul_lohra.redditstar.Dagger.Component.DaggerNetComponent;
 import com.rahul_lohra.redditstar.Dagger.Component.NetComponent;
 import com.rahul_lohra.redditstar.Dagger.Module.AppModule;
+import com.rahul_lohra.redditstar.Dagger.Module.ContextModule;
 import com.rahul_lohra.redditstar.Dagger.Module.NetModule;
 import com.facebook.stetho.Stetho;
+
+import timber.log.Timber;
 
 
 /**
@@ -21,13 +25,21 @@ public class Initializer extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+//        Timber.plant(new Timber.DebugTree());
+        if(BuildConfig.DEBUG){
+            Timber.plant(new Timber.DebugTree(){
+                @Override
+                protected String createStackElementTag(StackTraceElement element) {
+                    return super.createStackElementTag(element)+":"+element.getLineNumber();
+                }
+            });
+        }else {
+            Timber.plant(new ReleaseTree());
 
+        }
 
-        //Dagger
         mNetComponent = DaggerNetComponent.builder()
-                // list of modules that are part of this component need to be created here too
-                .appModule(new AppModule(this)) // This also corresponds to the name of your module: %component_name%Module
-                .netModule(new NetModule(getApplicationContext()))
+                .contextModule(new ContextModule(this))
                 .build();
 
         if(BuildConfig.DEBUG){

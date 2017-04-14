@@ -87,6 +87,7 @@ public class HomeAdapter extends CursorRecyclerViewAdapter<RecyclerView.ViewHold
         final String domain =  cursor.getString(cursor.getColumnIndex(MyPostsColumn.KEY_DOMAIN));
         final int thumbnailHasIMage =  cursor.getInt(cursor.getColumnIndex(MyPostsColumn.KEY_IS_THUMBNAIL_HAS_IMAGE));
         final int bigImageUrlHasImage =  cursor.getInt(cursor.getColumnIndex(MyPostsColumn.KEY_IS_BIG_IMAGE_URL_HAS_IMAGE));
+        final String score =  cursor.getString(cursor.getColumnIndex(MyPostsColumn.KEY_SCORE));
 
         final DetailPostModal modal = new DetailPostModal(id,
                 subreddit,
@@ -103,7 +104,8 @@ public class HomeAdapter extends CursorRecyclerViewAdapter<RecyclerView.ViewHold
                 url,
                 domain,
                 thumbnailHasIMage,
-                bigImageUrlHasImage);
+                bigImageUrlHasImage,
+                score);
         postView.init(activity,modal);
         int total = cursor.getCount();
         int curPos = cursor.getPosition();

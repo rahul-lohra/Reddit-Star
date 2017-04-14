@@ -3,7 +3,6 @@ package com.rahul_lohra.redditstar.modal.frontPage;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-@lombok.Data
 public class Source {
 
     @SerializedName("url")
@@ -16,4 +15,15 @@ public class Source {
     @Expose
     public Integer height;
 
+    public String getUrl() {
+        return url;
+    }
+
+    public Integer getWidth() {
+        return width;
+    }
+
+    public Integer getHeight() {
+        return height;
+    }
 }

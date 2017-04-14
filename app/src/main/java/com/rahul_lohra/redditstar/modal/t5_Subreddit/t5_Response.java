@@ -8,7 +8,7 @@ import lombok.Data;
 /**
  * Created by rkrde on 15-02-2017.
  */
-@Data
+
 public class t5_Response {
 
     @SerializedName("kind")
@@ -17,4 +17,12 @@ public class t5_Response {
     @SerializedName("data")
     @Expose
     private T5_Data data;
+
+    public String getKind() {
+        return kind;
+    }
+
+    public T5_Data getData() {
+        return data;
+    }
 }

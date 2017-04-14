@@ -31,7 +31,7 @@ import static com.rahul_lohra.redditstar.Utility.MyUrl.CLIENT_ID;
 /**
  * Created by rkrde on 15-12-2016.
  */
-@Module
+//@Module
 public class NetModule {
 
     static int count = 0;
@@ -42,9 +42,9 @@ public class NetModule {
         this.context = context;
     }
 
-    @Provides
-    @Singleton
-    @Named("withToken")
+//    @Provides
+//    @Singleton
+//    @Named("withToken")
     Retrofit provideRetrofitForFun() {
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
         httpClient.addInterceptor(new Interceptor() {
@@ -76,9 +76,9 @@ public class NetModule {
 
     }
 
-    @Provides
-    @Singleton
-    @Named("withoutToken")
+//    @Provides
+//    @Singleton
+//    @Named("withoutToken")
     Retrofit provideRetrofitForToken() {
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
         httpClient.addInterceptor(new Interceptor() {

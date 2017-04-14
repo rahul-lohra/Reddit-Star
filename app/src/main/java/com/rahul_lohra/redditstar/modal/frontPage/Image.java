@@ -4,7 +4,6 @@ package com.rahul_lohra.redditstar.modal.frontPage;
 import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-@lombok.Data
 public class Image {
 
     @SerializedName("source")
@@ -20,4 +19,19 @@ public class Image {
     @Expose
     public String id;
 
+    public Source getSource() {
+        return source;
+    }
+
+    public List<Resolution> getResolutions() {
+        return resolutions;
+    }
+
+    public Variants getVariants() {
+        return variants;
+    }
+
+    public String getId() {
+        return id;
+    }
 }

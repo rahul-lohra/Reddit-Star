@@ -235,7 +235,7 @@ public class PostView extends RecyclerView.ViewHolder {
                         @Override
                         public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
                             Log.e("error:",bigImageUrl);
-                            e.printStackTrace();
+//                            e.printStackTrace();
                             loadThumbnail();
                             return true;
                         }

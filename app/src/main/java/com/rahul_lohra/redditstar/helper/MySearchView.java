@@ -29,6 +29,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.jakewharton.rxbinding2.widget.RxTextView;
 import com.rahul_lohra.redditstar.R;
 import com.rahul_lohra.redditstar.adapter.cursor.SearchAdapter;
 import com.rahul_lohra.redditstar.storage.MyProvider;
@@ -37,8 +38,13 @@ import com.rahul_lohra.redditstar.storage.column.SuggestionColumn;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.Bind;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by rkrde on 25-03-2017.
@@ -189,7 +195,6 @@ public class MySearchView extends Toolbar implements
         });
 
         et.setOnEditorActionListener(new TextView.OnEditorActionListener()
-
         {
             @Override
             public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {

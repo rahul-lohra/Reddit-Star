@@ -4,7 +4,6 @@ package com.rahul_lohra.redditstar.modal.frontPage;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-@lombok.Data
 public class FrontPageChild {
 
     @SerializedName("kind")
@@ -14,4 +13,11 @@ public class FrontPageChild {
     @Expose
     private FrontPageChildData data;
 
+    public String getKind() {
+        return kind;
+    }
+
+    public FrontPageChildData getData() {
+        return data;
+    }
 }

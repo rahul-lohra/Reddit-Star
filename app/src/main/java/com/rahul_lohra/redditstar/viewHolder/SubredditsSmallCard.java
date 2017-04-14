@@ -4,6 +4,7 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.rahul_lohra.redditstar.R;
@@ -17,12 +18,10 @@ import butterknife.ButterKnife;
 
 public class SubredditsSmallCard extends RecyclerView.ViewHolder {
 
-    @Bind(R.id.image_view)
-    public ImageView imageView;
+    @Bind(R.id.parent)
+    public RelativeLayout parent;
     @Bind(R.id.tv_share)
     public TextView tvShare;
-    @Bind(R.id.card_view)
-    public CardView cardView;
 
     public SubredditsSmallCard(View itemView) {
         super(itemView);

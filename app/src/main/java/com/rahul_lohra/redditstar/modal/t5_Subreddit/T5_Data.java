@@ -8,7 +8,6 @@ import lombok.Data;
 /**
  * Created by rkrde on 15-02-2017.
  */
-@Data
 public class T5_Data {
     @SerializedName("banner_img")
     @Expose
@@ -118,4 +117,148 @@ public class T5_Data {
     @SerializedName("user_is_subscriber")
     @Expose
     private Boolean userIsSubscriber;
+
+    public String getBannerImg() {
+        return bannerImg;
+    }
+
+    public Object getSubmitTextHtml() {
+        return submitTextHtml;
+    }
+
+    public Boolean getUserIsBanned() {
+        return userIsBanned;
+    }
+
+    public Boolean getWikiEnabled() {
+        return wikiEnabled;
+    }
+
+    public Boolean getShowMedia() {
+        return showMedia;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public Object getUserIsContributor() {
+        return userIsContributor;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public String getHeaderImg() {
+        return headerImg;
+    }
+
+    public String getDescriptionHtml() {
+        return descriptionHtml;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public Boolean getCollapseDeletedComments() {
+        return collapseDeletedComments;
+    }
+
+    public String getPrivateDescription() {
+        return privateDescription;
+    }
+
+    public Boolean getOver18() {
+        return over18;
+    }
+
+    public Boolean getSpoilersEnabled() {
+        return spoilersEnabled;
+    }
+
+    public Object getIconSize() {
+        return iconSize;
+    }
+
+    public Object getSuggestedCommentSort() {
+        return suggestedCommentSort;
+    }
+
+    public String getIconImg() {
+        return iconImg;
+    }
+
+    public Boolean getUserIsMuted() {
+        return userIsMuted;
+    }
+
+    public String getSubmitLinkLabel() {
+        return submitLinkLabel;
+    }
+
+    public Integer getAccountsActive() {
+        return accountsActive;
+    }
+
+    public Boolean getPrivateTraffic() {
+        return privateTraffic;
+    }
+
+    public Integer getSubscribers() {
+        return subscribers;
+    }
+
+    public String getKeyColor() {
+        return keyColor;
+    }
+
+    public String getLang() {
+        return lang;
+    }
+
+    public String getWhitelistStatus() {
+        return whitelistStatus;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Integer getCreated() {
+        return created;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public Boolean getQuarantine() {
+        return quarantine;
+    }
+
+    public Integer getCreatedUtc() {
+        return createdUtc;
+    }
+
+    public Boolean getUserIsModerator() {
+        return userIsModerator;
+    }
+
+    public String getAdvertiserCategory() {
+        return advertiserCategory;
+    }
+
+    public String getSubredditType() {
+        return subredditType;
+    }
+
+    public String getSubmissionType() {
+        return submissionType;
+    }
+
+    public Boolean getUserIsSubscriber() {
+        return userIsSubscriber;
+    }
 }

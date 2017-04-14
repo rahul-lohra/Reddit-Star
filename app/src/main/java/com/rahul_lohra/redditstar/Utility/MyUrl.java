@@ -1,9 +1,14 @@
 package com.rahul_lohra.redditstar.Utility;
 
+import android.content.Context;
 import android.support.annotation.IntDef;
 import android.support.annotation.StringDef;
 
+import com.rahul_lohra.redditstar.retrofit.ApiInterface;
+
 import java.lang.annotation.Retention;
+
+import retrofit2.Retrofit;
 
 import static java.lang.annotation.RetentionPolicy.SOURCE;
 
@@ -76,6 +81,18 @@ public class MyUrl {
 
 
     }
+
+    public static ApiInterface getApiInterface(Context context, Retrofit retrofitWithToken,Retrofit retrofitWithoutToken){
+        boolean isUserLoggedIn = UserState.isUserLoggedIn(context);
+        return (isUserLoggedIn)?retrofitWithToken.create(ApiInterface.class):retrofitWithoutToken.create(ApiInterface.class);
+    }
+
+    public static String getToken(Context context){
+        boolean isUserLoggedIn = UserState.isUserLoggedIn(context);
+        return (isUserLoggedIn) ? "bearer " + UserState.getAuthToken(context) : "";
+    }
+
+
 
 
 }

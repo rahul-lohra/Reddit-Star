@@ -10,7 +10,6 @@ import lombok.Data;
 /**
  * Created by rkrde on 01-03-2017.
  */
-@Data
 public class JsonData {
     @SerializedName("json")
     @Expose
@@ -20,5 +19,11 @@ public class JsonData {
     @Expose
     private Object mData;
 
+    public ArrayList<String> getmError() {
+        return mError;
+    }
 
+    public Object getmData() {
+        return mData;
+    }
 }

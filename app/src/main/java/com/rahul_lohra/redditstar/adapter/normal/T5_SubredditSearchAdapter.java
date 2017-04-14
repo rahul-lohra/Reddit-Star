@@ -49,26 +49,12 @@ public class T5_SubredditSearchAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         SubredditsSmallCard viewHolder = (SubredditsSmallCard) holder;
         final T5_Data t5_data = list.get(position).data;
-//        final String name = t5_data.getName();
-//        final String subreddit = t5_data.getSubreddit();
-//        final String thingId = t5_data.getName();
-//        final String author = t5_data.getAuthor();
-//        final long createdUtc = t5_data.getCreatedUtc();
-//
-//        final Preview preview = t5_data.getPreview();
-//        final String thumbnail = (preview!=null)?t5_data.getThumbnail():"";
-
-        if (position == list.size() - 1 && list.size()>4) {
-            mListener.getNextSubreddit();
-        }
+//        if (position == list.size() - 1 && list.size()>4) {
+//            mListener.getNextSubreddit();
+//        }
 
         viewHolder.tvShare.setText(list.get(position).data.getDisplayName());
-        Glide.with(context)
-                .load(list.get(position).data.getIconImg())
-                .centerCrop()
-                .crossFade()
-                .into(viewHolder.imageView);
-        viewHolder.cardView.setOnClickListener(new View.OnClickListener() {
+        viewHolder.parent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(mListener!=null)

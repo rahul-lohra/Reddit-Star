@@ -3,14 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:id="@+id/frame_layout"
     tools:context="com.rahul_lohra.redditstar.fragments.HomeFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <!--<Button-->
-    <!--android:id="@+id/btn"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:text="@string/get_data" />-->
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipe_refresh"
         android:layout_width="match_parent"

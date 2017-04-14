@@ -1,5 +1,12 @@
 package com.rahul_lohra.redditstar.Dagger.Component;
 
+import com.rahul_lohra.redditstar.Dagger.Module.ApiModule;
+import com.rahul_lohra.redditstar.Dagger.Module.CacheModule;
+import com.rahul_lohra.redditstar.Dagger.Module.ContextModule;
+import com.rahul_lohra.redditstar.Dagger.Module.NetworkModule;
+import com.rahul_lohra.redditstar.Dagger.Module.StorageModule;
+import com.rahul_lohra.redditstar.Dagger.Module.TokenAuthModule;
+import com.rahul_lohra.redditstar.Utility.ApiCalls;
 import com.rahul_lohra.redditstar.activity.DetailActivity;
 import com.rahul_lohra.redditstar.activity.DetailActivityNew;
 import com.rahul_lohra.redditstar.activity.MediaActivity;
@@ -33,7 +40,13 @@ import dagger.Component;
  * Created by rkrde on 24-12-2016.
  */
 @Singleton
-@Component(modules = {NetModule.class, AppModule.class})
+@Component(modules = {TokenAuthModule.class,
+        CacheModule.class,
+        ApiModule.class,
+        ContextModule.class,
+        NetworkModule.class,
+        TokenAuthModule.class,
+        StorageModule.class})
 public interface NetComponent {
     //Activity
     void inject(SearchActivity activity);
@@ -64,5 +77,6 @@ public interface NetComponent {
     void inject(PostView view);
     void inject(PostViewDetail view);
 
+    void inject(ApiCalls apiCalls);
 
 }

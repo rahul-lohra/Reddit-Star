@@ -12,42 +12,41 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.NestedScrollView;
-import android.support.v7.widget.AppCompatEditText;
-import android.support.v7.widget.AppCompatImageView;
+import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.rahul_lohra.redditstar.Application.Initializer;
 import com.rahul_lohra.redditstar.R;
+import com.rahul_lohra.redditstar.Utility.ApiCalls;
+import com.rahul_lohra.redditstar.Utility.Constants;
 import com.rahul_lohra.redditstar.Utility.SpConstants;
+import com.rahul_lohra.redditstar.Utility.UserState;
 import com.rahul_lohra.redditstar.activity.SearchActivity;
 import com.rahul_lohra.redditstar.activity.SubredditActivity;
 import com.rahul_lohra.redditstar.adapter.cursor.HomeAdapter;
 import com.rahul_lohra.redditstar.adapter.normal.T5_SubredditSearchAdapter;
-import com.rahul_lohra.redditstar.Application.Initializer;
-import com.rahul_lohra.redditstar.contract.IActivity;
 import com.rahul_lohra.redditstar.contract.IFrontPageAdapter;
 import com.rahul_lohra.redditstar.helper.MySearchView;
 import com.rahul_lohra.redditstar.modal.T5_Kind;
 import com.rahul_lohra.redditstar.modal.custom.AfterModal;
 import com.rahul_lohra.redditstar.modal.custom.DetailPostModal;
+import com.rahul_lohra.redditstar.modal.frontPage.FrontPageResponse;
 import com.rahul_lohra.redditstar.modal.search.T3_ListChild;
 import com.rahul_lohra.redditstar.modal.search.T5_ListChild;
+import com.rahul_lohra.redditstar.modal.search.T5_SearchResponse;
 import com.rahul_lohra.redditstar.retrofit.ApiInterface;
 import com.rahul_lohra.redditstar.service.search.SearchLinksService;
 import com.rahul_lohra.redditstar.service.search.SearchSubredditsService;
 import com.rahul_lohra.redditstar.storage.MyProvider;
 import com.rahul_lohra.redditstar.storage.column.MyPostsColumn;
-import com.rahul_lohra.redditstar.Utility.Constants;
-import com.rahul_lohra.redditstar.Utility.UserState;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -60,15 +59,14 @@ import javax.inject.Named;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
+import io.reactivex.Observable;
 import retrofit2.Retrofit;
 
 public class SearchFragment extends BaseFragment implements
         T5_SubredditSearchAdapter.IT5_SubredditSearchAdapter,
         LoaderManager.LoaderCallbacks<Cursor>,
         IFrontPageAdapter,
-        MySearchView.ISearchView
-{
+        MySearchView.ISearchView {
 
     @Inject
     @Named("withToken")
@@ -85,7 +83,7 @@ public class SearchFragment extends BaseFragment implements
     RecyclerView rvSubreddits;
     @Bind(R.id.rv_links)
     RecyclerView rvLinks;
-//    @Bind(R.id.et)
+    //    @Bind(R.id.et)
 //    AppCompatEditText et;
     @Bind(R.id.nested_sv)
     NestedScrollView nestedSV;
@@ -113,7 +111,14 @@ public class SearchFragment extends BaseFragment implements
     T5_ListChild t5_List_child;//Subreddit
     String searchQuery;
     String afterOfLink = "";
-//    @Bind(R.id.toolbar)
+    ApiCalls apiCalls;
+    @Bind(R.id.container_subreddit)
+    RelativeLayout containerSubreddit;
+    @Bind(R.id.btn_sort_post)
+    AppCompatButton btnSortPost;
+    @Bind(R.id.container_posts)
+    RelativeLayout containerPosts;
+    //    @Bind(R.id.toolbar)
 //    Toolbar toolbar;
     //    String afterOfSubreddit;
     private Uri mUri = MyProvider.PostsLists.CONTENT_URI;
@@ -131,7 +136,8 @@ public class SearchFragment extends BaseFragment implements
 
     private ISearchFragment mListener;
 
-    public SearchFragment() {}
+    public SearchFragment() {
+    }
 
     public static SearchFragment newInstance() {
         SearchFragment fragment = new SearchFragment();
@@ -146,11 +152,13 @@ public class SearchFragment extends BaseFragment implements
         setRetainInstance(true);
         ((Initializer) getContext().getApplicationContext()).getNetComponent().inject(this);
         Constants.clearPosts(getContext(), Constants.TYPE_SEARCH);
+//        apiCalls = new ApiCalls(getContext());
     }
 
     private void setToolbar() {
 //        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -160,28 +168,14 @@ public class SearchFragment extends BaseFragment implements
 //        setToolbar();
         sp = PreferenceManager.getDefaultSharedPreferences(getContext());
         if (null == t5SubredditSearchAdapter) {
-            tvPost.setVisibility(View.GONE);
-            tvSubreddit.setVisibility(View.GONE);
+            containerPosts.setVisibility(View.GONE);
+            containerSubreddit.setVisibility(View.GONE);
         }
 
         mySearchView.init(this);
         isUSerLoggedIn = UserState.isUserLoggedIn(getContext());
         apiInterface = (isUSerLoggedIn) ? retrofitWithToken.create(ApiInterface.class) : retrofitWithoutToken.create(ApiInterface.class);
         setAdapter();
-//        et.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-//            @Override
-//            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
-//                switch (actionId) {
-//                    case EditorInfo.IME_ACTION_SEARCH: {
-//                        doMySearch(et.getText().toString(), true);
-//                        searchQuery = et.getText().toString();
-//                    }
-//                    return true;
-//                    default:
-//                        return false;
-//                }
-//            }
-//        });
         nestedSV.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
             @Override
             public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
@@ -200,10 +194,11 @@ public class SearchFragment extends BaseFragment implements
         linkAdapter = new HomeAdapter(getActivity(), null, this, (SearchActivity) getActivity());
         t5SubredditSearchAdapter = new T5_SubredditSearchAdapter(getActivity(), t5dataList, this);
         rvLinks.setLayoutManager(new LinearLayoutManager(getActivity()));
-        rvSubreddits.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        rvSubreddits.setLayoutManager(new LinearLayoutManager(getActivity()));
         rvLinks.setAdapter(linkAdapter);
         rvSubreddits.setAdapter(t5SubredditSearchAdapter);
     }
+
     @Override
     public void doMySearch(@NonNull String query, boolean isFromStart) {
         /*
@@ -258,7 +253,7 @@ public class SearchFragment extends BaseFragment implements
 
     @Override
     public void getNextSubreddit() {
-        if (t5_List_child != null && SearchSubredditsService.after !=null) {
+        if (t5_List_child != null && SearchSubredditsService.after != null) {
             if (!t5_List_child.getAfter().equalsIgnoreCase(SearchSubredditsService.after)) {
                 getSubreddits(searchQuery, false);
             }
@@ -269,15 +264,14 @@ public class SearchFragment extends BaseFragment implements
     public void onMessageEvent(T5_ListChild Argt5_List_child) {
         this.t5_List_child = Argt5_List_child;
         List<T5_Kind> list = t5_List_child.children;
-        if(list.size()==0)
-        {
+        if (list.size() == 0) {
             return;
         }
-        boolean mOver18 = sp.getBoolean(SpConstants.OVER_18,false);
-        if(!mOver18){
+        boolean mOver18 = sp.getBoolean(SpConstants.OVER_18, false);
+        if (!mOver18) {
             for (int i = 0; i < list.size(); ) {
 //            System.out.println("i="+i);
-                boolean over18 = list.get(i).data.getOver18()!=null?list.get(i).data.getOver18():true;
+                boolean over18 = list.get(i).data.getOver18() != null ? list.get(i).data.getOver18() : true;
                 if (over18) {
                     list.remove(i);
                 } else {
@@ -290,24 +284,24 @@ public class SearchFragment extends BaseFragment implements
         t5dataList.addAll(lastPos, list);
         t5SubredditSearchAdapter.notifyItemRangeInserted(lastPos, list.size());
         progressBar.setVisibility(View.GONE);
-        tvSubreddit.setVisibility(View.VISIBLE);
-        tvPost.setVisibility(View.VISIBLE);
+        containerSubreddit.setVisibility(View.VISIBLE);
+        containerPosts.setVisibility(View.VISIBLE);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(AfterModal afterModal) {
         this.afterOfLink = afterModal.getmAfterLink();
         progressBar.setVisibility(View.GONE);
-        tvSubreddit.setVisibility(View.VISIBLE);
-        tvPost.setVisibility(View.VISIBLE);
+        containerSubreddit.setVisibility(View.VISIBLE);
+        containerPosts.setVisibility(View.VISIBLE);
     }
 
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(T3_ListChild t3_List_child) {
         progressBar.setVisibility(View.GONE);
-        tvSubreddit.setVisibility(View.VISIBLE);
-        tvPost.setVisibility(View.VISIBLE);
+        containerSubreddit.setVisibility(View.VISIBLE);
+        containerPosts.setVisibility(View.VISIBLE);
     }
 
     @Subscribe(threadMode = ThreadMode.BACKGROUND)
@@ -322,8 +316,8 @@ public class SearchFragment extends BaseFragment implements
             }
             progressBar.setVisibility(View.GONE);
 
-            tvSubreddit.setVisibility(View.VISIBLE);
-            tvPost.setVisibility(View.VISIBLE);
+            containerSubreddit.setVisibility(View.VISIBLE);
+            containerPosts.setVisibility(View.VISIBLE);
         }
     }
 
@@ -390,5 +384,24 @@ public class SearchFragment extends BaseFragment implements
         mListener = null;
     }
 
+    /*
+    RxJava Code below
+     */
+
+    private Observable<FrontPageResponse> getLinksRx(String query, boolean isFromStart) {
+        if (null == afterOfLink) {
+            afterOfLink = "";
+        }
+        String mAfter = isFromStart ? "" : afterOfLink;
+        return apiCalls.searchLinksRx(query, mAfter);
+    }
+
+    private Observable<T5_SearchResponse> getSubredditsRx(@NonNull String query, boolean isFromStart) {
+        if (null == afterOfLink) {
+            afterOfLink = "";
+        }
+        String mAfter = isFromStart ? "" : afterOfLink;
+        return apiCalls.searchSubredditsRx(query, mAfter);
+    }
 
 }

@@ -35,6 +35,7 @@ import javax.inject.Named;
 
 import retrofit2.Response;
 import retrofit2.Retrofit;
+import timber.log.Timber;
 
 
 @SuppressWarnings("HardCodedStringLiteral")
@@ -111,9 +112,12 @@ public class GetFrontPageService extends IntentService {
                 }
                 Log.d(TAG,"response:"+res.code());
             } catch (UnknownHostException e){
-
+                Timber.e(e.getMessage());
+                EventBus.getDefault().post("error");
             }
             catch (IOException e) {
+                Timber.e(e.getMessage());
+                EventBus.getDefault().post("error");
                 e.printStackTrace();
             }
             finally{

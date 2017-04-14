@@ -245,5 +245,9 @@
     <string name="youtube">Youtube</string>
     <string name="domain">domain</string>
     <string name="anonymous_user">Anonymous User</string>
+    <string name="retry">Retry</string>
+    <string name="sort_by_relevance">Sort by relevance</string>
+    <string name="relevance">Relevance</string>
+    <string name="see_more">See More</string>
 
 </resources>
