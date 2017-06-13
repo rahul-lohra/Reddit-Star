@@ -16,6 +16,7 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowContentTransitions">true</item>
     </style>
+
     <style name="DetailActivityTheme" parent="AppTheme.NoToolBar">
 
     </style>
@@ -30,10 +31,11 @@
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 
-        <style name="TextViewCollapsed">
-            <item name="android:textColor">@color/black</item>
-            <item name="android:alpha">1</item>
-        </style>
+    <style name="TextViewCollapsed">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:alpha">1</item>
+    </style>
+
     <style name="TextViewExpanded">
         <item name="android:textColor">#01000000</item>
         <item name="android:visibility">invisible</item>

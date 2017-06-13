@@ -184,7 +184,13 @@
             android:name=".service.CommentsService"
             android:exported="false" />
 
-        <activity android:name=".activity.MediaActivity"></activity>
+        <activity
+            android:name=".activity.MediaActivity"
+            android:theme="@style/MediaTheme"></activity>
+        <activity
+            android:theme="@style/AppTheme.NoToolBar"
+            android:name=".activity.profile.ProfileActivity"
+            />
     </application>
 
 </manifest>

@@ -1,8 +1,9 @@
 package com.rahul_lohra.redditstar.retrofit;
 
 import com.rahul_lohra.redditstar.modal.AboutMe;
-import com.rahul_lohra.redditstar.modal.GifyCat.GifyCatResponse;
-import com.rahul_lohra.redditstar.modal.RefreshTokenResponse;
+//import com.rahul_lohra.redditstar.modal.media.GifyCat.GifyCatResponse;
+import com.rahul_lohra.redditstar.modal.t1_Comments.Example;
+import com.rahul_lohra.redditstar.modal.token.RefreshTokenResponse;
 import com.rahul_lohra.redditstar.modal.SubredditResponse;
 import com.rahul_lohra.redditstar.modal.frontPage.FrontPageResponse;
 import com.rahul_lohra.redditstar.modal.reply.ReplyResponse;
@@ -63,6 +64,13 @@ public interface ApiInterface {
     @Headers("User-Agent: android:com.android.rahul_lohra.redditstar:v1.0 (by /u/rahul_lohra)")
     Call<t5_Response> getAboutSubreddit(@Header(Constants.AUTHORIZATION) String authorization,
                                         @Path(value = "subbreddit_name", encoded = true) String subbreddit_name
+    );
+
+    @GET("/user/{username}/overview/.json")
+    @Headers("User-Agent: android:com.android.rahul_lohra.redditstar:v1.0 (by /u/rahul_lohra)")
+    Call<Example> getOverview(@Header(Constants.AUTHORIZATION) String authorization,
+                              @Path(value = "username", encoded = true) String subbreddit_name,
+                              @QueryMap Map<String, String> map
     );
 
     @GET("/r/{subbreddit_name}/comments/{postId}.json")

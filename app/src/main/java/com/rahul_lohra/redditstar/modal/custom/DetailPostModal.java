@@ -25,6 +25,8 @@ public class DetailPostModal implements Parcelable {
     private int thumbnailHasImage;
     private int BigImageUrlHasImage;
     private String score;
+    private String subredditId;
+
 
 
     public DetailPostModal(String id,
@@ -43,7 +45,9 @@ public class DetailPostModal implements Parcelable {
                            String domain,
                            int thumbnailHasImage,
                            int bigImageUrlHasImage,
-                           String score) {
+                           String score,
+                           String subredditId) {
+        this.subredditId = subredditId;
         this.id = id;
         this.subreddit = subreddit;
         this.postHint = postHint;
@@ -62,6 +66,10 @@ public class DetailPostModal implements Parcelable {
         this.BigImageUrlHasImage = bigImageUrlHasImage;
         this.score = score;
 
+    }
+
+    public String getSubredditId() {
+        return subredditId;
     }
 
     public String getScore() {

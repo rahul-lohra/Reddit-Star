@@ -45,7 +45,7 @@ import com.rahul_lohra.redditstar.contract.ILogin;
 import com.rahul_lohra.redditstar.dialog.AddAccountDialog;
 import com.rahul_lohra.redditstar.fragments.DetailSubredditFragment;
 import com.rahul_lohra.redditstar.fragments.HomeFragment;
-import com.rahul_lohra.redditstar.modal.DrawerItemModal;
+import com.rahul_lohra.redditstar.modal.local.DrawerItemModal;
 import com.rahul_lohra.redditstar.modal.custom.DetailPostModal;
 import com.rahul_lohra.redditstar.presenter.activity.DashboardPresenter;
 import com.rahul_lohra.redditstar.service.widget.WidgetTaskService;
@@ -67,6 +67,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import timber.log.Timber;
 
 import static com.rahul_lohra.redditstar.Utility.MyUrl.AUTH_URL;
 import static com.rahul_lohra.redditstar.Utility.MyUrl.CLIENT_ID;
@@ -224,8 +225,19 @@ public class DashboardActivity extends BaseActivity implements
                 .setPersisted(true)
                 .build();
 
-        mGcmNetworkManager.schedule(widgetTask);
+        Task postsTask = new PeriodicTask.Builder()
+                .setService(WidgetTaskService.class)
+                .setPeriod(60 * 31)
+                .setFlex(10)
+                .setTag(WidgetTaskService.TAG_PERIODIC_FRONT_PAGE)
+                .setPersisted(true)
+                .build();
 
+
+        mGcmNetworkManager.schedule(widgetTask);
+        mGcmNetworkManager.schedule(postsTask);
+
+        Timber.d("Hello World");
     }
 
 

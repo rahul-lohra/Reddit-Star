@@ -96,12 +96,15 @@ dependencies {
     compile "com.android.support:design:$googleSupportVersion"
 
     //Play Services
-    annotationProcessor  "net.simonvt.schematic:schematic-compiler:$schematicVersion"
+    annotationProcessor "net.simonvt.schematic:schematic-compiler:$schematicVersion"
     compile "net.simonvt.schematic:schematic:$schematicVersion"
 
     //    compile 'com.github.varunest:sparkbutton:1.0.4'
     compile project(':sparkbutton')
     compile project(':kenburnslibrary')
+
+
+
     compile 'com.google.android.gms:play-services-gcm:10.0.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.1'
     compile 'com.github.bumptech.glide:glide:3.7.0'
@@ -121,20 +124,21 @@ dependencies {
     compile 'com.google.firebase:firebase-crash:10.0.1'
     compile 'com.google.firebase:firebase-ads:10.0.1'
     compile 'com.google.firebase:firebase-messaging:10.0.1'
+    compile 'com.jakewharton.timber:timber:4.5.1'
+    compile 'io.reactivex.rxjava2:rxjava:2.0.8'
+    compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    compile 'com.jakewharton.rxbinding2:rxbinding:2.0.0'
+    compile 'com.squareup.retrofit2:adapter-rxjava2:2.2.0'
+    compile 'com.google.android.exoplayer:exoplayer:r2.3.1'
+    compile 'com.google.android.exoplayer:extension-okhttp:r2.3.1'
     testCompile 'junit:junit:4.12'
     testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
-    annotationProcessor  'com.google.dagger:dagger-compiler:2.10'
-    annotationProcessor   'com.google.dagger:dagger-android-processor:2.10'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.10'
+    annotationProcessor 'com.google.dagger:dagger-android-processor:2.10'
     debugCompile 'com.facebook.stetho:stetho-js-rhino:1.4.2'
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5'
     provided 'javax.annotation:jsr250-api:1.0'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
-    compile    'com.jakewharton.timber:timber:4.5.1'
-    compile    'io.reactivex.rxjava2:rxjava:2.0.8'
-    compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
-    compile 'com.jakewharton.rxbinding2:rxbinding:2.0.0'
-    compile 'com.squareup.retrofit2:adapter-rxjava2:2.2.0'
-
 }
 
 apply plugin: 'com.google.gms.google-services'

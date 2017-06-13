@@ -15,6 +15,8 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import io.reactivex.Observable;
+import retrofit2.Call;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 
 /**
@@ -63,5 +65,20 @@ public class ApiCalls {
         map.put("q", subredditName);
         map.put(SpConstants.OVER_18,sp.getBoolean(SpConstants.OVER_18,false));
         return  apiInterface.searchSubredditsRx(token,map);
+    }
+
+    public Call<FrontPageResponse> getCallFrontPageResponse(String after,String filterParam_1,String filterParam_2){
+        apiInterface = MyUrl.getApiInterface(context,retrofitWithToken,retrofitWithoutToken);
+        if(null == after){
+            return null;
+        }
+        String token = MyUrl.getToken(context);
+        Map<String,String> map = new HashMap<>();
+        map.put("limit","20");
+        map.put("after",after);
+        map.put("t",filterParam_2);
+        map.put(SpConstants.OVER_18,String.valueOf(sp.getBoolean(SpConstants.OVER_18,false)));
+        return apiInterface.getFrontPage(token,filterParam_1,map);
+
     }
 }

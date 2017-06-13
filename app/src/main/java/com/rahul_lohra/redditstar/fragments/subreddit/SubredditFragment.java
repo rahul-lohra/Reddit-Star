@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -30,7 +29,7 @@ import com.rahul_lohra.redditstar.adapter.cursor.HomeAdapter;
 import com.rahul_lohra.redditstar.Application.Initializer;
 import com.rahul_lohra.redditstar.contract.IFrontPageAdapter;
 import com.rahul_lohra.redditstar.fragments.BaseFragment;
-import com.rahul_lohra.redditstar.modal.FavoritesModal;
+import com.rahul_lohra.redditstar.modal.local.FavoritesModal;
 import com.rahul_lohra.redditstar.modal.custom.DetailPostModal;
 import com.rahul_lohra.redditstar.modal.frontPage.FrontPageChild;
 import com.rahul_lohra.redditstar.modal.frontPage.FrontPageResponseData;
@@ -46,7 +45,6 @@ import com.rahul_lohra.redditstar.Utility.UserState;
 import com.varunest.sparkbutton.SparkButton;
 import com.varunest.sparkbutton.SparkEventListener;
 
-import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 

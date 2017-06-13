@@ -145,6 +145,7 @@ public class WidgetTaskService extends GcmTaskService {
 
             return result;
         } else if(taskParams.getTag().equals(TAG_PERIODIC_FRONT_PAGE)){
+            Log.d(TAG,"Periodic FrontPage update Start");
             apiInterface = (isUserLoggedIn)?retrofitWithToken.create(ApiInterface.class):retrofitWithoutToken.create(ApiInterface.class);
             Map<String,String> map = new HashMap<>();
             map.put("limit","30");
@@ -155,6 +156,7 @@ public class WidgetTaskService extends GcmTaskService {
                 Response<FrontPageResponse> res = apiInterface.getFrontPage(token,filterParam_1,map).execute();
                 if(res.code()==200)
                 {
+                    result = GcmNetworkManager.RESULT_SUCCESS;
                     Constants.clearPosts(getApplicationContext(),Constants.TYPE_POST);
                     Constants.clearComments(getApplicationContext());
                     Constants.insertPostsIntoTable(getApplicationContext(),res.body(), Constants.TYPE_POST);
@@ -173,6 +175,7 @@ public class WidgetTaskService extends GcmTaskService {
 //            } catch (ExecutionException e) {
 //                e.printStackTrace();
             }
+            Log.d(TAG,"Periodic FrontPage update END");
             return result;
         }
 

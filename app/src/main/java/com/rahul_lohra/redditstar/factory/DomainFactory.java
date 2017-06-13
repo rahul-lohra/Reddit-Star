@@ -1,9 +1,9 @@
 package com.rahul_lohra.redditstar.factory;
 
 import com.rahul_lohra.redditstar.contract.IMedia;
-import com.rahul_lohra.redditstar.modal.GifyCat.GifyCatResponse;
-import com.rahul_lohra.redditstar.modal.eroshare.EroShareResponse;
-import com.rahul_lohra.redditstar.modal.imgur.ImgurResponse;
+import com.rahul_lohra.redditstar.modal.media.GifyCat.GifyCatResponse;
+import com.rahul_lohra.redditstar.modal.media.eroshare.EroShareResponse;
+import com.rahul_lohra.redditstar.modal.media.imgur.ImgurResponse;
 import com.rahul_lohra.redditstar.retrofit.ApiInterface;
 
 import java.util.List;

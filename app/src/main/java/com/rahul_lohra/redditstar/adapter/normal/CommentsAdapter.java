@@ -99,11 +99,7 @@ public class CommentsAdapter extends CursorRecyclerViewAdapter<RecyclerView.View
                 final int hasThumbnail =  cursor.getInt(cursor.getColumnIndex(MyPostsColumn.KEY_IS_THUMBNAIL_HAS_IMAGE));
 
 
-                viewHolder.init(hasBigImage,hasThumbnail,thumbnail);
-                viewHolder.setLikes(likes);
-                viewHolder.setUrl(url);
-                viewHolder.setScores(score);
-                viewHolder.setId(id);
+                viewHolder.initFromDb(hasBigImage,hasThumbnail,thumbnail,likes,score,url,id,title,commentsCount,domain,subreddit,time,author);
 //                viewHolder.setUps(ups);
                 viewHolder.tvShare.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -112,16 +108,6 @@ public class CommentsAdapter extends CursorRecyclerViewAdapter<RecyclerView.View
                         share.shareUrl(mActivity,url);
                     }
                 });
-
-                viewHolder.tvVote.setText(score);
-                viewHolder.tvTitle.setText(title);
-                viewHolder.tvComments.setText(commentsCount);
-                viewHolder.tvDomain.setText(domain);
-                viewHolder.tvVote.setTextColor(ContextCompat.getColor(context,R.color.white));
-                viewHolder.tvComments.setTextColor(ContextCompat.getColor(context,R.color.white));
-                viewHolder.tvShare.setTextColor(ContextCompat.getColor(context,R.color.white));
-                viewHolder.tvCategory.setText("r/" + subreddit + "-" + time);
-                viewHolder.tvUsername.setText(author);
 
             }break;
             case COMMENTS_TYPE:{

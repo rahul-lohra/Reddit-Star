@@ -219,13 +219,23 @@ public class HomeFragment extends BaseFragment implements
     }
 
     private void showEmptyView() {
-        getActivity().getSupportFragmentManager().beginTransaction()
-                .add(R.id.frame_layout, EmptyFragment.newInstance(new EmptyFragmentData("error", "error", 0), ""), EmptyFragment.class.getSimpleName())
-                .commit();
+        if (adapter.getItemCount() < 1) {
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .add(R.id.frame_layout, EmptyFragment.newInstance(new EmptyFragmentData("error", "error", 0), ""), EmptyFragment.class.getSimpleName())
+                    .commit();
+
+        }
     }
 
     private void hideEmptyView() {
-
+        EmptyFragment myFragment = (EmptyFragment) getActivity().getSupportFragmentManager().findFragmentByTag(EmptyFragment.class.getSimpleName());
+        if (myFragment != null && myFragment.isVisible()) {
+            // add your code here
+            getActivity().getSupportFragmentManager()
+                    .beginTransaction()
+                    .remove(myFragment)
+                    .commit();
+        }
     }
 
 
@@ -463,6 +473,7 @@ public class HomeFragment extends BaseFragment implements
                 if (data != null) {
                     if (data.moveToFirst()) {
                         swipeRefresh.setRefreshing(false);
+                        hideEmptyView();
                     }
 
                 }

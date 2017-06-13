@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import com.rahul_lohra.redditstar.R;
 import com.rahul_lohra.redditstar.activity.FavoriteActivity;
 import com.rahul_lohra.redditstar.contract.IActivity;
-import com.rahul_lohra.redditstar.modal.DrawerItemModal;
+import com.rahul_lohra.redditstar.modal.local.DrawerItemModal;
 import com.rahul_lohra.redditstar.viewHolder.DrawerDropDown;
 import com.rahul_lohra.redditstar.viewHolder.DrawerNormal;
 import com.rahul_lohra.redditstar.viewHolder.DrawerSearchItem;

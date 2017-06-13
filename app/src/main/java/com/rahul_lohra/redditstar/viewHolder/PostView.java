@@ -3,9 +3,11 @@ package com.rahul_lohra.redditstar.viewHolder;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.IntDef;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -23,6 +25,7 @@ import com.rahul_lohra.redditstar.Application.Initializer;
 import com.rahul_lohra.redditstar.Utility.Constants;
 import com.rahul_lohra.redditstar.activity.MediaActivity;
 import com.rahul_lohra.redditstar.contract.IActivity;
+import com.rahul_lohra.redditstar.dialog.Posts.PostsDialog;
 import com.rahul_lohra.redditstar.modal.custom.DetailPostModal;
 import com.rahul_lohra.redditstar.retrofit.ApiInterface;
 import com.rahul_lohra.redditstar.Utility.UserState;
@@ -40,11 +43,13 @@ import javax.inject.Named;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnLongClick;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
+import timber.log.Timber;
 
 import static com.rahul_lohra.redditstar.factory.DomainFactory.DOMAIN_GFYCAT;
 import static com.rahul_lohra.redditstar.factory.DomainFactory.DOMAIN_IMGUR_1;
@@ -111,6 +116,25 @@ public class PostView extends RecyclerView.ViewHolder {
 
         }
     }
+
+
+
+    @Nullable @OnLongClick(R.id.card_view)
+    public boolean onLongClickCardView(){
+        showDialog();
+        return true;
+    }
+
+    private void showDialog(){
+        PostsDialog postsDialog = new PostsDialog();
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("detail",detailPostModal);
+        postsDialog.setArguments(bundle);
+
+        if(weakActivity.get()!=null){
+            postsDialog.show(((AppCompatActivity)weakActivity.get()).getSupportFragmentManager(),"postDialog");
+        }
+    };
 
     public PostView(Context context, View itemView) {
         super(itemView);
@@ -234,7 +258,7 @@ public class PostView extends RecyclerView.ViewHolder {
                     .listener(new RequestListener<String, GlideDrawable>() {
                         @Override
                         public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-                            Log.e("error:",bigImageUrl);
+                            Timber.e("error:",bigImageUrl);
 //                            e.printStackTrace();
                             loadThumbnail();
                             return true;

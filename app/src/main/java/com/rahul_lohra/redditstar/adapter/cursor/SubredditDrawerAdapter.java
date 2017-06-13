@@ -12,7 +12,7 @@ import android.widget.ImageView;
 import com.rahul_lohra.redditstar.R;
 import com.rahul_lohra.redditstar.activity.SubredditActivity;
 import com.rahul_lohra.redditstar.contract.IActivity;
-import com.rahul_lohra.redditstar.modal.FavoritesModal;
+import com.rahul_lohra.redditstar.modal.local.FavoritesModal;
 import com.rahul_lohra.redditstar.storage.column.MyFavouritesColumn;
 import com.rahul_lohra.redditstar.storage.column.MySubredditColumn;
 import com.rahul_lohra.redditstar.Utility.Constants;

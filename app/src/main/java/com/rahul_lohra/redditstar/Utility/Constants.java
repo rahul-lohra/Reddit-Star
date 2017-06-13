@@ -9,10 +9,10 @@ import android.preference.PreferenceManager;
 import android.support.annotation.IntDef;
 import android.widget.Toast;
 
-import com.rahul_lohra.redditstar.modal.FavoritesModal;
-import com.rahul_lohra.redditstar.modal.comments.Child;
-import com.rahul_lohra.redditstar.modal.comments.CustomComment;
-import com.rahul_lohra.redditstar.modal.comments.T1data;
+import com.rahul_lohra.redditstar.modal.local.FavoritesModal;
+import com.rahul_lohra.redditstar.modal.t1_Comments.Child;
+import com.rahul_lohra.redditstar.modal.t1_Comments.CustomComment;
+import com.rahul_lohra.redditstar.modal.t1_Comments.T1data;
 import com.rahul_lohra.redditstar.modal.frontPage.FrontPageChild;
 import com.rahul_lohra.redditstar.modal.frontPage.FrontPageChildData;
 import com.rahul_lohra.redditstar.modal.frontPage.FrontPageResponse;

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -103,7 +104,19 @@ public class PostViewDetail extends RecyclerView.ViewHolder {
         this.mListener = mListener;
     }
 
-    public void init(int hasBigImage,int hasThumbnail,String thumbnail){
+    public void initFromDb(int hasBigImage,
+                           int hasThumbnail,
+                           String thumbnail,
+                           Integer likes,
+                           String scores,
+                           String url,
+                           String id,
+                           String title,
+                           String commentsCount,
+                           String domain,
+                           String subreddit,
+                           String time,
+                           String author){
         if(hasBigImage!=1 && hasThumbnail ==1){
             Glide.with(context)
                     .load(thumbnail)
@@ -111,13 +124,35 @@ public class PostViewDetail extends RecyclerView.ViewHolder {
         }else {
             imageView.setVisibility(View.GONE);
         }
+        setLikes(likes);
+        setScores(scores);
+        setUrl(url);
+        setId(id);
+        setTextualData(scores,title,commentsCount,domain,subreddit,time,author);
+    }
+
+    private void initFromNetwork(){
+
+    }
+
+    private void setTextualData(String score,String title,String commentsCount,String domain,String subreddit,String time,String author){
+        tvVote.setText(score);
+        tvTitle.setText(title);
+        tvComments.setText(commentsCount);
+        tvDomain.setText(domain);
+        tvVote.setTextColor(ContextCompat.getColor(context,R.color.white));
+        tvComments.setTextColor(ContextCompat.getColor(context,R.color.white));
+        tvShare.setTextColor(ContextCompat.getColor(context,R.color.white));
+        tvCategory.setText("r/" + subreddit + "-" + time);
+        tvUsername.setText(author);
+
     }
 
     public Integer getLikes() {
         return likes;
     }
 
-    public void setLikes(Integer likes) {
+    private void setLikes(Integer likes) {
         this.likes = likes;
         if(likes!=0){
             if(likes==1){
@@ -142,11 +177,11 @@ public class PostViewDetail extends RecyclerView.ViewHolder {
         }
     }
 
-    public void setScores(String scores) {
+    private void setScores(String scores) {
         this.scores = scores;
     }
 
-    public void performVoteAndUpdateLikes(@PostView.DirectionMode int mode, String thingId){
+    private void performVoteAndUpdateLikes(@PostView.DirectionMode int mode, String thingId){
 
         String token = UserState.getAuthToken(context);
         String auth = "bearer " + token;
@@ -201,11 +236,11 @@ public class PostViewDetail extends RecyclerView.ViewHolder {
                 .into(imageView);
     }
 
-    public void setUrl(String url) {
+    private void setUrl(String url) {
         this.url = url;
     }
 
-    public void setId(String id) {
+    private void setId(String id) {
         this.id = id;
     }
 

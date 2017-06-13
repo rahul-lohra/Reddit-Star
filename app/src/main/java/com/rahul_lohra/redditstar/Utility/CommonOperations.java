@@ -68,7 +68,8 @@ public class CommonOperations {
                 domain,
                 thumbnailHasIMage,
                 bigImageUrlHasImage,
-                score);
+                score,
+                subredditId);
 
     }
 }

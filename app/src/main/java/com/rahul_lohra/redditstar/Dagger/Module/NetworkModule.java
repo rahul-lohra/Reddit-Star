@@ -58,7 +58,7 @@ public class NetworkModule {
     @Provides
     OkHttpClient provideOkHttpClient(HttpLoggingInterceptor loggingInterceptor,Interceptor interceptor, Cache cache, StethoInterceptor stethoInterceptor) {
         return new OkHttpClient.Builder()
-//                .cache(cache)
+                .cache(cache)
                 .addInterceptor(loggingInterceptor)
                 .addInterceptor(interceptor)
                 .addNetworkInterceptor(stethoInterceptor)

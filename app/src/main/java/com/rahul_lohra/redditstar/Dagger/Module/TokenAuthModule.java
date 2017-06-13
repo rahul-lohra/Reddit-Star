@@ -1,16 +1,12 @@
 package com.rahul_lohra.redditstar.Dagger.Module;
 
 import android.content.Context;
-import android.database.Cursor;
-import android.net.Uri;
 import android.util.Base64;
 import android.util.Log;
 
 import com.rahul_lohra.redditstar.Utility.Constants;
-import com.rahul_lohra.redditstar.modal.RefreshTokenResponse;
+import com.rahul_lohra.redditstar.modal.token.RefreshTokenResponse;
 import com.rahul_lohra.redditstar.retrofit.ApiInterface;
-import com.rahul_lohra.redditstar.storage.MyProvider;
-import com.rahul_lohra.redditstar.storage.column.UserCredentialsColumn;
 
 import java.io.IOException;
 

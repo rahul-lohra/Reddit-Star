@@ -1,0 +1,102 @@
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent">
+
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:toolbarId="@+id/toolbar"
+            app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed"
+            app:contentScrim="?attr/colorPrimary">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent">
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <android.support.v7.widget.AppCompatImageView
+                            android:layout_toStartOf="@+id/tv_toolbar_title"
+                            android:layout_centerInParent="true"
+                            app:srcCompat="@drawable/ic_menu"
+                            android:layout_width="26dp"
+                            android:layout_height="26dp" />
+                        <android.support.v7.widget.AppCompatTextView
+                            android:id="@+id/tv_toolbar_title"
+                            android:layout_centerInParent="true"
+                            android:layout_gravity="center"
+                            android:textSize="16sp"
+                            android:text="@string/month"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                    </RelativeLayout>
+
+                    <View
+                        android:layout_marginTop="8dp"
+                        android:layout_gravity="center"
+                        android:background="@color/green_500"
+                        android:layout_width="30dp"
+                        android:layout_height="1dp"/>
+                    <RelativeLayout
+                        android:background="?attr/colorPrimary"
+                        android:paddingTop="8dp"
+                        android:paddingBottom="8dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:layout_marginEnd="8dp"
+                            android:layout_toStartOf="@+id/tv_location"
+                            android:padding="4dp"
+                            android:src="@drawable/ic_log_out" />
+
+                        <android.support.v7.widget.AppCompatTextView
+                            android:id="@+id/tv_location"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:maxLength="30"
+                            android:text="@string/logout"
+                             />
+
+                        <android.support.v7.widget.AppCompatTextView
+                            android:textColor="@color/brown_800"
+                            android:textSize="12sp"
+                            android:id="@+id/tv_edit"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginStart="8dp"
+                            android:gravity="end"
+                            android:text="@string/exo_controls_fastforward_description" />
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+            </android.support.v7.widget.Toolbar>
+        </android.support.design.widget.CollapsingToolbarLayout>
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="android.support.design.widget.AppBarLayout$ScrollingViewBehavior"/>
+</android.support.design.widget.CoordinatorLayout>

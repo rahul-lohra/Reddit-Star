@@ -1,5 +1,6 @@
 package com.rahul_lohra.redditstar.fragments;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -25,6 +26,7 @@ import android.widget.TextView;
 
 import com.rahul_lohra.redditstar.Application.Initializer;
 import com.rahul_lohra.redditstar.R;
+import com.rahul_lohra.redditstar.Utility.ActivityPortal;
 import com.rahul_lohra.redditstar.Utility.ApiCalls;
 import com.rahul_lohra.redditstar.Utility.Constants;
 import com.rahul_lohra.redditstar.Utility.SpConstants;
@@ -243,12 +245,7 @@ public class SearchFragment extends BaseFragment implements
 
     @Override
     public void sendData(String name, String fullName, String subredditId) {
-        Intent intent = new Intent(getActivity(), SubredditActivity.class);
-        intent.putExtra("name", name);
-        intent.putExtra("fullName", fullName);
-        intent.putExtra("subredditId", subredditId);
-
-        startActivity(intent);
+        ActivityPortal.openSubredditActivity(name,fullName,getActivity());
     }
 
     @Override

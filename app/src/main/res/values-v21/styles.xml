@@ -10,4 +10,17 @@
     <style name="DetailActivityTheme" parent="AppTheme.NoToolBar">
         <item name="android:windowEnterTransition">@transition/detail_window_enter_transition</item>
     </style>
+
+    <style name="MediaTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
+    </style>
+    <style name="MediaThemeTransparent" parent="Theme.AppCompat.Light">
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="windowActionBarOverlay">true</item>
+        <item name="colorPrimary">@android:color/transparent</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
+    </style>
+
 </resources>

@@ -56,6 +56,8 @@ public class Initializer extends Application {
         }
     }
 
+
+
     public NetComponent getNetComponent() {
         return mNetComponent;
     }

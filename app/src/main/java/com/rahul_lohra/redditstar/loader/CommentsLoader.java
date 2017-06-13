@@ -4,9 +4,9 @@ import android.content.Context;
 import android.support.v4.content.AsyncTaskLoader;
 
 import com.rahul_lohra.redditstar.Application.Initializer;
-import com.rahul_lohra.redditstar.modal.comments.Child;
-import com.rahul_lohra.redditstar.modal.comments.CustomComment;
-import com.rahul_lohra.redditstar.modal.comments.Example;
+import com.rahul_lohra.redditstar.modal.t1_Comments.Child;
+import com.rahul_lohra.redditstar.modal.t1_Comments.CustomComment;
+import com.rahul_lohra.redditstar.modal.t1_Comments.Example;
 import com.rahul_lohra.redditstar.retrofit.ApiInterface;
 
 import java.util.ArrayList;

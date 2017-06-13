@@ -40,7 +40,7 @@ import com.rahul_lohra.redditstar.adapter.normal.CommentsAdapter;
 import com.rahul_lohra.redditstar.Application.Initializer;
 import com.rahul_lohra.redditstar.contract.ILogin;
 import com.rahul_lohra.redditstar.helper.AspectRatioImageView;
-import com.rahul_lohra.redditstar.modal.comments.CustomComment;
+import com.rahul_lohra.redditstar.modal.t1_Comments.CustomComment;
 import com.rahul_lohra.redditstar.modal.custom.DetailPostModal;
 import com.rahul_lohra.redditstar.retrofit.ApiInterface;
 import com.rahul_lohra.redditstar.service.CommentsService;

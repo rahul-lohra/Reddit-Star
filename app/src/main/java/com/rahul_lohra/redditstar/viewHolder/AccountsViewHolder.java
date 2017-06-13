@@ -8,8 +8,6 @@ import android.widget.TextView;
 
 import com.rahul_lohra.redditstar.R;
 import com.rahul_lohra.redditstar.Utility.Constants;
-import com.rahul_lohra.redditstar.adapter.cursor.AccountsAdapter;
-import com.rahul_lohra.redditstar.modal.FavoritesModal;
 import com.varunest.sparkbutton.SparkButton;
 import com.varunest.sparkbutton.SparkEventListener;
 

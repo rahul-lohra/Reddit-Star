@@ -1,9 +1,9 @@
 package com.rahul_lohra.redditstar.helper;
 
-import com.rahul_lohra.redditstar.modal.comments.Child;
-import com.rahul_lohra.redditstar.modal.comments.Example;
-import com.rahul_lohra.redditstar.modal.comments.ParentData;
-import com.rahul_lohra.redditstar.modal.comments.T1data;
+import com.rahul_lohra.redditstar.modal.t1_Comments.Child;
+import com.rahul_lohra.redditstar.modal.t1_Comments.Example;
+import com.rahul_lohra.redditstar.modal.t1_Comments.ParentData;
+import com.rahul_lohra.redditstar.modal.t1_Comments.T1data;
 import com.rahul_lohra.redditstar.modal.t3_Link.T3_Data;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;

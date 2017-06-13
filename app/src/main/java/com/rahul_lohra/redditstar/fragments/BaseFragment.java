@@ -4,21 +4,36 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
+import com.rahul_lohra.redditstar.Application.Initializer;
 import com.rahul_lohra.redditstar.Utility.Constants;
 import com.rahul_lohra.redditstar.contract.IActivity;
+import com.rahul_lohra.redditstar.retrofit.ApiInterface;
 
 import org.greenrobot.eventbus.EventBus;
 
-public class BaseFragment extends Fragment implements IActivity{
+import javax.inject.Inject;
+import javax.inject.Named;
 
-//    protected String after = null;
-    public BaseFragment() {
-        // Required empty public constructor
-    }
+import retrofit2.Retrofit;
+
+public class BaseFragment extends Fragment implements IActivity{
+    @Inject
+    @Named("withToken")
+    Retrofit retrofitWithToken;
+
+    @Inject
+    @Named("withoutToken")
+    Retrofit retrofitWithoutToken;
+
+    Retrofit retrofit;
+
+    ApiInterface apiInterface;
+    public BaseFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ((Initializer) getContext().getApplicationContext()).getNetComponent().inject(this);
     }
     @Override
     public void onStart() {

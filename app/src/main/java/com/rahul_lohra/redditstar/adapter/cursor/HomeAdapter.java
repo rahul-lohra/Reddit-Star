@@ -105,7 +105,8 @@ public class HomeAdapter extends CursorRecyclerViewAdapter<RecyclerView.ViewHold
                 domain,
                 thumbnailHasIMage,
                 bigImageUrlHasImage,
-                score);
+                score,
+                subredditId);
         postView.init(activity,modal);
         int total = cursor.getCount();
         int curPos = cursor.getPosition();

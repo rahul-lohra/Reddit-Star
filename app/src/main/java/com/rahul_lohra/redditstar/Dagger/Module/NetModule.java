@@ -4,7 +4,7 @@ import android.content.Context;
 import android.util.Base64;
 import android.util.Log;
 
-import com.rahul_lohra.redditstar.modal.RefreshTokenResponse;
+import com.rahul_lohra.redditstar.modal.token.RefreshTokenResponse;
 import com.rahul_lohra.redditstar.retrofit.ApiInterface;
 import com.rahul_lohra.redditstar.Utility.Constants;
 import com.rahul_lohra.redditstar.Utility.MyUrl;
@@ -12,11 +12,6 @@ import com.facebook.stetho.okhttp3.StethoInterceptor;
 
 import java.io.IOException;
 
-import javax.inject.Named;
-import javax.inject.Singleton;
-
-import dagger.Module;
-import dagger.Provides;
 import okhttp3.Authenticator;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
