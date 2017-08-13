@@ -26,6 +26,9 @@ public class DetailPostModal implements Parcelable {
     private int BigImageUrlHasImage;
     private String score;
     private String subredditId;
+    private int  bigImageHeight;
+    private int bigImageWidth;
+
 
 
 
@@ -66,6 +69,22 @@ public class DetailPostModal implements Parcelable {
         this.BigImageUrlHasImage = bigImageUrlHasImage;
         this.score = score;
 
+    }
+
+    public int getBigImageHeight() {
+        return bigImageHeight;
+    }
+
+    public void setBigImageHeight(int bigImageHeight) {
+        this.bigImageHeight = bigImageHeight;
+    }
+
+    public int getBigImageWidth() {
+        return bigImageWidth;
+    }
+
+    public void setBigImageWidth(int bigImageWidth) {
+        this.bigImageWidth = bigImageWidth;
     }
 
     public String getSubredditId() {

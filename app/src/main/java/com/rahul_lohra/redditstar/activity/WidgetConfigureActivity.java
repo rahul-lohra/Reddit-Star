@@ -22,7 +22,8 @@ import com.google.android.gms.gcm.GcmNetworkManager;
 import com.google.android.gms.gcm.OneoffTask;
 import com.google.android.gms.gcm.Task;
 
-import butterknife.Bind;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -33,21 +34,21 @@ import static com.rahul_lohra.redditstar.Utility.SpConstants.SUBREDDIT;
 
 public class WidgetConfigureActivity extends BaseActivity {
 
-    @Bind(R.id.rb_popular)
+    @BindView(R.id.rb_popular)
     RadioButton rbPopular;
-    @Bind(R.id.rb_front_page)
+    @BindView(R.id.rb_front_page)
     RadioButton rbFrontPage;
-    @Bind(R.id.rb_subreddit)
+    @BindView(R.id.rb_subreddit)
     RadioButton rbSubreddit;
-    @Bind(R.id.rb_fav)
+    @BindView(R.id.rb_fav)
     RadioButton rbFav;
-    @Bind(R.id.rb_group)
+    @BindView(R.id.rb_group)
     RadioGroup rbGroup;
-    @Bind(R.id.et_subreddit)
+    @BindView(R.id.et_subreddit)
     TextInputEditText etSubreddit;
-    @Bind(R.id.tl_subreddit)
+    @BindView(R.id.tl_subreddit)
     TextInputLayout tlSubreddit;
-    @Bind(R.id.btn_apply)
+    @BindView(R.id.btn_apply)
     Button btnApply;
 
     int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;

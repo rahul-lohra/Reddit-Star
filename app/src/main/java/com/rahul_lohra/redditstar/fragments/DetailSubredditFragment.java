@@ -31,6 +31,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 
 import com.rahul_lohra.redditstar.R;
 import com.rahul_lohra.redditstar.activity.DashboardActivity;
@@ -63,26 +64,35 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import butterknife.Bind;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import retrofit2.Retrofit;
 
-public class DetailSubredditFragment extends Fragment implements
-        LoaderManager.LoaderCallbacks<Cursor> {
+import static com.rahul_lohra.redditstar.service.CommentsService.TYPE_LOADING;
+import static com.rahul_lohra.redditstar.service.CommentsService.TYPE_LOAD_FAIL;
+import static com.rahul_lohra.redditstar.service.CommentsService.TYPE_LOAD_SUCCESS;
 
-    @Bind(R.id.imageView)
+public class DetailSubredditFragment extends Fragment implements
+        LoaderManager.LoaderCallbacks<Cursor>,
+        CommentsService.ICommentsService
+{
+
+    @BindView(R.id.imageView)
     AspectRatioImageView imageView;
-    @Bind(R.id.fab)
+    @BindView(R.id.fab)
     FloatingActionButton fab;
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @Bind(R.id.rv)
+    @BindView(R.id.rv)
     RecyclerView rv;
-    @Bind(R.id.collapsing_toolbar)
+    @BindView(R.id.collapsing_toolbar)
     CollapsingToolbarLayout collapsingToolbarLayout;
-    @Bind(R.id.coordinator_layout)
+    @BindView(R.id.coordinator_layout)
     CoordinatorLayout coordinatorLayout;
+    @BindView(R.id.progressBar)
+    ProgressBar progressBar;
 
     @OnClick(R.id.fab)
     void onCLicFab(){
@@ -117,6 +127,7 @@ public class DetailSubredditFragment extends Fragment implements
     private int darkMutedColor = 0xFF333333;
     private ILogin iLogin;
     Intent replyIntent;
+    CommentsService commentsService;
 
 
     CommentsAdapter commentsAdapter;
@@ -154,6 +165,8 @@ public class DetailSubredditFragment extends Fragment implements
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_detail_subreddit_new, container, false);
         ButterKnife.bind(this, v);
+        commentsService = new CommentsService(getContext());
+        commentsService.setICommentsService(this);
         setToolbar();
         setAdapter();
         prepareReplyIntent();
@@ -322,7 +335,7 @@ public class DetailSubredditFragment extends Fragment implements
                 String postHint = cursor.getString(cursor.getColumnIndex(MyPostsColumn.KEY_POST_HINT));
                 String thumbnail = cursor.getString(cursor.getColumnIndex(MyPostsColumn.KEY_THUMBNAIL));
                 String url = cursor.getString(cursor.getColumnIndex(MyPostsColumn.KEY_URL));
-                CommentsService.requestComments(getContext(),this.id,subreddit);
+                commentsService.requestComments(getContext(),this.id,subreddit);
 
                 if (postHint != null) {
                     if (postHint.equals("image") || postHint.equals("link")|| postHint.equals("rich:video")) {
@@ -394,7 +407,7 @@ public class DetailSubredditFragment extends Fragment implements
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
+
     }
 
     @Override
@@ -409,4 +422,23 @@ public class DetailSubredditFragment extends Fragment implements
     }
 
 
+    @Override
+    public void commentsLoadedState(int commentsLoadType) {
+        switch (commentsLoadType){
+            case TYPE_LOADING:
+                showLoader();
+                break;
+            case TYPE_LOAD_SUCCESS:
+            case TYPE_LOAD_FAIL:
+                hideLoader();
+        }
+    }
+
+    private void showLoader(){
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    private void hideLoader(){
+        progressBar.setVisibility(View.GONE);
+    }
 }

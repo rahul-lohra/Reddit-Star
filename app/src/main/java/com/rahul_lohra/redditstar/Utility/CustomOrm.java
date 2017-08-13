@@ -55,6 +55,10 @@ public class CustomOrm {
         cv.put(MyPostsColumn.KEY_MEDIA_OEMBED_TYPE,(media!=null)?data.getMedia().getType():null);
         Preview preview = data.getPreview();
         cv.put(MyPostsColumn.KEY_BIG_IMAGE_URL,(preview!=null)?preview.getImages().get(0).getSource().getUrl():null);
+//        cv.put(MyPostsColumn.KEY_BIG_IMAGE_HEIGHT,(preview!=null)?preview.getImages().get(0).getSource().getHeight():-1);
+//        cv.put(MyPostsColumn.KEY_BIG_IMAGE_WIDTH,(preview!=null)?preview.getImages().get(0).getSource().getWidth():-1);
+        cv.put(MyPostsColumn.KEY_BIG_IMAGE_HEIGHT,-1);
+        cv.put(MyPostsColumn.KEY_BIG_IMAGE_WIDTH,-1);
         String bigImageUrl = (preview!=null)?preview.getImages().get(0).getSource().getUrl():null;
         cv.put(MyPostsColumn.KEY_IS_BIG_IMAGE_URL_HAS_IMAGE,Constants.isBigImageUrlValid(bigImageUrl)?1:0);
         cv.put(MyPostsColumn.KEY_IS_THUMBNAIL_HAS_IMAGE,Constants.isBigImageUrlValid(data.getThumbnail())?1:0);

@@ -83,6 +83,8 @@ public class HomeAdapter extends CursorRecyclerViewAdapter<RecyclerView.ViewHold
         final String url = cursor.getString(cursor.getColumnIndex(MyPostsColumn.KEY_URL));
         final Integer likes = cursor.getInt(cursor.getColumnIndex(MyPostsColumn.KEY_LIKES));
         final String bigImageUrl = cursor.getString(cursor.getColumnIndex(MyPostsColumn.KEY_BIG_IMAGE_URL));
+        final int bigImageHeight = cursor.getInt(cursor.getColumnIndex(MyPostsColumn.KEY_BIG_IMAGE_HEIGHT));
+        final int bigImageWidth = cursor.getInt(cursor.getColumnIndex(MyPostsColumn.KEY_BIG_IMAGE_WIDTH));
         final String postHint =  cursor.getString(cursor.getColumnIndex(MyPostsColumn.KEY_POST_HINT));
         final String domain =  cursor.getString(cursor.getColumnIndex(MyPostsColumn.KEY_DOMAIN));
         final int thumbnailHasIMage =  cursor.getInt(cursor.getColumnIndex(MyPostsColumn.KEY_IS_THUMBNAIL_HAS_IMAGE));
@@ -107,6 +109,9 @@ public class HomeAdapter extends CursorRecyclerViewAdapter<RecyclerView.ViewHold
                 bigImageUrlHasImage,
                 score,
                 subredditId);
+        modal.setBigImageHeight(bigImageHeight);
+        modal.setBigImageWidth(bigImageWidth);
+
         postView.init(activity,modal);
         int total = cursor.getCount();
         int curPos = cursor.getPosition();

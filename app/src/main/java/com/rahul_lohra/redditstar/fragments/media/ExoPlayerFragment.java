@@ -38,16 +38,17 @@ import com.rahul_lohra.redditstar.Utility.Constants;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
 
 public class ExoPlayerFragment extends Fragment {
     private static final String ARG_PARAM1 = "videoUrl";
-    @Bind(R.id.player_view)
+    @BindView(R.id.player_view)
     SimpleExoPlayerView playerView;
-    @Bind(R.id.retry_button)
+    @BindView(R.id.retry_button)
     Button retryButton;
 
     private Uri mp4VideoUri;
@@ -92,7 +93,7 @@ public class ExoPlayerFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
+
     }
 
     void createPlayer() {

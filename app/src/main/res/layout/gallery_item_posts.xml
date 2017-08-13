@@ -26,13 +26,16 @@
 
 
             <ImageView
-                android:adjustViewBounds="true"
                 android:id="@+id/imageView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="150dp"
+                android:adjustViewBounds="false"
+                tools:background="@color/colorAccent"
                 android:contentDescription="@string/article_thumbnail"
-                tools:src="@mipmap/ic_launcher"
-                android:transitionName="profile" />
+                android:cropToPadding="false"
+                android:scaleType="fitCenter"
+                android:transitionName="profile"
+                tools:src="@mipmap/ic_launcher" />
 
             <com.rahul_lohra.redditstar.helper.LabelTextView
                 android:id="@+id/label_tv"

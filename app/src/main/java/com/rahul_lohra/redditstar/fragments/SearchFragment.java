@@ -59,7 +59,8 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import butterknife.Bind;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.Observable;
 import retrofit2.Retrofit;
@@ -81,23 +82,23 @@ public class SearchFragment extends BaseFragment implements
     boolean isUSerLoggedIn;
 
     private final String TAG = SearchFragment.class.getSimpleName();
-    @Bind(R.id.rv_subreddits)
+    @BindView(R.id.rv_subreddits)
     RecyclerView rvSubreddits;
-    @Bind(R.id.rv_links)
+    @BindView(R.id.rv_links)
     RecyclerView rvLinks;
-    //    @Bind(R.id.et)
+    //    @BindView(R.id.et)
 //    AppCompatEditText et;
-    @Bind(R.id.nested_sv)
+    @BindView(R.id.nested_sv)
     NestedScrollView nestedSV;
-    @Bind(R.id.progressBar2)
+    @BindView(R.id.progressBar2)
     ProgressBar progressBar;
-    @Bind(R.id.tv_subreddit)
+    @BindView(R.id.tv_subreddit)
     TextView tvSubreddit;
-    @Bind(R.id.tv_post)
+    @BindView(R.id.tv_post)
     TextView tvPost;
-    @Bind(R.id.my_search_view)
+    @BindView(R.id.my_search_view)
     MySearchView mySearchView;
-//    @Bind(R.id.image_back)
+//    @BindView(R.id.image_back)
 //    AppCompatImageView imageBack;
 
 //    @OnClick(R.id.image_back)
@@ -114,13 +115,13 @@ public class SearchFragment extends BaseFragment implements
     String searchQuery;
     String afterOfLink = "";
     ApiCalls apiCalls;
-    @Bind(R.id.container_subreddit)
+    @BindView(R.id.container_subreddit)
     RelativeLayout containerSubreddit;
-    @Bind(R.id.btn_sort_post)
+    @BindView(R.id.btn_sort_post)
     AppCompatButton btnSortPost;
-    @Bind(R.id.container_posts)
+    @BindView(R.id.container_posts)
     RelativeLayout containerPosts;
-    //    @Bind(R.id.toolbar)
+    //    @BindView(R.id.toolbar)
 //    Toolbar toolbar;
     //    String afterOfSubreddit;
     private Uri mUri = MyProvider.PostsLists.CONTENT_URI;
@@ -129,7 +130,7 @@ public class SearchFragment extends BaseFragment implements
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
+
     }
 
     public interface ISearchFragment {

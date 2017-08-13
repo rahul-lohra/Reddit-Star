@@ -11,18 +11,19 @@ import com.rahul_lohra.redditstar.R;
 import com.rahul_lohra.redditstar.activity.BaseActivity;
 import com.rahul_lohra.redditstar.adapter.pagerAdapter.ProfileAdapter;
 
-import butterknife.Bind;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class ProfileActivity extends BaseActivity {
 
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @Bind(R.id.tabs)
+    @BindView(R.id.tabs)
     TabLayout tabs;
-    @Bind(R.id.appbar)
+    @BindView(R.id.appbar)
     AppBarLayout appbar;
-    @Bind(R.id.view_pager)
+    @BindView(R.id.view_pager)
     ViewPager viewPager;
     ProfileAdapter pagerAdapter;
 

@@ -64,7 +64,7 @@ import com.rahul_lohra.redditstar.viewHolder.AccountsViewHolder;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import timber.log.Timber;
@@ -87,17 +87,17 @@ public class DashboardActivity extends BaseActivity implements
 
 {
 
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @Bind(R.id.rv)
+    @BindView(R.id.rv)
     RecyclerView rv;
-    @Bind(R.id.nav_view)
+    @BindView(R.id.nav_view)
     NavigationView navigationView;
-    @Bind(R.id.drawer_layout)
+    @BindView(R.id.drawer_layout)
     DrawerLayout drawer;
-    @Bind(R.id.fab)
+    @BindView(R.id.fab)
     FloatingActionButton fab;
-    @Bind(R.id.coordinator_layout)
+    @BindView(R.id.coordinator_layout)
     CoordinatorLayout coordinatorLayout;
 
     //Adapters
@@ -107,21 +107,21 @@ public class DashboardActivity extends BaseActivity implements
     List<DrawerItemModal> drawerList;
     DashboardPresenter dashboardPresenter;
     AddAccountDialog addAccountDialog;
-    @Bind(R.id.adView)
+    @BindView(R.id.adView)
     AdView adView;
-    @Bind(R.id.image_view)
+    @BindView(R.id.image_view)
     ImageView imageView;
-    @Bind(R.id.image_view_drop_down)
+    @BindView(R.id.image_view_drop_down)
     ImageView imageViewDropDown;
-    @Bind(R.id.textView)
+    @BindView(R.id.textView)
     TextView textView;
-    @Bind(R.id.tv_name)
+    @BindView(R.id.tv_name)
     TextView tv_name;
-    @Bind(R.id.add_new_account)
+    @BindView(R.id.add_new_account)
     LinearLayout layoutAddNewAccount;
-    @Bind(R.id.sign_out)
+    @BindView(R.id.sign_out)
     LinearLayout layoutSignOut;
-    @Bind(R.id.anonymous_user)
+    @BindView(R.id.anonymous_user)
     LinearLayout layoutAnonymous;
 
 

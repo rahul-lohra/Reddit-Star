@@ -10,7 +10,7 @@ import com.rahul_lohra.redditstar.contract.IActivity;
 import com.rahul_lohra.redditstar.helper.CardViewZoom;
 import com.rahul_lohra.redditstar.helper.LabelTextView;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -19,10 +19,10 @@ import butterknife.ButterKnife;
 
 public class GalleryView extends PostView {
 
-    @Bind(R.id.label_tv)
+    @BindView(R.id.label_tv)
     public LabelTextView labelTextView;
     @Nullable
-    @Bind(R.id.card_view_zoom)
+    @BindView(R.id.card_view_zoom)
     public CardViewZoom cardViewZoom;
 
     public GalleryView(Context context, View itemView) {

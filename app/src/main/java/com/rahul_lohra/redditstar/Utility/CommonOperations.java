@@ -1,9 +1,12 @@
 package com.rahul_lohra.redditstar.Utility;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.net.Uri;
+import android.util.DisplayMetrics;
 
 import com.rahul_lohra.redditstar.R;
 import com.rahul_lohra.redditstar.activity.WebViewActivity;
@@ -20,6 +23,24 @@ import static com.rahul_lohra.redditstar.Utility.MyUrl.STATE;
  */
 
 public class CommonOperations {
+
+    /*
+    Use this
+     */
+    public static float convertDpToPixel(float dp, Context context) {
+        Resources resources = context.getResources();
+        DisplayMetrics metrics = resources.getDisplayMetrics();
+        float px = dp * ((float) metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
+        return px;
+    }
+
+    public static float convertPixelsToDp(float px, Context context) {
+        Resources resources = context.getResources();
+        DisplayMetrics metrics = resources.getDisplayMetrics();
+        float dp = px / ((float) metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
+        return dp;
+    }
+
     public static void addNewAccount(Activity activity){
         String scopeArray[] = activity.getResources().getStringArray(R.array.scope);
         String scope = MyUrl.getProperScope(scopeArray);

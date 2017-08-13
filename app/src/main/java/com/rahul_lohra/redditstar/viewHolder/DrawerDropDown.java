@@ -12,7 +12,7 @@ import android.widget.Toast;
 import com.rahul_lohra.redditstar.R;
 import com.rahul_lohra.redditstar.adapter.cursor.SubredditDrawerAdapter;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -21,9 +21,9 @@ import butterknife.OnClick;
  */
 
 public class DrawerDropDown extends RecyclerView.ViewHolder {
-    @Bind(R.id.tv)
+    @BindView(R.id.tv)
     public TextView tv;
-    @Bind(R.id.rv_sub)
+    @BindView(R.id.rv_sub)
     public RecyclerView rvSub;
     private Context context;
     private Drawable icon;

@@ -10,7 +10,7 @@ import com.rahul_lohra.redditstar.R;
 import com.varunest.sparkbutton.SparkButton;
 import com.varunest.sparkbutton.SparkEventListener;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -18,9 +18,9 @@ import butterknife.ButterKnife;
  */
 
 public class DrawerSubreddit extends RecyclerView.ViewHolder implements SparkEventListener {
-    @Bind(R.id.tv)
+    @BindView(R.id.tv)
     public TextView tv;
-    @Bind(R.id.spark_button)
+    @BindView(R.id.spark_button)
     public SparkButton sparkButton;
 
     Context context;

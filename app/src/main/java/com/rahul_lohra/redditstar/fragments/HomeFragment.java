@@ -52,7 +52,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import retrofit2.Retrofit;
 
@@ -65,13 +65,13 @@ public class HomeFragment extends BaseFragment implements
         IApiCall,
         LoaderManager.LoaderCallbacks<Cursor> {
 
-    @Bind(R.id.rv)
+    @BindView(R.id.rv)
     RecyclerView rv;
 
     @Inject
     @Named("withToken")
     Retrofit retrofitWithToken;
-    @Bind(R.id.swipe_refresh)
+    @BindView(R.id.swipe_refresh)
     SwipeRefreshLayout swipeRefresh;
     SharedPreferences sp;
     private HomeAdapter adapter;
@@ -419,7 +419,7 @@ public class HomeFragment extends BaseFragment implements
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
+
     }
 
     @Override

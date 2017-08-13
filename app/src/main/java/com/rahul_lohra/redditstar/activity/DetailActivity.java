@@ -29,6 +29,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 
 import com.bumptech.glide.Priority;
 import com.rahul_lohra.redditstar.R;
@@ -50,29 +51,36 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.rahul_lohra.redditstar.service.CommentsService.TYPE_LOADING;
+import static com.rahul_lohra.redditstar.service.CommentsService.TYPE_LOAD_FAIL;
+import static com.rahul_lohra.redditstar.service.CommentsService.TYPE_LOAD_SUCCESS;
+
 public class DetailActivity extends BaseActivity implements
         ILogin,
+        CommentsService.ICommentsService,
         LoaderManager.LoaderCallbacks<Cursor> {
 
-    @Bind(R.id.imageView)
+    @BindView(R.id.imageView)
     AspectRatioImageView imageView;
-    @Bind(R.id.fab)
+    @BindView(R.id.fab)
     FloatingActionButton fab;
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @Bind(R.id.rv)
+    @BindView(R.id.rv)
     RecyclerView rv;
-    @Bind(R.id.collapsing_toolbar)
+    @BindView(R.id.progressBar)
+    ProgressBar progressBar;
+    @BindView(R.id.collapsing_toolbar)
     CollapsingToolbarLayout collapsingToolbarLayout;
-    @Bind(R.id.coordinator_layout)
+    @BindView(R.id.coordinator_layout)
     CoordinatorLayout coordinatorLayout;
     Snackbar snackbar;
     CommentsAdapter commentsAdapter;
-
+    CommentsService commentsService;
 
     private final int LOADER_ID = 1;
     private final int LOADER_ID_COMMENTS_POSTS = 3;
@@ -101,6 +109,8 @@ public class DetailActivity extends BaseActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
+        commentsService = new CommentsService(getApplicationContext());
+        commentsService.setICommentsService(this);
         ButterKnife.bind(this);
         Intent intent = getIntent();
         id = intent.getStringExtra("id");
@@ -156,6 +166,7 @@ public class DetailActivity extends BaseActivity implements
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        showLoader();
         switch (id) {
             case LOADER_ID:
                 String mSeletion = MyPostsColumn.KEY_ID + "=?";
@@ -178,6 +189,7 @@ public class DetailActivity extends BaseActivity implements
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+
         switch (loader.getId()) {
             case LOADER_ID:
                 perpareImage(cursor);
@@ -195,6 +207,14 @@ public class DetailActivity extends BaseActivity implements
                 commentsAdapter.swapCursor(null);
                 break;
         }
+    }
+
+    private void showLoader(){
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    private void hideLoader(){
+        progressBar.setVisibility(View.GONE);
     }
 
     private synchronized void loadImage(String thumbnail, final String bigImageUrl) {
@@ -301,7 +321,7 @@ public class DetailActivity extends BaseActivity implements
                 final int thumbnailHasIMage =  cursor.getInt(cursor.getColumnIndex(MyPostsColumn.KEY_IS_THUMBNAIL_HAS_IMAGE));
                 final int bigImageUrlHasImage =  cursor.getInt(cursor.getColumnIndex(MyPostsColumn.KEY_IS_BIG_IMAGE_URL_HAS_IMAGE));
 
-                CommentsService.requestComments(this, this.id, subreddit);
+                commentsService.requestComments(this, this.id, subreddit);
 
                 loadImageNew(bigImageUrl,bigImageUrlHasImage,thumbnail,thumbnailHasIMage);
                 if(true)
@@ -436,5 +456,17 @@ public class DetailActivity extends BaseActivity implements
                         .placeholder(R.drawable.ic_reddit)
                 .into(imageView);
             }
+
+    @Override
+    public void commentsLoadedState(int commentsLoadType) {
+        switch (commentsLoadType){
+            case TYPE_LOADING:
+                showLoader();
+                break;
+            case TYPE_LOAD_SUCCESS:
+            case TYPE_LOAD_FAIL:
+                hideLoader();
         }
+    }
+}
 

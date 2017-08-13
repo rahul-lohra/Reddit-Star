@@ -15,7 +15,7 @@ import com.rahul_lohra.redditstar.dataModel.Comments;
 import com.rahul_lohra.redditstar.storage.MyProvider;
 import com.rahul_lohra.redditstar.storage.column.CommentsColumn;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -23,23 +23,23 @@ import butterknife.OnClick;
  * Created by rkrde on 22-01-2017.
  */
 public class CommentsViewHolder extends RecyclerView.ViewHolder {
-    @Bind(R.id.view_2)
+    @BindView(R.id.view_2)
     public View view_2;
-    @Bind(R.id.tv_username)
+    @BindView(R.id.tv_username)
     public TextView tvUsername;
-    @Bind(R.id.tv_comment)
+    @BindView(R.id.tv_comment)
     public TextView tvComment;
-    @Bind(R.id.tv_time)
+    @BindView(R.id.tv_time)
     public TextView tvTime;
-    @Bind(R.id.tv_upvote_count)
+    @BindView(R.id.tv_upvote_count)
     public TextView tvUpvoteCount;
-    @Bind(R.id.view2)
+    @BindView(R.id.view2)
     public View view2;
-    @Bind(R.id.tv_reply)
+    @BindView(R.id.tv_reply)
     public TextView tvReply;
-    @Bind(R.id.parent_comments)
+    @BindView(R.id.parent_comments)
     public RelativeLayout parentLayout;
-    @Bind(R.id.tv_hidden_child_counts)
+    @BindView(R.id.tv_hidden_child_counts)
     public TextView tvHiddenChildCounts;
 
     private Context mContext;

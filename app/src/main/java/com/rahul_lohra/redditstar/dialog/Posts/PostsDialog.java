@@ -20,7 +20,7 @@ import com.rahul_lohra.redditstar.modal.custom.DetailPostModal;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -102,7 +102,7 @@ public class PostsDialog extends DialogFragment{
 
    public class PostDialogVIew extends RecyclerView.ViewHolder {
 
-        @Bind(R.id.tv)
+        @BindView(R.id.tv)
         public TextView tv;
 
         public PostDialogVIew(View itemView) {

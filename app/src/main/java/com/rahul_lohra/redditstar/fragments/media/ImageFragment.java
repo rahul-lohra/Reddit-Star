@@ -16,14 +16,14 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.rahul_lohra.redditstar.R;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class ImageFragment extends Fragment {
     private static final String ARG_PARAM1 = "image_url";
-    @Bind(R.id.image_view)
+    @BindView(R.id.image_view)
     AppCompatImageView imageView;
-    @Bind(R.id.progressBar)
+    @BindView(R.id.progressBar)
     ProgressBar progressBar;
 
     private String mImageUrl;
@@ -80,6 +80,6 @@ public class ImageFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
+
     }
 }

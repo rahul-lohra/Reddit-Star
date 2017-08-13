@@ -35,7 +35,7 @@ public class CommentsAdapter extends CursorRecyclerViewAdapter<RecyclerView.View
     private static final int POST_TYPE = 1;
     private static final int COMMENTS_TYPE = 2;
     private Activity mActivity;
-
+    private ICommentsAdapter iCommentsAdapter;
     public CommentsAdapter(Activity activity,ILogin iLogin, Context context, Cursor cursor) {
         super(context, cursor);
         this.context = context;
@@ -179,6 +179,9 @@ public class CommentsAdapter extends CursorRecyclerViewAdapter<RecyclerView.View
 
 
     }
+
+    public interface ICommentsAdapter{}
+
 
 
 }

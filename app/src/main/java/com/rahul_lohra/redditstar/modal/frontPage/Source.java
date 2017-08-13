@@ -10,10 +10,10 @@ public class Source {
     public String url;
     @SerializedName("width")
     @Expose
-    public Integer width;
+    public int width;
     @SerializedName("height")
     @Expose
-    public Integer height;
+    public int height;
 
     public String getUrl() {
         return url;

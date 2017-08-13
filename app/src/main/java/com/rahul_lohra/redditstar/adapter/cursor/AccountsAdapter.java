@@ -14,7 +14,7 @@ import com.rahul_lohra.redditstar.storage.column.UserCredentialsColumn;
 import com.rahul_lohra.redditstar.viewHolder.AccountsViewHolder;
 import com.varunest.sparkbutton.SparkButton;
 
-import butterknife.Bind;
+
 import butterknife.ButterKnife;
 
 /**

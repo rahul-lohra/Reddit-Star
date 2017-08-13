@@ -23,7 +23,8 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import butterknife.Bind;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -39,10 +40,10 @@ public class MediaActivity extends AppCompatActivity {
     ApiInterface apiInterface;
     String domain;
     String TAG = MediaActivity.class.getSimpleName();
-    @Bind(R.id.view_pager)
+    @BindView(R.id.view_pager)
     ViewPager viewPager;
     MediaPagerAdapter adapter;
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar toolbar;
 
     @Override

@@ -13,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Priority;
@@ -22,6 +23,7 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.rahul_lohra.redditstar.R;
 import com.rahul_lohra.redditstar.Application.Initializer;
+import com.rahul_lohra.redditstar.Utility.CommonOperations;
 import com.rahul_lohra.redditstar.Utility.Constants;
 import com.rahul_lohra.redditstar.activity.MediaActivity;
 import com.rahul_lohra.redditstar.contract.IActivity;
@@ -40,10 +42,11 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnLongClick;
+import butterknife.Optional;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -61,24 +64,24 @@ import static java.lang.annotation.RetentionPolicy.SOURCE;
  */
 
 public class PostView extends RecyclerView.ViewHolder {
-    @Bind(R.id.imageView)
+    @BindView(R.id.imageView)
     public ImageView imageView;
-    @Bind(R.id.tv_title)
+    @BindView(R.id.tv_title)
     public TextView tvTitle;
-    @Bind(R.id.tv_detail)
+    @BindView(R.id.tv_detail)
     public TextView tvDetail;
-    @Bind(R.id.tv_share)
+    @BindView(R.id.tv_share)
     public TextView tvShare;
-    @Bind(R.id.tv_comments)
+    @BindView(R.id.tv_comments)
     public TextView tvComments;
-    @Bind(R.id.tv_vote)
+    @BindView(R.id.tv_vote)
     public TextView tvVote;
-    @Bind(R.id.image_up_vote)
+    @BindView(R.id.image_up_vote)
     public ImageView imageUpVote;
-    @Bind(R.id.image_down_vote)
+    @BindView(R.id.image_down_vote)
     public ImageView imageDownVote;
     @Nullable
-    @Bind(R.id.card_view)
+    @BindView(R.id.card_view)
     public CardView cardView;
 //    private String domain, url;
     private Integer likes;
@@ -119,7 +122,7 @@ public class PostView extends RecyclerView.ViewHolder {
 
 
 
-    @Nullable @OnLongClick(R.id.card_view)
+    @Optional @OnLongClick(R.id.card_view)
     public boolean onLongClickCardView(){
         showDialog();
         return true;
@@ -152,9 +155,24 @@ public class PostView extends RecyclerView.ViewHolder {
         
         setLikes(detailPostModal.getLikes());
         setTvTitle(detailPostModal.getSubreddit());
-
+        if(this instanceof GalleryView)
+            setDimensions(imageView,detailPostModal);
         loadImageNew();
+    }
 
+    private void setDimensions(ImageView imageView, DetailPostModal detailPostModal){
+        android.view.ViewGroup.LayoutParams layoutParams = imageView.getLayoutParams();
+        if(detailPostModal.getBigImageHeight()!=-1)
+        {
+//            layoutParams.height = (int) CommonOperations.convertPixelsToDp(detailPostModal.getBigImageHeight(), context);
+        }else {
+//            layoutParams.height = LinearLayout.LayoutParams.WRAP_CONTENT;
+        }
+//        layoutParams.height = (int) CommonOperations.convertDpToPixel(detailPostModal.getBigImageHeight(), context);
+//        layoutParams.height = (int) (detailPostModal.getBigImageHeight());
+        Log.d(TAG,"url:"+detailPostModal.getBigImageUrl()+",imageView height:"+(detailPostModal.getBigImageHeight()));
+        imageView.setLayoutParams(layoutParams);
+        imageView.invalidate();
     }
 
     public Integer getLikes() {
@@ -255,6 +273,8 @@ public class PostView extends RecyclerView.ViewHolder {
             Glide.with(activity)
                     .load(bigImageUrl)
                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+//                    .centerCrop()
+                    .crossFade()
                     .listener(new RequestListener<String, GlideDrawable>() {
                         @Override
                         public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
@@ -266,6 +286,7 @@ public class PostView extends RecyclerView.ViewHolder {
 
                         @Override
                         public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                            Log.d(TAG,"onResourceReady url:"+bigImageUrl+", height:"+resource.getIntrinsicHeight());
                             return false;
                         }
                     })

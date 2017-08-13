@@ -11,7 +11,7 @@ import com.rahul_lohra.redditstar.R;
 import com.varunest.sparkbutton.SparkButton;
 import com.varunest.sparkbutton.SparkEventListener;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -19,7 +19,7 @@ import butterknife.ButterKnife;
  */
 
 public class SearchViewHolder extends RecyclerView.ViewHolder {
-    @Bind(R.id.tv)
+    @BindView(R.id.tv)
     public AppCompatTextView tv;
     Context context;
 

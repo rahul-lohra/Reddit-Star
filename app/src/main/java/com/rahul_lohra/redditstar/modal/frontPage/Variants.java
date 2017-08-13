@@ -3,7 +3,7 @@ package com.rahul_lohra.redditstar.modal.frontPage;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-@lombok.Data
+
 public class Variants {
 
     @SerializedName("gif")

@@ -6,7 +6,7 @@ import android.widget.TextView;
 
 import com.rahul_lohra.redditstar.R;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -15,7 +15,7 @@ import butterknife.ButterKnife;
 
 public class DrawerNormal extends RecyclerView.ViewHolder {
 
-    @Bind(R.id.tv)
+    @BindView(R.id.tv)
     public TextView tv;
 
     public DrawerNormal(View itemView) {

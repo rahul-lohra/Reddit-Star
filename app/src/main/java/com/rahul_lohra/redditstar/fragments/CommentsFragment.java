@@ -19,7 +19,7 @@ import com.rahul_lohra.redditstar.adapter.normal.CommentsAdapter;
 import com.rahul_lohra.redditstar.storage.MyProvider;
 import com.rahul_lohra.redditstar.storage.column.CommentsColumn;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class CommentsFragment extends Fragment  implements
@@ -27,7 +27,7 @@ public class CommentsFragment extends Fragment  implements
 {
     private static final String ARG_LINKID = "param1";
     private static final String ARG_SUBREDDIT = "param2";
-    @Bind(R.id.rv)
+    @BindView(R.id.rv)
     RecyclerView rv;
 
     private String linkId;
@@ -85,7 +85,7 @@ public class CommentsFragment extends Fragment  implements
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
+
     }
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {

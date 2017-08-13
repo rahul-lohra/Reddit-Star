@@ -2,7 +2,7 @@ package com.rahul_lohra.redditstar.modal.local;
 
 import android.graphics.drawable.Drawable;
 
-import lombok.Data;
+
 
 /**
  * Created by rkrde on 23-01-2017.

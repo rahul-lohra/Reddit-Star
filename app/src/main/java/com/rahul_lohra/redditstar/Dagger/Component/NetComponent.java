@@ -33,6 +33,7 @@ import com.rahul_lohra.redditstar.service.GetUserCredentialsService;
 import com.rahul_lohra.redditstar.service.search.SearchLinksService;
 import com.rahul_lohra.redditstar.service.search.SearchSubredditsService;
 import com.rahul_lohra.redditstar.service.widget.WidgetTaskService;
+import com.rahul_lohra.redditstar.storage.MyDatabase;
 import com.rahul_lohra.redditstar.viewHolder.PostView;
 import com.rahul_lohra.redditstar.viewHolder.PostViewDetail;
 
@@ -87,5 +88,7 @@ public interface NetComponent {
     void inject(PostViewDetail view);
 
     void inject(ApiCalls apiCalls);
+
+    void inject(MyDatabase myDatabase);
 
 }

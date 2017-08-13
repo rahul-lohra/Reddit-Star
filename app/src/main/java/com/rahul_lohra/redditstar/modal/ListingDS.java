@@ -3,7 +3,7 @@ package com.rahul_lohra.redditstar.modal;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import lombok.Data;
+
 
 /**
  * Created by rkrde on 05-02-2017.

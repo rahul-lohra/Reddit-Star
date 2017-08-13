@@ -9,13 +9,13 @@ import android.view.ViewGroup;
 
 import com.rahul_lohra.redditstar.R;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class OverviewFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    @Bind(R.id.rv)
+    @BindView(R.id.rv)
     RecyclerView rv;
 
     private String mParam1;
@@ -54,6 +54,6 @@ public class OverviewFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
+
     }
 }

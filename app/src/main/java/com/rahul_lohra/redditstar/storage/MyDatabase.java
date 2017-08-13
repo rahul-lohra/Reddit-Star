@@ -1,8 +1,10 @@
 package com.rahul_lohra.redditstar.storage;
 
+import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.rahul_lohra.redditstar.Application.Initializer;
 import com.rahul_lohra.redditstar.storage.column.CommentsColumn;
 import com.rahul_lohra.redditstar.storage.column.MyFavouritesColumn;
 import com.rahul_lohra.redditstar.storage.column.MyPostsColumn;
@@ -14,13 +16,18 @@ import net.simonvt.schematic.annotation.Database;
 import net.simonvt.schematic.annotation.OnUpgrade;
 import net.simonvt.schematic.annotation.Table;
 
+import javax.inject.Inject;
+
 /**
  * Created by rkrde on 23-01-2017.
  */
 @SuppressWarnings("HardCodedStringLiteral")
 @Database(version = MyDatabase.VERSION)
 public class MyDatabase {
-    public static final int VERSION = 2;
+
+    private static String TAG = "MyDatabase";
+
+    public static final int VERSION = 12;
     @Table(MySubredditColumn.class)
     public static final String MY_SUBREDDIT_TABLE = "my_subreddit_table";
 
@@ -77,8 +84,41 @@ public class MyDatabase {
 
                 }
                 break;
+                default:{
+                    Log.d(TAG,"run default case");
+                    db.beginTransaction();
+                    try {
+                        String execSql="drop table IF EXISTS "+MY_SUBREDDIT_TABLE;
+                        db.execSQL(execSql);
+
+                        execSql="drop table IF EXISTS "+USER_CREDENTIAL_TABLE;
+                        db.execSQL(execSql);
+
+                        execSql="drop table IF EXISTS "+USER_FAVORITES_TABLE;
+                        db.execSQL(execSql);
+
+                        execSql="drop table IF EXISTS "+USER_POSTS_TABLE;
+                        db.execSQL(execSql);
+
+                        execSql="drop table IF EXISTS "+SUGGESTION_TABLE;
+                        db.execSQL(execSql);
+
+                        execSql="drop table IF EXISTS "+COMMENTS_TABLE;
+                        db.execSQL(execSql);
+
+                        com.rahul_lohra.redditstar.storage.generated.MyDatabase.getInstance(Initializer.getInstance()).onCreate(db);
+                        db.setTransactionSuccessful();
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage());
+                    } finally {
+                        db.endTransaction();
+
+                    }
+                }
+                break;
             }
 //            db.close();
         }
     }
+
 }

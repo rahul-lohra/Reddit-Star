@@ -6,7 +6,7 @@ import android.widget.EditText;
 
 import com.rahul_lohra.redditstar.R;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -14,7 +14,7 @@ import butterknife.ButterKnife;
  */
 
 public class DrawerSearchItem extends RecyclerView.ViewHolder {
-    @Bind(R.id.et)
+    @BindView(R.id.et)
     public EditText et;
 
     public DrawerSearchItem(View itemView) {

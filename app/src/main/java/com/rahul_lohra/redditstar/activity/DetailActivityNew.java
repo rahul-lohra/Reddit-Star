@@ -39,7 +39,7 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import retrofit2.Retrofit;
@@ -56,31 +56,31 @@ import static com.rahul_lohra.redditstar.viewHolder.PostView.DIRECTION_UP;
 public class DetailActivityNew extends BaseActivity implements
         LoaderManager.LoaderCallbacks<Cursor> {
 
-    @Bind(R.id.imageView)
+    @BindView(R.id.imageView)
     AspectRatioImageView imageView;
-    @Bind(R.id.tv_category)
+    @BindView(R.id.tv_category)
     TextView tvCategory;
-    @Bind(R.id.tv_title)
+    @BindView(R.id.tv_title)
     TextView tvTitle;
-    @Bind(R.id.tv_username)
+    @BindView(R.id.tv_username)
     TextView tvUsername;
-    @Bind(R.id.tv_share)
+    @BindView(R.id.tv_share)
     TextView tvShare;
-    @Bind(R.id.tv_comments)
+    @BindView(R.id.tv_comments)
     TextView tvComments;
-    @Bind(R.id.tv_vote)
+    @BindView(R.id.tv_vote)
     TextView tvVote;
-    @Bind(R.id.image_up_vote)
+    @BindView(R.id.image_up_vote)
     ImageView imageUpVote;
-    @Bind(R.id.image_down_vote)
+    @BindView(R.id.image_down_vote)
     ImageView imageDownVote;
-    @Bind(R.id.tv_sort)
+    @BindView(R.id.tv_sort)
     TextView tvSort;
-//    @Bind(R.id.rv)
+//    @BindView(R.id.rv)
 //    RecyclerView rv;
-    @Bind(R.id.coordinator_layout)
+    @BindView(R.id.coordinator_layout)
     CoordinatorLayout coordinatorLayout;
-    @Bind(R.id.frame_layout)
+    @BindView(R.id.frame_layout)
     FrameLayout frameLayout;
 
 

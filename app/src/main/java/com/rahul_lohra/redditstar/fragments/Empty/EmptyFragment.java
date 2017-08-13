@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.rahul_lohra.redditstar.R;
 import com.rahul_lohra.redditstar.contract.IApiCall;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -21,11 +21,11 @@ public class EmptyFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    @Bind(R.id.image_view)
+    @BindView(R.id.image_view)
     ImageView imageView;
-    @Bind(R.id.tv_title)
+    @BindView(R.id.tv_title)
     TextView tvTitle;
-    @Bind(R.id.tv_subtitle)
+    @BindView(R.id.tv_subtitle)
     TextView tvSubtitle;
 
     @OnClick(R.id.btn_retry)
@@ -77,7 +77,8 @@ public class EmptyFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
+
+
     }
 
 

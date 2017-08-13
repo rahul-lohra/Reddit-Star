@@ -23,15 +23,16 @@ import com.rahul_lohra.redditstar.R;
 import com.rahul_lohra.redditstar.service.GetNewTokenService;
 import com.rahul_lohra.redditstar.Utility.MyUrl;
 
-import butterknife.Bind;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class WebViewActivity extends BaseActivity {
 
 
-    @Bind(R.id.webView)
+    @BindView(R.id.webView)
     WebView webView;
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar toolbar;
 
     private static final String TAG = WebViewActivity.class.getSimpleName();

@@ -54,7 +54,8 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import butterknife.Bind;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -97,29 +98,29 @@ public class SubredditFragment extends BaseFragment
 
 
 
-    //    @Bind(R.id.app_bar_image)
+    //    @BindView(R.id.app_bar_image)
 //    ImageView appBarImage;
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @Bind(R.id.rv)
+    @BindView(R.id.rv)
     RecyclerView rv;
 
     List<FrontPageChild> list = new ArrayList<>();
-    @Bind(R.id.spark_subs)
+    @BindView(R.id.spark_subs)
     SparkButton sparkSubs;
-    @Bind(R.id.spark_fav)
+    @BindView(R.id.spark_fav)
     SparkButton sparkFav;
-    @Bind(R.id.nested_sv)
+    @BindView(R.id.nested_sv)
     NestedScrollView nestedSV;
-    @Bind(R.id.collapsing_toolbar)
+    @BindView(R.id.collapsing_toolbar)
     CollapsingToolbarLayout collapsingToolbar;
-    @Bind(R.id.appbar)
+    @BindView(R.id.appbar)
     AppBarLayout appbar;
-    @Bind(R.id.tv_subreddit)
+    @BindView(R.id.tv_subreddit)
     AppCompatTextView tvSubreddit;
-    @Bind(R.id.tv_subs_count)
+    @BindView(R.id.tv_subs_count)
     AppCompatTextView tvSubsCount;
-    @Bind(R.id.tv_detail)
+    @BindView(R.id.tv_detail)
     AppCompatTextView tvDetail;
 
     private String subredditName;
@@ -337,7 +338,7 @@ public class SubredditFragment extends BaseFragment
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
+
     }
 
     @Override

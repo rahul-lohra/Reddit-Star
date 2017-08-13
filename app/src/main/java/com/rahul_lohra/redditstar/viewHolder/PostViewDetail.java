@@ -28,7 +28,8 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import butterknife.Bind;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import okhttp3.ResponseBody;
@@ -47,31 +48,31 @@ import static com.rahul_lohra.redditstar.viewHolder.PostView.DIRECTION_UP;
 
 public class PostViewDetail extends RecyclerView.ViewHolder {
 
-    @Bind(R.id.tv_title)
+    @BindView(R.id.tv_title)
     public TextView tvTitle;
-    @Bind(R.id.image_url)
+    @BindView(R.id.image_url)
     AppCompatImageView imageUrl;
-    @Bind(R.id.tv_domain)
+    @BindView(R.id.tv_domain)
     public TextView tvDomain;
-    @Bind(R.id.tv_share)
+    @BindView(R.id.tv_share)
     public TextView tvShare;
-    @Bind(R.id.tv_comments)
+    @BindView(R.id.tv_comments)
     public TextView tvComments;
-    @Bind(R.id.tv_vote)
+    @BindView(R.id.tv_vote)
     public TextView tvVote;
-    @Bind(R.id.image_up_vote)
+    @BindView(R.id.image_up_vote)
     public ImageView imageUpVote;
-    @Bind(R.id.image_down_vote)
+    @BindView(R.id.image_down_vote)
     public ImageView imageDownVote;
-    @Bind(R.id.card_view)
+    @BindView(R.id.card_view)
     public CardView cardView;
-    @Bind(R.id.tv_category)
+    @BindView(R.id.tv_category)
     public TextView tvCategory;
-    @Bind(R.id.tv_username)
+    @BindView(R.id.tv_username)
     public TextView tvUsername;
-    @Bind(R.id.linear_layout)
+    @BindView(R.id.linear_layout)
     public LinearLayout linearLayout;
-    @Bind(R.id.image_view)
+    @BindView(R.id.image_view)
     public AppCompatImageView imageView;
 
 

@@ -29,7 +29,8 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import butterknife.Bind;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -39,9 +40,9 @@ import retrofit2.Retrofit;
 public class ReplyFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String TAG = ReplyFragment.class.getSimpleName();
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @Bind(R.id.et)
+    @BindView(R.id.et)
     EditText et;
 
     @Inject
@@ -158,7 +159,7 @@ public class ReplyFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
+
     }
 
     private void showToast(String message){

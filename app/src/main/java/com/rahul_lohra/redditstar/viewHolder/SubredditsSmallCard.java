@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.rahul_lohra.redditstar.R;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -18,9 +18,9 @@ import butterknife.ButterKnife;
 
 public class SubredditsSmallCard extends RecyclerView.ViewHolder {
 
-    @Bind(R.id.parent)
+    @BindView(R.id.parent)
     public RelativeLayout parent;
-    @Bind(R.id.tv_share)
+    @BindView(R.id.tv_share)
     public TextView tvShare;
 
     public SubredditsSmallCard(View itemView) {

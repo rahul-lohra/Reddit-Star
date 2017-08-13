@@ -1,6 +1,8 @@
 package com.rahul_lohra.redditstar.Application;
 
 import android.app.Application;
+import android.content.Context;
+import android.support.multidex.MultiDex;
 
 import com.rahul_lohra.redditstar.Application.timber.ReleaseTree;
 import com.rahul_lohra.redditstar.BuildConfig;
@@ -21,10 +23,11 @@ import timber.log.Timber;
 
 public class Initializer extends Application {
     private NetComponent mNetComponent;
-
+    private static Initializer initializer;
     @Override
     public void onCreate() {
         super.onCreate();
+        initializer = this;
 //        Timber.plant(new Timber.DebugTree());
         if(BuildConfig.DEBUG){
             Timber.plant(new Timber.DebugTree(){
@@ -56,7 +59,15 @@ public class Initializer extends Application {
         }
     }
 
+    public static Initializer getInstance(){
+        return initializer;
+    }
 
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
+    }
 
     public NetComponent getNetComponent() {
         return mNetComponent;

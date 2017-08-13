@@ -7,7 +7,8 @@ import android.webkit.WebView;
 import com.rahul_lohra.redditstar.R;
 import com.rahul_lohra.redditstar.Utility.MyUrl;
 
-import butterknife.Bind;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class LoginActivity extends BaseActivity {
@@ -17,7 +18,7 @@ public class LoginActivity extends BaseActivity {
     state=RANDOM_STRING&redirect_uri=URI&duration=DURATION&scope=SCOPE_STRING
      */
 
-    @Bind(R.id.webView)
+    @BindView(R.id.webView)
     WebView webView;
 
     @Override

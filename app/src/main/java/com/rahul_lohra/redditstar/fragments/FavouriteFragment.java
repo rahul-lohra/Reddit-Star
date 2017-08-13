@@ -28,7 +28,7 @@ import com.rahul_lohra.redditstar.storage.column.MyFavouritesColumn;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class FavouriteFragment extends Fragment implements
@@ -39,11 +39,11 @@ public class FavouriteFragment extends Fragment implements
     private final int LOADER_ID = 1;
     private FavoritesAdapter adapter;
 
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @Bind(R.id.rv)
+    @BindView(R.id.rv)
     RecyclerView rv;
-    @Bind(R.id.tv_empty_view)
+    @BindView(R.id.tv_empty_view)
     AppCompatTextView tvEmptyView;
     public FavouriteFragment() {
         // Required empty public constructor
@@ -108,7 +108,7 @@ public class FavouriteFragment extends Fragment implements
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
+
     }
 
     @Override

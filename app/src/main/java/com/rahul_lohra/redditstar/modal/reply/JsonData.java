@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 
-import lombok.Data;
+
 
 /**
  * Created by rkrde on 01-03-2017.
