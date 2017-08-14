@@ -22,7 +22,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 /**
  * Created by rkrde on 14-04-2017.
  */
-@Module(includes = NetworkModule.class)
+@Module(includes = TokenAuthModule.class)
 public class ApiModule {
     @Provides
     @Singleton

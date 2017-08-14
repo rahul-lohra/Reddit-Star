@@ -45,12 +45,11 @@ import dagger.Component;
  * Created by rkrde on 24-12-2016.
  */
 @Singleton
-@Component(modules = {TokenAuthModule.class,
+@Component(modules = {
         CacheModule.class,
         ApiModule.class,
         ContextModule.class,
         NetworkModule.class,
-        TokenAuthModule.class,
         StorageModule.class})
 public interface NetComponent {
     //Activity

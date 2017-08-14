@@ -136,6 +136,10 @@ public class PostViewDetail extends RecyclerView.ViewHolder {
 
     }
 
+    public void updateBackgroundColor(int darkMutedColor){
+        linearLayout.setBackgroundColor(darkMutedColor);
+    }
+
     private void setTextualData(String score,String title,String commentsCount,String domain,String subreddit,String time,String author){
         tvVote.setText(score);
         tvTitle.setText(title);

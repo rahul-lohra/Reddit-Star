@@ -180,9 +180,6 @@
                 android:value="com.rahul_lohra.redditstar.activity.DashboardActivity" />
         </activity>
 
-        <service
-            android:name=".service.CommentsService"
-            android:exported="false" />
 
         <activity
             android:name=".activity.MediaActivity"

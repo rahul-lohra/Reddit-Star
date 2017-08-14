@@ -16,6 +16,7 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import okhttp3.Authenticator;
+import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.Route;
@@ -77,6 +78,12 @@ public class TokenAuthModule {
 
             }
         };
+    }
+
+    @Singleton
+    @Provides
+    OkHttpClient provideOkHttpClient(OkHttpClient okHttpClient){
+        return okHttpClient;
     }
 
 }

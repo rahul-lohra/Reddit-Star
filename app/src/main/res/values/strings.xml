@@ -249,5 +249,6 @@
     <string name="sort_by_relevance">Sort by relevance</string>
     <string name="relevance">Relevance</string>
     <string name="see_more">See More</string>
+    <string name="comments">Comments</string>
 
 </resources>

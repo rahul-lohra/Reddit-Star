@@ -1,6 +1,7 @@
 package com.rahul_lohra.redditstar.activity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.database.Cursor;
@@ -89,10 +90,11 @@ public class DetailActivity extends BaseActivity implements
     public static final String ARG_ID = "arg_id";
 
     GlideDrawable glideDrawable = null;//required for thumnail cache
+    boolean sharedElement;
 
 
     private String id;
-    private int darkMutedColor = 0xFF333333;
+    public static int darkMutedColor = 0xFF333333;
     Intent replyIntent;
     @OnClick(R.id.fab)
     void onCLicFab(){
@@ -112,7 +114,16 @@ public class DetailActivity extends BaseActivity implements
         commentsService = new CommentsService(getApplicationContext());
         commentsService.setICommentsService(this);
         ButterKnife.bind(this);
+
+
         Intent intent = getIntent();
+        sharedElement = intent.getBooleanExtra("sharedElement",false);
+        if(sharedElement)
+        {
+            supportPostponeEnterTransition();
+        }
+
+
         id = intent.getStringExtra("id");
         Bundle bundle = new Bundle();
         String properLinkId = id;
@@ -146,6 +157,8 @@ public class DetailActivity extends BaseActivity implements
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_action_back);
+            toolbar.setTitle(sharedElement?" ":getString(R.string.comments));
+            toolbar.setTitleTextColor(ContextCompat.getColor(this,R.color.white));
         }
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -369,13 +382,22 @@ public class DetailActivity extends BaseActivity implements
 //                            collapsingToolbarLayout.setVisibility(View.GONE);
                             imageView.setVisibility(View.GONE);
                             imageView.setTransitionName("");
+                            if(sharedElement)
+                            {
+                                supportStartPostponedEnterTransition();
+                            }
                             return true;
                         }
 
                         @Override
-                        public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                        public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource)
+                        {
                             updatePalete(resource);
                             imageView.setImageDrawable(resource);
+
+                            if(sharedElement){
+                                supportStartPostponedEnterTransition();
+                            }
                             return true;
                         }
                     })
@@ -387,6 +409,11 @@ public class DetailActivity extends BaseActivity implements
 //            collapsingToolbarLayout.setVisibility(View.GONE);
             imageView.setVisibility(View.GONE);
             imageView.setTransitionName("");
+            toolbar.setBackgroundColor(darkMutedColor);
+            toolbar.setTitle(getString(R.string.comments));
+            if(sharedElement){
+                supportStartPostponedEnterTransition();
+            }
         }
 
 

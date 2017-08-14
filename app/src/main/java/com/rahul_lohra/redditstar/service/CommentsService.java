@@ -161,6 +161,9 @@ public class CommentsService  {
 
                                 if(iCommentsService!=null)
                                     iCommentsService.commentsLoadedState(TYPE_LOAD_SUCCESS);
+                            }else {
+                                if(iCommentsService!=null)
+                                    iCommentsService.commentsLoadedState(TYPE_LOAD_FAIL);
                             }
                         }catch (IOException e){
                             if(iCommentsService!=null)

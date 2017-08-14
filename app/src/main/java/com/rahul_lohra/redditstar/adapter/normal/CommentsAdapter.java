@@ -13,6 +13,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.rahul_lohra.redditstar.R;
+import com.rahul_lohra.redditstar.activity.DetailActivity;
 import com.rahul_lohra.redditstar.activity.ReplyActivity;
 import com.rahul_lohra.redditstar.contract.ILogin;
 import com.rahul_lohra.redditstar.dataModel.Comments;
@@ -108,6 +109,8 @@ public class CommentsAdapter extends CursorRecyclerViewAdapter<RecyclerView.View
                         share.shareUrl(mActivity,url);
                     }
                 });
+
+                viewHolder.updateBackgroundColor(DetailActivity.darkMutedColor);
 
             }break;
             case COMMENTS_TYPE:{

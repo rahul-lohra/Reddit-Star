@@ -1,31 +1,47 @@
 package com.rahul_lohra.redditstar.Dagger.Module;
 
 import android.content.Context;
+import android.util.Base64;
 import android.util.Log;
 
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.rahul_lohra.redditstar.BuildConfig;
+import com.rahul_lohra.redditstar.Utility.Constants;
+import com.rahul_lohra.redditstar.modal.token.RefreshTokenResponse;
+import com.rahul_lohra.redditstar.retrofit.ApiInterface;
 
 import java.io.File;
 import java.io.IOException;
 
+import javax.inject.Named;
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import okhttp3.Authenticator;
 import okhttp3.Cache;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import okhttp3.Route;
 import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.Retrofit;
 import timber.log.Timber;
+
+import static com.rahul_lohra.redditstar.Utility.MyUrl.CLIENT_ID;
 
 /**
  * Created by rkrde on 14-04-2017.
  */
-@Module(includes = CacheModule.class)
+@Module(includes = {CacheModule.class,TokenAuthModule.class})
 public class NetworkModule {
+    static int count = 0;
+    private final String TAG = getClass().getSimpleName();
+
+    @Singleton
+    private OkHttpClient okHttpClient;
+
     @Singleton
     @Provides
     public HttpLoggingInterceptor loggingInterceptor() {
@@ -54,10 +70,15 @@ public class NetworkModule {
             }
         };
     }
+
     @Singleton
-    @Provides
-    OkHttpClient provideOkHttpClient(HttpLoggingInterceptor loggingInterceptor,Interceptor interceptor, Cache cache, StethoInterceptor stethoInterceptor) {
-        return new OkHttpClient.Builder()
+    private void setUpOkHttpClient(HttpLoggingInterceptor loggingInterceptor,
+                                     Interceptor interceptor,
+                                     Cache cache,
+                                     StethoInterceptor stethoInterceptor,
+                                     Authenticator authenticator) {
+        okHttpClient =  new OkHttpClient.Builder()
+                .authenticator(authenticator)
                 .cache(cache)
                 .addInterceptor(loggingInterceptor)
                 .addInterceptor(interceptor)
@@ -68,5 +89,11 @@ public class NetworkModule {
     @Provides
     StethoInterceptor stethoInterceptor() {
         return new StethoInterceptor();
+    }
+
+    @Singleton
+    @Provides
+    public OkHttpClient provideOkHttpClient(){
+        return okHttpClient;
     }
 }

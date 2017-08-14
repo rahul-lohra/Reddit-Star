@@ -8,7 +8,7 @@
     </style>
 
     <style name="DetailActivityTheme" parent="AppTheme.NoToolBar">
-        <item name="android:windowEnterTransition">@transition/detail_window_enter_transition</item>
+        <!--<item name="android:windowEnterTransition">@transition/detail_window_enter_transition</item>-->
     </style>
 
     <style name="MediaTheme" parent="Theme.AppCompat.Light.NoActionBar">

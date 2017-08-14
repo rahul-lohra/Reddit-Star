@@ -444,10 +444,13 @@ public class DashboardActivity extends BaseActivity implements
             intent.putExtra("modal", modal);
             intent.putExtra("id", id);
             intent.putExtra("uri", MyProvider.PostsLists.CONTENT_URI);
-
+            intent.putExtra("sharedElement",false);
             if (cursor != null) {
                 if (cursor.moveToFirst()) {
+                    boolean thumbnail = !cursor.getString(cursor.getColumnIndex(MyPostsColumn.KEY_THUMBNAIL)).equals("default");
+                    intent.putExtra("sharedElement",thumbnail);
                     startActivityWithSharedElement(intent, imageView);
+//                    startActivityNoSharedElement(intent);
                 } else {
                     startActivityNoSharedElement(intent);
                 }

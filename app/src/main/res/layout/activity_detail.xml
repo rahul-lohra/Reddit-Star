@@ -29,6 +29,7 @@
             android:id="@+id/collapsing_toolbar"
             app:toolbarId="@+id/toolbar"
             android:background="@color/white"
+            app:titleEnabled="false"
             app:contentScrim="@android:color/transparent">
 
             <com.rahul_lohra.redditstar.helper.AspectRatioImageView
@@ -46,6 +47,7 @@
                 tools:src="@mipmap/ic_launcher" />
 
             <android.support.v7.widget.Toolbar
+                app:title=" "
                 app:layout_collapseMode="pin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
