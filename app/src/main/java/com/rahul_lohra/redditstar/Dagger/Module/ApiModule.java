@@ -27,7 +27,7 @@ public class ApiModule {
     @Provides
     @Singleton
     @Named("withToken")
-    Retrofit provideRetrofitForFun(OkHttpClient client) {
+    Retrofit provideRetrofitForFun(@Named("withAuth") OkHttpClient client) {
         return new Retrofit.Builder()
                 .baseUrl(MyUrl.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -38,7 +38,7 @@ public class ApiModule {
     @Provides
     @Singleton
     @Named("withoutToken")
-    Retrofit provideRetrofitForToken(OkHttpClient client) {
+    Retrofit provideRetrofitForToken(@Named("withAuth") OkHttpClient client) {
         return new Retrofit.Builder()
                 .baseUrl(MyUrl.LOGIN_AUTHORITY)
                 .addConverterFactory(GsonConverterFactory.create())

@@ -8,6 +8,7 @@ import com.rahul_lohra.redditstar.Dagger.Module.StorageModule;
 import com.rahul_lohra.redditstar.Dagger.Module.TokenAuthModule;
 import com.rahul_lohra.redditstar.Utility.ApiCalls;
 import com.rahul_lohra.redditstar.activity.BaseActivity;
+import com.rahul_lohra.redditstar.activity.DashboardActivity;
 import com.rahul_lohra.redditstar.activity.DetailActivity;
 import com.rahul_lohra.redditstar.activity.DetailActivityNew;
 import com.rahul_lohra.redditstar.activity.MediaActivity;
@@ -55,6 +56,7 @@ public interface NetComponent {
     //Activity
     void inject(SearchActivity activity);
     void inject(BaseActivity activity);
+    void inject(DashboardActivity activity);
     void inject(DetailActivity activity);
     void inject(DetailActivityNew activity);
     void inject(DashboardPresenter presenter);

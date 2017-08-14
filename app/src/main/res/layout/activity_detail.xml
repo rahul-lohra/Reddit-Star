@@ -69,6 +69,7 @@
             android:layout_height="wrap_content" />
 
         <ProgressBar
+            android:visibility="gone"
             android:id="@+id/progressBar"
             android:layout_margin="10dp"
             android:layout_gravity="center_horizontal"

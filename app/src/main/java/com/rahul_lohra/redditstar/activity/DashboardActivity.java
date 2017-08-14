@@ -28,13 +28,16 @@ import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.rahul_lohra.redditstar.Application.Initializer;
 import com.rahul_lohra.redditstar.R;
+import com.rahul_lohra.redditstar.Utility.Constants;
 import com.rahul_lohra.redditstar.Utility.MyUrl;
 import com.rahul_lohra.redditstar.adapter.cursor.AccountsAdapter;
 import com.rahul_lohra.redditstar.adapter.cursor.SubredditDrawerAdapter;
@@ -47,7 +50,9 @@ import com.rahul_lohra.redditstar.fragments.DetailSubredditFragment;
 import com.rahul_lohra.redditstar.fragments.HomeFragment;
 import com.rahul_lohra.redditstar.modal.local.DrawerItemModal;
 import com.rahul_lohra.redditstar.modal.custom.DetailPostModal;
+import com.rahul_lohra.redditstar.modal.token.RefreshTokenResponse;
 import com.rahul_lohra.redditstar.presenter.activity.DashboardPresenter;
+import com.rahul_lohra.redditstar.retrofit.ApiInterface;
 import com.rahul_lohra.redditstar.service.widget.WidgetTaskService;
 import com.rahul_lohra.redditstar.storage.MyProvider;
 import com.rahul_lohra.redditstar.storage.column.MyPostsColumn;
@@ -64,9 +69,16 @@ import com.rahul_lohra.redditstar.viewHolder.AccountsViewHolder;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+import javax.inject.Named;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 import timber.log.Timber;
 
 import static com.rahul_lohra.redditstar.Utility.MyUrl.AUTH_URL;
@@ -123,6 +135,10 @@ public class DashboardActivity extends BaseActivity implements
     LinearLayout layoutSignOut;
     @BindView(R.id.anonymous_user)
     LinearLayout layoutAnonymous;
+
+    @Inject
+    @Named("withoutToken")
+    Retrofit retrofitWithToken;
 
 
     private boolean mTwoPane;
@@ -183,6 +199,7 @@ public class DashboardActivity extends BaseActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
         ButterKnife.bind(this);
+        ((Initializer)getApplication()).getNetComponent().inject(this);
         init();
         setupDrawer();
         setupPresenter();
@@ -246,6 +263,7 @@ public class DashboardActivity extends BaseActivity implements
         drawerList.add(new DrawerItemModal(getString(R.string.home), ContextCompat.getDrawable(this, R.drawable.ic_home)));
         drawerList.add(new DrawerItemModal(getString(R.string.my_subreddits), ContextCompat.getDrawable(this, R.drawable.ic_list)));
         drawerList.add(new DrawerItemModal(getString(R.string.my_favorites), ContextCompat.getDrawable(this, R.drawable.ic_star)));
+
         drawerAdapter = new DrawerAdapter(this, drawerList, this, this);
         rv.setLayoutManager(new LinearLayoutManager(this));
         rv.setAdapter(drawerAdapter);
@@ -351,6 +369,38 @@ public class DashboardActivity extends BaseActivity implements
             public void onDrawerStateChanged(int newState) {
             }
         });
+    }
+
+    @Override
+    public void refreshToken() {
+         /*
+            get accessToken and refreshToken of Active User
+             */
+        String arrayOfToken[] = Constants.getAccessTokenAndRefreshTokenOfActiveUser(this);
+        String refreshToken = arrayOfToken[1];
+        String authString = CLIENT_ID + ":";
+        String encodedAuthString = Base64.encodeToString(authString.getBytes(),
+                Base64.NO_WRAP);
+
+            /*
+            Make Synchronous Api Call to refresh Token
+             */
+        ApiInterface apiInterface = retrofitWithToken.create(ApiInterface.class);
+        String token = "Basic " + encodedAuthString;
+        apiInterface.refreshToken(
+                token,
+                "refresh_token",refreshToken).enqueue(new Callback<RefreshTokenResponse>() {
+            @Override
+            public void onResponse(Call<RefreshTokenResponse> call, Response<RefreshTokenResponse> response) {
+                Log.d(TAG,"onResponse - responseCode"+response.code());
+            }
+
+            @Override
+            public void onFailure(Call<RefreshTokenResponse> call, Throwable t) {
+                Log.d(TAG,"onFailure:"+t.getMessage());
+            }
+        });
+
     }
 
     @Override

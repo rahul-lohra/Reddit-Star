@@ -250,5 +250,6 @@
     <string name="relevance">Relevance</string>
     <string name="see_more">See More</string>
     <string name="comments">Comments</string>
+    <string name="refresh_token">Refresh Token</string>
 
 </resources>

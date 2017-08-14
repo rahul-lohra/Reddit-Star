@@ -59,4 +59,9 @@ public class BaseFragment extends Fragment implements IActivity{
     public void openActivity(Intent intent) {
         startActivity(intent);
     }
+
+    @Override
+    public void refreshToken() {
+
+    }
 }

@@ -37,6 +37,7 @@ import com.rahul_lohra.redditstar.R;
 import com.rahul_lohra.redditstar.Utility.Constants;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 
 
 import butterknife.BindView;
@@ -55,6 +56,7 @@ public class ExoPlayerFragment extends Fragment {
     SimpleExoPlayer player;
 
     @Inject
+    @Named("withAuth")
     OkHttpClient okHttpClient;
 
     public ExoPlayerFragment() {

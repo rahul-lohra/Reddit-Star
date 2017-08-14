@@ -60,4 +60,9 @@ public class SearchActivity extends BaseActivity implements
     public void openActivity(Intent intent) {
 
     }
+
+    @Override
+    public void refreshToken() {
+
+    }
 }

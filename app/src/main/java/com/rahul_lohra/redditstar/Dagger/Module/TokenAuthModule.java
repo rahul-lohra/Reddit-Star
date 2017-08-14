@@ -27,14 +27,15 @@ import static com.rahul_lohra.redditstar.Utility.MyUrl.CLIENT_ID;
 /**
  * Created by rkrde on 14-04-2017.
  */
-@Module(includes = {ContextModule.class,ApiModule.class})
+@Module(includes = {ContextModule.class,NetworkModule.class})
 public class TokenAuthModule {
     static int count = 0;
+    int threshold = 10;
     private final String TAG = TokenAuthModule.class.getSimpleName();
 
     @Provides
     @Singleton
-    Authenticator authenticator(final Context context,final @Named("withToken") Retrofit retrofitWithToken){
+    Authenticator authenticator(final Context context,final OkHttpClient okHttpClient){
         return new Authenticator() {
             @Override
             public Request authenticate(Route route, Response response) throws IOException {
@@ -43,7 +44,7 @@ public class TokenAuthModule {
                 if (response.code() == 401) {
 
                     ++count;
-                    if(count==2){
+                    if(count==threshold){
                         count = 0;
                         return null;
                     }
@@ -58,7 +59,7 @@ public class TokenAuthModule {
             /*
             Make Synchronous Api Call to refresh Token
              */
-                    ApiInterface apiInterface = retrofitWithToken.create(ApiInterface.class);
+                    ApiInterface apiInterface = new ApiModule().provideRetrofitForToken(okHttpClient).create(ApiInterface.class);
                     String token = "Basic " + encodedAuthString;
                     retrofit2.Response<RefreshTokenResponse> res = apiInterface.refreshToken(
                             token,
@@ -82,8 +83,10 @@ public class TokenAuthModule {
 
     @Singleton
     @Provides
-    OkHttpClient provideOkHttpClient(OkHttpClient okHttpClient){
-        return okHttpClient;
+    @Named("withAuth")
+    OkHttpClient provideOkHttpClient(@Named("withoutAuth") OkHttpClient okHttpClient,final Context context){
+        return okHttpClient.newBuilder()
+                .authenticator(authenticator(context,okHttpClient)).build();
     }
 
 }

@@ -34,13 +34,11 @@ import static com.rahul_lohra.redditstar.Utility.MyUrl.CLIENT_ID;
 /**
  * Created by rkrde on 14-04-2017.
  */
-@Module(includes = {CacheModule.class,TokenAuthModule.class})
+@Module(includes = {CacheModule.class})
 public class NetworkModule {
     static int count = 0;
     private final String TAG = getClass().getSimpleName();
 
-    @Singleton
-    private OkHttpClient okHttpClient;
 
     @Singleton
     @Provides
@@ -72,13 +70,14 @@ public class NetworkModule {
     }
 
     @Singleton
-    private void setUpOkHttpClient(HttpLoggingInterceptor loggingInterceptor,
+    @Provides
+    @Named("withoutAuth")
+    OkHttpClient setUpOkHttpClient(HttpLoggingInterceptor loggingInterceptor,
                                      Interceptor interceptor,
                                      Cache cache,
-                                     StethoInterceptor stethoInterceptor,
-                                     Authenticator authenticator) {
-        okHttpClient =  new OkHttpClient.Builder()
-                .authenticator(authenticator)
+                                     StethoInterceptor stethoInterceptor
+                                     ) {
+        return new OkHttpClient.Builder()
                 .cache(cache)
                 .addInterceptor(loggingInterceptor)
                 .addInterceptor(interceptor)
@@ -91,9 +90,5 @@ public class NetworkModule {
         return new StethoInterceptor();
     }
 
-    @Singleton
-    @Provides
-    public OkHttpClient provideOkHttpClient(){
-        return okHttpClient;
-    }
+
 }

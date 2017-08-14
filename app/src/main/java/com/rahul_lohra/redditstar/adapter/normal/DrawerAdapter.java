@@ -79,8 +79,9 @@ public class DrawerAdapter extends RecyclerView.Adapter {
                     drawerNormal.tv.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            iActivity.openActivity(new Intent(context,FavoriteActivity.class));
+//                            iActivity.openActivity(new Intent(context,FavoriteActivity.class));
 //                            context.startActivity(new Intent(context, FavoriteActivity.class));
+                            iActivity.refreshToken();
                         }
                     });
                 }
@@ -92,6 +93,8 @@ public class DrawerAdapter extends RecyclerView.Adapter {
 //                            context.startActivity(new Intent(context, SettingsActivity.class));
                         }
                     });
+
+
                 }
                 break;
             case SEARCH_TYPE:

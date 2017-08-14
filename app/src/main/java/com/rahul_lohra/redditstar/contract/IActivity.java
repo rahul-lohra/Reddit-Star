@@ -8,4 +8,5 @@ import android.content.Intent;
 
 public interface IActivity {
     void openActivity(Intent intent);
+    void refreshToken();
 }

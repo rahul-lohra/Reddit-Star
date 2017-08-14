@@ -8,6 +8,8 @@ import com.rahul_lohra.redditstar.Application.timber.ReleaseTree;
 import com.rahul_lohra.redditstar.BuildConfig;
 //import com.rahul_lohra.redditstar.dagger.Component.DaggerNetComponent;
 //import com.rahul_lohra.redditstar.Dagger.Component.DaggerNetComponent;
+//import com.rahul_lohra.redditstar.Dagger.Component.DaggerNetComponent;
+import com.rahul_lohra.redditstar.Dagger.Component.DaggerNetComponent;
 import com.rahul_lohra.redditstar.Dagger.Component.NetComponent;
 import com.rahul_lohra.redditstar.Dagger.Module.AppModule;
 import com.rahul_lohra.redditstar.Dagger.Module.ContextModule;
