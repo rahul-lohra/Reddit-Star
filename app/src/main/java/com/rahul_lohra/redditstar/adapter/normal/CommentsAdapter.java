@@ -73,7 +73,7 @@ public class CommentsAdapter extends CursorRecyclerViewAdapter<RecyclerView.View
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, Cursor cursor) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, Cursor cursor,int position) {
         switch (holder.getItemViewType()){
             case POST_TYPE:
             {

@@ -38,7 +38,7 @@ public class AccountsAdapter extends CursorRecyclerViewAdapter<RecyclerView.View
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, Cursor cursor) {
+    public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, Cursor cursor,int position) {
         AccountsViewHolder accountsViewHolder = (AccountsViewHolder)viewHolder;
         String userName = cursor.getString(cursor.getColumnIndex(UserCredentialsColumn.NAME));
         int isActive = cursor.getInt(cursor.getColumnIndex(UserCredentialsColumn.ACTIVE_STATE));

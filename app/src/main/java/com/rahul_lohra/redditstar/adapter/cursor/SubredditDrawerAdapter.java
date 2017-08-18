@@ -36,7 +36,7 @@ public class SubredditDrawerAdapter extends CursorRecyclerViewAdapter<RecyclerVi
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder viewHolder,Cursor cursor) {
+    public void onBindViewHolder(RecyclerView.ViewHolder viewHolder,Cursor cursor,int position) {
         final String displayName = cursor.getString(cursor.getColumnIndex(MySubredditColumn.KEY_DISPLAY_NAME));
         final String subredditId = cursor.getString(cursor.getColumnIndex(MySubredditColumn.KEY_ID));
         final String fullName = cursor.getString(cursor.getColumnIndex(MySubredditColumn.KEY_NAME));

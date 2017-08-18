@@ -171,6 +171,8 @@ public class MyProvider {
                 MyDatabase.USER_POSTS_TABLE+"."+MyPostsColumn.KEY_BIG_IMAGE_URL,
                 MyDatabase.USER_POSTS_TABLE+"."+MyPostsColumn.KEY_BIG_IMAGE_HEIGHT,
                 MyDatabase.USER_POSTS_TABLE+"."+MyPostsColumn.KEY_BIG_IMAGE_WIDTH,
+                MyDatabase.USER_POSTS_TABLE+"."+MyPostsColumn.KEY_THUMBNAIL_WIDTH ,
+                MyDatabase.USER_POSTS_TABLE+"."+MyPostsColumn.KEY_THUMBNAIL_HEIGHT ,
                 MyDatabase.USER_POSTS_TABLE+"."+MyPostsColumn.KEY_POST_HINT,
                 MyDatabase.USER_POSTS_TABLE+"."+MyPostsColumn.KEY_COMMENTS_COUNT,
                 MyDatabase.USER_POSTS_TABLE+"."+MyPostsColumn.KEY_DOMAIN,

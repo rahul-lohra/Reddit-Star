@@ -12,6 +12,7 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -83,6 +84,8 @@ public class PostView extends RecyclerView.ViewHolder {
     @Nullable
     @BindView(R.id.card_view)
     public CardView cardView;
+
+
 //    private String domain, url;
     private Integer likes;
     DetailPostModal detailPostModal;
@@ -162,15 +165,15 @@ public class PostView extends RecyclerView.ViewHolder {
 
     private void setDimensions(ImageView imageView, DetailPostModal detailPostModal){
         android.view.ViewGroup.LayoutParams layoutParams = imageView.getLayoutParams();
-        if(detailPostModal.getBigImageHeight()!=-1)
+        if(detailPostModal.getThumbnailHeight()!=-1)
         {
-//            layoutParams.height = (int) CommonOperations.convertPixelsToDp(detailPostModal.getBigImageHeight(), context);
+            layoutParams.height = (int) CommonOperations.convertDpToPixel(detailPostModal.getThumbnailHeight(), context);
         }else {
-//            layoutParams.height = LinearLayout.LayoutParams.WRAP_CONTENT;
+            layoutParams.height = (int) CommonOperations.convertDpToPixel(150, context);
         }
 //        layoutParams.height = (int) CommonOperations.convertDpToPixel(detailPostModal.getBigImageHeight(), context);
 //        layoutParams.height = (int) (detailPostModal.getBigImageHeight());
-        Log.d(TAG,"url:"+detailPostModal.getBigImageUrl()+",imageView height:"+(detailPostModal.getBigImageHeight()));
+//        Log.d(TAG,"url:"+detailPostModal.getBigImageUrl()+",imageView height:"+(detailPostModal.getBigImageHeight()));
         imageView.setLayoutParams(layoutParams);
         imageView.invalidate();
     }
@@ -273,7 +276,7 @@ public class PostView extends RecyclerView.ViewHolder {
             Glide.with(activity)
                     .load(bigImageUrl)
                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-//                    .centerCrop()
+                    .centerCrop()
                     .crossFade()
                     .listener(new RequestListener<String, GlideDrawable>() {
                         @Override

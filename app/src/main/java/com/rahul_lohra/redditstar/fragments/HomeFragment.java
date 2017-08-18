@@ -27,6 +27,7 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.rahul_lohra.redditstar.R;
+import com.rahul_lohra.redditstar.Utility.CommonOperations;
 import com.rahul_lohra.redditstar.Utility.MyUrl;
 import com.rahul_lohra.redditstar.Utility.SpConstants;
 import com.rahul_lohra.redditstar.activity.DashboardActivity;
@@ -55,6 +56,7 @@ import javax.inject.Named;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import retrofit2.Retrofit;
+import timber.log.Timber;
 
 /**
  * Created by rkrde on 05-02-2017.
@@ -81,6 +83,7 @@ public class HomeFragment extends BaseFragment implements
     StaggeredGridLayoutManager staggeredGridLayoutManager;
     LinearLayoutManager linearLayoutManager;
     int layoutType;
+    boolean pendingIntroAnimation;
 
     @Override
     public void makeApiCall() {
@@ -93,6 +96,8 @@ public class HomeFragment extends BaseFragment implements
         void showLoginSnackBar();
 
         void setSubTitle(String subtitle);
+
+        void showIntroAnimation();
     }
 
     private IHomeFragment mListener;
@@ -134,7 +139,9 @@ public class HomeFragment extends BaseFragment implements
         if (cursor != null) {
             if (cursor.moveToFirst()) {
                 //Dont make api Call
+                Timber.d("make api call");
             } else {
+                Timber.d("make api call");
                 Constants.clearPosts(getContext(), Constants.TYPE_POST);
                 Constants.clearComments(getContext());
                 makeApiCall(filterParam_1, filterParam_2, mAfterOfLink);
@@ -143,6 +150,9 @@ public class HomeFragment extends BaseFragment implements
         }
         sp = PreferenceManager.getDefaultSharedPreferences(getContext());
         layoutType = sp.getInt(SpConstants.LAYOUT_TYPE, HomeAdapter.DEFAULT);
+        if(null == savedInstanceState){
+            pendingIntroAnimation = true;
+        }
     }
 
     @Override
@@ -259,6 +269,10 @@ public class HomeFragment extends BaseFragment implements
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_search, menu);
+        if(pendingIntroAnimation){
+            pendingIntroAnimation = false;
+             mListener.showIntroAnimation();
+        }
     }
 
     @Override
@@ -455,6 +469,7 @@ public class HomeFragment extends BaseFragment implements
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        Timber.d("onCreateLoader");
         Uri mUri = MyProvider.PostsLists.CONTENT_URI;
         String mWhere = MyPostsColumn.TYPE_POST + "=?";
         String mWhereArgs[] = {"1"};
@@ -467,6 +482,7 @@ public class HomeFragment extends BaseFragment implements
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        Timber.d("onLoadFinished");
         switch (loader.getId()) {
             case LOADER_ID:
                 this.adapter.swapCursor(data);
@@ -484,10 +500,12 @@ public class HomeFragment extends BaseFragment implements
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
+        Timber.d("onLoadFinished");
         switch (loader.getId()) {
             case LOADER_ID:
                 adapter.swapCursor(null);
                 break;
         }
     }
+
 }

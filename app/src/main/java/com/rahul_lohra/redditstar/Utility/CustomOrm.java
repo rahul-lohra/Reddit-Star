@@ -43,6 +43,8 @@ public class CustomOrm {
         cv.put(MyPostsColumn.KEY_POST_HINT,data.getPostHint());
         cv.put(MyPostsColumn.KEY_SCORE,data.getScore());
         cv.put(MyPostsColumn.KEY_THUMBNAIL,data.getThumbnail());
+        cv.put(MyPostsColumn.KEY_THUMBNAIL_HEIGHT,data.getThumbnailHeight());
+        cv.put(MyPostsColumn.KEY_THUMBNAIL_WIDTH,data.getThumbnailWidth());
         cv.put(MyPostsColumn.KEY_URL,data.getUrl());
         cv.put(MyPostsColumn.KEY_VISITED,data.getVisited());//check boolean
         cv.put(MyPostsColumn.KEY_LOCKED,data.getLocked());//check boolean

@@ -27,7 +27,7 @@ public class MyDatabase {
 
     private static String TAG = "MyDatabase";
 
-    public static final int VERSION = 12;
+    public static final int VERSION = 13;
     @Table(MySubredditColumn.class)
     public static final String MY_SUBREDDIT_TABLE = "my_subreddit_table";
 

@@ -44,7 +44,7 @@ public class FavoritesAdapter extends CursorRecyclerViewAdapter<RecyclerView.Vie
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, Cursor cursor) {
+    public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, Cursor cursor,int position) {
         final String displayName = cursor.getString(cursor.getColumnIndex(MyFavouritesColumn.KEY_DISPLAY_NAME));
         final String fullName = cursor.getString(cursor.getColumnIndex(MyFavouritesColumn.KEY_FULL_NAME));
         final String subredditId = cursor.getString(cursor.getColumnIndex(MyFavouritesColumn.KEY_SUBREDDIT_ID));

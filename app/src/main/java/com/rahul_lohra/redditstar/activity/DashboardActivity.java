@@ -519,6 +519,18 @@ public class DashboardActivity extends BaseActivity implements
         toolbar.setSubtitle(subtitle);
     }
 
+    @Override
+    public void showIntroAnimation() {
+        final int ANIM_DURATION_TOOLBAR = 300;
+        int actionbarSize = (int)CommonOperations.convertDpToPixel(56,this);
+
+        toolbar.setTranslationY(-actionbarSize);
+        toolbar.animate()
+                .translationY(0)
+                .setDuration(ANIM_DURATION_TOOLBAR)
+                .setStartDelay(300);
+    }
+
     private void updateName(Cursor cursor) {
         if (cursor != null) {
 

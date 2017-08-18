@@ -107,6 +107,14 @@ public interface MyPostsColumn {
 
     @DataType(INTEGER)
     @NotNull @DefaultValue("-1")
+    String KEY_THUMBNAIL_WIDTH = "thumbnail_width";
+
+    @DataType(INTEGER)
+    @NotNull @DefaultValue("-1")
+    String KEY_THUMBNAIL_HEIGHT  = "thumbnail_height";
+
+    @DataType(INTEGER)
+    @NotNull @DefaultValue("-1")
     String KEY_IS_BIG_IMAGE_URL_HAS_IMAGE = "is_valid_big_image_url_has_image";
 
     @DataType(INTEGER)

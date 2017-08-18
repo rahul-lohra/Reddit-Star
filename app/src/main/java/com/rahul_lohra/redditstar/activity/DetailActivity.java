@@ -28,6 +28,8 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -91,10 +93,12 @@ public class DetailActivity extends BaseActivity implements
 
     GlideDrawable glideDrawable = null;//required for thumnail cache
     boolean sharedElement;
+    Animation scaleAnim;
 
 
     private String id;
     public static int darkMutedColor = 0xFF333333;
+    int mutedLightColor;
     Intent replyIntent;
     @OnClick(R.id.fab)
     void onCLicFab(){
@@ -114,7 +118,8 @@ public class DetailActivity extends BaseActivity implements
         commentsService = new CommentsService(getApplicationContext());
         commentsService.setICommentsService(this);
         ButterKnife.bind(this);
-
+        scaleAnim =  AnimationUtils.loadAnimation(getApplicationContext(),
+                R.anim.scale_fab);
 
         Intent intent = getIntent();
         sharedElement = intent.getBooleanExtra("sharedElement",false);
@@ -299,7 +304,7 @@ public class DetailActivity extends BaseActivity implements
             public void onGenerated(Palette p) {
                 // Use generated instance
                 darkMutedColor = p.getDarkMutedColor(0xFF333333);
-                int mutedLightColor = p.getLightMutedColor(ContextCompat.getColor(getApplicationContext(), R.color.colorAccent));
+                mutedLightColor = p.getLightMutedColor(ContextCompat.getColor(getApplicationContext(), R.color.colorAccent));
                 int mutedColor = p.getMutedColor(0xFF333333);
 //                collapsingToolbarLayout.setContentScrimColor(darkMutedColor);
                 if (rv.getChildAt(0) instanceof CardView) {
@@ -312,7 +317,6 @@ public class DetailActivity extends BaseActivity implements
                 }
 
                 fab.setBackgroundTintList(ColorStateList.valueOf(mutedLightColor));
-
                 if (android.os.Build.VERSION.SDK_INT >= 21) {
                     Window window = getWindow();
                     window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -373,6 +377,8 @@ public class DetailActivity extends BaseActivity implements
             Glide.with(this)
                     .load(bigImageUrl)
                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                    .dontAnimate()
+                    .centerCrop()
                     .listener(new RequestListener<String, GlideDrawable>() {
                         @Override
                         public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
@@ -386,6 +392,8 @@ public class DetailActivity extends BaseActivity implements
                             {
                                 supportStartPostponedEnterTransition();
                             }
+                            fabVisibilityAnimation();
+
                             return true;
                         }
 
@@ -398,6 +406,8 @@ public class DetailActivity extends BaseActivity implements
                             if(sharedElement){
                                 supportStartPostponedEnterTransition();
                             }
+                            fabVisibilityAnimation();
+
                             return true;
                         }
                     })
@@ -414,6 +424,9 @@ public class DetailActivity extends BaseActivity implements
             if(sharedElement){
                 supportStartPostponedEnterTransition();
             }
+            fabVisibilityAnimation();
+
+
         }
 
 
@@ -494,6 +507,10 @@ public class DetailActivity extends BaseActivity implements
             case TYPE_LOAD_FAIL:
                 hideLoader();
         }
+    }
+
+    private void fabVisibilityAnimation(){
+        fab.startAnimation(scaleAnim);
     }
 }
 

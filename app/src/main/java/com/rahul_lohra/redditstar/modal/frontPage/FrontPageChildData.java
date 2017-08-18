@@ -119,7 +119,20 @@ public class FrontPageChildData {
     @SerializedName("ups")
     @Expose
     private Integer ups;
+    @SerializedName("thumbnail_height")
+    @Expose
+    private int thumbnailHeight;
+    @SerializedName("thumbnail_width")
+    @Expose
+    private int thumbnailWidth;
 
+    public int getThumbnailHeight() {
+        return thumbnailHeight;
+    }
+
+    public int getThumbnailWidth() {
+        return thumbnailWidth;
+    }
 
     public Boolean getLocked() {
         return locked;
