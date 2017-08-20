@@ -15,6 +15,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import retrofit2.Retrofit;
+import timber.log.Timber;
 
 public class BaseFragment extends Fragment implements IActivity{
     @Inject
@@ -38,6 +39,7 @@ public class BaseFragment extends Fragment implements IActivity{
     @Override
     public void onStart() {
         super.onStart();
+        Timber.d("onStart");
         EventBus.getDefault().register(this);
     }
 

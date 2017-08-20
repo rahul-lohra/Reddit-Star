@@ -23,6 +23,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -68,7 +69,7 @@ public class HomeFragment extends BaseFragment implements
         LoaderManager.LoaderCallbacks<Cursor> {
 
     @BindView(R.id.rv)
-    RecyclerView rv;
+    public RecyclerView rv;
 
     @Inject
     @Named("withToken")
@@ -84,6 +85,7 @@ public class HomeFragment extends BaseFragment implements
     LinearLayoutManager linearLayoutManager;
     int layoutType;
     boolean pendingIntroAnimation;
+    public static final int START_RECYCLER_VIEW_ANIMATION = 1;
 
     @Override
     public void makeApiCall() {
@@ -98,6 +100,8 @@ public class HomeFragment extends BaseFragment implements
         void setSubTitle(String subtitle);
 
         void showIntroAnimation();
+
+        void setToolbarTitle(String text);
     }
 
     private IHomeFragment mListener;
@@ -150,8 +154,9 @@ public class HomeFragment extends BaseFragment implements
         }
         sp = PreferenceManager.getDefaultSharedPreferences(getContext());
         layoutType = sp.getInt(SpConstants.LAYOUT_TYPE, HomeAdapter.DEFAULT);
-        if(null == savedInstanceState){
+        if (null == savedInstanceState) {
             pendingIntroAnimation = true;
+            mListener.setToolbarTitle("");
         }
     }
 
@@ -223,8 +228,17 @@ public class HomeFragment extends BaseFragment implements
                 break;
 
         }
-
-        rv.setAdapter(adapter);
+        if (!pendingIntroAnimation) {
+            //do not animate
+            Timber.d("do not animate");
+            rv.setAdapter(adapter);
+        }else {
+            //animate
+            int y = CommonOperations.getScreenHeight(getContext());
+            rv.setTranslationY(y);
+            Timber.d("animate");
+            rv.setAdapter(adapter);
+        }
         rv.setHasFixedSize(false);
     }
 
@@ -265,13 +279,29 @@ public class HomeFragment extends BaseFragment implements
         this.mAfterOfLink = afterModal.getmAfterLink();
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(Integer event) {
+        Timber.d("onMessageEvent: event:" + event);
+        switch (event) {
+            case START_RECYCLER_VIEW_ANIMATION:
+//                rv.setAdapter(adapter);
+                rv.animate()
+                        .setInterpolator(new DecelerateInterpolator())
+                        .translationY(0)
+                        .setDuration(700);
+                break;
+        }
+    }
+
+    ;
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_search, menu);
-        if(pendingIntroAnimation){
+        if (pendingIntroAnimation) {
             pendingIntroAnimation = false;
-             mListener.showIntroAnimation();
+            mListener.showIntroAnimation();
         }
     }
 
@@ -507,5 +537,6 @@ public class HomeFragment extends BaseFragment implements
                 break;
         }
     }
+
 
 }

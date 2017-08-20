@@ -66,6 +66,8 @@ import com.google.android.gms.gcm.PeriodicTask;
 import com.google.android.gms.gcm.Task;
 import com.rahul_lohra.redditstar.viewHolder.AccountsViewHolder;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -85,6 +87,7 @@ import static com.rahul_lohra.redditstar.Utility.MyUrl.AUTH_URL;
 import static com.rahul_lohra.redditstar.Utility.MyUrl.CLIENT_ID;
 import static com.rahul_lohra.redditstar.Utility.MyUrl.REDIRECT_URI;
 import static com.rahul_lohra.redditstar.Utility.MyUrl.STATE;
+import static com.rahul_lohra.redditstar.fragments.HomeFragment.START_RECYCLER_VIEW_ANIMATION;
 
 @SuppressWarnings("HardCodedStringLiteral")
 public class DashboardActivity extends BaseActivity implements
@@ -153,7 +156,7 @@ public class DashboardActivity extends BaseActivity implements
     private GcmNetworkManager mGcmNetworkManager;
     private Snackbar snackbar;
     private AdRequest adRequest;
-    private Animator rotateDown,rotateUp;
+    private Animator rotateDown, rotateUp;
 
 
     @OnClick(R.id.image_view_drop_down)
@@ -161,22 +164,22 @@ public class DashboardActivity extends BaseActivity implements
         perfornAnimation();
         setAccountsAdapter();
     }
+
     @OnClick(R.id.add_new_account)
-    public void onClickAddNewAccount(){
+    public void onClickAddNewAccount() {
 //        addAccountDialog.show(getFragmentManager(), AddAccountDialog.class.getSimpleName());
         addNewAccount();
     }
 
     @OnClick(R.id.sign_out)
-    public void onClickSignOut(){
+    public void onClickSignOut() {
         performLogout();
     }
 
     @OnClick(R.id.anonymous_user)
-    public void onClickAnonymousUser(){
-       enableAnonymousUser();
+    public void onClickAnonymousUser() {
+        enableAnonymousUser();
     }
-
 
 
     private void setAccountsAdapter() {
@@ -199,12 +202,16 @@ public class DashboardActivity extends BaseActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
         ButterKnife.bind(this);
-        ((Initializer)getApplication()).getNetComponent().inject(this);
+        ((Initializer) getApplication()).getNetComponent().inject(this);
         init();
         setupDrawer();
         setupPresenter();
         startPeriodicTask();
+        setFragment(savedInstanceState);
 
+    }
+
+    private void setFragment(Bundle savedInstanceState) {
         if ((findViewById(R.id.frame_layout_right)) != null) {
             mTwoPane = true;
             if (savedInstanceState == null) {
@@ -213,6 +220,7 @@ public class DashboardActivity extends BaseActivity implements
         } else {
             if (savedInstanceState == null) {
                 mTwoPane = false;
+                toolbar.setTitle("");
                 showHomeFragment(R.id.frame_layout_left);
             }
         }
@@ -287,7 +295,7 @@ public class DashboardActivity extends BaseActivity implements
         addAccountDialog = new AddAccountDialog();
 
         subredditDrawerAdapter = new SubredditDrawerAdapter(this, null, this);
-        accountsAdapter = new AccountsAdapter(this, null, this,this);
+        accountsAdapter = new AccountsAdapter(this, null, this, this);
         getSupportLoaderManager().initLoader(LOADER_ID, null, this);
         getSupportLoaderManager().initLoader(LOADER_ID_NAME, null, this);
         getSupportLoaderManager().initLoader(LOADER_ID_ACCOUNTS, null, this);
@@ -312,10 +320,10 @@ public class DashboardActivity extends BaseActivity implements
         adRequest = new AdRequest.Builder().build();
         adView.loadAd(adRequest);
 
-         rotateDown= AnimatorInflater.loadAnimator(this,
+        rotateDown = AnimatorInflater.loadAnimator(this,
                 R.animator.rotate_down);
         rotateDown.setTarget(imageViewDropDown);
-        rotateUp= AnimatorInflater.loadAnimator(this,
+        rotateUp = AnimatorInflater.loadAnimator(this,
                 R.animator.rotate_up);
         rotateUp.setTarget(imageViewDropDown);
 
@@ -389,15 +397,15 @@ public class DashboardActivity extends BaseActivity implements
         String token = "Basic " + encodedAuthString;
         apiInterface.refreshToken(
                 token,
-                "refresh_token",refreshToken).enqueue(new Callback<RefreshTokenResponse>() {
+                "refresh_token", refreshToken).enqueue(new Callback<RefreshTokenResponse>() {
             @Override
             public void onResponse(Call<RefreshTokenResponse> call, Response<RefreshTokenResponse> response) {
-                Log.d(TAG,"onResponse - responseCode"+response.code());
+                Log.d(TAG, "onResponse - responseCode" + response.code());
             }
 
             @Override
             public void onFailure(Call<RefreshTokenResponse> call, Throwable t) {
-                Log.d(TAG,"onFailure:"+t.getMessage());
+                Log.d(TAG, "onFailure:" + t.getMessage());
             }
         });
 
@@ -494,11 +502,11 @@ public class DashboardActivity extends BaseActivity implements
             intent.putExtra("modal", modal);
             intent.putExtra("id", id);
             intent.putExtra("uri", MyProvider.PostsLists.CONTENT_URI);
-            intent.putExtra("sharedElement",false);
+            intent.putExtra("sharedElement", false);
             if (cursor != null) {
                 if (cursor.moveToFirst()) {
                     boolean thumbnail = !cursor.getString(cursor.getColumnIndex(MyPostsColumn.KEY_THUMBNAIL)).equals("default");
-                    intent.putExtra("sharedElement",thumbnail);
+                    intent.putExtra("sharedElement", thumbnail);
                     startActivityWithSharedElement(intent, imageView);
 //                    startActivityNoSharedElement(intent);
                 } else {
@@ -522,13 +530,42 @@ public class DashboardActivity extends BaseActivity implements
     @Override
     public void showIntroAnimation() {
         final int ANIM_DURATION_TOOLBAR = 300;
-        int actionbarSize = (int)CommonOperations.convertDpToPixel(56,this);
+        int actionbarSize = (int) CommonOperations.convertDpToPixel(56, this);
 
         toolbar.setTranslationY(-actionbarSize);
         toolbar.animate()
                 .translationY(0)
                 .setDuration(ANIM_DURATION_TOOLBAR)
-                .setStartDelay(300);
+                .setStartDelay(400)
+        .setListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+            setToolbarTitle("Dashboard");
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                Timber.d("onAnimationEnd");
+                EventBus.getDefault().post(START_RECYCLER_VIEW_ANIMATION);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        })
+        ;
+
+    }
+
+    @Override
+    public void setToolbarTitle(String text) {
+        toolbar.setTitle(text);
     }
 
     private void updateName(Cursor cursor) {
@@ -537,7 +574,7 @@ public class DashboardActivity extends BaseActivity implements
             if (cursor.moveToFirst()) {
                 String name = cursor.getString(cursor.getColumnIndex(UserCredentialsColumn.NAME));
                 tv_name.setText(name);
-            }else {
+            } else {
                 resetName();
             }
         }
@@ -548,28 +585,27 @@ public class DashboardActivity extends BaseActivity implements
         ((AppCompatImageView) layoutAnonymous.findViewById(R.id.image_view)).setImageResource(R.drawable.ic_person_active);
     }
 
-    void perfornAnimation(){
-        if(rv.getAdapter()!=null)
-        {
+    void perfornAnimation() {
+        if (rv.getAdapter() != null) {
             if (rv.getAdapter() instanceof AccountsAdapter) {
                 rotateDown.start();
-            }else {
+            } else {
                 rotateUp.start();
             }
         }
 
     }
 
-    void enableAnonymousUser(){
+    void enableAnonymousUser() {
         ContentValues cvActive = new ContentValues();
-        cvActive.put(UserCredentialsColumn.ACTIVE_STATE,0);
+        cvActive.put(UserCredentialsColumn.ACTIVE_STATE, 0);
         Uri mUri = MyProvider.UserCredentialsLists.CONTENT_URI;
-        getContentResolver().update(mUri,cvActive,null,null);
+        getContentResolver().update(mUri, cvActive, null, null);
         ((AppCompatImageView) layoutAnonymous.findViewById(R.id.image_view)).setImageResource(R.drawable.ic_person_active);
     }
 
     @Override
-    public void disableAnonymousUser(){
+    public void disableAnonymousUser() {
         ((AppCompatImageView) layoutAnonymous.findViewById(R.id.image_view)).setImageResource(R.drawable.ic_person_inactive);
     }
 
@@ -598,12 +634,12 @@ public class DashboardActivity extends BaseActivity implements
         layoutAnonymous.setVisibility(View.GONE);
     }
 
-    private void  addNewAccount(){
-    String scopeArray[] = getResources().getStringArray(R.array.scope);
-    String scope = MyUrl.getProperScope(scopeArray);
-    String url = String.format(AUTH_URL, CLIENT_ID, STATE, REDIRECT_URI, scope);
-    Intent intent = new Intent(this, WebViewActivity.class);
-    intent.setData(Uri.parse(url));
-    startActivity(intent);
-}
+    private void addNewAccount() {
+        String scopeArray[] = getResources().getStringArray(R.array.scope);
+        String scope = MyUrl.getProperScope(scopeArray);
+        String url = String.format(AUTH_URL, CLIENT_ID, STATE, REDIRECT_URI, scope);
+        Intent intent = new Intent(this, WebViewActivity.class);
+        intent.setData(Uri.parse(url));
+        startActivity(intent);
+    }
 }
